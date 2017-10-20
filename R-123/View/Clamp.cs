@@ -5,6 +5,9 @@ namespace R_123.View
 {
     class Clamp
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public delegate bool DelegateChangeValue();
         public event DelegateChangeValue ValueChanged;
 
