@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1D44611E-A3BA-40CC-BA32-5CAC33A24456}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>R_123</RootNamespace>
+    <AssemblyName>R-123</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NAudio, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Connection\ConnectionProvider.cs" />
+    <Compile Include="Connection\IConnectionProvider.cs" />
+    <Compile Include="Connection\MCP.Audio\AudioListener.cs" />
+    <Compile Include="Connection\MCP.Audio\AudioSender.cs" />
+    <Compile Include="Connection\MCP.Audio\AudioService.cs" />
+    <Compile Include="Connection\MCP.Audio\NetAudioPlayer.cs" />
+    <Compile Include="Connection\MCP.Audio\NoisePlayer.cs" />
+    <Compile Include="Connection\MCP\MCPManager.cs" />
+    <Compile Include="Connection\MCP\MCPPacket.cs" />
+    <Compile Include="Connection\MCP\MulticastListener.cs" />
+    <Compile Include="Connection\MCP\MulticastSender.cs" />
+    <Compile Include="Logic.cs" />
+    <Compile Include="View\Clamp.cs" />
+    <Compile Include="View\CursorDisplay.cs" />
+    <Compile Include="View\displays\AntennaLightDisplay.cs" />
+    <Compile Include="View\displays\AthenaDisplay.cs" />
+    <Compile Include="View\encoders\AnimationEncoder.cs" />
+    <Compile Include="View\FixedFrequencySetting.cs" />
+    <Compile Include="View\ImagesControl.cs" />
+    <Compile Include="View\Options.cs" />
+    <Compile Include="View\displays\FixedFrequencyDisplay.cs" />
+    <Compile Include="View\displays\FrequencyDisplay.cs" />
+    <Compile Include="View\displays\SubFrequencyDisplay.cs" />
+    <Compile Include="View\displays\VoltageDisplay.cs" />
+    <Compile Include="View\encoders\Encoder.cs" />
+    <Compile Include="View\encoders\FrequencyController.cs" />
+    <Compile Include="View\encoders\NoiseController.cs" />
+    <Compile Include="View\encoders\VolumeController.cs" />
+    <Compile Include="View\positionSwitchers\PositionSwitcher.cs" />
+    <Compile Include="View\positionSwitchers\RangeSwitcher.cs" />
+    <Compile Include="View\positionSwitchers\VoltageSwitcher.cs" />
+    <Compile Include="View\positionSwitchers\WorkModeSwitcher.cs" />
+    <Compile Include="View\PressSpaceControl.cs" />
+    <Compile Include="View\Selector.cs" />
+    <Compile Include="View\switchers\OnOffSwitcher.cs" />
+    <Compile Include="View\switchers\Power.cs" />
+    <Compile Include="View\switchers\Scale.cs" />
+    <Compile Include="View\switchers\SubFixFrequency.cs" />
+    <Compile Include="View\switchers\Switcher.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Connection\App.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Files\Images\FixedFrequencyDisplay0.gif" />
+    <Resource Include="Files\Images\FixedFrequencyDisplay1.gif" />
+    <Resource Include="Files\Images\FixedFrequencyDisplay2.gif" />
+    <Resource Include="Files\Images\FixedFrequencyDisplay3.gif" />
+    <Resource Include="Files\Images\FixedFrequencyDisplay4.gif" />
+    <Resource Include="Files\Images\FrequencyControl.gif" />
+    <Resource Include="Files\Images\mouseIcon\MouseIcon.png" />
+    <Resource Include="Files\Images\mouseIcon\mouseIconCenter.png" />
+    <Resource Include="Files\Images\mouseIcon\mouseIconLeft.png" />
+    <Resource Include="Files\Images\mouseIcon\mouseIconLeftCenter.png" />
+    <Resource Include="Files\Images\NoiseVolumeControl.gif" />
+    <Resource Include="Files\Images\R123.gif" />
+    <Resource Include="Files\Images\Range_switcher.gif" />
+    <Resource Include="Files\Images\SubFrequency0.gif" />
+    <Resource Include="Files\Images\SubFrequency1.gif" />
+    <Resource Include="Files\Images\SubFrequency2.gif" />
+    <Resource Include="Files\Images\Switcher_off.gif" />
+    <Resource Include="Files\Images\Switcher_on.gif" />
+    <Resource Include="Files\Images\VoltageControl0.gif" />
+    <Resource Include="Files\Images\VoltageControl1.gif" />
+    <Resource Include="Files\Images\VoltageControl2.gif" />
+    <Resource Include="Files\Images\VoltageControl3.gif" />
+    <Resource Include="Files\Images\VoltageControl4.gif" />
+    <Resource Include="Files\Images\VoltageControl5.gif" />
+    <Resource Include="Files\Images\VoltageTesterArrow.gif" />
+    <Resource Include="Files\Images\VolumeControl.gif" />
+    <Resource Include="Files\Images\WorkModeChangerArrow.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Files\Images\FixedFrequencySwitcherRing.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Files\Images\load\123.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Files\Images\FixedFrequencySwitcher.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Files\Images\FixedFrequencySwitcherScrew.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Files\Images\Athena1.gif" />
+    <Resource Include="Files\Images\Athena2.gif" />
+    <Resource Include="Files\Images\Athena3.gif" />
+    <Resource Include="Files\Images\Athena4.gif" />
+    <Resource Include="Files\Images\Athena5.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Files\Images\AthenaControl.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
