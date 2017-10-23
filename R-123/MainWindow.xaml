@@ -20,7 +20,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Button Grid.Column="2" Grid.Row="0" Click="EventExit" Content="exit"/>
-        <Canvas x:Name="form_Canvas" Grid.Column="1" Grid.Row="1">
+        <Canvas x:Name="form_Canvas" Grid.Column="1" Grid.Row="1" Panel.ZIndex="0">
             <Image x:Name="radio_Image" Source="/Files/Images/R123.gif"/>
             <!-- Енкодеры -->
             <Image x:Name="volumeControl_Image" Source="/Files/Images/VolumeControl.gif" Stretch="Fill" Width="79" Height="79" Canvas.Left="720" Canvas.Top="276" />
@@ -75,6 +75,20 @@
             <TextBlock x:Name="spaceIsDown_TextBlock" Canvas.Top="72" Width="63" FontSize="16" FontFamily="cambria" Height="22" RenderTransformOrigin="0.619,0.5" Canvas.Left="98">Пробел</TextBlock>
             <TextBlock x:Name="ctrlIsDown_TextBlock" Canvas.Top="72" Width="34" FontSize="16" FontFamily="cambria" Height="22" Canvas.Left="59">Ctrl</TextBlock>
             <TextBlock Width="99" FontSize="16" FontFamily="Segoe WP Black" Height="26" Canvas.Top="8" Canvas.Left="59">Управление</TextBlock>
+        </Canvas>
+        <Canvas x:Name="learning" Panel.ZIndex="-1" Grid.Column="1" Grid.Row="1">
+            <Path Fill="Black" Opacity="0.75">
+                <Path.Data>
+                    <CombinedGeometry GeometryCombineMode="Xor">
+                        <CombinedGeometry.Geometry1>
+                            <RectangleGeometry Rect="0,0, 850, 450" />
+                        </CombinedGeometry.Geometry1>
+                        <CombinedGeometry.Geometry2>
+                            <RectangleGeometry x:Name="rect" />
+                        </CombinedGeometry.Geometry2>
+                    </CombinedGeometry>
+                </Path.Data>
+            </Path>
         </Canvas>
     </Grid>
 </Window>
