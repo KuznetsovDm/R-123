@@ -8,6 +8,21 @@ namespace R_123.View
 {
     public class LearningMode
     {
+        private const int START = -1;
+        private const int WORK_MODE = 0;
+        private const int NOISE = 1;
+        private const int VOLTAGE_CONTROL = 2;
+        private const int POWER = 3;
+        private const int SCALE = 4;
+        private const int VOLUME = 5;
+        private const int RANGE = 6;
+        private const int CLAMP_ON = 7;
+        private const int FREQUENCY = 8;
+        private const int CLAMP_OFF = 9;
+        private const int SUBFREQUENCY = 10;
+        private const int ATHENA = 11;
+        private const int END = 12;
+
         private static readonly string[] messages =
         {
             "Установите режим \"СИМПЛЕКС\"",
@@ -18,11 +33,11 @@ namespace R_123.View
             "Поверните по часовой стрелке до упора",
             "Установите в положение \"1\"",
             "Расфиксируйте фиксатор - 1",
-            "Установите рабочую частоту и зафиксируйте фиксатор - 1 ",
+            "Установите рабочую частоту",
+            "Зафиксируйте фиксатор - 1 ",
             "Установите поддиапазон",
             "Расфиксируйте, настройте, зафиксируйте"
         };
-
 
         private static Image[] images = {
             Options.PositionSwitchers.WorkMode.Image, // Переключатель рода работа "СИМПЛЕКС - Д.ПРИЕМ"
@@ -32,24 +47,28 @@ namespace R_123.View
             Options.Switchers.Scale.Image, // Тумблер включения лампочки освещения шкалы "ШКАЛА ВКЛ.-ВЫКЛ."
             Options.Encoders.Volume.Image, // Ручка регулятора громкости - "ГРОМКОСТЬ"
             Options.PositionSwitchers.Range.Image,//Переключатель "ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН"
-            null,// Крышка люка барабана
+            null,// Фиксатор барабана
             Options.Encoders.Frequency.Image,// Ручка "УСТАНОВКА ЧАСТОТЫ"
-            Options.Display.SubFrequency.image,// Тумблеры переключения поддиапазонов фиксированных частот
+            null,// Фиксатор барабана
+            Options.Switchers.SubFixFrequency[0].Image,// Тумблеры переключения поддиапазонов фиксированных частот
             Options.AthenaDisplay.image// Фиксатор ручки "НАСТРОЙКА АНТЕННЫ"
         };
 
         private Canvas learning;
-        private RectangleGeometry rect;
+        private RectangleGeometry rect1;
+        private RectangleGeometry rect2;
         private int counter = 0;
         private bool learningMode = false;
-        private TextBlock textBlock;
+        private TextBlock messageBlock;
 
-        public LearningMode(Canvas learning, RectangleGeometry rect, TextBlock textBlock, Image baraban)
+        public LearningMode(Canvas learning, RectangleGeometry rect1, RectangleGeometry rect2, TextBlock messageBlock, Image baraban)
         {
             this.learning = learning;
-            this.rect = rect;
-            this.textBlock = textBlock;
-            images[7] = baraban;
+            this.rect1 = rect1;
+            this.rect2 = rect2;
+            this.messageBlock = messageBlock;
+            images[CLAMP_ON] = baraban;
+            images[CLAMP_OFF] = baraban;
 
             Options.PositionSwitchers.WorkMode.ValueChanged += WorkMode_ValueChanged;
             Options.Encoders.Noise.ValueChanged += Noise_ValueChanged;
@@ -58,9 +77,11 @@ namespace R_123.View
             Options.Switchers.Scale.ValueChanged += Scale_ValueChanged;
             Options.Encoders.Volume.ValueChanged += Volume_ValueChanged;
             Options.PositionSwitchers.Range.ValueChanged += Range_ValueChanged;
-
+            Options.Clamp[0].ValueChanged += Clamp_ValueChanged;
             Options.Encoders.Frequency.ValueChanged += Frequency_ValueChanged;
+            Options.Switchers.SubFixFrequency[0].ValueChanged += SubFixFrequency_ValueChanged;
         }
+
         #region Обработчики
 
         private void CounterChanger(int nextValue, Func<bool> condition)
@@ -71,43 +92,37 @@ namespace R_123.View
             }
         }
 
-        private void WorkMode_ValueChanged()
-        {
-            CounterChanger(1, () => Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Simplex);
-        }
+        private void WorkMode_ValueChanged() => CounterChanger(NOISE, () => Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Simplex);
 
-        private void Noise_ValueChanged()
-        {
-            CounterChanger(2, () => Options.Encoders.Noise.Value == 0.0m);
-        }
+        private void Noise_ValueChanged() => CounterChanger(VOLTAGE_CONTROL, () => Options.Encoders.Noise.Value == 0.0m);
 
-        private void Voltage_ValueChanged()
-        {
-            CounterChanger(3, () => Options.PositionSwitchers.Voltage.Value == 0);
-        }
+        private void Voltage_ValueChanged() => CounterChanger(POWER, () => Options.PositionSwitchers.Voltage.Value == 0);
 
-        private void Power_ValueChanged()
-        {
-            CounterChanger(4, () => Options.Switchers.Power.Value == State.on);
-        }
+        private void Power_ValueChanged() => CounterChanger(SCALE, () => Options.Switchers.Power.Value == State.on);
 
-        private void Scale_ValueChanged()
-        {
-            CounterChanger(5, () => Options.Switchers.Scale.Value == State.on);
-        }
+        private void Scale_ValueChanged() => CounterChanger(VOLUME, () => Options.Switchers.Scale.Value == State.on);
 
-        private void Volume_ValueChanged()
-        {
-            CounterChanger(6, () => Options.Encoders.Volume.Value == 1.0m);
-        }
+        private void Volume_ValueChanged() => CounterChanger(RANGE, () => Options.Encoders.Volume.Value == 1.0m);
 
-        private void Range_ValueChanged()
+        private void Range_ValueChanged() => CounterChanger(CLAMP_ON, () => Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency1);
+
+        private void Clamp_ValueChanged()
         {
-            //   CounterChanger(7, () => Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency1);
+            if (counter == CLAMP_ON)
+                CounterChanger(FREQUENCY, () => Options.Clamp[0].Value == 1.0m);
+            else if (counter == CLAMP_OFF)
+                CounterChanger(SUBFREQUENCY, () => Options.Clamp[0].Value == 0.0m);
         }
 
         private void Frequency_ValueChanged()
         {
+            if (counter == FREQUENCY)
+                CounterChanger(CLAMP_OFF, () => true);
+        }
+
+        private void SubFixFrequency_ValueChanged()
+        {
+            CounterChanger(ATHENA, () => true);
         }
 
         #endregion
@@ -119,14 +134,15 @@ namespace R_123.View
                         if (!learningMode) {
                             learningMode = true;
                             Panel.SetZIndex(learning, 1);
-                            counter = 0;
+                            counter = START;
+                            goto case Key.Enter;
                         }
                         break;
                     }
                 // Проверка выполнения условия
                 case Key.Enter: {
                         if (learningMode) {
-                            if (counter < images.Length) {
+                            if (START < counter && counter < END) {
                                 Image image = images[counter];
                                 if (image != null) {
                                     double left = Canvas.GetLeft(image);
@@ -134,15 +150,44 @@ namespace R_123.View
                                     double width = image.ActualWidth;
                                     double height = image.ActualHeight;
 
-                                    rect.Rect = new Rect(left - width * 0.15, top - height * 0.15, width * 1.3, height * 1.3);
+                                    rect1.Rect = new Rect(left - width * 0.15, top - height * 0.15, width * 1.3, height * 1.3);
 
-                                    if (textBlock != null)
-                                        textBlock.Text = messages[counter];
+                                    if (counter == FREQUENCY)
+                                        rect2.Rect = new Rect(300, 0, 150, 100);
+                                    else
+                                        rect2.Rect = new Rect();
+
+                                    if (messageBlock != null) {
+                                        messageBlock.FontSize = 24;
+                                        messageBlock.VerticalAlignment = VerticalAlignment.Center;
+                                        messageBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                                        messageBlock.Text = $"{messages[counter]}{Environment.NewLine}Для продолжения нажмите <Enter>";
+                                    }
                                 }
-                                if (counter > 5) counter++;
 
+                                if (counter > SUBFREQUENCY) {
+                                    counter++;
+                                }
                             }
-                            else counter = 0;
+                            else if (counter == START) {
+                                messageBlock.FontSize = 16;
+                                messageBlock.VerticalAlignment = VerticalAlignment.Stretch;
+                                messageBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                                messageBlock.Text = $"Вы вошли в режим обучения.{Environment.NewLine}" +
+                                    $"Для выхода из режима обучения нажмите <ESC>.{Environment.NewLine}" +
+                                    "Для того, чтобы перейти к следующему шагу, нажмите <Enter>.";
+                                counter = WORK_MODE;
+                            }
+                            else if (counter == END) {
+                                rect1.Rect = new Rect();
+                                messageBlock.FontSize = 16;
+                                messageBlock.VerticalAlignment = VerticalAlignment.Stretch;
+                                messageBlock.HorizontalAlignment = HorizontalAlignment.Stretch;
+                                messageBlock.Text = $"Вы прошли режим обучения, поздравляем!{Environment.NewLine}" +
+                                    $"Для выхода из режима обучения нажмите <ESC>.{Environment.NewLine}" +
+                                    "Для того, чтобы начать режим обучения заново, нажмите <Enter>.";
+                                counter = START;
+                            }
                         }
                         break;
                     }
@@ -151,8 +196,8 @@ namespace R_123.View
                         if (learningMode) {
                             learningMode = false;
                             Panel.SetZIndex(learning, -1);
-                            rect.Rect = new Rect();
-                            counter = 0;
+                            rect1.Rect = new Rect();
+                            counter = WORK_MODE;
                         }
                         break;
                     }

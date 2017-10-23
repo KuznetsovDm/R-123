@@ -8,7 +8,7 @@ namespace R_123.View
         /// <summary>
         /// 
         /// </summary>
-        public delegate bool DelegateChangeValue();
+        public delegate void DelegateChangeValue();
         public event DelegateChangeValue ValueChanged;
 
         public Image image;

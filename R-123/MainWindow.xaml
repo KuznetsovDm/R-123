@@ -76,6 +76,7 @@
             <TextBlock x:Name="ctrlIsDown_TextBlock" Canvas.Top="72" Width="34" FontSize="16" FontFamily="cambria" Height="22" Canvas.Left="59">Ctrl</TextBlock>
             <TextBlock Width="99" FontSize="16" FontFamily="Segoe WP Black" Height="26" Canvas.Top="8" Canvas.Left="59">Управление</TextBlock>
         </Canvas>
+        <TextBlock x:Name="textBlock" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
         <Canvas x:Name="learning" Panel.ZIndex="-1" Grid.Column="1" Grid.Row="1">
             <Path Fill="Black" Opacity="0.75">
                 <Path.Data>
@@ -84,7 +85,14 @@
                             <RectangleGeometry Rect="0,0, 850, 450" />
                         </CombinedGeometry.Geometry1>
                         <CombinedGeometry.Geometry2>
-                            <RectangleGeometry x:Name="rect" />
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry x:Name="rect1" />
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <RectangleGeometry x:Name="rect2" />
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
                         </CombinedGeometry.Geometry2>
                     </CombinedGeometry>
                 </Path.Data>
