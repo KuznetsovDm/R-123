@@ -128,12 +128,12 @@ namespace R_123.View
         #endregion
         public void OnStartClick(object sender, RoutedEventArgs args)
         {
-            //OnStart(Key.L);
+            OnStart(Key.L);
         }
 
         public void OnStopClick(object sender, RoutedEventArgs args)
         {
-            //OnStart(Key.Escape);
+            OnStart(Key.Escape);
         }
         private void OnStart(Key key)
         {
