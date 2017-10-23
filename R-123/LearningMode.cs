@@ -113,35 +113,51 @@ namespace R_123.View
         #endregion
         public void Start(object sender, KeyEventArgs args)
         {
-            if (args.Key == Key.F1) {
-                learningMode = !learningMode;
-                Panel.SetZIndex(learning, learningMode ? 1 : -1);
-                counter = 0;
-            }
-            else if (args.Key == Key.Enter) {
-                if (learningMode) {
-                    if (counter < images.Length) {
-                        Image image = images[counter];
-                        if (image != null) {
-                            double left = Canvas.GetLeft(image);
-                            double top = Canvas.GetTop(image);
-                            double width = image.ActualWidth;
-                            double height = image.ActualHeight;
-
-                            rect.Rect = new Rect(left - width * 0.15, top - height * 0.15, width * 1.3, height * 1.3);
-
-                            if (textBlock != null)
-                                textBlock.Text = messages[counter];
+            switch (args.Key) {
+                // Запуск режима обучения
+                case Key.F1: {
+                        if (!learningMode) {
+                            learningMode = true;
+                            Panel.SetZIndex(learning, 1);
+                            counter = 0;
                         }
-                        if (counter > 5) counter++;
-
+                        break;
                     }
-                    else counter = 0;
-                }
+                // Проверка выполнения условия
+                case Key.Enter: {
+                        if (learningMode) {
+                            if (counter < images.Length) {
+                                Image image = images[counter];
+                                if (image != null) {
+                                    double left = Canvas.GetLeft(image);
+                                    double top = Canvas.GetTop(image);
+                                    double width = image.ActualWidth;
+                                    double height = image.ActualHeight;
+
+                                    rect.Rect = new Rect(left - width * 0.15, top - height * 0.15, width * 1.3, height * 1.3);
+
+                                    if (textBlock != null)
+                                        textBlock.Text = messages[counter];
+                                }
+                                if (counter > 5) counter++;
+
+                            }
+                            else counter = 0;
+                        }
+                        break;
+                    }
+                // Выход из режима обучения
+                case Key.Escape: {
+                        if (learningMode) {
+                            learningMode = false;
+                            Panel.SetZIndex(learning, -1);
+                            rect.Rect = new Rect();
+                            counter = 0;
+                        }
+                        break;
+                    }
+                default: break;
             }
         }
     }
 }
-
-
-

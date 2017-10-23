@@ -48,7 +48,7 @@ namespace R_123
             Options.Disk = disk_Canvas;
             Options.Window = this;
 
-            LearningMode learningMode = new LearningMode(learning, rect, null, null);
+            LearningMode learningMode = new LearningMode(learning, rect, null, ring_Image);
             KeyDown += learningMode.Start;
         }
         public void EventExit(object sender, RoutedEventArgs e)

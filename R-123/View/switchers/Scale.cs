@@ -5,7 +5,7 @@ namespace R_123.View
     class Scale : OnOffSwitcher
     {
         public event DelegateChangeValue ValueChanged;
-        public Scale(Image image) : base(image, Properties.Settings.Default.Power)
+        public Scale(Image image) : base(image/*, Properties.Settings.Default.Power*/)
         {
 
         }
