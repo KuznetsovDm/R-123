@@ -92,31 +92,26 @@ namespace R_123.View
         private void MemoryFrequency()
         {
             decimal frequency = Options.Encoders.Frequency.Value;
-            if (Options.Switchers.Power.Value == State.on)
-            {
-                if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency1)
-                {
+            if (Options.Switchers.Power.Value == State.on) {
+                if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency1) {
                     if (Options.Switchers.SubFixFrequency[0].Value == SubFrequency.One)
                         Properties.Settings.Default.FixedFrequency1_1 = frequency;
                     else
                         Properties.Settings.Default.FixedFrequency1_2 = frequency;
                 }
-                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency2)
-                {
+                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency2) {
                     if (Options.Switchers.SubFixFrequency[1].Value == SubFrequency.One)
                         Properties.Settings.Default.FixedFrequency2_1 = frequency;
                     else
                         Properties.Settings.Default.FixedFrequency2_2 = frequency;
                 }
-                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency3)
-                {
+                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency3) {
                     if (Options.Switchers.SubFixFrequency[2].Value == SubFrequency.One)
                         Properties.Settings.Default.FixedFrequency3_1 = frequency;
                     else
                         Properties.Settings.Default.FixedFrequency3_2 = frequency;
                 }
-                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency4)
-                {
+                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency4) {
                     if (Options.Switchers.SubFixFrequency[3].Value == SubFrequency.One)
                         Properties.Settings.Default.FixedFrequency4_1 = frequency;
                     else
@@ -127,14 +122,11 @@ namespace R_123.View
         }
         protected void ValueIsUpdated()
         {
-            if (Value != oldValue && (currentValue == 0 || currentValue == 1))
-            {
-                oldValue = Value;
-                if (Value == 0) MemoryFrequency();
-                ValueChanged?.Invoke();
+            oldValue = Value;
+            if (Value == 0) MemoryFrequency();
+            ValueChanged?.Invoke();
 
-                System.Diagnostics.Trace.WriteLine($"Clamp = {Value}; ");
-            }
+            System.Diagnostics.Trace.WriteLine($"Clamp = {Value}; ");
         }
     }
 }

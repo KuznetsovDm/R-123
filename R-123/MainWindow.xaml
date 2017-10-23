@@ -5,9 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R_123"
         mc:Ignorable="d"
-        Title="Р-123"
-        WindowStyle="None" ResizeMode="NoResize" Width="1280" Height="1024"
+        Title="Р-123" 
+        ResizeMode="CanResize"
+        Width="1280" Height="1024"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+    </Window.Resources>
     <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -19,10 +27,9 @@
             <ColumnDefinition Width="848"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="2" Grid.Row="0" Click="EventExit" Content="exit"/>
         <Canvas x:Name="form_Canvas" Grid.Column="1" Grid.Row="1" Panel.ZIndex="0">
             <Image x:Name="radio_Image" Source="/Files/Images/R123.gif"/>
-            <!-- Енкодеры -->
+            <!-- Энкодеры -->
             <Image x:Name="volumeControl_Image" Source="/Files/Images/VolumeControl.gif" Stretch="Fill" Width="79" Height="79" Canvas.Left="720" Canvas.Top="276" />
             <Image x:Name="noiseControl_Image" Source="/Files/Images/NoiseVolumeControl.gif" Stretch="Fill" Canvas.Left="88" Canvas.Top="37" Height="55" Width="55"/>
             <Image x:Name="frequencyControl_Image" Source="/Files/Images/FrequencyControl.gif" Stretch="Fill" Width="79" Height="79" Canvas.Left="157" Canvas.Top="163" />
@@ -98,5 +105,10 @@
                 </Path.Data>
             </Path>
         </Canvas>
+        <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch">
+            <Button x:Name="buttonRadiostationMode"  Content="Режим радиостанции"/>
+            <Button x:Name="buttonLearningMode" Content="Режим обучения"/>
+            <Button x:Name="buttonReference" Content="Справка"/>
+        </StackPanel>
     </Grid>
 </Window>
