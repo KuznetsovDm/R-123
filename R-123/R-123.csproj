@@ -85,6 +85,7 @@
     <Compile Include="Connection\MCP\MCPPacket.cs" />
     <Compile Include="Connection\MCP\MulticastListener.cs" />
     <Compile Include="Connection\MCP\MulticastSender.cs" />
+    <Compile Include="LearningMode.cs" />
     <Compile Include="Logic.cs" />
     <Compile Include="View\Clamp.cs" />
     <Compile Include="View\CursorDisplay.cs" />

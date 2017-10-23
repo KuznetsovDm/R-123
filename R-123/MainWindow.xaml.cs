@@ -48,11 +48,11 @@ namespace R_123
             Options.Disk = disk_Canvas;
             Options.Window = this;
 
-            //logic = new Logic();
+            LearningMode learningMode = new LearningMode(learning, rect, null, null);
+            KeyDown += learningMode.Start;
         }
         public void EventExit(object sender, RoutedEventArgs e)
         {
-            //logic.Close();
             Application.Current.MainWindow.Close();
         }
     }
