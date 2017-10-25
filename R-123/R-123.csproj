@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Connection\ConnectionProvider.cs" />
     <Compile Include="Connection\IConnectionProvider.cs" />
     <Compile Include="Connection\MCP.Audio\AudioListener.cs" />

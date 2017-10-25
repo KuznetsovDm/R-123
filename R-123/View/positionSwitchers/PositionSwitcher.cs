@@ -1,7 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace R_123.View
 {
@@ -9,46 +7,43 @@ namespace R_123.View
     {
         private int maxValue = 20;
         private int currentValue = 0;
+        private double defAngle = 0;
         protected double minAngle = 0;
         protected double maxAngle = 360;
-        private double defAngle = 0;
         public PositionSwitcher(Image image, double defAngle = 0) :
             base(image)
         {
             this.defAngle = defAngle;
             image.MouseWheel += OnMouseWheel;
-            image.MouseDown += Image_MouseDown;
+            image.MouseDown += Window_MouseDown;
         }
         public int Value => currentValue;
 
         private void OnMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
         {
-            if (e.Delta > 0)
-                CurrentValue += 1;
-            else
-                CurrentValue -= 1;
+            CurrentValue += e.Delta > 0 ? 1 : -1;
         }
-        private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        /*private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            double mAngle = minAngle * System.Math.PI * 2 / 360;
-            Options.canvas.MouseUp += Image_MouseUp;
-            double left = Canvas.GetLeft(Image) + Image.Width / 2;
-            double top = Canvas.GetTop(Image) + Image.Height / 2;
-            double step = System.Math.PI * 2 * (maxAngle - minAngle) / 360 / maxValue;
+            Options.Window.MouseUp += Image_MouseUp;
+            double centerX = Canvas.GetLeft(Image) + Image.ActualWidth / 2;
+            double centerY = Canvas.GetTop(Image) + Image.ActualHeight / 2;
+            double startAngle = minAngle * System.Math.PI * 2 / 360;
+            double stepAngle = System.Math.PI * 2 * (maxAngle - minAngle) / 360 / maxValue;
             for (int i = 0; i < maxValue; i++)
             {
-                double p1 = (i - 0.5 + defAngle) * step - mAngle;
-                double p2 = (i + 0.5 + defAngle) * step - mAngle;
-                double p1x = System.Math.Cos(p1) * 1500;
-                double p1y = System.Math.Sin(p1) * 1500;
-                double p2x = System.Math.Cos(p2) * 1500;
-                double p2y = System.Math.Sin(p2) * 1500;
+                double point1 = (i - 0.5 + defAngle) * stepAngle - startAngle;
+                double point2 = (i + 0.5 + defAngle) * stepAngle - startAngle;
+                double point1x = System.Math.Cos(point1) * 1500;
+                double point1y = System.Math.Sin(point1) * 1500;
+                double point2x = System.Math.Cos(point2) * 1500;
+                double point2y = System.Math.Sin(point2) * 1500;
 
                 PointCollection myPointCollection = new PointCollection
                 {
-                    new Point(left, top),
-                    new Point(left+p1x, top+p1y),
-                    new Point(left+p2x, top+p2y)
+                    new Point(centerX, centerY),
+                    new Point(centerX+point1x, centerY+point1y),
+                    new Point(centerX+point2x, centerY+point2y)
                 };
                 Polygon polygon = new Polygon
                 {
@@ -68,12 +63,31 @@ namespace R_123.View
             Polygon polygon = sender as Polygon;
             CurrentValue = System.Convert.ToInt32(polygon.Name.Substring(8));
         }
-
         private void Image_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Options.canvas.MouseUp -= Image_MouseUp;
+            Options.Window.MouseUp -= Image_MouseUp;
             while (Options.Disk.Children.Count > 0)
                 Options.Disk.Children.RemoveAt(0);
+        }*/
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Options.Window.MouseUp += Window_MouseUp;
+            Options.Window.MouseMove += Window_MouseMove;
+        }
+        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            Point point = e.GetPosition(Image as IInputElement);
+            Vector norm = new Vector(1.0, 0.0);
+            Vector mouse = new Vector(point.X, point.Y);
+            double angle = Vector.AngleBetween(norm, mouse);
+            System.Diagnostics.Trace.WriteLine(point);
+            //CurrentValue = System.Convert.ToInt32(System.Math.Round(angle / 360 * maxValue));
+        }
+
+        private void Window_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Options.Window.MouseUp -= Window_MouseUp;
+            Options.Window.MouseMove -= Window_MouseMove;
         }
 
         protected void SetStartValue(int value, int maxValue)
@@ -115,7 +129,7 @@ namespace R_123.View
             try
             {
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer();
-                player.SoundLocation = @"C:\Users\DK\Documents\R-123\R-123\R-123\sounds\PositionSwitcher.wav";
+                player.SoundLocation = @"D:\project\R-123\R-123\Files\Sounds\PositionSwitcher.wav";
                 player.Load();
                 player.Play();
             }

@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:R_123"
         mc:Ignorable="d"
         Title="Р-123"
-        WindowStyle="None" ResizeMode="NoResize" Width="1280" Height="1024"
+        ResizeMode="NoResize" Width="1280" Height="1024"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Grid ShowGridLines="True">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="450"></RowDefinition>
@@ -19,7 +19,6 @@
             <ColumnDefinition Width="848"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="2" Grid.Row="0" Click="EventExit" Content="exit"/>
         <Canvas x:Name="form_Canvas" Grid.Column="1" Grid.Row="1">
             <Image x:Name="radio_Image" Source="/Files/Images/R123.gif"/>
             <!-- Енкодеры -->
