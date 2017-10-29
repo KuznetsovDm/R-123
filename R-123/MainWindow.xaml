@@ -5,10 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R_123"
         mc:Ignorable="d"
-        Title="Р-123"
+        Title="R-123"
         ResizeMode="NoResize" Width="1280" Height="1024"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Grid>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Focusable" Value="False"/>
+        </Style>
+    </Window.Resources>
+    <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="450"></RowDefinition>
@@ -19,9 +27,9 @@
             <ColumnDefinition Width="848"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="form_Canvas" Grid.Column="1" Grid.Row="1">
+        <Canvas x:Name="form_Canvas" Grid.Column="1" Grid.Row="1" Panel.ZIndex="0">
             <Image x:Name="radio_Image" Source="/Files/Images/R123.gif"/>
-            <!-- Енкодеры -->
+            <!-- Энкодеры -->
             <Image x:Name="volumeControl_Image" Source="/Files/Images/VolumeControl.gif" Stretch="Fill" Width="79" Height="79" Canvas.Left="720" Canvas.Top="276" />
             <Image x:Name="noiseControl_Image" Source="/Files/Images/NoiseVolumeControl.gif" Stretch="Fill" Canvas.Left="88" Canvas.Top="37" Height="55" Width="55"/>
             <Image x:Name="frequencyControl_Image" Source="/Files/Images/FrequencyControl.gif" Stretch="Fill" Width="79" Height="79" Canvas.Left="157" Canvas.Top="163" />
@@ -75,5 +83,32 @@
             <TextBlock x:Name="ctrlIsDown_TextBlock" Canvas.Top="72" Width="34" FontSize="16" FontFamily="cambria" Height="22" Canvas.Left="59">Ctrl</TextBlock>
             <TextBlock Width="99" FontSize="16" FontFamily="Segoe WP Black" Height="26" Canvas.Top="8" Canvas.Left="59">Управление</TextBlock>
         </Canvas>
+        <TextBlock x:Name="textBlock" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
+        <Canvas x:Name="learning" Panel.ZIndex="-1" Grid.Column="1" Grid.Row="1">
+            <Path Fill="Black" Opacity="0.75">
+                <Path.Data>
+                    <CombinedGeometry GeometryCombineMode="Xor">
+                        <CombinedGeometry.Geometry1>
+                            <RectangleGeometry Rect="0,0, 850, 450" />
+                        </CombinedGeometry.Geometry1>
+                        <CombinedGeometry.Geometry2>
+                            <CombinedGeometry GeometryCombineMode="Union">
+                                <CombinedGeometry.Geometry1>
+                                    <RectangleGeometry x:Name="rect1" />
+                                </CombinedGeometry.Geometry1>
+                                <CombinedGeometry.Geometry2>
+                                    <RectangleGeometry x:Name="rect2" />
+                                </CombinedGeometry.Geometry2>
+                            </CombinedGeometry>
+                        </CombinedGeometry.Geometry2>
+                    </CombinedGeometry>
+                </Path.Data>
+            </Path>
+        </Canvas>
+        <StackPanel Grid.Column="2" Grid.Row="1" VerticalAlignment="Stretch">
+            <Button x:Name="buttonRadiostationMode"  Content="Режим радиостанции" />
+            <Button x:Name="buttonLearningMode" Content="Режим обучения"/>
+            <Button x:Name="buttonReference" Content="Справка"/>
+        </StackPanel>
     </Grid>
 </Window>

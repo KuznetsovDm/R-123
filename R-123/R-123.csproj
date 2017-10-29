@@ -73,19 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Audio\AudioPlayer.cs" />
-    <Compile Include="Connection\ConnectionProvider.cs" />
-    <Compile Include="Connection\IConnectionProvider.cs" />
-    <Compile Include="Connection\MCP.Audio\AudioListener.cs" />
-    <Compile Include="Connection\MCP.Audio\AudioSender.cs" />
-    <Compile Include="Connection\MCP.Audio\AudioService.cs" />
-    <Compile Include="Connection\MCP.Audio\NetAudioPlayer.cs" />
-    <Compile Include="Connection\MCP.Audio\NoisePlayer.cs" />
-    <Compile Include="Connection\MCP\MCPManager.cs" />
-    <Compile Include="Connection\MCP\MCPPacket.cs" />
-    <Compile Include="Connection\MCP\MulticastListener.cs" />
-    <Compile Include="Connection\MCP\MulticastSender.cs" />
-    <Compile Include="Logic.cs" />
+    <Compile Include="LearningMode.cs" />
     <Compile Include="View\Clamp.cs" />
     <Compile Include="View\CursorDisplay.cs" />
     <Compile Include="View\displays\AntennaLightDisplay.cs" />
@@ -145,7 +133,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Connection\App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

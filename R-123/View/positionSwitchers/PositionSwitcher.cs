@@ -7,7 +7,7 @@ namespace R_123.View
 {
     class PositionSwitcher : ImagesControl
     {
-        Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
+        //Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
         private int maxValue = 20;
         private int currentValue = 0;
         private double defAngle = 0;
