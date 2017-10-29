@@ -42,7 +42,7 @@
             <Image x:Name="fixedFrequencyDisplay_Image" Source="/Files/Images/FixedFrequencyDisplay0.gif" Canvas.Left="700" Canvas.Top="30"/>
             <Image x:Name="voltageDisplay_Image" Source="/Files/Images/VoltageControl0.gif" Canvas.Left="715" Canvas.Top="144"/>
             <Image x:Name="antennaLight_Image" Source="/Files/Images/Athena1.gif" Stretch="Fill" Canvas.Left="499" Canvas.Top="33"/>
-            <Image x:Name="antennaControl_Image" Source="/Files/Images/AthenaControl.png" Stretch="Fill" Canvas.Left="496" Canvas.Top="75"/>
+            <Image x:Name="antennaControl_Image" Source="/Files/Images/AthenaControl.png" Stretch="Fill" Canvas.Left="496" Canvas.Top="75" Width="147" Height="147"/>
             <!-- Лента частот -->
             <Canvas x:Name="frequencyDisplay_Canvas" Canvas.Left="316" Canvas.Top="18" Width="108" Height="45" ClipToBounds="True">
                 <Canvas x:Name="frequencyBand_Canvas" Canvas.Left="-6" Visibility="Hidden"></Canvas>

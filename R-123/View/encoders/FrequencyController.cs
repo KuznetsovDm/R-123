@@ -16,9 +16,6 @@ namespace R_123.View
         {
             cursorImages = CursorImages.mouseIconLeftCenter;
 
-            image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
-            canvas = Options.canvas;
-
             Options.PositionSwitchers.Range.ValueChanged += UpdateValue;
             Options.Switchers.Power.ValueChanged += UpdateValue;
             for (int i = 0; i < Options.Switchers.SubFixFrequency.Length; i++)
@@ -60,34 +57,6 @@ namespace R_123.View
                 CurrentValue -= delta;
         }
         public new decimal Value => ValueToFrequency(base.Value);
-        double cursorX;
-        decimal startValue;
-        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (Options.PositionSwitchers.Range.Value >= RangeSwitcherValues.SubFrequency2 ||
-                Options.Switchers.Power.Value == State.off)
-            {
-                Options.Window.MouseMove += Canvas_MouseMove;
-                Options.Window.MouseLeftButtonUp += Canvas_MouseLeftButtonUp;
-                Options.Window.Cursor = Cursors.ScrollWE;
-
-                cursorX = Mouse.GetPosition(canvas).X;
-                startValue = (base.Value);
-            }
-        }
-        private void Canvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            double coefficient = 0.003;
-            double deltaX = cursorX - Mouse.GetPosition(canvas).X;
-
-            base.CurrentValue = (System.Convert.ToDecimal(deltaX * coefficient) + startValue);
-        }
-        private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Options.Window.MouseMove -= Canvas_MouseMove;
-            Options.Window.MouseLeftButtonUp -= Canvas_MouseLeftButtonUp;
-            Options.Window.Cursor = Cursors.AppStarting;
-        }
         private void UpdateValue()
         {
             if (Options.Switchers.Power.Value == State.on)

@@ -8,10 +8,15 @@ namespace R_123.View
         public AthenaDisplay(Image image) : base(image, Properties.Settings.Default.AthenaDisplay, 360m)
         {
             this.image = image;
+            deltaValueMouseWheel = 5m;
+            coefficient = 0.3;
             Options.Encoders.Frequency.AngleChanged += UpdateValue;
         }
-
         private void UpdateValue()
+        {
+            
+        }
+        /*private void UpdateValue()
         {
             decimal value = Options.Encoders.Frequency.Value;
             int numberRange = (int)Options.PositionSwitchers.Range.Value;
@@ -19,16 +24,16 @@ namespace R_123.View
                 Options.Clamp[numberRange].Value < 1 &&
                 Options.Switchers.Power.Value == State.on);
             {
-                /*int number = (int)Options.PositionSwitchers.Range.Value;
+                int number = (int)Options.PositionSwitchers.Range.Value;
                 if (Options.Switchers.SubFixFrequency[number].Value == SubFrequency.One)
                     value -= 20m;
                 else
                     value -= 35.75m;
-                RotateImage((double)value / 15.75 * 360);*/
-                CurrentValue = (decimal)((double)(Options.Encoders.Frequency.Value - 20m) / 31.5 * 360);
+                RotateImage((double)value / 15.75 * 360);
+        CurrentValue = (decimal)((double)(Options.Encoders.Frequency.Value - 20m) / 31.5 * 360);
                 System.Diagnostics.Trace.WriteLine(CurrentValue);
             }
-        }/*
+        }
         protected void RotateImage(double angle)
         {
             image.RenderTransform = new System.Windows.Media.RotateTransform(angle,
