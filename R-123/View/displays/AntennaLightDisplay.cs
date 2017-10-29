@@ -19,18 +19,6 @@ namespace R_123.View
         }
         private void Update()
         {
-            if (Options.Switchers.Power.Value == State.off || Options.PressSpaceControl.Value == false)
-            {
-                if (currentNumberImage != 1)
-                    Animation();
-            }
-            else
-            {
-                Animation();
-            }
-        }
-        private void Animation()
-        {
             dispatcherTimer.Start();
         }
         private void DispatcherTimer_Tick(object sender, EventArgs e)

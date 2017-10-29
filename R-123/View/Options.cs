@@ -1,4 +1,6 @@
-﻿namespace R_123.View
+﻿using System.Windows.Controls;
+
+namespace R_123.View
 {
     /// <summary>
     /// Параметры радиостанции, настраиваемые пользователем через интерфейс
@@ -90,11 +92,12 @@
         /// </summary>
         public static PressSpaceControl PressSpaceControl;
         public static CursorDisplay CursorDisplay;
-        public static System.Windows.Controls.Canvas canvas;
+        public static Canvas canvas;
         public static Clamp[] Clamp = new Clamp[4];
         public static FixedFrequencySetting FixedFrequencySetting;
-        public static System.Windows.Controls.Canvas Disk;
+        public static Canvas Disk;
         public static MainWindow Window;
-        public static System.Windows.Controls.Canvas R123;
+        public static Canvas R123;
+        public static Image ring_Image;
     }
 }

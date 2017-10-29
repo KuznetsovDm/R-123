@@ -96,6 +96,9 @@
     <Compile Include="Magic\MCP\MCP\MulticastListener.cs" />
     <Compile Include="Magic\MCP\MCP\MulticastSender.cs" />
     <Compile Include="Magic\RadioLogic.cs" />
+    <Compile Include="Radio.xaml.cs">
+      <DependentUpon>Radio.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Clamp.cs" />
     <Compile Include="View\CursorDisplay.cs" />
     <Compile Include="View\displays\AntennaLightDisplay.cs" />
@@ -135,6 +138,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Radio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -213,6 +220,7 @@
     <Resource Include="Files\Images\AthenaControl.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Files\Images\Tone.png" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\PositionSwitcher2.wav" />

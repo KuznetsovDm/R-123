@@ -22,6 +22,14 @@ namespace R_123.View
 
             image.MouseLeave += Image_MouseLeave;
         }
+        protected override bool ConditionMouseLeft()
+        {
+            if (Options.Switchers.Power.Value == State.on &&
+                Options.PositionSwitchers.Range.Value <= RangeSwitcherValues.FixFrequency4)
+                return false;
+            else
+                return true;
+        }
         protected override void Image_MouseEnter(object sender, MouseEventArgs e)
         {
             if (Options.Switchers.Power.Value == State.off ||

@@ -18,10 +18,13 @@ namespace R_123.View
         }
         double cursorX;
         decimal startValue;
+        protected virtual bool ConditionMouseLeft()
+        {
+            return true;
+        }
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (Options.PositionSwitchers.Range.Value >= RangeSwitcherValues.SubFrequency2 ||
-                Options.Switchers.Power.Value == State.off)
+            if (ConditionMouseLeft())
             {
                 Options.Window.MouseMove += Canvas_MouseMove;
                 Options.Window.MouseLeftButtonUp += Canvas_MouseLeftButtonUp;
