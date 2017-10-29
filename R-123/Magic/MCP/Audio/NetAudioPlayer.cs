@@ -11,6 +11,8 @@ namespace MCP.Audio
         BufferedWaveProvider bufferedWaveProvider;
         VolumeWaveProvider16 volumeProvider;
         AudioListener listener;
+        float noiseLevel = 0;
+        byte[] noise = new byte[16000];
 
         public NetAudioPlayer(AudioListener listener,WaveFormat format)
         {
@@ -21,6 +23,8 @@ namespace MCP.Audio
             player.Volume = 1;
 
             this.listener = listener;
+            ComputeNoise();
+            noiseLevel = 0;
             listener.AudioDataAvailableEvent += DataAvailable;
         }
 
@@ -62,11 +66,20 @@ namespace MCP.Audio
 
         private void DataAvailable(object sender,byte[] data)=> Task.Factory.StartNew(()=>
         {
-            if (noise == null)
-                Noise();
-            //AddNoise(data, noise, 1);
+            AddNoise(data, noise, noiseLevel);
             bufferedWaveProvider.AddSamples(data, 0, data.Length);
         });
+
+        public float Noise
+        {
+            get { return noiseLevel; }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentException("Value should be in a range between 0 and 1.");
+                noiseLevel = value;
+            }
+        }
 
         private unsafe void AddNoise(byte[] destBuffer,byte[] noise, float coefficient)
         {
@@ -74,20 +87,15 @@ namespace MCP.Audio
             {
                 short* psArray = (short*)pbArray;
                 short* psNoise = (short*)pbNoise;
-                int i = 0;
-                for (;i<destBuffer.Length/2;)
+                for (int i = 0; i < destBuffer.Length / 2; i += (int)(1-coefficient) * 5 + 2) 
                 {
-                    //noise fo voise
                     psArray[i] = noise[i];
-                    i += ((noise[i] % 2) + 1);
                 }
             }
         }
-
-        byte[] noise;
-        private void Noise()
+       
+        private void ComputeNoise()
         {
-            noise = new byte[44100];
             Rand(noise, noise.Length);
         }
 

@@ -8,6 +8,7 @@ namespace MCP.Logic
     enum LogicStates
     {
         Frequency = 1,
-        Signal = 2
+        Signal = 2,
+        IsSaying = 4
     }
 }

@@ -51,7 +51,7 @@ namespace R_123.View
             Options.Encoders.Frequency.Image,// Ручка "УСТАНОВКА ЧАСТОТЫ"
             null,// Фиксатор барабана
             Options.Switchers.SubFixFrequency[0].Image,// Тумблеры переключения поддиапазонов фиксированных частот
-            Options.AthenaDisplay.image// Фиксатор ручки "НАСТРОЙКА АНТЕННЫ"
+            Options.Encoders.AthenaDisplay.image// Фиксатор ручки "НАСТРОЙКА АНТЕННЫ"
         };
 
         private Canvas learning;

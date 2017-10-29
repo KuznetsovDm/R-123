@@ -43,7 +43,7 @@ namespace R_123
             Options.Display.FixedFrequency = new FixedFrequencyDisplay(fixedFrequencyDisplay_Image);
             Options.Display.SubFrequency = new SubFrequencyDisplay(subFrequencyDisplay_Image);
             Options.FixedFrequencySetting = new FixedFrequencySetting(settingFixedFrequency_Canvas);
-            Options.AthenaDisplay = new AthenaDisplay(antennaControl_Image);
+            Options.Encoders.AthenaDisplay = new AthenaDisplay(antennaControl_Image);
 
             Options.CursorDisplay = new CursorDisplay(cursor_Image, spaceIsDown_TextBlock, ctrlIsDown_TextBlock);
             Options.Disk = disk_Canvas;

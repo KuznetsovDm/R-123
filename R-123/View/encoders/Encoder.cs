@@ -59,7 +59,7 @@ namespace R_123.View
                 Angle = currentValue;
             }
         }
-        protected decimal Norm(decimal value)
+        protected virtual decimal Norm(decimal value)
         {
             if      (value < 0)        return 0;
             else if (value > maxValue) return maxValue;

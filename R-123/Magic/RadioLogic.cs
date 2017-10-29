@@ -74,21 +74,24 @@ namespace MCP.Logic
             //По умолчанию ничего не менять
             AudioPlayerState state = new AudioPlayerState();
             LogicStates lState = (LogicStates)information.Take(1).ToArray()[0];
-            switch (lState)
+            if ((lState&LogicStates.Frequency) == LogicStates.Frequency)
             {
-                case LogicStates.Frequency:
-                    var bfrequency = information.Skip(1).Take(4).ToArray();
-                    var frequencyOtherMachine = (decimal)BitConverter.ToSingle(bfrequency, 0);
-                    var deltaFrequency = Math.Abs(frequencyOtherMachine - frequency);
-                    float volume = (deltaFrequency <= delta) ? (float)(1 - (deltaFrequency / delta)) : 0;
-                    bool play = (volume > 0) ? true : false;
-                    state = new AudioPlayerState(play, volume, false);
-                    break;
-                case LogicStates.Signal:
-                    //state.ChangeNothing = false;
-                    break;
-                default: break;
-            }             
+                var bfrequency = information.Skip(1).Take(4).ToArray();
+                var frequencyOtherMachine = (decimal)BitConverter.ToSingle(bfrequency, 0);
+                var deltaFrequency = Math.Abs(frequencyOtherMachine - frequency);
+                float volume = (deltaFrequency <= delta) ? (float)(1 - (deltaFrequency / delta)) : 0;
+                float noise = volume < 0.8f ? 1 : 0.1f;
+                bool play = (volume > 0) ? true : false;
+                state = new AudioPlayerState(play, volume, false, noise);
+            }
+            if ((lState & LogicStates.Signal) == LogicStates.Signal)
+            {
+                //play here
+            }
+            if ((lState & LogicStates.IsSaying) == LogicStates.IsSaying)
+            {
+                //some will be here
+            }
             return state;
         }
 

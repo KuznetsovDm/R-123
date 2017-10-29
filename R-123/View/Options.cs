@@ -22,6 +22,7 @@
             /// Частота
             /// </summary>
             public static FrequencyController Frequency;
+            public static AthenaDisplay AthenaDisplay;
         }
         /// <summary>
         /// Позиционные перключатели.
@@ -92,7 +93,6 @@
         public static System.Windows.Controls.Canvas canvas;
         public static Clamp[] Clamp = new Clamp[4];
         public static FixedFrequencySetting FixedFrequencySetting;
-        public static AthenaDisplay AthenaDisplay;
         public static System.Windows.Controls.Canvas Disk;
         public static MainWindow Window;
         public static System.Windows.Controls.Canvas R123;

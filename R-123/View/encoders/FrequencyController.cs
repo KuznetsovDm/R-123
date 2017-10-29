@@ -10,7 +10,6 @@ namespace R_123.View
         private const decimal minFirstSubFrequency = 20m;
         private const decimal minSecondSubFrequency = 35.75m;
 
-        private System.Windows.Controls.Canvas canvas;
         public FrequencyController(System.Windows.Controls.Image image) : 
             base(image, Properties.Settings.Default.FrequencyController, 15.75m)
         {
