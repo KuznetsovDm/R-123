@@ -5,7 +5,7 @@ namespace R_123.View
     class FrequencyController : AnimationEncoder
     {
         public event DelegateChangeValue ValueChanged;
-        public event DelegateChangeValue ValueChanged2;
+        public event DelegateChangeValue AngleChanged;
 
         private const decimal minFirstSubFrequency = 20m;
         private const decimal minSecondSubFrequency = 35.75m;
@@ -157,7 +157,7 @@ namespace R_123.View
         }
         protected override void ValueIsUpdated()
         {
-            ValueChanged2?.Invoke();
+            AngleChanged?.Invoke();
             if (TimerIsEnabled == false)
             {
                 ValueChanged?.Invoke();

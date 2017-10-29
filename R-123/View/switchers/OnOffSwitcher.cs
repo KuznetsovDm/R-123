@@ -5,7 +5,7 @@ namespace R_123.View
     enum State { off, on }
     class OnOffSwitcher : Switcher
     {
-        public OnOffSwitcher(Image image, bool defValue) : base(image, defValue)
+        public OnOffSwitcher(Image image, bool defValue = false) : base(image, defValue)
         {
         }
 

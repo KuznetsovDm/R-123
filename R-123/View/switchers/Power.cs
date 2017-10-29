@@ -5,7 +5,7 @@ namespace R_123.View
     class Power : OnOffSwitcher
     {
         public event DelegateChangeValue ValueChanged;
-        public Power(Image image) : base(image, Properties.Settings.Default.Power)
+        public Power(Image image) : base(image/*, Properties.Settings.Default.Power*/)
         {
 
         }

@@ -89,7 +89,7 @@
     <Compile Include="View\Clamp.cs" />
     <Compile Include="View\CursorDisplay.cs" />
     <Compile Include="View\displays\AntennaLightDisplay.cs" />
-    <Compile Include="View\displays\AthenaDisplay.cs" />
+    <Compile Include="View\encoders\AthenaDisplay.cs" />
     <Compile Include="View\encoders\AnimationEncoder.cs" />
     <Compile Include="View\FixedFrequencySetting.cs" />
     <Compile Include="View\ImagesControl.cs" />
@@ -202,6 +202,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Files\Images\AthenaControl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\Sounds\FixedFrequency.wav" />
+    <Content Include="Files\Sounds\PositionSwitcher.wav" />
+    <Content Include="Files\Sounds\PositionSwitcher2.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

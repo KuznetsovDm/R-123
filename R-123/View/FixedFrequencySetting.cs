@@ -12,14 +12,15 @@ namespace R_123.View
         public FixedFrequencySetting(Canvas fixedFrequencySetting)
         {
             canvas = fixedFrequencySetting;
-            Options.Encoders.Frequency.ValueChanged2 += UpdateValue;
+            Options.Encoders.Frequency.AngleChanged += UpdateValue;
         }
         private void UpdateValue()
         {
             decimal value = Options.Encoders.Frequency.Value;
             int numberRange = (int)Options.PositionSwitchers.Range.Value;
             if (Options.PositionSwitchers.Range.Value < RangeSwitcherValues.SubFrequency2 &&
-                Options.Clamp[numberRange].Value < 1)
+                Options.Clamp[numberRange].Value < 1 &&
+                Options.Switchers.Power.Value == State.on)
             {
                 int number = (int)Options.PositionSwitchers.Range.Value;
                 if (Options.Switchers.SubFixFrequency[number].Value == SubFrequency.One)

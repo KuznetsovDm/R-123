@@ -1,10 +1,13 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace R_123.View
 {
     class PositionSwitcher : ImagesControl
     {
+        Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
         private int maxValue = 20;
         private int currentValue = 0;
         private double defAngle = 0;
@@ -15,7 +18,7 @@ namespace R_123.View
         {
             this.defAngle = defAngle;
             image.MouseWheel += OnMouseWheel;
-            image.MouseDown += Window_MouseDown;
+            image.MouseDown += Image_MouseDown;
         }
         public int Value => currentValue;
 
@@ -23,7 +26,7 @@ namespace R_123.View
         {
             CurrentValue += e.Delta > 0 ? 1 : -1;
         }
-        /*private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Options.Window.MouseUp += Image_MouseUp;
             double centerX = Canvas.GetLeft(Image) + Image.ActualWidth / 2;
@@ -68,7 +71,7 @@ namespace R_123.View
             Options.Window.MouseUp -= Image_MouseUp;
             while (Options.Disk.Children.Count > 0)
                 Options.Disk.Children.RemoveAt(0);
-        }*/
+        }
         private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Options.Window.MouseUp += Window_MouseUp;
@@ -76,11 +79,11 @@ namespace R_123.View
         }
         private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Point point = e.GetPosition(Image as IInputElement);
+            Point point = e.GetPosition(Options.R123 as IInputElement);
             Vector norm = new Vector(1.0, 0.0);
-            Vector mouse = new Vector(point.X, point.Y);
+            Vector mouse = new Vector(point.X - Canvas.GetLeft(Image), point.Y - Canvas.GetTop(Image));
             double angle = Vector.AngleBetween(norm, mouse);
-            System.Diagnostics.Trace.WriteLine(point);
+            System.Diagnostics.Trace.WriteLine(angle);
             //CurrentValue = System.Convert.ToInt32(System.Math.Round(angle / 360 * maxValue));
         }
 
@@ -114,6 +117,7 @@ namespace R_123.View
 
                     Angle = currentValue;
                     PlaySound();
+                    //player.Start();
                     ValueIsUpdated();
                 }
             }
@@ -128,8 +132,10 @@ namespace R_123.View
         {
             try
             {
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer();
-                player.SoundLocation = @"D:\project\R-123\R-123\Files\Sounds\PositionSwitcher.wav";
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer
+                {
+                    SoundLocation = @"D:\project\R-123\R-123\Files\Sounds\PositionSwitcher.wav"
+                };
                 player.Load();
                 player.Play();
             }

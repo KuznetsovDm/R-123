@@ -262,5 +262,29 @@ namespace R_123.Properties {
                 this["FixedFrequency4"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double FixedFrequencySetting {
+            get {
+                return ((double)(this["FixedFrequencySetting"]));
+            }
+            set {
+                this["FixedFrequencySetting"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public decimal AthenaDisplay {
+            get {
+                return ((decimal)(this["AthenaDisplay"]));
+            }
+            set {
+                this["AthenaDisplay"] = value;
+            }
+        }
     }
 }

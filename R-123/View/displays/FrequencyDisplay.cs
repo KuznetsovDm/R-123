@@ -18,7 +18,7 @@ namespace R_123.View
             Options.Switchers.Power.ValueChanged += UpdateVisibility;
             Options.Switchers.Scale.ValueChanged += UpdateVisibility;
 
-            Options.Encoders.Frequency.ValueChanged2 += UpdateValue;
+            Options.Encoders.Frequency.AngleChanged += UpdateValue;
 
             UpdateVisibility();
             UpdateValue();

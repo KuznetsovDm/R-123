@@ -95,5 +95,6 @@
         public static AthenaDisplay AthenaDisplay;
         public static System.Windows.Controls.Canvas Disk;
         public static MainWindow Window;
+        public static System.Windows.Controls.Canvas R123;
     }
 }
