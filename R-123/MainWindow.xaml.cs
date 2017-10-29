@@ -7,7 +7,7 @@ namespace R_123
 {
     public partial class MainWindow : Window
     {
-        //Logic logic;
+        Logic logic;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,13 +54,13 @@ namespace R_123
             buttonLearningMode.Click += learningMode.OnStartClick;
             buttonRadiostationMode.Click += learningMode.OnStopClick;
 
-            //logic = new Logic();
+            logic = new Logic();
             Closing += MainWindow_Closing;
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //logic.Close();
+           logic.Close();
         }
 
         public void EventExit(object sender, RoutedEventArgs e)

@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -73,7 +74,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audio\IAudioPlayer.cs" />
     <Compile Include="LearningMode.cs" />
+    <Compile Include="Magic\Logic.cs" />
+    <Compile Include="Magic\MCP\Audio\AudioListener.cs" />
+    <Compile Include="Magic\MCP\Audio\AudioManager.cs" />
+    <Compile Include="Magic\MCP\Audio\AudioPlayersStorage.cs" />
+    <Compile Include="Magic\MCP\Audio\G722ChatCodec.cs" />
+    <Compile Include="Magic\MCP\Audio\NetAudioPlayer.cs" />
+    <Compile Include="Magic\MCP\Audio\NoisePlayer.cs" />
+    <Compile Include="Magic\MCP\Audio\VoiceStreamer.cs" />
+    <Compile Include="Magic\MCP\Logic\AudioPlayerState.cs" />
+    <Compile Include="Magic\MCP\Logic\IBehavior.cs" />
+    <Compile Include="Magic\MCP\Logic\LogicStates.cs" />
+    <Compile Include="Magic\MCP\Logic\StorageState.cs" />
+    <Compile Include="Magic\MCP\MCP\AppConfigCreator.cs" />
+    <Compile Include="Magic\MCP\MCP\MCPConnector.cs" />
+    <Compile Include="Magic\MCP\MCP\MCPDirector.cs" />
+    <Compile Include="Magic\MCP\MCP\MCPPacket.cs" />
+    <Compile Include="Magic\MCP\MCP\MCPStorage.cs" />
+    <Compile Include="Magic\MCP\MCP\MulticastListener.cs" />
+    <Compile Include="Magic\MCP\MCP\MulticastSender.cs" />
+    <Compile Include="Magic\RadioLogic.cs" />
     <Compile Include="View\Clamp.cs" />
     <Compile Include="View\CursorDisplay.cs" />
     <Compile Include="View\displays\AntennaLightDisplay.cs" />
