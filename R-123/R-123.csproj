@@ -53,7 +53,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
+      <HintPath>packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -74,6 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
     <Compile Include="LearningMode.cs" />
     <Compile Include="Magic\Logic.cs" />
@@ -213,6 +214,7 @@
     <Resource Include="Files\Images\AthenaControl.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Audio\ton.mp3" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\PositionSwitcher2.wav" />

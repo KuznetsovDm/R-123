@@ -63,7 +63,7 @@ namespace MCP
             {
                 storage.Remove(packet);
                 //will close and delete NetAudioPlayer
-                state = new AudioPlayerState(false, 0, true);
+                state = new AudioPlayerState(false, 0, true, 0);
                 audioManager.Operator(packet, state);
             }
             else if(isNewMessage)
@@ -76,7 +76,7 @@ namespace MCP
                 }
                 else
                 {
-                    state = (contains)?new AudioPlayerState():new AudioPlayerState(false,0,false,create: true);
+                    state = (contains)?new AudioPlayerState():new AudioPlayerState(false,0,false,0,create: true);
                 }
                 audioManager.Operator(packet, state);
             }
@@ -108,7 +108,7 @@ namespace MCP
         {
             //Задаем всем плеерам состояние для закрытие плеера
             foreach (var element in storage.GetPackets())
-                audioManager.Operator(element, new AudioPlayerState(false, 0, true));
+                audioManager.Operator(element, new AudioPlayerState(false, 0, true, 0));
             connector.Close();
             audioManager.Close();
             storage = null;
