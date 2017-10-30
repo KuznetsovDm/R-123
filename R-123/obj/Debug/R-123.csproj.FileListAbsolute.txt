@@ -1,4 +1,3 @@
-D:\Importatn\GitR123\R-123\obj\Debug\R-123.csprojResolveAssemblyReference.cache
 D:\Importatn\GitR123\R-123\obj\Debug\MainWindow.g.cs
 D:\Importatn\GitR123\R-123\obj\Debug\App.g.cs
 D:\Importatn\GitR123\R-123\obj\Debug\R-123_Content.g.cs

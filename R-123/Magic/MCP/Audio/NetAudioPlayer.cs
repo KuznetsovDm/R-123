@@ -7,7 +7,7 @@ namespace MCP.Audio
 {
     class NetAudioPlayer : IAudioPlayer
     {
-        WaveOut player;
+        WaveOutEvent player;
         BufferedWaveProvider bufferedWaveProvider;
         VolumeWaveProvider16 volumeProvider;
         AudioListener listener;
@@ -16,7 +16,7 @@ namespace MCP.Audio
 
         public NetAudioPlayer(AudioListener listener,WaveFormat format)
         {
-            player = new WaveOut();
+            player = new WaveOutEvent();
             bufferedWaveProvider = new BufferedWaveProvider(format) { DiscardOnBufferOverflow = true };
             volumeProvider = new VolumeWaveProvider16(bufferedWaveProvider);
             player.Init(volumeProvider);
@@ -67,7 +67,7 @@ namespace MCP.Audio
         private void DataAvailable(object sender,byte[] data)=> Task.Factory.StartNew(()=>
         {
             AddNoise(data, noise, noiseLevel);
-            bufferedWaveProvider.AddSamples(data, 0, data.Length);
+            bufferedWaveProvider.AddSamples(data, 0, data.Length);            
         });
 
         public float Noise

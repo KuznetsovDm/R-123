@@ -42,7 +42,9 @@ namespace MCP.Logic
             set
             {
                 frequency = value;
-                director.Send(BitConverter.GetBytes((float)frequency));
+                List<byte> bytes = BitConverter.GetBytes((float)frequency).ToList();
+                bytes.Insert(0, (byte)LogicStates.Frequency);
+                director.Send(bytes.ToArray());
                 director.SetStateForAllPackets();
             }
         }
