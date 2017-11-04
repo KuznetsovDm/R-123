@@ -34,9 +34,9 @@ namespace R_123.View
                 return;
             }
 
-            int requiredNumberImage = (int)(Options.Encoders.AthenaDisplay.Value * 5);
+            int requiredNumberImage = (int)(Options.Encoders.AthenaDisplay.Value * 4);
             System.Diagnostics.Trace.WriteLine(requiredNumberImage);
-            if (currentNumberImage < requiredNumberImage)
+            if (currentNumberImage <= requiredNumberImage)
                 currentNumberImage++;
             else if (currentNumberImage >= requiredNumberImage && currentNumberImage > 0)
                 currentNumberImage--;

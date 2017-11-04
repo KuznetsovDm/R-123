@@ -18,8 +18,9 @@ namespace R_123.AppConfig
         static VoiceStreamer microphone;
         static string multicastMask;
         static IPAddress myConstantIP;
+        static Audio.AudioPlayer tonPlayer;
         static int myConstantPort;
-        static decimal delta;
+        //static decimal delta;
 
         public static MCPConnector GetConnector()
         {
@@ -55,6 +56,16 @@ namespace R_123.AppConfig
                 microphone = new VoiceStreamer(endPoint.Address, endPoint.Port,new WaveFormat(16000,16,1));//only 16000 because codec
             }
             return microphone;
+        }
+
+        public static Audio.AudioPlayer GetTonPlayer()
+        {
+            if (tonPlayer == null)
+            {
+                string path = "../../Files/Sounds/ton.mp3";
+                tonPlayer = new Audio.AudioPlayer(path);
+            }
+            return tonPlayer;
         }
 
         private static IPEndPoint GenerateMulticastIpEndPoint(IPAddress ipAddress, int port)
@@ -110,6 +121,5 @@ namespace R_123.AppConfig
             else
                 return "";
         }
-
     }
 }

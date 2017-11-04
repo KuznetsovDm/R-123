@@ -7,42 +7,27 @@ namespace R_123.View
         public event DelegateChangeValue ValueChanged;
         public event DelegateChangeValue AngleChanged;
 
-        private const decimal minFirstSubFrequency = 20m;
-        private const decimal minSecondSubFrequency = 35.75m;
-
         public FrequencyController(System.Windows.Controls.Image image) : 
-            base(image, Properties.Settings.Default.FrequencyController, 15.75m)
+            base(image, 0, 157500)
         {
-            cursorImages = CursorImages.mouseIconLeftCenter;
+            coefficientMouseMove = 16;
 
             Options.PositionSwitchers.Range.ValueChanged += UpdateValue;
             Options.Switchers.Power.ValueChanged += UpdateValue;
             for (int i = 0; i < Options.Switchers.SubFixFrequency.Length; i++)
                 Options.Switchers.SubFixFrequency[i].ValueChanged += UpdateValue;
-
-            image.MouseLeave += Image_MouseLeave;
         }
-        protected override bool ConditionMouseLeft()
+        protected override bool ConditionMouseLeft
         {
-            if (Options.Switchers.Power.Value == State.on &&
-                Options.PositionSwitchers.Range.Value <= RangeSwitcherValues.FixFrequency4)
-                return false;
-            else
-                return true;
-        }
-        protected override void Image_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (Options.Switchers.Power.Value == State.off ||
-                Options.PositionSwitchers.Range.Value >= RangeSwitcherValues.SubFrequency2)
+            get
             {
-                Options.CursorDisplay.SetCursor(cursorImages);
-                Options.CursorDisplay.SetCtrlTextBlock(true);
+                if (Options.Switchers.Power.Value == State.on &&
+                                Options.PositionSwitchers.Range.Value <= RangeSwitcherValues.FixFrequency4)
+                    return false;
+                else
+                    return true;
             }
         }
-
-        private void Image_MouseLeave(object sender, MouseEventArgs e) => 
-            Options.CursorDisplay.SetCtrlTextBlock(false);
-
 
         protected override void Image_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -54,9 +39,7 @@ namespace R_123.View
                     return;
             }
             
-            decimal delta = 0.025m;
-            if ((Keyboard.GetKeyStates(Key.LeftCtrl) & KeyStates.Down) > 0)
-                delta *= 10;
+            int delta = 25;
             
             if (e.Delta > 0)
                 CurrentValue += delta;
@@ -100,35 +83,37 @@ namespace R_123.View
                     Animation = FrequencyToValue(Value);
             }
         }
-        private decimal ValueToFrequency(decimal value)
+
+        private const decimal minFirstSubFrequency = 20m;
+        private const decimal minSecondSubFrequency = 35.75m;
+        private decimal ValueToFrequency(int value)
         {
             if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency1)
-                return value + minFirstSubFrequency;
+                return System.Convert.ToDecimal(value) / 10000 + minFirstSubFrequency;
             else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency2)
-                return value + minSecondSubFrequency;
+                return System.Convert.ToDecimal(value) / 10000 + minSecondSubFrequency;
             else
             {
                 int number = (int)Options.PositionSwitchers.Range.Value;
                 if (Options.Switchers.SubFixFrequency[number].Value == SubFrequency.One)
-                    return value + minFirstSubFrequency;
+                    return System.Convert.ToDecimal(value) / 10000 + minFirstSubFrequency;
                 else
-                    return value + minSecondSubFrequency;
+                    return System.Convert.ToDecimal(value) / 10000 + minSecondSubFrequency;
             }
         }
-
-        private decimal FrequencyToValue(decimal frequency)
+        static private int FrequencyToValue(decimal frequency)
         {
             if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency1)
-                return frequency - minFirstSubFrequency;
+                return System.Convert.ToInt32((frequency - minFirstSubFrequency) * 10000);
             else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency2)
-                return frequency - minSecondSubFrequency;
+                return System.Convert.ToInt32((frequency - minSecondSubFrequency) * 10000);
             else
             {
                 int number = (int)Options.PositionSwitchers.Range.Value;
                 if (Options.Switchers.SubFixFrequency[number].Value == SubFrequency.One)
-                    return frequency - minFirstSubFrequency;
+                    return System.Convert.ToInt32((frequency - minFirstSubFrequency) * 10000);
                 else
-                    return frequency - minSecondSubFrequency;
+                    return System.Convert.ToInt32((frequency - minSecondSubFrequency) * 10000);
             }
         }
         protected override void ValueIsUpdated()
@@ -137,8 +122,6 @@ namespace R_123.View
             if (TimerIsEnabled == false)
             {
                 ValueChanged?.Invoke();
-                Properties.Settings.Default.FrequencyController = base.Value;
-                Properties.Settings.Default.Save();
 
                 System.Diagnostics.Trace.WriteLine($"Частота = {Value}; ");
             }

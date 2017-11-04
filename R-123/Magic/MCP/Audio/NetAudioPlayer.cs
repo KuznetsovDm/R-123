@@ -7,16 +7,17 @@ namespace MCP.Audio
 {
     class NetAudioPlayer : IAudioPlayer
     {
-        WaveOut player;
+        WaveOutEvent player;
         BufferedWaveProvider bufferedWaveProvider;
         VolumeWaveProvider16 volumeProvider;
         AudioListener listener;
+        NoisePlayer noisePlayer;
         float noiseLevel = 0;
         byte[] noise = new byte[16000];
 
         public NetAudioPlayer(AudioListener listener,WaveFormat format)
         {
-            player = new WaveOut();
+            player = new WaveOutEvent();
             bufferedWaveProvider = new BufferedWaveProvider(format) { DiscardOnBufferOverflow = true };
             volumeProvider = new VolumeWaveProvider16(bufferedWaveProvider);
             player.Init(volumeProvider);
@@ -26,6 +27,9 @@ namespace MCP.Audio
             ComputeNoise();
             noiseLevel = 0;
             listener.AudioDataAvailableEvent += DataAvailable;
+
+            //NoisePlayer
+            noisePlayer = new NoisePlayer();
         }
 
         public void Play()
@@ -35,6 +39,8 @@ namespace MCP.Audio
             if (player.PlaybackState == PlaybackState.Stopped
                 || player.PlaybackState == PlaybackState.Paused)
                 player.Play();
+            //
+            noisePlayer.Start();
         }
 
         public void Stop()
@@ -44,6 +50,8 @@ namespace MCP.Audio
             if (player.PlaybackState == PlaybackState.Playing)
                 player.Pause();
             bufferedWaveProvider.ClearBuffer();
+            //
+            noisePlayer.Stop();
         }
 
         public void Close()
@@ -51,6 +59,7 @@ namespace MCP.Audio
             player.Stop();
             listener.Close();
             bufferedWaveProvider = null;
+            noisePlayer.Close();
         }
 
         public float Volume
@@ -66,8 +75,8 @@ namespace MCP.Audio
 
         private void DataAvailable(object sender,byte[] data)=> Task.Factory.StartNew(()=>
         {
-            AddNoise(data, noise, noiseLevel);
-            bufferedWaveProvider.AddSamples(data, 0, data.Length);
+            //AddNoise(data, noise, noiseLevel);
+            bufferedWaveProvider.AddSamples(data, 0, data.Length);            
         });
 
         public float Noise
@@ -78,6 +87,7 @@ namespace MCP.Audio
                 if (value < 0 || value > 1)
                     throw new ArgumentException("Value should be in a range between 0 and 1.");
                 noiseLevel = value;
+                noisePlayer.Volume = value;
             }
         }
 
@@ -91,6 +101,11 @@ namespace MCP.Audio
                 {
                     psArray[i] = noise[i];
                 }
+                //summ noise
+                /*for (int i = 0; i < destBuffer.Length / 2; i++)
+                {
+                    psArray[i] += (short)(3 * pbNoise[i]);
+                }*/
             }
         }
        

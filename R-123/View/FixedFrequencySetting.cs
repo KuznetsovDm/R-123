@@ -5,28 +5,26 @@ namespace R_123.View
     class FixedFrequencySetting
     {
         Canvas canvas;
+        double angle = 0;
         public FixedFrequencySetting(Canvas fixedFrequencySetting)
         {
             canvas = fixedFrequencySetting;
-            Options.Encoders.Frequency.AngleChanged += UpdateValue;
+            Options.Encoders.Frequency.AnimationStarted += FrequencyTimerIsEnabled;
         }
-        private void UpdateValue()
+        public void FrequencyTimerIsEnabled()
         {
-            decimal value = Options.Encoders.Frequency.Value;
-            int numberRange = (int)Options.PositionSwitchers.Range.Value;
-            if (Options.PositionSwitchers.Range.Value < RangeSwitcherValues.SubFrequency2 &&
-                Options.Clamp[numberRange].Value < 1 &&
-                Options.Switchers.Power.Value == State.on)
+            if (Options.Encoders.Frequency.TimerIsEnabled)
             {
-                int number = (int)Options.PositionSwitchers.Range.Value;
-                if (Options.Switchers.SubFixFrequency[number].Value == SubFrequency.One)
-                    value -= 20m;
-                else
-                    value -= 35.75m;
-                RotateImage((double)value / 15.75 * 360);
+                addValueInAnimation = Options.Encoders.Frequency.RightAnimation ? defaultValueInAnimation : -defaultValueInAnimation;
+                Options.Encoders.Frequency.AngleChanged += UpdateValue;
             }
+            else
+                Options.Encoders.Frequency.AngleChanged -= UpdateValue;
         }
-        protected void RotateImage(double angle)
+        private int addValueInAnimation;
+        private int defaultValueInAnimation = 1;
+        private void UpdateValue() => RotateImage(angle += addValueInAnimation);
+        private void RotateImage(double angle)
         {
             canvas.RenderTransform = new System.Windows.Media.RotateTransform(angle,
                                                                               170 / 2 + 284,

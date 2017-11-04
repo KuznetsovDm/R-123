@@ -14,10 +14,6 @@ namespace R_123
             Options.ring_Image = ring_Image;
             Options.canvas = form_Canvas;
 
-            Options.PressSpaceControl = new PressSpaceControl();
-            this.KeyDown += Options.PressSpaceControl.MainWindowKeyDown;
-            this.KeyUp += Options.PressSpaceControl.MainWindowKeyUp;
-
             Options.Display.VoltageControl = new VoltageDisplay(voltageDisplay_Image);
             Options.Display.AntennaLight = new AntennaLightDisplay(antennaLight_Image);
 
@@ -44,6 +40,8 @@ namespace R_123
             Options.Display.SubFrequency = new SubFrequencyDisplay(subFrequencyDisplay_Image);
             Options.FixedFrequencySetting = new FixedFrequencySetting(settingFixedFrequency_Canvas);
             Options.Encoders.AthenaDisplay = new AthenaDisplay(antennaControl_Image);
+
+            Options.Tone = new ToneButton(tone_Image);
 
             Options.Disk = disk_Canvas;
         }

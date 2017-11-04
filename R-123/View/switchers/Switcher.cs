@@ -10,8 +10,6 @@ namespace R_123.View
             currentValue = defValue;
             Source = currentValue;
 
-            cursorImages = CursorImages.mouseIconLeftCenter;
-
             image.MouseWheel += Image_MouseWheel;
             image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
         }

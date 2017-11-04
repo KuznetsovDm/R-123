@@ -1,29 +1,26 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace R_123.View
 {
-    class ImagesControl
+    abstract class ImagesControl
     {
         public delegate void DelegateChangeValue();
 
         private Image image;
         private double currentAngle = 0;
         private double centerX, centerY;
-        protected CursorImages cursorImages = CursorImages.mouseIconCenter;
+
         public ImagesControl(Image image)
         {
             this.image = image;
             centerX = image.Width / 2;
             centerY = image.Height / 2;
-
-            image.MouseEnter += Image_MouseEnter;
-            image.MouseLeave += Image_MouseLeave;
         }
         public Image Image => image;
-        public double GetAngle => currentAngle;
+        public double CurrentAngle => currentAngle;
+
         protected double Angle
         {
             get => currentAngle;
@@ -38,16 +35,11 @@ namespace R_123.View
         {
             set
             {
-                string nameFile = value ? "switcher_on" : "switcher_off";
-                nameFile = "/Files/Images/" + nameFile + ".gif";
+                string nameFile = "/Files/Images/" + (value ? "switcher_on" : "switcher_off") + ".gif";
                 image.Source = new BitmapImage(new System.Uri(nameFile, System.UriKind.Relative));
                 ValueIsUpdated();
             }
         }
-        protected virtual void Image_MouseEnter(object sender, MouseEventArgs e) =>
-            Options.CursorDisplay.SetCursor(cursorImages);
-        private void Image_MouseLeave(object sender, MouseEventArgs e) =>
-            Options.CursorDisplay.SetCursor(CursorImages.mouseIcon);
         protected virtual void ValueIsUpdated()
         {
         }

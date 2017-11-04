@@ -56,7 +56,9 @@
       <HintPath>..\packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -74,6 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
     <Compile Include="LearningMode.cs" />
     <Compile Include="Magic\Logic.cs" />
@@ -102,8 +105,9 @@
     <Compile Include="View\Clamp.cs" />
     <Compile Include="View\CursorDisplay.cs" />
     <Compile Include="View\displays\AntennaLightDisplay.cs" />
-    <Compile Include="View\encoders\AthenaDisplay.cs" />
     <Compile Include="View\encoders\AnimationEncoder.cs" />
+    <Compile Include="View\encoders\AthenaDisplay.cs" />
+    <Compile Include="View\encoders\Encoder.cs" />
     <Compile Include="View\FixedFrequencySetting.cs" />
     <Compile Include="View\ImagesControl.cs" />
     <Compile Include="View\Options.cs" />
@@ -111,7 +115,6 @@
     <Compile Include="View\displays\FrequencyDisplay.cs" />
     <Compile Include="View\displays\SubFrequencyDisplay.cs" />
     <Compile Include="View\displays\VoltageDisplay.cs" />
-    <Compile Include="View\encoders\Encoder.cs" />
     <Compile Include="View\encoders\FrequencyController.cs" />
     <Compile Include="View\encoders\NoiseController.cs" />
     <Compile Include="View\encoders\VolumeController.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="View\switchers\Scale.cs" />
     <Compile Include="View\switchers\SubFixFrequency.cs" />
     <Compile Include="View\switchers\Switcher.cs" />
+    <Compile Include="View\ToneButton.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -210,11 +214,11 @@
     <Resource Include="Files\Images\FixedFrequencySwitcherScrew.gif" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Files\Images\Athena0.gif" />
     <Resource Include="Files\Images\Athena1.gif" />
     <Resource Include="Files\Images\Athena2.gif" />
     <Resource Include="Files\Images\Athena3.gif" />
     <Resource Include="Files\Images\Athena4.gif" />
-    <Resource Include="Files\Images\Athena5.gif" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Files\Images\AthenaControl.png" />

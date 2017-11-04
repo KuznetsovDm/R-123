@@ -1,59 +1,34 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace R_123.View
 {
     abstract class Encoder : ImagesControl
     {
-        private decimal maxValue = 1m;
+        private int currentValue = 0;
 
-        private decimal currentValue = 0m;
-        protected decimal deltaValueMouseWheel = 0.05m;
+        protected int maxValue = 100;
+        protected int deltaValueMouseWheel = 1;
+        protected int coefficientMouseMove = 1;
 
-        public Encoder(System.Windows.Controls.Image image, decimal defValue = 0, decimal maxValue = 1) : base(image)
+        private double centerX, centerY;
+        public Encoder(Image image, decimal defaultValue, int maxValue) : base(image)
         {
             this.maxValue = maxValue;
-            CurrentValue = defValue % maxValue;
+            CurrentValue = Norm(System.Convert.ToInt32(defaultValue * maxValue));
+
+            centerX = Canvas.GetLeft(Image) + Image.Width / 2;
+            centerY = Canvas.GetTop(Image) + Image.Height / 2;
+
             image.MouseWheel += Image_MouseWheel;
             image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
         }
-        double cursorX;
-        decimal startValue;
-        protected virtual bool ConditionMouseLeft()
-        {
-            return true;
-        }
-        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (ConditionMouseLeft())
-            {
-                Options.Window.MouseMove += Canvas_MouseMove;
-                Options.Window.MouseLeftButtonUp += Canvas_MouseLeftButtonUp;
-                Options.Window.Cursor = Cursors.ScrollWE;
+        public int Value => currentValue;
 
-                cursorX = Mouse.GetPosition(Options.canvas).X;
-                startValue = currentValue;
-            }
-        }
-        protected double coefficient = 0.003;
-        private void Canvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            double deltaX = cursorX - Mouse.GetPosition(Options.canvas).X;
-
-            CurrentValue = (System.Convert.ToDecimal(deltaX * coefficient) + startValue);
-        }
-        private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Options.Window.MouseMove -= Canvas_MouseMove;
-            Options.Window.MouseLeftButtonUp -= Canvas_MouseLeftButtonUp;
-            Options.Window.Cursor = Cursors.AppStarting;
-        }
-        public decimal Value => currentValue;
-
-        protected virtual void Image_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
+        protected virtual void Image_MouseWheel(object sender, MouseWheelEventArgs e) =>
             CurrentValue += e.Delta > 0 ? deltaValueMouseWheel : -deltaValueMouseWheel;
-        }
-        protected decimal CurrentValue
+        protected int CurrentValue
         {
             get => currentValue;
             set
@@ -62,16 +37,48 @@ namespace R_123.View
                 Angle = currentValue;
             }
         }
-        protected virtual decimal Norm(decimal value)
+        protected virtual int Norm(int value)
         {
-            if      (value < 0)        return 0;
+            if (value < 0) return 0;
             else if (value > maxValue) return maxValue;
-            else                       return value;
+            else return value;
         }
-        protected new decimal Angle
+        protected new int Angle
         {
-            get => System.Convert.ToDecimal(base.Angle) * maxValue / 360;
+            get => System.Convert.ToInt32(base.Angle) * maxValue / 360;
             set => base.Angle = System.Convert.ToDouble(value * 360 / maxValue);
+        }
+        //========================================================
+        private Vector v1, v2;
+        private double startAngle, changeAngle;
+        protected virtual bool ConditionMouseLeft => true;
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (ConditionMouseLeft)
+            {
+                Options.Window.MouseMove += Window_MouseMove;
+                Options.Window.MouseUp += Window_MouseUp;
+                Options.Window.Cursor = Cursors.SizeAll;
+
+                Point cursor = e.MouseDevice.GetPosition(Options.canvas as IInputElement);
+                v1 = new Vector(cursor.X - centerX, centerY - cursor.Y);
+                startAngle = CurrentAngle;
+                changeAngle = 0;
+            }
+        }
+        private void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point cursor = e.MouseDevice.GetPosition(Options.canvas as IInputElement);
+            v2 = new Vector(cursor.X - centerX, centerY - cursor.Y);
+            changeAngle += Vector.AngleBetween(v2, v1) / coefficientMouseMove;
+            CurrentValue = System.Convert.ToInt32((startAngle + changeAngle) * maxValue / 360);
+            v1 = v2;
+        }
+        private void Window_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Options.Window.MouseMove -= Window_MouseMove;
+            Options.Window.MouseUp -= Window_MouseUp;
+            Options.Window.Cursor = Cursors.Arrow;
         }
     }
 }

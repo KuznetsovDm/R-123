@@ -15,7 +15,7 @@ namespace R_123.View
 
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan((long)(10e7 / 200));
+            dispatcherTimer.Interval = new TimeSpan((long)(10e6 / 32));
         }
         private void Update()
         {
@@ -27,18 +27,18 @@ namespace R_123.View
             {
                 System.Windows.Media.Imaging.BitmapImage bi31 = new System.Windows.Media.Imaging.BitmapImage();
                 bi31.BeginInit();
-                bi31.UriSource = new Uri("/Files/Images/Athena1.gif", UriKind.Relative);
+                bi31.UriSource = new Uri("/Files/Images/Athena0.gif", UriKind.Relative);
                 bi31.EndInit();
                 image.Source = bi31;
                 dispatcherTimer.Stop();
                 return;
             }
 
-            int requiredNumberImage = (int)(Options.Encoders.AthenaDisplay.Value * 5);
+            int requiredNumberImage = (int)(Options.Encoders.AthenaDisplay.Value * 3);
             System.Diagnostics.Trace.WriteLine(requiredNumberImage);
-            if (currentNumberImage < requiredNumberImage)
+            if (currentNumberImage <= requiredNumberImage)
                 currentNumberImage++;
-            else if (currentNumberImage >= requiredNumberImage && currentNumberImage > 1)
+            else if (currentNumberImage >= requiredNumberImage && currentNumberImage > 0)
                 currentNumberImage--;
 
             System.Windows.Media.Imaging.BitmapImage bi3 = new System.Windows.Media.Imaging.BitmapImage();
