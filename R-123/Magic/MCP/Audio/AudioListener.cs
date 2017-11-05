@@ -5,73 +5,55 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using Connection;
+using Connection.Net;
 
 namespace MCP.Audio
 {
     public class AudioListener
     {
-        private Socket ListeningSocket;
-        public bool Connected { get; private set; } = false;
         private IPAddress IPAddress;
         private int Port;
-        private Thread ListeningThread;
         private G722ChatCodec codec;
         public delegate void AudioDataAvailable(object sender,byte[] data);
         public event AudioDataAvailable AudioDataAvailableEvent;
+        private Connection.Connection connection;
+        Listener listener;
+
+        public bool IsListening
+        {
+            get { return listener.IsListening; }
+            private set { }
+        }
+
 
         public AudioListener(IPAddress ipAddress, int port)
         {
             this.IPAddress = ipAddress;
             this.Port = port;
-
             codec = new G722ChatCodec();
-            ListeningSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            ListeningSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);
-            IPEndPoint senderIP = new IPEndPoint(IPAddress.Any, Port);
-            ListeningSocket.Bind(senderIP);
 
-            ListeningSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(IPAddress, IPAddress.Any));
+            IPEndPoint defaultEP = new IPEndPoint(IPAddress.Any, 0);
+            IPEndPoint wherefrom = new IPEndPoint(ipAddress,port);
+            IPEndPoint bindEP = new IPEndPoint(IPAddress.Any, port);
+            connection = new MulticastUdpConnection(defaultEP, wherefrom, bindEP, 100);
 
-            ListeningThread = new Thread(Listen);
+            listener = new Listener();
+            listener.Init(connection);
+            listener.MessageAvailableEvent += DataAvailable;
         }
 
-        private void Listen()
+        private void DataAvailable(object obj, MessageAvailableEventArgs args)
         {
-            byte[] data = new byte[65536];
-            EndPoint remoteEP = new IPEndPoint(IPAddress.Any, 0);
-            while (true)// for maintain thread
-                while (Connected)
-                {
-                    try
-                    {
-                        int received = ListeningSocket.ReceiveFrom(data, ref remoteEP);
-                        byte[] decoded = codec.Decode(data, 0, received);
-                        AudioDataAvailableEvent?.Invoke(this, decoded);
-                        Console.WriteLine("Data for Listening");
-                    }
-                    catch (SocketException ex)
-                    {
-                        Console.Error.WriteLine(ex.Message);
-                        return;
-                    }
-                }
+            byte[] decoded = codec.Decode(args.Message, 0, args.Message.Length);
+            AudioDataAvailableEvent?.Invoke(this, decoded);
         }
+        
 
-        public void Start()
-        {
-            if (!ListeningThread.IsAlive)
-                ListeningThread.Start();
-            Connected = true;
-        }
+        public void Start() => listener.Start();
 
-        public void Stop() => Connected = false;
+        public void Stop() => listener.Stop();
 
-        public void Close()
-        {
-            ListeningSocket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.DropMembership, new MulticastOption(IPAddress, IPAddress.Any));
-            Connected = false;
-            ListeningThread.Abort();
-            ListeningSocket.Close();
-        }
+        public void Close() => listener.Close();
     }
 }

@@ -7,11 +7,11 @@ namespace MCP
 {
     class  MCPStorage
     {
-        ConcurrentDictionary<string, MCPPacket> storage;
+        Dictionary<string, MCPPacket> storage;
 
         public MCPStorage()
         {
-            storage = new ConcurrentDictionary<string, MCPPacket>();
+            storage = new Dictionary<string, MCPPacket>();
         }
 
         public void AddValueOrUpdate(MCPPacket packet)
@@ -23,12 +23,12 @@ namespace MCP
                     storage[key] = packet;
             }
             else
-                storage.TryAdd(key, packet);
+                storage.Add(key, packet);
         }
 
         public void Remove(MCPPacket packet)
         {
-            storage.TryRemove(GetKey(packet),out MCPPacket value);
+            storage.Remove(GetKey(packet));
         }
 
         public bool ContainsValue(MCPPacket pakcet)
@@ -44,7 +44,7 @@ namespace MCP
                 return true;
             else
             {
-                storage.TryGetValue(GetKey(packet), out MCPPacket value);
+                MCPPacket value = storage[GetKey(packet)];
                 if (packet.Number > value.Number)
                     return true;
                 return false;

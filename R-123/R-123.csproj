@@ -76,6 +76,15 @@
     </ApplicationDefinition>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Magic\Connection\Connection.cs" />
+    <Compile Include="Magic\Connection\Interfaces\IConnection.cs" />
+    <Compile Include="Magic\Connection\Interfaces\IListener.cs" />
+    <Compile Include="Magic\Connection\Interfaces\IReceiver.cs" />
+    <Compile Include="Magic\Connection\Interfaces\ISender.cs" />
+    <Compile Include="Magic\Connection\Listener.cs" />
+    <Compile Include="Magic\Connection\MessageAvailableEventArgs.cs" />
+    <Compile Include="Magic\Connection\Net\MulticastUdpConnection.cs" />
+    <Compile Include="Magic\Connection\Net\UdpConnection.cs" />
     <Compile Include="LearningMode.cs" />
     <Compile Include="Magic\Logic.cs" />
     <Compile Include="Magic\MCP\Audio\AudioListener.cs" />
@@ -94,8 +103,6 @@
     <Compile Include="Magic\MCP\MCP\MCPDirector.cs" />
     <Compile Include="Magic\MCP\MCP\MCPPacket.cs" />
     <Compile Include="Magic\MCP\MCP\MCPStorage.cs" />
-    <Compile Include="Magic\MCP\MCP\MulticastListener.cs" />
-    <Compile Include="Magic\MCP\MCP\MulticastSender.cs" />
     <Compile Include="Magic\RadioLogic.cs" />
     <Compile Include="Radio.xaml.cs">
       <DependentUpon>Radio.xaml</DependentUpon>

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Threading;
-
+using Connection;
+using Connection.Net;
 namespace MCP
 {
     public class MCPConnector
@@ -11,8 +12,8 @@ namespace MCP
             public MCPPacket packet;
         }
 
-        MulticastListener listener;
-        MulticastSender sender;
+        Listener listener;
+        Connection.Connection connection;
         Thread maintainThread;
         public IPAddress myIpAddress { get; private set; }
         public int myPort { get; private set; }
@@ -20,20 +21,27 @@ namespace MCP
         int maintainDelay;
         MCPPacket maintainPacket;
         public bool IsWork { get; private set; }
+        EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
 
         public event EventHandler<MCPEventArgs> NewMCPPacket;
 
         public MCPConnector(IPAddress multicastAddress, int port, int ttl, IPAddress myIpAddress, int myPort, int maintainDelay)
         {
-            listener = new MulticastListener(multicastAddress, port, 1044);//will need to change the const value to other value use config file
-            listener.NewMessageEvent += NewMessageTask;
+            //create connection for listener
+            IPEndPoint whom = new IPEndPoint(multicastAddress, port);//default, becase listener will't send
+            IPEndPoint wherefrom = whom;
+            IPEndPoint bindEP = new IPEndPoint(IPAddress.Any,port);
+            connection = new MulticastUdpConnection(whom,wherefrom,bindEP,ttl);
+            
+            //create listener
+            listener = new Listener();
+            listener.Init(connection);
+            listener.MessageAvailableEvent += NewMessageTask;
 
-            sender = new MulticastSender(multicastAddress, port, ttl);
             this.myIpAddress = myIpAddress;
             this.myPort = myPort;
             this.maintainDelay = maintainDelay;
 
-            IsWork = false;
             pocketNumber = 0;
             maintainPacket = new MCPPacket(pocketNumber, myIpAddress, myPort, MCPState.MaintainConnection);
             maintainThread = new Thread(MaintainConnection);
@@ -42,15 +50,15 @@ namespace MCP
         public void Start()
         {
             IsWork = true;
-            listener.StartListen();
-            if (!maintainThread.IsAlive)
-                maintainThread.Start();
+            listener.Start();
+            waitHandle.Set();
         }
 
         public void Stop()
         {
             IsWork = false;
-            listener.StopListen();
+            listener.Stop();
+            waitHandle.Reset();
         }
 
         public void Send(byte[] information)
@@ -58,12 +66,12 @@ namespace MCP
             CheckPacketNumber();
             pocketNumber++;
             maintainPacket = new MCPPacket(pocketNumber, myIpAddress, myPort, MCPState.Information, information);
-            sender.Send(maintainPacket);
+            connection.Send(maintainPacket.GetPacketBytes());
         }
 
-        private void NewMessageTask(MulticastListener receiver, byte[] message)
+        private void NewMessageTask(object obj, MessageAvailableEventArgs args)
         {
-            MCPPacket packet = MCPPacket.Parse(message);
+            MCPPacket packet = MCPPacket.Parse(args.Message);
             if(packet.IpAddress.ToString()+":"+packet.Port.ToString() != myIpAddress.ToString()+":"+myPort.ToString())
                 NewMCPPacket(this, new MCPEventArgs() { packet = packet});
         }
@@ -74,10 +82,10 @@ namespace MCP
             {
                 while (IsWork)
                 {
-                    sender.Send(maintainPacket);
+                    connection.Send(maintainPacket.GetPacketBytes());
                     Thread.Sleep(maintainDelay);
                 }
-                Thread.Sleep(100);
+                waitHandle.WaitOne();
             }
         }
 
@@ -86,7 +94,7 @@ namespace MCP
             if (pocketNumber == UInt32.MaxValue)
             {
                 maintainPacket = new MCPPacket(0, myIpAddress, myPort, MCPState.Reset);
-                sender.Send(maintainPacket);
+                connection.Send(maintainPacket.GetPacketBytes());
                 pocketNumber = 1;
                 Thread.Sleep(2 * maintainDelay);
             }
@@ -98,13 +106,12 @@ namespace MCP
             pocketNumber++;
             maintainPacket = new MCPPacket(pocketNumber, myIpAddress, myPort, MCPState.Close);
             //it's mean that we can send 2 packet with state 'Close'
-            sender.Send(maintainPacket);
-            Thread.Sleep(maintainDelay*2);
+            connection.Send(maintainPacket.GetPacketBytes());
             IsWork = false;
             maintainThread.Abort();
             Stop();
+            //close and connection too
             listener.Close();
-            sender.Close();
         }
     }
 }
