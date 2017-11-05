@@ -47,6 +47,7 @@ namespace MCP.Audio
                         int received = ListeningSocket.ReceiveFrom(data, ref remoteEP);
                         byte[] decoded = codec.Decode(data, 0, received);
                         AudioDataAvailableEvent?.Invoke(this, decoded);
+                        Console.WriteLine("Data for Listening");
                     }
                     catch (SocketException ex)
                     {

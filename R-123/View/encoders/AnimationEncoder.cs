@@ -8,7 +8,7 @@ namespace R_123.View
         private int steps = 0;
         private decimal requiredValue = 0;
         private decimal addValueInAnimation = 0.085m;
-        private const decimal defaultValueInAnimation = 0.085m;
+        protected decimal defaultValueInAnimation = 0.085m;
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         private DispatcherTimer dispatcherSleep = new DispatcherTimer();
         public AnimationEncoder(Image image, decimal defValue = 0, decimal maxValue = 1) : 
@@ -20,11 +20,17 @@ namespace R_123.View
             dispatcherSleep.Tick += new System.EventHandler(Sleep_Tick);
             dispatcherSleep.Interval = new System.TimeSpan(0, 0, 0, 0, 1000 / 2);
         }
+        public int Steps => steps;
         protected bool TimerIsEnabled => dispatcherTimer.IsEnabled;
         protected decimal Animation
         {
             get => requiredValue;
             set => StartAnimation(value);
+        }
+        protected void StopAnimation()
+        {
+            dispatcherTimer.Stop();
+            dispatcherSleep.Stop();
         }
         private void StartAnimation(decimal value)
         {

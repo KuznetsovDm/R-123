@@ -7,50 +7,39 @@ namespace R_123.View
     {
         public Image image;
         private int currentNumberImage = 1;
-        private int requiredNumberImage;
         System.Windows.Threading.DispatcherTimer dispatcherTimer = null;
         public AntennaLightDisplay(Image image)
         {
             this.image = image;
             Options.PressSpaceControl.ValueChanged += Update;
+
+            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan((long)(10e7 / 200));
         }
         private void Update()
         {
-            if (Options.Switchers.Power.Value == State.off || Options.PressSpaceControl.Value == false)
-            {
-                if (currentNumberImage != 1)
-                    Animation(1);
-            }
-            else
-                Animation(4);
-        }
-        private void Animation(int requiredNumberImage)
-        {
-            this.requiredNumberImage = requiredNumberImage;
-
-            if (dispatcherTimer != null)
-                dispatcherTimer.Stop();
-
-            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan((long)(10e7 / 200));
             dispatcherTimer.Start();
         }
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            if (currentNumberImage < requiredNumberImage)
-                currentNumberImage++;
-            else if (currentNumberImage > requiredNumberImage)
-                currentNumberImage--;
-            else if (currentNumberImage == 1)
+            if (Options.PressSpaceControl.Value == false)
             {
+                System.Windows.Media.Imaging.BitmapImage bi31 = new System.Windows.Media.Imaging.BitmapImage();
+                bi31.BeginInit();
+                bi31.UriSource = new Uri("/Files/Images/Athena0.gif", UriKind.Relative);
+                bi31.EndInit();
+                image.Source = bi31;
                 dispatcherTimer.Stop();
-                dispatcherTimer = null;
+                return;
             }
-            else
-            {
+
+            int requiredNumberImage = (int)(Options.Encoders.AthenaDisplay.Value * 3);
+            System.Diagnostics.Trace.WriteLine(requiredNumberImage);
+            if (currentNumberImage <= requiredNumberImage)
+                currentNumberImage++;
+            else if (currentNumberImage >= requiredNumberImage && currentNumberImage > 0)
                 currentNumberImage--;
-            }
 
             System.Windows.Media.Imaging.BitmapImage bi3 = new System.Windows.Media.Imaging.BitmapImage();
             bi3.BeginInit();

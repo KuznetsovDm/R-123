@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("audio/ton.mp3")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("files/sounds/fixedfrequency.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("files/sounds/positionswitcher.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("files/sounds/positionswitcher2.wav")]

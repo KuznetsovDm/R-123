@@ -25,7 +25,6 @@ namespace MCP.Logic
             delta = R_123.AppConfig.AppConfigCreator.Delta;
 
             noisePlayer = new NoisePlayer();
-            noisePlayer.Start();
             frequency = 0;
         }
 
@@ -47,6 +46,18 @@ namespace MCP.Logic
                 director.Send(bytes.ToArray());
                 director.SetStateForAllPackets();
             }
+        }
+
+        public void PlayTone()
+        {
+            var player = R_123.AppConfig.AppConfigCreator.GetTonPlayer();
+            player.Start();
+            List<byte> bytes = BitConverter.GetBytes((float)frequency).ToList();
+            byte fullState = (byte)(LogicStates.Frequency | LogicStates.Signal);
+            bytes.Insert(0, fullState);
+            director.Send(bytes.ToArray());
+            bytes[0] = (byte)LogicStates.Frequency;
+            director.Send(bytes.ToArray());
         }
 
         public float Volume
@@ -85,15 +96,17 @@ namespace MCP.Logic
                 float noise = volume < 0.8f ? 1 : 0.1f;
                 bool play = (volume > 0) ? true : false;
                 state = new AudioPlayerState(play, volume, false, noise);
+
+                //play ton
+                if ((lState & LogicStates.Signal) == LogicStates.Signal && deltaFrequency <= delta)
+                {
+                    R_123.AppConfig.AppConfigCreator.GetTonPlayer().Start();
+                }
+                //NoisePlayer.Volume = noise;
+                //if (volume > 0 && (lState & LogicStates.IsSaying) == LogicStates.IsSaying)
+                //    NoisePlayer.Volume = 0.01F;
             }
-            if ((lState & LogicStates.Signal) == LogicStates.Signal)
-            {
-                //play here
-            }
-            if ((lState & LogicStates.IsSaying) == LogicStates.IsSaying)
-            {
-                //some will be here
-            }
+            
             return state;
         }
 

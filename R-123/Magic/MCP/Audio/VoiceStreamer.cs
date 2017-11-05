@@ -31,7 +31,7 @@ namespace MCP.Audio
             try
             {
                 byte[] encoded = codec.Encode(e.Buffer, 0, e.BytesRecorded);
-                Client.SendTo(e.Buffer, RemotePoint);
+                Client.SendTo(encoded, RemotePoint);
             }
             catch (Exception ex)
             {

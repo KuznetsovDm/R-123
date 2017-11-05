@@ -23,6 +23,7 @@ namespace R_123.View
             image.MouseLeave += Image_MouseLeave;
         }
         public Image Image => image;
+        public double GetAngle => currentAngle;
         protected double Angle
         {
             get => currentAngle;

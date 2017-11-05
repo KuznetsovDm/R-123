@@ -7,7 +7,7 @@ namespace R_123.View
 {
     class PositionSwitcher : ImagesControl
     {
-        //Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
+        Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
         private int maxValue = 20;
         private int currentValue = 0;
         private double defAngle = 0;
@@ -26,9 +26,10 @@ namespace R_123.View
         {
             CurrentValue += e.Delta > 0 ? 1 : -1;
         }
+        //========================================================
         private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Options.Window.MouseUp += Image_MouseUp;
+            Options.Window.MouseUp += Window_MouseUp;
             double centerX = Canvas.GetLeft(Image) + Image.ActualWidth / 2;
             double centerY = Canvas.GetTop(Image) + Image.ActualHeight / 2;
             double startAngle = minAngle * System.Math.PI * 2 / 360;
@@ -66,16 +67,11 @@ namespace R_123.View
             Polygon polygon = sender as Polygon;
             CurrentValue = System.Convert.ToInt32(polygon.Name.Substring(8));
         }
-        private void Image_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Window_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Options.Window.MouseUp -= Image_MouseUp;
+            Options.Window.MouseUp -= Window_MouseUp;
             while (Options.Disk.Children.Count > 0)
                 Options.Disk.Children.RemoveAt(0);
-        }
-        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Options.Window.MouseUp += Window_MouseUp;
-            Options.Window.MouseMove += Window_MouseMove;
         }
         private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -84,15 +80,40 @@ namespace R_123.View
             Vector mouse = new Vector(point.X - Canvas.GetLeft(Image), point.Y - Canvas.GetTop(Image));
             double angle = Vector.AngleBetween(norm, mouse);
             System.Diagnostics.Trace.WriteLine(angle);
-            //CurrentValue = System.Convert.ToInt32(System.Math.Round(angle / 360 * maxValue));
         }
+        //========================================================
+        /*
+        private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Options.Window.MouseUp += Window_MouseUp;
+            Options.Window.MouseMove += Window_MouseMove;
 
+            centerX = Canvas.GetLeft(Image) + Image.Width / 2;
+            centerY = Canvas.GetTop(Image) + Image.Height / 2;
+            v2 = new Vector(-1, 0);
+        }
         private void Window_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Options.Window.MouseUp -= Window_MouseUp;
             Options.Window.MouseMove -= Window_MouseMove;
+            Options.Window.MouseUp -= Window_MouseUp;
         }
-
+        double centerX, centerY;
+        Vector v2;
+        private bool doubleMove = true;
+        private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (doubleMove)
+            {
+                doubleMove = false;
+                double x = e.MouseDevice.GetPosition(Options.canvas as IInputElement).X - centerX;
+                double y = e.MouseDevice.GetPosition(Options.canvas as IInputElement).Y - centerY;
+                double angle = Vector.AngleBetween(new Vector(x, -y), v2);
+                CurrentValue = System.Convert.ToInt32(System.Math.Round(angle * maxValue / 360));
+            }
+            else
+                doubleMove = true;
+        }*/
+        //========================================================
         protected void SetStartValue(int value, int maxValue)
         {
             this.maxValue = maxValue;
@@ -116,9 +137,8 @@ namespace R_123.View
                         currentValue = (value + maxValue) % maxValue;
 
                     Angle = currentValue;
-                    PlaySound();
-                    //player.Start();
-                    ValueIsUpdated();
+                    //PlaySound();
+                    player.Start();
                 }
             }
         }

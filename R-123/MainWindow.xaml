@@ -1,4 +1,5 @@
-﻿<Window x:Class="R_123.MainWindow"
+﻿
+<!--<Window x:Class="R_123.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +8,8 @@
         mc:Ignorable="d"
         Title="R-123"
         ResizeMode="NoResize" Width="1280" Height="1024"
-        WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        xmlns:R123_radio="clr-namespace:R_123">
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="10"/>
@@ -16,7 +18,7 @@
             <Setter Property="Focusable" Value="False"/>
         </Style>
     </Window.Resources>
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="450"></RowDefinition>
@@ -27,62 +29,18 @@
             <ColumnDefinition Width="848"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="form_Canvas" Grid.Column="1" Grid.Row="1" Panel.ZIndex="0">
-            <Image x:Name="radio_Image" Source="/Files/Images/R123.gif"/>
-            <!-- Энкодеры -->
-            <Image x:Name="volumeControl_Image" Source="/Files/Images/VolumeControl.gif" Stretch="Fill" Width="79" Height="79" Canvas.Left="720" Canvas.Top="276" />
-            <Image x:Name="noiseControl_Image" Source="/Files/Images/NoiseVolumeControl.gif" Stretch="Fill" Canvas.Left="88" Canvas.Top="37" Height="55" Width="55"/>
-            <Image x:Name="frequencyControl_Image" Source="/Files/Images/FrequencyControl.gif" Stretch="Fill" Width="79" Height="79" Canvas.Left="157" Canvas.Top="163" />
-            <!-- Позиционные переключатели -->
-            <Image x:Name="workModeControl_Image" Source="/Files/Images/WorkModeChangerArrow.gif" Stretch="Fill" Width="102" Height="111" Canvas.Left="160" Canvas.Top="21"/>
-            <Image x:Name="rangeSwitcher_Image" Source="/Files/Images/Range_switcher.gif" Stretch="Fill" Width="154" Height="146" Canvas.Left="507" Canvas.Top="246"/>
-            <Image x:Name="voltageSwitcher_Image" Source="/Files/Images/VoltageTesterArrow.gif" Stretch="Fill" Canvas.Left="10" Canvas.Top="106" Height="122" Width="126"/>
-            <!-- Дисплеи -->
-            <Image x:Name="subFrequencyDisplay_Image" Source="/Files/Images/SubFrequency0.gif" Canvas.Left="712" Canvas.Top="237"/>
-            <Image x:Name="fixedFrequencyDisplay_Image" Source="/Files/Images/FixedFrequencyDisplay0.gif" Canvas.Left="700" Canvas.Top="30"/>
-            <Image x:Name="voltageDisplay_Image" Source="/Files/Images/VoltageControl0.gif" Canvas.Left="715" Canvas.Top="144"/>
-            <Image x:Name="antennaLight_Image" Source="/Files/Images/Athena1.gif" Stretch="Fill" Canvas.Left="499" Canvas.Top="33"/>
-            <Image x:Name="antennaControl_Image" Source="/Files/Images/AthenaControl.png" Stretch="Fill" Canvas.Left="496" Canvas.Top="75"/>
-            <!-- Лента частот -->
-            <Canvas x:Name="frequencyDisplay_Canvas" Canvas.Left="316" Canvas.Top="18" Width="108" Height="45" ClipToBounds="True">
-                <Canvas x:Name="frequencyBand_Canvas" Canvas.Left="-6" Visibility="Hidden"></Canvas>
-            </Canvas>
-            <!-- Переключатель поддиапазона для фиксированных частот -->
-            <Canvas x:Name="subFixFrequencySwitcher_Images">
-                <Image Source="/Files/Images/Switcher_off.gif" Stretch="Fill" Canvas.Left="700" Canvas.Top="85"/>
-                <Image Source="/Files/Images/Switcher_off.gif" Stretch="Fill" Canvas.Left="730" Canvas.Top="85"/>
-                <Image Source="/Files/Images/Switcher_off.gif" Stretch="Fill" Canvas.Left="764" Canvas.Top="85"/>
-                <Image Source="/Files/Images/Switcher_off.gif" Stretch="Fill" Canvas.Left="793" Canvas.Top="85"/>
-            </Canvas>
-            <!-- Выключатели -->
-            <Image x:Name="power_Image" Source="/Files/Images/Switcher_off.gif" Stretch="Fill" Canvas.Left="95" Canvas.Top="231"/>
-            <Image x:Name="scale_Image" Source="/Files/Images/Switcher_off.gif" Stretch="Fill" Canvas.Left="30" Canvas.Top="231"/>
-            <!-- Настройка фиксированных частот -->
-            <Canvas x:Name="settingFixedFrequency_Canvas" Width="170" Height="170">
-                <!-- Диск и обводка -->
-                <Image Source="/Files/Images/FixedFrequencySwitcher.gif" Canvas.Left="284" Canvas.Top="134"/>
-                <Image x:Name="ring_Image" Source="/Files/Images/FixedFrequencySwitcherRing.gif" Canvas.Left="284" Canvas.Top="134"/>
-                <!-- Фиксаторы -->
-                <Canvas x:Name="clamp_Canvas">
-                    <Image x:Name="clamp0_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="330" Canvas.Top="154" Width="31" Height="31"/>
-                    <Image x:Name="clamp1_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="400" Canvas.Top="179" Width="31" Height="31"/>
-                    <Image x:Name="clamp2_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="378" Canvas.Top="251" Width="31" Height="31"/>
-                    <Image x:Name="clamp3_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="306" Canvas.Top="233" Width="31" Height="31"/>
-                </Canvas>
-            </Canvas>
-            <Canvas x:Name="disk_Canvas" Width="900" Height="500" >
-                <!--<Polygon Stroke="Blue" StrokeThickness="1" Fill="Yellow" Opacity="0.5"
-                    Points="15,200 68,70 110,200 0,125 135,125" >
-                </Polygon>-->
-            </Canvas>
-        </Canvas>
+
+        <R123_radio:Radio Grid.Column="1" Grid.Row="1" />
+
         <Canvas Grid.Column="2" Grid.Row="2">
-            <!--  -->
             <Image x:Name="cursor_Image" Source="/Files/Images/mouseIcon/MouseIcon.png" Stretch="Fill" Canvas.Top="34" Height="33" Width="33" Canvas.Left="98"/>
             <TextBlock x:Name="spaceIsDown_TextBlock" Canvas.Top="72" Width="63" FontSize="16" FontFamily="cambria" Height="22" RenderTransformOrigin="0.619,0.5" Canvas.Left="98">Пробел</TextBlock>
             <TextBlock x:Name="ctrlIsDown_TextBlock" Canvas.Top="72" Width="34" FontSize="16" FontFamily="cambria" Height="22" Canvas.Left="59">Ctrl</TextBlock>
             <TextBlock Width="99" FontSize="16" FontFamily="Segoe WP Black" Height="26" Canvas.Top="8" Canvas.Left="59">Управление</TextBlock>
         </Canvas>
+
+
+
         <TextBlock x:Name="textBlock" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24"/>
         <Canvas x:Name="learning" Panel.ZIndex="-1" Grid.Column="1" Grid.Row="1">
             <Path Fill="Black" Opacity="0.75">
@@ -110,5 +68,26 @@
             <Button x:Name="buttonLearningMode" Content="Режим обучения"/>
             <Button x:Name="buttonReference" Content="Справка"/>
         </StackPanel>
+    </Grid>
+</Window>-->
+
+<Window x:Class="R_123.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:R_123"
+        mc:Ignorable="d"
+        Title="R-123"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Width="848" Height="480"
+        xmlns:R123_radio="clr-namespace:R_123">
+    <Grid ShowGridLines="False">
+        <Canvas>
+            <Image x:Name="cursor_Image" Source="/Files/Images/mouseIcon/MouseIcon.png" Stretch="Fill" Canvas.Top="34" Height="33" Width="33" Canvas.Left="98"/>
+            <TextBlock x:Name="spaceIsDown_TextBlock" Canvas.Top="72" Width="63" FontSize="16" FontFamily="cambria" Height="22" RenderTransformOrigin="0.619,0.5" Canvas.Left="98">Пробел</TextBlock>
+            <TextBlock x:Name="ctrlIsDown_TextBlock" Canvas.Top="72" Width="34" FontSize="16" FontFamily="cambria" Height="22" Canvas.Left="59">Ctrl</TextBlock>
+            <TextBlock Width="99" FontSize="16" FontFamily="Segoe WP Black" Height="26" Canvas.Top="8" Canvas.Left="59">Управление</TextBlock>
+        </Canvas>
+        <R123_radio:Radio/>
     </Grid>
 </Window>

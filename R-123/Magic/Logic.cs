@@ -37,12 +37,13 @@ namespace R_123
             Options.Switchers.Power.ValueChanged += OnPowerChanged;
             Options.PositionSwitchers.WorkMode.ValueChanged += OnWorkModeChanged;
             Options.PressSpaceControl.ValueChanged += OnSpaceChange;
+            Options.Tone.ValueChanged += Tone_ValueChanged;
 
 
             Task.Factory.StartNew(() => {
                 radioLogic = new RadioLogic();
-                radioLogic.Frequency = Options.Encoders.Frequency.Value;
-                radioLogic.NoisePlayer.Volume = (float)Options.Encoders.Noise.Value;
+                OnFrequencyChanged();
+                //OnNoiseChanged();
                 if (Options.Switchers.Power.Value == State.on)
                 {
                     radioLogic.Start();
@@ -50,6 +51,12 @@ namespace R_123
                     OnSpaceChange();
                 }
             });
+        }
+
+        private void Tone_ValueChanged()
+        {
+            if (Options.Tone.Value)
+                radioLogic.PlayTone();
         }
 
         public void OnFrequencyChanged()
@@ -66,7 +73,7 @@ namespace R_123
 
         public void OnNoiseChanged() 
         {
-            if (Options.Switchers.Power.Value == State.on)
+            if (Options.Switchers.Power.Value == State.on && Options.Encoders.Noise.Value >= (decimal)0.01)
                 radioLogic.NoisePlayer.Volume = (float)Options.Encoders.Noise.Value;
         }
 

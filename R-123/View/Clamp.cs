@@ -125,6 +125,12 @@ namespace R_123.View
             oldValue = Value;
             if (Value == 0) MemoryFrequency();
             ValueChanged?.Invoke();
+            if (Value == 0)
+                image.ToolTip = "Фиксик закрыт";
+            else if (Value == 1)
+                image.ToolTip = "Фиксик открыт тра та ту та туц";
+            else
+                image.ToolTip = $"Фиксик открыт на {(int)(Value * 100)}%";
 
             System.Diagnostics.Trace.WriteLine($"Clamp = {Value}; ");
         }

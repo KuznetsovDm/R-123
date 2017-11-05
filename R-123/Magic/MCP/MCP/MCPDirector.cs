@@ -22,6 +22,7 @@ namespace MCP
         private void NewMCPPacket(object sender, MCPConnector.MCPEventArgs e)
         {
             MCPPacket packet = e.packet;
+            System.Console.WriteLine(packet.IpAddress);
             ComputeState(packet);
         }
 
