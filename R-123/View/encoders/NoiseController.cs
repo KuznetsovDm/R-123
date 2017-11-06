@@ -7,7 +7,7 @@
             base(image, Properties.Settings.Default.NoiseController, 100)
         {
         }
-        public new decimal Value => 1m - System.Convert.ToDecimal(base.Value) / maxValue * 0.9m;
+        public new decimal Value => 1m - System.Convert.ToDecimal(base.Value) / maxValue * 0.9m + 0.1m;
         protected override void ValueIsUpdated()
         {
             ValueChanged?.Invoke();

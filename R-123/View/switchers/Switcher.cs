@@ -4,6 +4,7 @@ namespace R_123.View
 {
     abstract class Switcher : ImagesControl
     {
+        private Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
         private bool currentValue;
         public Switcher(Image image, bool defValue = false) : base(image)
         {
@@ -30,21 +31,7 @@ namespace R_123.View
             {
                 currentValue = value;
                 Source = value;
-                PlaySound();
-            }
-        }
-        private void PlaySound()
-        {
-            try
-            {
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer();
-                player.SoundLocation = @"C:\Users\DK\Documents\R-123\R-123\R-123\sounds\PositionSwitcher.wav";
-                player.Load();
-                player.Play();
-            }
-            catch
-            {
-                System.Diagnostics.Trace.WriteLine("Ошибка воспроизведения звукового файла");
+                player.Start();
             }
         }
     }

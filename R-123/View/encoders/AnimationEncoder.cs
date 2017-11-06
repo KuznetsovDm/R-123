@@ -38,6 +38,8 @@ namespace R_123.View
         private int addValueInAnimation;
         private void DispatcherSleep_Tick(object sender, System.EventArgs e)
         {
+            AnimationStarted?.Invoke();
+
             if (requiredValue > CurrentValue)
                 addValueInAnimation = defaultValueInAnimation;
             else
@@ -45,12 +47,17 @@ namespace R_123.View
 
             numberOfRemainingSteps = System.Convert.ToInt32((requiredValue - CurrentValue) / addValueInAnimation);
 
-            AnimationStarted?.Invoke();
             dispatcherSleep.Stop();
             dispatcherTimer.Start();
         }
         private void DispatcherTimer_Tick(object sender, System.EventArgs e)
         {
+            if (Options.Switchers.Power.Value == State.off)
+            {
+                dispatcherTimer.Stop();
+                AnimationStarted?.Invoke();
+            }
+
             if (numberOfRemainingSteps-- > 0)
                 CurrentValue += addValueInAnimation;
             else

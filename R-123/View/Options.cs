@@ -98,7 +98,6 @@ namespace R_123.View
         public static Canvas Disk;
         public static MainWindow Window;
         public static Canvas R123;
-        public static Image ring_Image;
         public static ToneButton Tone;
     }
 }

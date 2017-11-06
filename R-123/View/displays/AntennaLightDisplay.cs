@@ -1,51 +1,68 @@
 ﻿using System;
-using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace R_123.View
 {
     class AntennaLightDisplay
     {
-        public Image image;
-        private int currentNumberImage = 1;
-        System.Windows.Threading.DispatcherTimer dispatcherTimer = null;
-        public AntennaLightDisplay(Image image)
+        private Ellipse ellipse;
+        System.Windows.Threading.DispatcherTimer dispatcherTimer;
+        public AntennaLightDisplay(Ellipse ellipse)
         {
-            this.image = image;
+            this.ellipse = ellipse;
             Options.PressSpaceControl.ValueChanged += Update;
 
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan((long)(10e6 / 32));
+            dispatcherTimer.Interval = new TimeSpan((long)(10e6 / 30));
         }
         private void Update()
         {
-            dispatcherTimer.Start();
+            if (Options.PressSpaceControl.Value)
+                dispatcherTimer.Start();
+            else
+            {
+                ellipse.Opacity = 0;
+                dispatcherTimer.Stop();
+            }
         }
+        private bool up = true;
+        private double stepOpacity = 0.08;
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            if (Options.PressSpaceControl.Value == false)
+            stepOpacity = Options.Encoders.AthenaDisplay.Value / 4;
+            double value = Options.Encoders.AthenaDisplay.Value;
+            double diapason = value / 4;
+            if (up)
             {
-                System.Windows.Media.Imaging.BitmapImage bi31 = new System.Windows.Media.Imaging.BitmapImage();
-                bi31.BeginInit();
-                bi31.UriSource = new Uri("/Files/Images/Athena0.gif", UriKind.Relative);
-                bi31.EndInit();
-                image.Source = bi31;
-                dispatcherTimer.Stop();
-                return;
+                if (value > ellipse.Opacity + stepOpacity)
+                {
+                    ellipse.Opacity += stepOpacity;
+                }
+                else if (value > ellipse.Opacity)
+                {
+                    ellipse.Opacity = value;
+                }
+                else
+                {
+                    up = false;
+                }
             }
-
-            int requiredNumberImage = (int)(Options.Encoders.AthenaDisplay.Value * 3);
-            System.Diagnostics.Trace.WriteLine(requiredNumberImage);
-            if (currentNumberImage <= requiredNumberImage)
-                currentNumberImage++;
-            else if (currentNumberImage >= requiredNumberImage && currentNumberImage > 0)
-                currentNumberImage--;
-
-            System.Windows.Media.Imaging.BitmapImage bi3 = new System.Windows.Media.Imaging.BitmapImage();
-            bi3.BeginInit();
-            bi3.UriSource = new Uri("/Files/Images/Athena" + currentNumberImage + ".gif", UriKind.Relative);
-            bi3.EndInit();
-            image.Source = bi3;
+            else
+            {
+                if (ellipse.Opacity - stepOpacity > value - diapason)
+                {
+                    ellipse.Opacity -= stepOpacity;
+                }
+                else if (ellipse.Opacity > value - diapason)
+                {
+                    ellipse.Opacity = value - diapason;
+                }
+                else
+                {
+                    up = true;
+                }
+            }
         }
     }
 }

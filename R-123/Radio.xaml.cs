@@ -11,11 +11,10 @@ namespace R_123
         public Radio()
         {
             InitializeComponent();
-            Options.ring_Image = ring_Image;
             Options.canvas = form_Canvas;
 
-            Options.Display.VoltageControl = new VoltageDisplay(voltageDisplay_Image);
-            Options.Display.AntennaLight = new AntennaLightDisplay(antennaLight_Image);
+            Options.Display.VoltageControl = new VoltageDisplay(voltageDisplay_Image, voltageDisplay_Line);
+            Options.Display.AntennaLight = new AntennaLightDisplay(antennaLight_Ellipse);
 
             UIElementCollection clamp_Images = clamp_Canvas.Children;
             for (int i = 0; i < Options.Clamp.Length; i++)

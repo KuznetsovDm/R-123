@@ -21,8 +21,22 @@
             <!-- Дисплеи -->
             <Image x:Name="subFrequencyDisplay_Image" Source="/Files/Images/SubFrequency0.gif" Canvas.Left="712" Canvas.Top="237"/>
             <Image x:Name="fixedFrequencyDisplay_Image" Source="/Files/Images/FixedFrequencyDisplay0.gif" Canvas.Left="700" Canvas.Top="30"/>
-            <Image x:Name="voltageDisplay_Image" Source="/Files/Images/VoltageControl0.gif" Canvas.Left="715" Canvas.Top="144"/>
-            <Image x:Name="antennaLight_Image" Source="/Files/Images/Athena0.gif" Stretch="Fill" Canvas.Left="499" Canvas.Top="33"/>
+            <Image x:Name="voltageDisplay_Image" Source="/Files/Images/VoltageControl.jpg" Canvas.Left="715" Canvas.Top="144"/>
+            <Canvas>
+                <Ellipse x:Name="antennaLight_Ellipse"
+                    Canvas.Top="40"
+                    Canvas.Left="506"
+                    Fill="#FFDA4186"
+                    Opacity="0"
+                    Height="40"
+                    Width="40"/>
+                <Line x:Name="voltageDisplay_Line"
+                     X1="0" Y1="0"
+                     X2="15" Y2="16"
+                     Stroke="Black"
+                     StrokeThickness="2"
+                     Canvas.Left="733" Canvas.Top="176" Height="32" Width="30"/>
+            </Canvas>
             <Image x:Name="antennaControl_Image" Source="/Files/Images/AthenaControl.png" Stretch="Fill" Canvas.Left="496" Canvas.Top="75" Width="147" Height="147"/>
             <!-- Лента частот -->
             <Canvas x:Name="frequencyDisplay_Canvas" Canvas.Left="316" Canvas.Top="18" Width="108" Height="45" ClipToBounds="True">

@@ -11,20 +11,24 @@ namespace R_123.View
             deltaValueMouseWheel = 5;
             defaultValueInAnimation = 2;
 
-        Options.PositionSwitchers.Range.ValueChanged += UpdateValue;
+            Options.PositionSwitchers.Range.ValueChanged += UpdateValue;
             Options.Switchers.Power.ValueChanged += UpdateValue;
             for (int i = 0; i < Options.Switchers.SubFixFrequency.Length; i++)
                 Options.Switchers.SubFixFrequency[i].ValueChanged += UpdateValue;
         }
-        private double diapason = 45;
-        public new decimal Value
+        public new double Value
         {
             get
             {
-                if (System.Math.Abs(CurrentAngle - Options.Encoders.Frequency.CurrentAngle) < diapason)
-                    return (decimal)(1 - System.Math.Abs(CurrentAngle - Options.Encoders.Frequency.CurrentAngle) / diapason);
-                else
-                    return 0m;
+                double angleFrequency = Options.Encoders.Frequency.CurrentAngle / 2;
+                if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency2) angleFrequency += 180;
+                double difference = (CurrentAngle - angleFrequency + 360) % 360;
+                if (difference > 180) difference = 360 - difference;
+                int numberHill = (int)(difference / 36);
+                double maxValue = 1 - System.Math.Abs(numberHill * 0.2);
+                double value = (System.Math.Cos(difference * System.Math.PI / 36) + 1) / 2 * maxValue;
+                System.Diagnostics.Trace.WriteLine($"difference = {difference}; numberHill = {numberHill}; maxValue = {maxValue}; value = {value}; ");
+                return value;
             }
         }
         private void UpdateValue()
@@ -66,21 +70,6 @@ namespace R_123.View
 
         private const decimal minFirstSubFrequency = 20m;
         private const decimal minSecondSubFrequency = 35.75m;
-        private decimal ValueToFrequency(int value)
-        {
-            if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency1)
-                return System.Convert.ToDecimal(value) / 10000 + minFirstSubFrequency;
-            else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency2)
-                return System.Convert.ToDecimal(value) / 10000 + minSecondSubFrequency;
-            else
-            {
-                int number = (int)Options.PositionSwitchers.Range.Value;
-                if (Options.Switchers.SubFixFrequency[number].Value == SubFrequency.One)
-                    return System.Convert.ToDecimal(value) / 10000 + minFirstSubFrequency;
-                else
-                    return System.Convert.ToDecimal(value) / 10000 + minSecondSubFrequency;
-            }
-        }
         static private int FrequencyToValue(decimal frequency)
         {
             if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency1)
@@ -99,6 +88,10 @@ namespace R_123.View
         protected override int Norm(int value)
         {
             return (value + maxValue) % maxValue;
+        }
+        protected override void ValueIsUpdated()
+        {
+            //System.Diagnostics.Trace.WriteLine($"Athena = {Value}; ");
         }
     }
 }

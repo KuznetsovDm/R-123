@@ -23,7 +23,12 @@ namespace R_123.View
         }
         private int addValueInAnimation;
         private int defaultValueInAnimation = 1;
-        private void UpdateValue() => RotateImage(angle += addValueInAnimation);
+        private void UpdateValue()
+        {
+            if (Options.Encoders.Frequency.TimerIsEnabled)
+                RotateImage(angle += addValueInAnimation);
+        }
+
         private void RotateImage(double angle)
         {
             canvas.RenderTransform = new System.Windows.Media.RotateTransform(angle,

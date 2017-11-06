@@ -22,10 +22,6 @@ namespace R_123.View
                 spaceIsDown = true;
                 UpdateValue();
             }
-            if (Keyboard.IsKeyDown(Key.F2))
-            {
-                System.Diagnostics.Trace.WriteLine("F2");
-            }
         }
         public void MainWindowKeyUp(object sender, KeyEventArgs e)
         {

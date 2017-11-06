@@ -191,12 +191,6 @@
     <Resource Include="Files\Images\SubFrequency2.gif" />
     <Resource Include="Files\Images\Switcher_off.gif" />
     <Resource Include="Files\Images\Switcher_on.gif" />
-    <Resource Include="Files\Images\VoltageControl0.gif" />
-    <Resource Include="Files\Images\VoltageControl1.gif" />
-    <Resource Include="Files\Images\VoltageControl2.gif" />
-    <Resource Include="Files\Images\VoltageControl3.gif" />
-    <Resource Include="Files\Images\VoltageControl4.gif" />
-    <Resource Include="Files\Images\VoltageControl5.gif" />
     <Resource Include="Files\Images\VoltageTesterArrow.gif" />
     <Resource Include="Files\Images\VolumeControl.gif" />
     <Resource Include="Files\Images\WorkModeChangerArrow.gif" />
@@ -214,17 +208,11 @@
     <Resource Include="Files\Images\FixedFrequencySwitcherScrew.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Files\Images\Athena0.gif" />
-    <Resource Include="Files\Images\Athena1.gif" />
-    <Resource Include="Files\Images\Athena2.gif" />
-    <Resource Include="Files\Images\Athena3.gif" />
-    <Resource Include="Files\Images\Athena4.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Files\Images\AthenaControl.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Files\Images\Tone.png" />
+    <Resource Include="Files\Images\VoltageControl.jpg" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\PositionSwitcher2.wav" />

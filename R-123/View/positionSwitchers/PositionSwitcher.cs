@@ -7,7 +7,7 @@ namespace R_123.View
 {
     class PositionSwitcher : ImagesControl
     {
-        Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
+        private Audio.AudioPlayer player = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
         private int maxValue = 20;
         private int currentValue = 0;
         private double defAngle = 0;
@@ -137,7 +137,6 @@ namespace R_123.View
                         currentValue = (value + maxValue) % maxValue;
 
                     Angle = currentValue;
-                    //PlaySound();
                     player.Start();
                 }
             }
@@ -146,23 +145,6 @@ namespace R_123.View
         {
             get => System.Convert.ToInt32((base.Angle - minAngle) / maxAngle) * maxValue;
             set => base.Angle = System.Convert.ToDouble(value) / maxValue * (maxAngle - minAngle) + minAngle;
-        }
-
-        private void PlaySound()
-        {
-            try
-            {
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer
-                {
-                    SoundLocation = @"D:\project\R-123\R-123\Files\Sounds\PositionSwitcher.wav"
-                };
-                player.Load();
-                player.Play();
-            }
-            catch
-            {
-                System.Diagnostics.Trace.WriteLine("Ошибка воспроизведения звукового файла");
-            }
         }
     }
 }
