@@ -49,8 +49,7 @@ namespace R_123.View
         {
             get
             {
-                if (Options.Switchers.Power.Value == State.on &&
-                Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Simplex)
+                if (Options.Switchers.Power.Value == State.on)
                 {
                     return currentValue;
                 }
@@ -60,8 +59,7 @@ namespace R_123.View
         }
         protected override void ValueIsUpdated()
         {
-            if (Options.Switchers.Power.Value == State.on &&
-                Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Simplex)
+            if (Options.Switchers.Power.Value == State.on)
             {
             }
             ValueChanged?.Invoke();

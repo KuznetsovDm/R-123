@@ -22,8 +22,6 @@ D:\project\R-123\R-123\obj\Debug\Radio.baml
 D:\Importatn\GitR123\R-123\bin\Debug\R-123.exe.config
 D:\Importatn\GitR123\R-123\bin\Debug\R-123.exe
 D:\Importatn\GitR123\R-123\bin\Debug\R-123.pdb
-D:\Importatn\GitR123\R-123\bin\Debug\NAudio.xml
-D:\Importatn\GitR123\R-123\obj\Debug\R-123.csprojResolveAssemblyReference.cache
 D:\Importatn\GitR123\R-123\obj\Debug\MainWindow.g.cs
 D:\Importatn\GitR123\R-123\obj\Debug\Radio.g.cs
 D:\Importatn\GitR123\R-123\obj\Debug\App.g.cs

@@ -105,7 +105,6 @@ namespace MCP
             CheckPacketNumber();
             pocketNumber++;
             maintainPacket = new MCPPacket(pocketNumber, myIpAddress, myPort, MCPState.Close);
-            //it's mean that we can send 2 packet with state 'Close'
             connection.Send(maintainPacket.GetPacketBytes());
             IsWork = false;
             maintainThread.Abort();

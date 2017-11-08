@@ -7,32 +7,25 @@ namespace MCP.Audio
 {
     class NetAudioPlayer : IAudioPlayer
     {
-        WaveOutEvent player;
+        WaveOut player;
         BufferedWaveProvider bufferedWaveProvider;
         VolumeWaveProvider16 volumeProvider;
         AudioListener listener;
-        NoisePlayer noisePlayer;
         float noiseLevel = 0;
         byte[] noise = new byte[16000];
 
-        public NetAudioPlayer(AudioListener listener,WaveFormat format)
+        public NetAudioPlayer(AudioListener listener, WaveFormat format)
         {
-            player = new WaveOutEvent();
+            player = new WaveOut();
             bufferedWaveProvider = new BufferedWaveProvider(format) { DiscardOnBufferOverflow = true };
             volumeProvider = new VolumeWaveProvider16(bufferedWaveProvider);
             player.Init(volumeProvider);
             player.Volume = 1;
-            //
-            player.Play();
+            volumeProvider.Volume = 1;
 
             this.listener = listener;
-            ComputeNoise();
             noiseLevel = 0;
             listener.AudioDataAvailableEvent += DataAvailable;
-
-            //NoisePlayer
-            //noisePlayer = new NoisePlayer();
-            
         }
 
         public void Play()
@@ -43,9 +36,6 @@ namespace MCP.Audio
 
             if (!listener.IsListening)
                 listener.Start();
-            
-
-            //noisePlayer.Start();
         }
 
         public void Stop()
@@ -54,9 +44,8 @@ namespace MCP.Audio
                 player.Stop();
             if (listener.IsListening)
                 listener.Stop();
-            
+
             bufferedWaveProvider.ClearBuffer();
-            //noisePlayer.Stop();
         }
 
         public void Close()
@@ -64,7 +53,6 @@ namespace MCP.Audio
             player.Stop();
             listener.Close();
             bufferedWaveProvider = null;
-            //noisePlayer.Close();
         }
 
         public float Volume
@@ -78,10 +66,10 @@ namespace MCP.Audio
             }
         }
 
-        private void DataAvailable(object sender,byte[] data)
+        private void DataAvailable(object sender, byte[] data)
         {
             AddNoise(data, noise, noiseLevel);
-            bufferedWaveProvider.AddSamples(data, 0, data.Length);            
+            bufferedWaveProvider.AddSamples(data, 0, data.Length);
         }
 
         public float Noise
@@ -92,45 +80,22 @@ namespace MCP.Audio
                 if (value < 0 || value > 1)
                     throw new ArgumentException("Value should be in a range between 0 and 1.");
                 noiseLevel = value;
-                //noisePlayer.Volume = value;
             }
         }
 
-        private unsafe void AddNoise(byte[] destBuffer,byte[] noise, float coefficient)
+        Random r = new Random();
+        private unsafe void AddNoise(byte[] destBuffer, byte[] noise, float coefficient)
         {
-            fixed (byte* pbArray = &destBuffer[0],pbNoise = &noise[0])
-            {
-                short* psArray = (short*)pbArray;
-                short* psNoise = (short*)pbNoise;
-                for (int i = 0; i < destBuffer.Length / 2; i++) 
+            if (coefficient > 0)
+                fixed (byte* pbArray = &destBuffer[0], pbNoise = &noise[0])
                 {
-                    psArray[i] += (short)(noise[i]*10+noise[i+1000]*10);
+                    short* psArray = (short*)pbArray;
+                    short* psNoise = (short*)pbNoise;
+                    for (int i = 0; i < destBuffer.Length / 2; i += (int)((1 - coefficient) * 2 + 1))
+                    {
+                        psArray[i] += (short)(((short)r.Next()) / 10);
+                    }
                 }
-                //summ noise
-                /*for (int i = 0; i < destBuffer.Length / 2; i++)
-                {
-                    psArray[i] += (short)(3 * pbNoise[i]);
-                }*/
-            }
-        }
-       
-        private void ComputeNoise()
-        {
-            Rand(noise, noise.Length);
-        }
-
-        private unsafe void Rand(byte[] destBuffer, int bytesRead)
-        {
-            Random r = new Random();
-            fixed (byte* pDestBuffer = &destBuffer[0])
-            {
-                float* pfDestBuffer = (float*)pDestBuffer;
-                int samplesRead = bytesRead / 4;
-                for (int n = 0; n < samplesRead; n++)
-                {
-                    pfDestBuffer[n] = (float)r.NextDouble();
-                }
-            }
         }
     }
 }

@@ -48,16 +48,21 @@ namespace MCP.Logic
             }
         }
 
-        public void PlayTone()
+        public void PlayToneSimplex()
         {
-            var player = R_123.AppConfig.AppConfigCreator.GetTonPlayer();
-            player.Start();
+            PlayToneAcceptance();
             List<byte> bytes = BitConverter.GetBytes((float)frequency).ToList();
             byte fullState = (byte)(LogicStates.Frequency | LogicStates.Signal);
             bytes.Insert(0, fullState);
             director.Send(bytes.ToArray());
             bytes[0] = (byte)LogicStates.Frequency;
             director.Send(bytes.ToArray());
+        }
+
+        public void PlayToneAcceptance()
+        {
+            var player = R_123.AppConfig.AppConfigCreator.GetTonPlayer();
+            player.Start();
         }
 
         public float Volume
@@ -93,18 +98,15 @@ namespace MCP.Logic
                 var frequencyOtherMachine = (decimal)BitConverter.ToSingle(bfrequency, 0);
                 var deltaFrequency = Math.Abs(frequencyOtherMachine - frequency);
                 float volume = (deltaFrequency <= delta) ? (float)(1 - (deltaFrequency / delta)) : 0;
-                float noise = volume < 0.8f ? 1 : 0.1f;
+                float noise = volume < 0.8f ? 1 : 0;
                 bool play = (volume > 0) ? true : false;
-                state = new AudioPlayerState(play, volume, false, noise);
+                state = new AudioPlayerState(play, 1, false, noise);//changed volume
 
                 //play ton
                 if ((lState & LogicStates.Signal) == LogicStates.Signal && deltaFrequency <= delta)
                 {
                     R_123.AppConfig.AppConfigCreator.GetTonPlayer().Start();
                 }
-                //NoisePlayer.Volume = noise;
-                //if (volume > 0 && (lState & LogicStates.IsSaying) == LogicStates.IsSaying)
-                //    NoisePlayer.Volume = 0.01F;
             }
             
             return state;

@@ -34,7 +34,7 @@ namespace MCP.Audio
                     else
                         storage.Get(packet).Stop();
                     storage.Get(packet).Volume = state.Volume;
-                    storage.Get(packet).Noise = (1 - state.Volume);
+                    storage.Get(packet).Noise = state.Noise;//changed
                 }
             }
         }

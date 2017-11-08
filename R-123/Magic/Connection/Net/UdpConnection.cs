@@ -42,8 +42,14 @@ namespace Connection.Net
             Task<byte[]> task = new Task<byte[]>(() =>
             {
                 byte[] buffer = new byte[64000];
-                EndPoint remoteEP = Wherefrom;
-                int received = socket.ReceiveFrom(buffer,ref remoteEP);
+                int received = 0;
+                try
+                {
+                    EndPoint remoteEP = Wherefrom;
+                    received = socket.ReceiveFrom(buffer, ref remoteEP);
+                }
+                catch (Exception ex)
+                { }
                 return buffer.Take(received).ToArray();
             }
             );

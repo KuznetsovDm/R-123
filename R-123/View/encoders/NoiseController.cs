@@ -7,7 +7,7 @@
             base(image, Properties.Settings.Default.NoiseController, 1m)
         {
         }
-        public new decimal Value => base.Value * 0.9m;
+        public new decimal Value => base.Value * 0.9m + 0.008m;
         protected override void ValueIsUpdated()
         {
             ValueChanged?.Invoke();

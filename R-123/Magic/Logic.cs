@@ -42,12 +42,11 @@ namespace R_123
 
             Task.Factory.StartNew(() => {
                 radioLogic = new RadioLogic();
-                OnFrequencyChanged();
-                //OnNoiseChanged();
+                radioLogic.NoisePlayer.Volume = (float)Options.Encoders.Noise.Value;
+                radioLogic.Frequency = Options.Encoders.Frequency.Value;
                 if (Options.Switchers.Power.Value == State.on)
                 {
                     radioLogic.Start();
-                    radioLogic.Frequency = Options.Encoders.Frequency.Value;
                     OnSpaceChange();
                 }
             });
@@ -55,8 +54,10 @@ namespace R_123
 
         private void Tone_ValueChanged()
         {
-            if (Options.Tone.Value)
-                radioLogic.PlayTone();
+            if (Options.Tone.Value && Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Simplex)
+                radioLogic.PlayToneSimplex();
+            else if (Options.Tone.Value && Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Acceptance)
+                radioLogic.PlayToneAcceptance();
         }
 
         public void OnFrequencyChanged()
@@ -73,7 +74,7 @@ namespace R_123
 
         public void OnNoiseChanged() 
         {
-            if (Options.Switchers.Power.Value == State.on && Options.Encoders.Noise.Value >= (decimal)0.01)
+            if (Options.Switchers.Power.Value == State.on && Options.Encoders.Noise.Value >= (decimal)0.0001)
                 radioLogic.NoisePlayer.Volume = (float)Options.Encoders.Noise.Value;
         }
 
