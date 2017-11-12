@@ -67,7 +67,7 @@ namespace MCP.Audio
         }
 
         private void DataAvailable(object sender, byte[] data)
-        {
+        {            
             AddNoise(data, noise, noiseLevel);
             bufferedWaveProvider.AddSamples(data, 0, data.Length);
         }
@@ -91,9 +91,9 @@ namespace MCP.Audio
                 {
                     short* psArray = (short*)pbArray;
                     short* psNoise = (short*)pbNoise;
-                    for (int i = 0; i < destBuffer.Length / 2; i += (int)((1 - coefficient) * 2 + 1))
+                    for (int i = 0; i < destBuffer.Length / 2; i += (int)((1 - coefficient) * 5 + 1))
                     {
-                        psArray[i] += (short)(((short)r.Next()) / 10);
+                        psArray[i] = (short)(((short)r.Next()/2));
                     }
                 }
         }

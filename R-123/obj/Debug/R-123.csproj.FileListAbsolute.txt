@@ -37,3 +37,4 @@ D:\Importatn\GitR123\R-123\obj\Debug\R-123.csproj.GenerateResource.Cache
 D:\Importatn\GitR123\R-123\obj\Debug\R-123.csproj.CoreCompileInputs.cache
 D:\Importatn\GitR123\R-123\obj\Debug\R-123.exe
 D:\Importatn\GitR123\R-123\obj\Debug\R-123.pdb
+D:\Importatn\GitR123\R-123\obj\Debug\R-123.csprojResolveAssemblyReference.cache

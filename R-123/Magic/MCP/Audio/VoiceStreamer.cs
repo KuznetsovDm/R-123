@@ -20,6 +20,7 @@ namespace MCP.Audio
             Client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             Input = new WaveInEvent();
             Input.WaveFormat = format;
+            Input.BufferMilliseconds = 25;
             Input.DataAvailable += VoiceInput;
             this.IPAddress = ipAddress;
             this.Port = port;

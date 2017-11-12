@@ -11,14 +11,15 @@ namespace MCP.Audio
     class NoisePlayer
     {
         Thread thread;
-        WaveOutEvent player;
+        WaveOut player;
         BufferedWaveProvider bufferedWaveProvider;
         VolumeWaveProvider16 volumeWaveProvider;
         private bool isPlay;
 
         public NoisePlayer()
         {
-            player = new WaveOutEvent();
+            player = new WaveOut();
+            player.DesiredLatency = 100;
             bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat(22050, 16, 2)) { DiscardOnBufferOverflow = true };
             volumeWaveProvider = new VolumeWaveProvider16(bufferedWaveProvider);
             player.Init(volumeWaveProvider);
