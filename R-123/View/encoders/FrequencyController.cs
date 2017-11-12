@@ -22,8 +22,13 @@ namespace R_123.View
             get
             {
                 if (Options.Switchers.Power.Value == State.on &&
-                                Options.PositionSwitchers.Range.Value <= RangeSwitcherValues.FixFrequency4)
-                    return false;
+                    Options.PositionSwitchers.Range.Value <= RangeSwitcherValues.FixFrequency4)
+                {
+                    if (Options.Clamp[(int)Options.PositionSwitchers.Range.Value].Value == 1m)
+                        return true;
+                    else
+                        return false;
+                }
                 else
                     return true;
             }

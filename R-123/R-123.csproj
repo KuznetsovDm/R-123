@@ -130,6 +130,7 @@
     <Compile Include="View\switchers\SubFixFrequency.cs" />
     <Compile Include="View\switchers\Switcher.cs" />
     <Compile Include="View\ToneButton.cs" />
+    <Compile Include="View\ToolTip.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

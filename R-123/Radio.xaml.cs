@@ -8,6 +8,8 @@ namespace R_123
     /// </summary>
     public partial class Radio : UserControl
     {
+
+        private View.ToolTip toolTip;
         public Radio()
         {
             InitializeComponent();
@@ -43,6 +45,7 @@ namespace R_123
             Options.Tone = new ToneButton(tone_Image);
 
             Options.Disk = disk_Canvas;
+            toolTip = new View.ToolTip();
         }
     }
 }
