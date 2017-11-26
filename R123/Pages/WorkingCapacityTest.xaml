@@ -1,0 +1,54 @@
+﻿<Page x:Class="R123.WorkingCapacityTest"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:R123"
+      mc:Ignorable="d" 
+      d:DesignHeight="1000" d:DesignWidth="1280"
+      Title="WorkingCapacityTest">
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="98"/>
+            <Setter Property="Height" Value="116"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Files/Images/Learning/TestRadio.png" Stretch="Fill"/>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="156*"/>
+            <RowDefinition Height="47*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="105*"/>
+            <ColumnDefinition Width="443*"/>
+            <ColumnDefinition Width="92*"/>
+        </Grid.ColumnDefinitions>
+
+        <Viewbox Grid.ColumnSpan="3" Grid.RowSpan="3" Stretch="Fill">
+            <Canvas Name="canvas" Width="1280" Height="1000">
+                <Button Click="Button_Click" Canvas.Left="545" Canvas.Top="60"/>
+                <Button Click="Button_Click" Canvas.Left="435" Canvas.Top="58"/>
+                <Button Click="Button_Click" Canvas.Left="325" Canvas.Top="56"/>
+                <Button Click="Button_Click" Canvas.Left="215" Canvas.Top="54"/>
+                <Button Click="Button_Click" Canvas.Left="103" Canvas.Top="54"/>
+            </Canvas>
+        </Viewbox>
+
+        <Viewbox Grid.Column="1" Grid.Row="1" Stretch="Uniform">
+            <Frame x:Name="Frame" NavigationUIVisibility="Hidden"/>
+        </Viewbox>
+    </Grid>
+</Page>
