@@ -161,7 +161,7 @@
     <Compile Include="View\displays\SubFrequencyDisplay.cs" />
     <Compile Include="View\displays\VoltageDisplay.cs" />
     <Compile Include="View\encoders\AnimationEncoder.cs" />
-    <Compile Include="View\encoders\AthenaDisplay.cs" />
+    <Compile Include="View\encoders\AntennaDisplay.cs" />
     <Compile Include="View\encoders\Encoder.cs" />
     <Compile Include="View\encoders\FrequencyController.cs" />
     <Compile Include="View\encoders\NoiseController.cs" />
@@ -269,7 +269,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Files\Appointment.pdf" />
     <None Include="Files\XSPLearning\Controls.xps" />
     <None Include="Files\XSPLearning\Destination.xps" />
     <None Include="Files\XSPLearning\Kit.xps" />
@@ -282,8 +281,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Files\dest.txt" />
-    <Resource Include="Files\Images\AthenaControl.png" />
-    <Resource Include="Files\Images\AthenaControlOld.png" />
+    <Resource Include="Files\Images\AntennaControl.png" />
+    <Resource Include="Files\Images\AntennaControlOld.png" />
     <Resource Include="Files\Images\FixedFrequencyDisplay0.gif" />
     <Resource Include="Files\Images\FixedFrequencyDisplay1.gif" />
     <Resource Include="Files\Images\FixedFrequencyDisplay2.gif" />
@@ -315,7 +314,7 @@
     <Resource Include="Files\Images\Learning\TestRadio.png" />
     <Resource Include="Files\Images\tangenta_prd.png" />
     <Resource Include="Files\Images\tangenta_prm.png" />
-    <Resource Include="Files\Images\AthenaFixer.png" />
+    <Resource Include="Files\Images\AntennaFixer.png" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

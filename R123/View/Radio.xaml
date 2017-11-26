@@ -38,9 +38,9 @@
                      Canvas.Left="733" Canvas.Top="176" Height="32" Width="30"/>
             </Canvas>
             <Image Source="/Files/Images/fone.png" Canvas.Left="497" Canvas.Top="77"/>
-            
-            <Image x:Name="antennaControl_Image" Source="/Files/Images/AthenaControl.png" Stretch="Fill" Canvas.Left="508" Canvas.Top="89" Width="123" Height="123"/>
-            <Image x:Name="antennaFixer_Image" Source="/Files/Images/AthenaFixer.png" Canvas.Left="541" Canvas.Top="121" Height="58" Width="58"/>
+
+            <Image x:Name="antennaControl_Image" Source="/Files/Images/AntennaControl.png" Stretch="Fill" Canvas.Left="508" Canvas.Top="89" Width="123" Height="123"/>
+            <Image x:Name="antennaFixer_Image" Source="/Files/Images/AntennaFixer.png" Canvas.Left="541" Canvas.Top="121" Height="58" Width="58"/>
             
             <Canvas x:Name="frequencyDisplay_Canvas" Canvas.Left="316" Canvas.Top="18" Width="108" Height="45" ClipToBounds="True">
                 <Canvas x:Name="frequencyBand_Canvas" Canvas.Left="-6" Visibility="Hidden"></Canvas>

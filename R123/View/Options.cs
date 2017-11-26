@@ -24,7 +24,7 @@ namespace R123.View
             /// Частота
             /// </summary>
             public static FrequencyController Frequency;
-            public static AthenaDisplay AthenaDisplay;
+            public static AntennaDisplay AthenaDisplay;
         }
         /// <summary>
         /// Позиционные перключатели.

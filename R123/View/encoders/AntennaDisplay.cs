@@ -2,13 +2,13 @@
 
 namespace R123.View
 {
-    class AthenaDisplay : AnimationEncoder
+    class AntennaDisplay : AnimationEncoder
     {
         public event DelegateChangeValue ValueChanged;
 
         public Image image, imageFixer;
         private double centerXImageFixer, centerYImageFixer;
-        public AthenaDisplay(Image image, Image image2) : base(image, 360)
+        public AntennaDisplay(Image image, Image image2) : base(image, 360)
         {
             this.image = image;
             this.imageFixer = image2;
