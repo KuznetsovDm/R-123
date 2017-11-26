@@ -27,7 +27,10 @@ namespace R123.View
             get
             {
                 double angleFrequency = Options.Encoders.Frequency.CurrentAngle / 2;
-                if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency2) angleFrequency += 180;
+                if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency2 ||
+                    Options.PositionSwitchers.Range.Value <= RangeSwitcherValues.FixFrequency4 &&
+                    Options.Switchers.SubFixFrequency[(int)Options.PositionSwitchers.Range.Value].Value == SubFrequency.Two)
+                    angleFrequency += 180;
                 double difference = (CurrentAngle - angleFrequency + 360) % 360;
                 if (difference > 180) difference = 360 - difference;
                 int numberHill = (int)(difference / 36);
@@ -41,33 +44,13 @@ namespace R123.View
         {
             if (Options.Switchers.Power.Value == State.on)
             {
-                if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency1)
+                if (Options.PositionSwitchers.Range.Value <= RangeSwitcherValues.FixFrequency4)
                 {
-                    if (Options.Switchers.SubFixFrequency[0].Value == SubFrequency.One)
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency1_1);
-                    else
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency1_2);
-                }
-                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency2)
-                {
-                    if (Options.Switchers.SubFixFrequency[1].Value == SubFrequency.One)
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency2_1);
-                    else
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency2_2);
-                }
-                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency3)
-                {
-                    if (Options.Switchers.SubFixFrequency[2].Value == SubFrequency.One)
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency3_1);
-                    else
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency3_2);
-                }
-                else if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.FixFrequency4)
-                {
-                    if (Options.Switchers.SubFixFrequency[3].Value == SubFrequency.One)
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency4_1);
-                    else
-                        Animation = FrequencyToValue(Properties.Settings.Default.FixedFrequency4_2);
+                    int anim = (int)(Options.Encoders.Frequency.RequiredValue * 180);
+                    if (Options.Switchers.SubFixFrequency[(int)Options.PositionSwitchers.Range.Value].Value == SubFrequency.Two)
+                        anim += 180;
+                    System.Diagnostics.Trace.WriteLine(Options.Encoders.Frequency.RequiredValue + ", " + anim);
+                    Animation = anim;
                 }
                 else
                     Animation = base.Value;
@@ -79,7 +62,7 @@ namespace R123.View
         static private int FrequencyToValue(decimal frequency)
         {
             int answer = System.Convert.ToInt32((frequency - minFirstSubFrequency) * 180m / 31.5m);
-            if (Options.PositionSwitchers.Range.Value == RangeSwitcherValues.SubFrequency2) answer += 180;
+            System.Diagnostics.Trace.WriteLine("anim to " + answer + ", fr = " + frequency);
 
             return answer;
         }

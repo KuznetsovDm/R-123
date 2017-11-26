@@ -24,6 +24,13 @@ namespace R123.View
         public int NumberSteps => numberOfRemainingSteps;
         public bool TimerIsEnabled => dispatcherTimer.IsEnabled || dispatcherSleep.IsEnabled;
         public bool RightAnimation => requiredValue > CurrentValue;
+        public double RequiredValue
+        {
+            get
+            {
+                return (double)requiredValue / maxValue;
+            }
+        }
         protected int Animation
         {
             get

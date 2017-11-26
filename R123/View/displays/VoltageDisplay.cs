@@ -21,6 +21,7 @@ namespace R123.View
             Options.PositionSwitchers.WorkMode.ValueChanged += Update;
 
             Options.Encoders.AthenaDisplay.ValueChanged += UpdateMaxValue;
+            Options.Encoders.Frequency.AngleChanged += UpdateMaxValue;
 
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
