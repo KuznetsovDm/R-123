@@ -64,6 +64,7 @@
                 </Canvas>
             </Canvas>
             <Canvas x:Name="disk_Canvas" Width="900" Height="500" ></Canvas>
+            <Line Name="lineMouse_Line" StrokeThickness="5" Stroke="Black"/>
         </Canvas>
     </Grid>
 </UserControl>

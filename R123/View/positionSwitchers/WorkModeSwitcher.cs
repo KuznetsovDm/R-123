@@ -8,7 +8,7 @@
         {
             minAngle = -38;
             maxAngle = 120;
-            SetStartValue(Properties.Settings.Default.WorkModeSwitcher, 3);
+            SetStartValue(/*Properties.Settings.Default.WorkModeSwitcher*/0, 3);
         }
         public new WorkModeValue Value => (WorkModeValue)base.Value;
         protected override void ValueIsUpdated()

@@ -7,6 +7,13 @@ namespace R123.View
     /// </summary>
     static class Options
     {
+        public delegate void DelegateRandomValue();
+        public static event DelegateRandomValue RandomValue;
+
+        public static void SetRandomValue()
+        {
+            RandomValue?.Invoke();
+        }
         /// <summary>
         /// Крутилки для плавной настройки параметров
         /// </summary>
@@ -98,5 +105,7 @@ namespace R123.View
         public static ToneButton Tone;
         public static ToolTip ToolTip;
         public static Audio.AudioPlayer PlayerPositionSwitcher = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
+        public static LineMouse lineMouse;
+        public static System.Random rnd = new System.Random();
     }
 }

@@ -21,21 +21,5 @@ namespace R123
         {
             MainWindow.Instance.ShowRadioPage();
         }
-        private void Destination_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.Instance.ShowXpsDocument("Destination");
-        }
-        private void Tech_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.Instance.ShowXpsDocument("Tech");
-        }
-        private void Kit_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.Instance.ShowXpsDocument("Kit");
-        }
-        private void Controls_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow.Instance.ShowXpsDocument("Controls");
-        }
     }
 }

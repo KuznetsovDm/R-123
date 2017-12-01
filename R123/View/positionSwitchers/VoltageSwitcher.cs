@@ -6,7 +6,7 @@
         public VoltageSwitcher(System.Windows.Controls.Image image) :
             base(image, -3)
         {
-            SetStartValue(Properties.Settings.Default.VoltageSwitcher, 11);
+            SetStartValue(/*Properties.Settings.Default.VoltageSwitcher*/1, 11);
         }
         protected override void ValueIsUpdated()
         {

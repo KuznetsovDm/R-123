@@ -23,6 +23,12 @@ namespace R123.View
 
             image.MouseWheel += Image_MouseWheel;
             image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
+
+            Options.RandomValue += SetRandomValue;
+        }
+        private void SetRandomValue()
+        {
+            CurrentValue = Options.rnd.Next() % maxValue;
         }
         public int Value => currentValue;
 
@@ -75,6 +81,10 @@ namespace R123.View
                 v1 = new Vector(cursor.X - centerX, centerY - cursor.Y);
                 startAngle = CurrentAngle;
                 changeAngle = 0;
+
+                Options.lineMouse.SetCenter(centerX, centerY);
+                Options.lineMouse.SetMouse(cursor.X, cursor.Y);
+                Options.lineMouse.Visibility(true);
             }
         }
         private void Window_MouseMove(object sender, MouseEventArgs e)
@@ -84,12 +94,14 @@ namespace R123.View
             changeAngle += Vector.AngleBetween(v2, v1) / coefficientMouseMove;
             CurrentValue = System.Convert.ToInt32((startAngle + changeAngle) * maxValue / 360);
             v1 = v2;
+            Options.lineMouse.SetMouse(cursor.X, cursor.Y);
         }
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
             MainWindow.Instance.MouseMove -= Window_MouseMove;
             MainWindow.Instance.MouseUp -= Window_MouseUp;
             MainWindow.Instance.Cursor = Cursors.Arrow;
+            Options.lineMouse.Visibility(false);
         }
     }
 }

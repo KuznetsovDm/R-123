@@ -18,6 +18,12 @@ namespace R123.View
             this.defAngle = defAngle;
             image.MouseWheel += OnMouseWheel;
             image.MouseDown += Image_MouseDown;
+
+            Options.RandomValue += SetRandomValue;
+        }
+        private void SetRandomValue()
+        {
+            CurrentValue = Options.rnd.Next() % maxValue;
         }
         public int Value => currentValue;
 

@@ -23,20 +23,17 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Р-123" HorizontalAlignment="Center" Grid.ColumnSpan="2" FontSize="24" FontFamily="Times New Roman"/>
-        <StackPanel Grid.Column="0" Grid.Row="1">
-            <Button Content="Назначение"                                                Click="Destination_Click"/>
-            <Button Content="Технические данные"                                        Click="Tech_Click"/>
-            <Button Content="Комплект радиостанции"                                     Click="Kit_Click"/>
-            <Button Content="Назначение органов управления"                             Click="Controls_Click"/>
-        </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            <Button Content="Обучение управлением программы" IsEnabled="False"/>
-            <Button Content="Подготовка режима радиостанции" IsEnabled="False"/>
-            <Button Content="Порядок работы" IsEnabled="False"/>
+
+        <TextBlock Text="Радиостанция Р-123М" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="2" FontSize="30" FontFamily="Arial" FontWeight="Bold"/>
+        <TextBlock Text="Документация" Grid.Row="1" HorizontalAlignment="Center" FontSize="26" FontFamily="Arial" FontWeight="Bold"/>
+        <TextBlock Text="Работа с радиостанцией" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontSize="26" FontFamily="Arial" FontWeight="Bold"/>
+        
+        <StackPanel Grid.Column="1" Grid.Row="2">
+            <Button Content="Порядок подготовки радиостанции" IsEnabled="False"/>
             <Button Content="Проверка работоспособности радиостанции"                   Click="WorkingCapacityTest_Click"/>
             <Button Content="Радиостанция и задания"                                    Click="RadioAndTask_Click"/>
         </StackPanel>

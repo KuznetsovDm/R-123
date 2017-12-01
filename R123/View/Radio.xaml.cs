@@ -7,10 +7,12 @@ namespace R123.View
     /// </summary>
     public partial class Radio : UserControl
     {
+
         public Radio()
         {
             InitializeComponent();
 
+            Options.lineMouse = new LineMouse(lineMouse_Line);
             Options.PressSpaceControl.GetImage(tangenta_Image);
 
             Options.canvas = form_Canvas;
@@ -42,7 +44,7 @@ namespace R123.View
             Options.FixedFrequencySetting = new FixedFrequencySetting(settingFixedFrequency_Canvas);
 
             Options.Tone = new ToneButton(tone_Image);
-
+            
             Options.Ring = ring_Image;
             Options.Disk = disk_Canvas;
             Options.ToolTip = new View.ToolTip();

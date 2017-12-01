@@ -15,7 +15,7 @@
         public RangeSwitcher(System.Windows.Controls.Image image) :
             base(image, -3)
         {
-            SetStartValue(Properties.Settings.Default.RangeSwitcher, 6);
+            SetStartValue(/*Properties.Settings.Default.RangeSwitcher*/0, 6);
         }
         public new RangeSwitcherValues Value => (RangeSwitcherValues)base.Value;
         protected override void ValueIsUpdated()

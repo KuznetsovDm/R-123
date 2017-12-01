@@ -9,21 +9,38 @@
         Title="R-123" ResizeMode="canResize" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Margin" Value="5"/>
             <Setter Property="Height" Value="50"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="10"/>
             <Setter Property="Focusable" Value="False"/>
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid.RowDefinitions>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Menu Background="White" FontSize="20" FontFamily="Times New Roman">
             <MenuItem Header="Главное меню" Click="MainMenu_Click"/>
-        </Menu>
+        </Menu>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <Frame Name="Frame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+        <StackPanel VerticalAlignment="Top">
+            <Button Content="Назначение радиостанции Р-123"                                                                Click="Destination_Click"/>
+            <Button Content="Тактико-технические характеристики"                                                           Click="Tech_Click"/>
+            <Button Content="Состав"                                                                                       Click="Kit_Click"/>
+            <Button Content="Порядок подготовки радиостанции к работе, установка органов управления в исходные положения"  Click="Controls_Click"/>
+            <Button Content="Проверка работоспособности радиостанции"                                                      Click="Test_Click"/>
+            <Button Content="Порядок настройки радиостанции на заданную частоту и вхождения в связь с корреспондентом"     Click="Ins_Click"/>
+            
+            <Button Content="Порядок подготовки радиостанции" IsEnabled="False"/>
+            <Button Content="Проверка работоспособности радиостанции"                   Click="WorkingCapacityTest_Click"/>
+            <Button Content="Работа на радиостанции"                                    Click="RadioAndTask_Click"/>
+        </StackPanel>
+
+        <Frame Name="Frame" NavigationUIVisibility="Hidden" Grid.Column="1"/>
     </Grid>
 </Window>

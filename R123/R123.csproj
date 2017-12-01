@@ -146,6 +146,7 @@
     <Compile Include="Pages\NewFolder1\TechPage.xaml.cs">
       <DependentUpon>TechPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\LineMouse.cs" />
     <Compile Include="View\Radio.xaml.cs">
       <DependentUpon>Radio.xaml</DependentUpon>
     </Compile>
@@ -273,6 +274,7 @@
     <None Include="Files\XSPLearning\Destination.xps" />
     <None Include="Files\XSPLearning\Kit.xps" />
     <None Include="Files\XSPLearning\Tech.xps" />
+    <None Include="Files\XSPLearning\R-123M.xps" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

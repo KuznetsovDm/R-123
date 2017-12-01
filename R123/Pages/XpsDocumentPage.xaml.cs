@@ -8,6 +8,15 @@ namespace R123.Pages
     /// </summary>
     public partial class XpsDocumentPage : Page
     {
+        public XpsDocumentPage(int numberPage)
+        {
+            InitializeComponent();
+
+            string file = "R-123M";
+            XpsDocument xpsDocument = new XpsDocument("../../Files/XSPLearning/" + file + ".xps", System.IO.FileAccess.Read);
+            docViewer.Document = xpsDocument.GetFixedDocumentSequence();
+            docViewer.GoToPage(numberPage);
+        }
         public XpsDocumentPage(string file)
         {
             InitializeComponent();

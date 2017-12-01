@@ -44,6 +44,25 @@
                 <Button Click="Button_Click" Canvas.Left="325" Canvas.Top="56"/>
                 <Button Click="Button_Click" Canvas.Left="215" Canvas.Top="54"/>
                 <Button Click="Button_Click" Canvas.Left="103" Canvas.Top="54"/>
+                <Button Click="Button_Click" Canvas.Left="102" Canvas.Top="209"/>
+                <Button Click="Button_Click" Canvas.Left="101" Canvas.Top="364"/>
+                <Button Click="Button_Click" Canvas.Left="101" Canvas.Top="513"/>
+                <Button Click="Button_Click" Canvas.Left="100" Canvas.Top="665"/>
+                <Button Click="Button_Click" Canvas.Left="99" Canvas.Top="815"/>
+                <Button Click="Button_Click" Canvas.Left="226" Canvas.Top="815"/>
+                <Button Click="Button_Click" Canvas.Left="354" Canvas.Top="815"/>
+                <Button Click="Button_Click" Canvas.Left="482" Canvas.Top="817"/>
+                <Button Click="Button_Click" Canvas.Left="609" Canvas.Top="818"/>
+                <Button Click="Button_Click" Canvas.Left="736" Canvas.Top="819"/>
+                <Button Click="Button_Click" Canvas.Left="862" Canvas.Top="817"/>
+                <Button Click="Button_Click" Canvas.Left="990" Canvas.Top="816"/>
+                <Button Click="Button_Click" Canvas.Left="1115" Canvas.Top="816"/>
+                <Button Click="Button_Click" Canvas.Left="1117" Canvas.Top="670"/>
+                <Button Click="Button_Click" Canvas.Left="1117" Canvas.Top="372"/>
+                <Button Click="Button_Click" Canvas.Left="1115" Canvas.Top="224"/>
+                <Button Click="Button_Click" Canvas.Left="1115" Canvas.Top="68"/>
+                <Button Click="Button_Click" Canvas.Left="952" Canvas.Top="67"/>
+                <Button Click="Button_Click" Canvas.Left="789" Canvas.Top="66"/>
             </Canvas>
         </Viewbox>
 

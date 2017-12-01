@@ -7,8 +7,30 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="XpsDocumentPage">
+    <Page.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="230"/>
+            <Setter Property="Height" Value="50"/>
+        </Style>
+    </Page.Resources>
 
     <Grid>
-        <DocumentViewer Name="docViewer"/>
+        <!--<Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel VerticalAlignment="Top">
+            <Button Content="Назначение"                                                Click="Destination_Click"/>
+            <Button Content="Технические данные"                                        Click="Tech_Click"/>
+            <Button Content="Комплект радиостанции"                                     Click="Kit_Click"/>
+            <Button Content="Назначение органов управления"                             Click="Controls_Click"/>
+        </StackPanel>-->
+        
+        <DocumentViewer Grid.Column="1" Name="docViewer"/>
     </Grid>
 </Page>

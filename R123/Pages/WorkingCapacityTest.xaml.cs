@@ -14,65 +14,70 @@ namespace R123
 
         private Button oldButton = null;
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
-        private int opacity = 100;
-        private int addOpacity;
         public WorkingCapacityTest()
         {
             InitializeComponent();
             Frame.Content = MainWindow.Instance.Radio;
+            View.Options.SetRandomValue();
 
-            Frame.MouseEnter += Radio_MouseEnter;
-            Frame.MouseLeave += Radio_MouseLeave;
+            MouseMove += WorkingCapacityTest_MouseMove;
 
-            dispatcherTimer.Tick += new System.EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Interval = new System.TimeSpan(0, 0, 0, 0, 1000 / 40);
+            View.Options.Encoders.Noise.ValueChanged += Update;
+            View.Options.Encoders.Volume.ValueChanged += Update;
+            View.Options.Encoders.AthenaDisplay.ValueChanged += Update;
 
-            MessageBox.Show("Чтобы начать обучение нажмите на первый шаг.", "Справка");
+            View.Options.PositionSwitchers.WorkMode.ValueChanged += Update;
+            View.Options.PositionSwitchers.Voltage.ValueChanged += Update;
+            View.Options.PositionSwitchers.Range.ValueChanged += Update;
+
+            View.Options.Switchers.Power.ValueChanged += Update;
+            View.Options.Switchers.Scale.ValueChanged += Update;
+        }
+        private void Update()
+        {
+            /*if (learning.Conditions[currentStepLearning]())
+                NextStep();*/
         }
 
-        private int currentStepLearning = 0;
+        private void WorkingCapacityTest_MouseMove(object sender, MouseEventArgs e)
+        {
+            MouseMove -= WorkingCapacityTest_MouseMove;
+
+            NextStep();
+        }
+
+        private int currentStepLearning = -1;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
+            button.Focusable = false;
             int numberButton = canvas.Children.IndexOf(sender as UIElement);
-            
-            if (currentStepLearning == 0 && numberButton > 0)
-                MessageBox.Show(learning.TextLearning[numberButton], "Справка (ОБУЧЕНИЕ НЕ НАЧАТО)");
-            else if (currentStepLearning != numberButton)
+            TestStep(numberButton);
+        }
+        private void TestStep(int numberButton)
+        {
+            if (currentStepLearning != numberButton)
                 MessageBox.Show(learning.TextLearning[numberButton], "Справка");
             else if (learning.Conditions[numberButton]()) // && step == numberButton
             {
                 MessageBox.Show(learning.TextLearning[numberButton], "Справка");
 
-                currentStepLearning++;
-                if (oldButton != null)
-                    oldButton.BorderBrush = System.Windows.Media.Brushes.Black;
-                button.BorderThickness = new Thickness(7);
-                button.BorderBrush = System.Windows.Media.Brushes.Green;
-                button.Focusable = false;
-                oldButton = button;
+                NextStep();
             }
             else // if not conditions[numberButton]()
                 MessageBox.Show($"Шаг №{currentStepLearning} не выполнен.", "Справка");
             //MessageBox.Show(textLearning[numberButton], $"Справка (ШАГ {currentStepLearning} НЕ ВЫПОЛНЕН)");
         }
-
-        private void DispatcherTimer_Tick(object sender, System.EventArgs e)
+        private void NextStep()
         {
-            if (0 < opacity && addOpacity < 0 || opacity < 100 && addOpacity > 0)
-                Frame.Opacity = (double)(opacity += addOpacity) / 100;
-            else
-                dispatcherTimer.Stop();
-        }
-        private void Radio_MouseLeave(object sender, MouseEventArgs e)
-        {
-            addOpacity = -20;
-            dispatcherTimer.Start();
-        }
-        private void Radio_MouseEnter(object sender, MouseEventArgs e)
-        {
-            addOpacity = 20;
-            dispatcherTimer.Start();
+            currentStepLearning++;
+            Button button = canvas.Children[currentStepLearning] as Button;
+            if (oldButton == null) oldButton = canvas.Children[0] as Button;
+            oldButton.BorderBrush = System.Windows.Media.Brushes.Black;
+            button.BorderThickness = new Thickness(7);
+            button.BorderBrush = System.Windows.Media.Brushes.Green;
+            button.Focusable = false;
+            oldButton = button;
         }
     }
 }

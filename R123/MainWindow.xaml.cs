@@ -18,9 +18,11 @@ namespace R123
 
             InitializeComponent();
 
-            Frame.Content = mainMenu;
+            //Frame.Content = mainMenu;
+            //Frame.Content = new WorkingCapacityTest();
+            ShowXpsDocument("Destination");
 
-            logic = new Logic();
+            //logic = new Logic();
 
             Closing += MainWindow_Closing;
         }
@@ -43,10 +45,6 @@ namespace R123
         {
             Instance.Frame.Content = new RadioPage();
         }
-        public void ShowXpsDocument(string file)
-        {
-            Instance.Frame.Content = new Pages.XpsDocumentPage(file);
-        }
 
         private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -55,6 +53,46 @@ namespace R123
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             logic?.Close();
+        }
+        private void ShowXpsDocument(string file)
+        {
+            Frame.Content = new Pages.XpsDocumentPage(file);
+        }
+        private void ShowXpsDocument(int numberPage)
+        {
+            Frame.Content = new Pages.XpsDocumentPage(numberPage);
+        }
+        private void Destination_Click(object sender, RoutedEventArgs e)
+        {
+            ShowXpsDocument(2);
+        }
+        private void Tech_Click(object sender, RoutedEventArgs e)
+        {
+            ShowXpsDocument(5);
+        }
+        private void Kit_Click(object sender, RoutedEventArgs e)
+        {
+            ShowXpsDocument(6);
+        }
+        private void Controls_Click(object sender, RoutedEventArgs e)
+        {
+            ShowXpsDocument(7);
+        }
+        private void Test_Click(object sender, RoutedEventArgs e)
+        {
+            ShowXpsDocument(8);
+        }
+        private void Ins_Click(object sender, RoutedEventArgs e)
+        {
+            ShowXpsDocument(9);
+        }
+        private void WorkingCapacityTest_Click(object sender, RoutedEventArgs e)
+        {
+            ShowWorkingCapacityTest();
+        }
+        private void RadioAndTask_Click(object sender, RoutedEventArgs e)
+        {
+            ShowRadioPage();
         }
     }
 }

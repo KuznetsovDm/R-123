@@ -10,6 +10,12 @@ namespace R123.View
         public SubFixFrequency(Image image, int number) : base(image)
         {
             this.number = number;
+
+            Options.RandomValue += SetRandomValue;
+        }
+        private void SetRandomValue()
+        {
+            CurrentValue = System.Convert.ToBoolean(Options.rnd.Next() % 2);
         }
         public new SubFrequency Value
         {
