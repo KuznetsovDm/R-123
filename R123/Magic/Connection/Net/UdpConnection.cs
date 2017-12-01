@@ -32,6 +32,7 @@ namespace Connection.Net
 
         public override void Close()
         {
+            autoResetEvent.Set();
             socket.Close();
         }
 
