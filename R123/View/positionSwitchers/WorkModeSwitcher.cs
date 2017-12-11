@@ -1,7 +1,7 @@
 ﻿namespace R123.View
 {
-    enum WorkModeValue { Acceptance, Simplex, WasIstDas }
-    class WorkModeSwitcher : PositionSwitcher
+    public enum WorkModeValue { Acceptance, Simplex, WasIstDas }
+    public class WorkModeSwitcher : PositionSwitcher
     {
         public event DelegateChangeValue ValueChanged;
         public WorkModeSwitcher(System.Windows.Controls.Image image) : base(image)

@@ -1,6 +1,6 @@
 ﻿namespace R123.View
 {
-    class NoiseController : Encoder
+    public class NoiseController : Encoder
     {
         public event DelegateChangeValue ValueChanged;
         public NoiseController(System.Windows.Controls.Image image) : 

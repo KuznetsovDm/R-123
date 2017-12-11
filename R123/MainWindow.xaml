@@ -5,42 +5,98 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R123"
         mc:Ignorable="d"
-        d:DesignHeight="1000" d:DesignWidth="1280"
-        Title="R-123" ResizeMode="canResize" WindowStartupLocation="CenterScreen" WindowState="Maximized">
-    <Window.Resources>
+        Title="Р-123" WindowStartupLocation="CenterScreen"
+        d:DesignWidth="1280" d:DesignHeight="1024"
+        WindowState="Maximized" MinWidth="600" MinHeight="400">
+        <!--Width="300" Height="220"
+        ResizeMode="NoResize"-->
+    <!--<Window.Resources>
         <Style TargetType="Button">
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="FontSize" Value="10"/>
-            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+        </Style>
+    </Window.Resources>-->
+    <Window.Resources>
+        <local:TabSizeConverter x:Key="tabSizeConverter" />
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Width">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource tabSizeConverter}">
+                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}" />
+                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}" Path="ActualWidth" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TextInTabItemHeader">
+            <Setter Property="Control.Margin" Value="3" />
+            <Setter Property="Control.FontSize" Value="20"/>
+            <Setter Property="Control.FontFamily" Value="Times New Roman"/>
         </Style>
     </Window.Resources>
     <Grid>
+        <TabControl>
+            <!--<TabItem Visibility="Hidden">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Height="10" Width="10" Fill="Black" />
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">Secret</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Frame Name="Frame0" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                </TabItem.Content>
+            </TabItem>-->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <!--<Ellipse Height="10" Width="10" Fill="Black" />-->
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">1. Назначение, ТТХ, состав</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Frame Name="Frame1" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <!--<Rectangle Height="10" Width="10" Fill="Black" />-->
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">2. Работа на радиостанции</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Frame Name="Frame2" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <!--<Rectangle Height="10" Width="10" Fill="Black" />-->
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Задачи</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <Frame Name="Frame3" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+
+
+
+
+
+
         <!--<Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Menu Background="White" FontSize="20" FontFamily="Times New Roman">
-            <MenuItem Header="Главное меню" Click="MainMenu_Click"/>
-        </Menu>-->
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <StackPanel VerticalAlignment="Top">
-            <Button Content="Назначение радиостанции Р-123"                                                                Click="Destination_Click"/>
-            <Button Content="Тактико-технические характеристики"                                                           Click="Tech_Click"/>
-            <Button Content="Состав"                                                                                       Click="Kit_Click"/>
-            <Button Content="Порядок подготовки радиостанции к работе, установка органов управления в исходные положения"  Click="Controls_Click"/>
-            <Button Content="Проверка работоспособности радиостанции"                                                      Click="Test_Click"/>
-            <Button Content="Порядок настройки радиостанции на заданную частоту и вхождения в связь с корреспондентом"     Click="Ins_Click"/>
-            
-            <Button Content="Порядок подготовки радиостанции" IsEnabled="False"/>
-            <Button Content="Проверка работоспособности радиостанции"                   Click="WorkingCapacityTest_Click"/>
-            <Button Content="Работа на радиостанции"                                    Click="RadioAndTask_Click"/>
-        </StackPanel>
-
-        <Frame Name="Frame" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+        <Button Grid.Row="0" Content="Выход" IsCancel="True" Click="EscButton_Click" Opacity="0"/>
+        <Button Grid.Row="0" Content="Обучение" Click="ShowLearning"/>
+        <Button Grid.Row="1" Content="Работа на радиостанции" Click="ShowWorkOnRadioStation"/>
+        <Button Grid.Row="2" Content="Задачи" Click="ShowStandarts"/>-->
     </Grid>
 </Window>

@@ -4,21 +4,43 @@ using System.Linq;
 using System.Text;
 using NAudio;
 using NAudio.Wave;
+using System.Threading;
 
 namespace Audio
 {
     public class AudioPlayer
     {
-        WaveOutEvent player;
-        AudioFileReader audioFile;
+        WaveOut player;
+        WaveStream audioFile;
+
+        public event EventHandler<StoppedEventArgs> PlaybackStopped;
+
+        public PlaybackState PlaybackState => player.PlaybackState;
+
+        public float Volume { get => player.Volume ; set => player.Volume = Volume; }
+
         public AudioPlayer(string path)
         {
             audioFile = new AudioFileReader(path);
-            player = new WaveOutEvent();
+            player = new WaveOut();
             player.Init(audioFile);
         }
 
-        public void Start()
+        public AudioPlayer(WaveStream waveStream)
+        {
+            audioFile = waveStream;
+            player = new WaveOut();
+            player.Init(audioFile);
+        }
+
+        public void Stop()
+        {
+            if (player.PlaybackState == PlaybackState.Playing)
+                player.Stop();
+        }
+
+
+        public void Play()
         {
             audioFile.Position = 0;
             if (player.PlaybackState == PlaybackState.Stopped
@@ -26,13 +48,13 @@ namespace Audio
                 player.Play();
         }
 
-        public void Stop()
+        public void Pause()
         {
             if (player.PlaybackState == PlaybackState.Playing)
                 player.Pause();
         }
 
-        public void Close()
+        public void Dispose()
         {
             player.Stop();
             audioFile.Close();

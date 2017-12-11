@@ -50,7 +50,6 @@ namespace R123
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            button.Focusable = false;
             int numberButton = canvas.Children.IndexOf(sender as UIElement);
             TestStep(numberButton);
         }

@@ -1,7 +1,10 @@
-﻿namespace MCP.Logic
+﻿using System;
+
+namespace MCP.Logic
 {
-    interface IBehavior
+    public interface IBehavior
     {
-        AudioPlayerState GetState(byte[] information);
+        RadioState State { get;}
+        event EventHandler<EventRadioArgs<RadioState>> StateChanged;
     }
 }

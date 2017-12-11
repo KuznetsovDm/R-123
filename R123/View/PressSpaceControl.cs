@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -9,10 +10,22 @@ namespace R123.View
         public delegate void DelegateChangeValue();
         public event DelegateChangeValue ValueChanged;
         public Image image;
-        public PressSpaceControl(MainWindow mainWindow)
+        private Window window = null;
+        public PressSpaceControl()
         {
-            mainWindow.KeyDown += MainWindowKeyDown;
-            mainWindow.KeyUp += MainWindowKeyUp;
+        }
+        public void SetWindow(Window w)
+        {
+            View.Options.Window = w;
+            if (window != null)
+            {
+                window.KeyDown -= MainWindowKeyDown;
+                window.KeyUp -= MainWindowKeyUp;
+            }
+            window = w;
+
+            window.KeyDown += MainWindowKeyDown;
+            window.KeyUp += MainWindowKeyUp;
         }
         public void GetImage(Image image)
         {

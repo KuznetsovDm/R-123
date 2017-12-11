@@ -3,7 +3,7 @@ using System.Windows.Threading;
 
 namespace R123.View
 {
-    abstract class AnimationEncoder : Encoder
+    public abstract class AnimationEncoder : Encoder
     {
         public event DelegateChangeValue AnimationStarted;
         

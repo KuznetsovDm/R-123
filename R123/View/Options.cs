@@ -1,18 +1,25 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace R123.View
 {
     /// <summary>
     /// Параметры радиостанции, настраиваемые пользователем через интерфейс
     /// </summary>
-    static class Options
+    public static class Options
     {
         public delegate void DelegateRandomValue();
+        public delegate void DelegateInitialValue(bool value);
         public static event DelegateRandomValue RandomValue;
+        public static event DelegateInitialValue InitialValue;
 
         public static void SetRandomValue()
         {
             RandomValue?.Invoke();
+        }
+        public static void SetInitialValue(bool noise)
+        {
+            InitialValue?.Invoke(noise);
         }
         /// <summary>
         /// Крутилки для плавной настройки параметров
@@ -104,8 +111,10 @@ namespace R123.View
         public static Canvas Disk;
         public static ToneButton Tone;
         public static ToolTip ToolTip;
-        public static Audio.AudioPlayer PlayerPositionSwitcher = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
+        //public static Audio.AudioPlayer PlayerPositionSwitcher = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
         public static LineMouse lineMouse;
+        public static Window Window;
+        public static AntennaClip AntennaClip;
         public static System.Random rnd = new System.Random();
     }
 }

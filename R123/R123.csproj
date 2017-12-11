@@ -69,7 +69,9 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -89,7 +91,10 @@
     </ApplicationDefinition>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Learning\RadioTask.cs" />
+    <Compile Include="Learning\TuningTest.cs" />
     <Compile Include="Learning\WorkingCapacityTest.cs" />
+    <Compile Include="Learning\WorkingTest.cs" />
     <Compile Include="Magic\Connection\Connection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IConnection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IListener.cs" />
@@ -99,25 +104,34 @@
     <Compile Include="Magic\Connection\MessageAvailableEventArgs.cs" />
     <Compile Include="Magic\Connection\Net\MulticastUdpConnection.cs" />
     <Compile Include="Magic\Connection\Net\UdpConnection.cs" />
+    <Compile Include="Magic\Logic - Копировать.cs" />
     <Compile Include="Magic\Logic.cs" />
     <Compile Include="Magic\MCP\Audio\AudioListener.cs" />
-    <Compile Include="Magic\MCP\Audio\AudioManager.cs" />
-    <Compile Include="Magic\MCP\Audio\AudioPlayersStorage.cs" />
+    <Compile Include="Magic\MCP\Audio\AudioLogicFilter.cs" />
     <Compile Include="Magic\MCP\Audio\G722ChatCodec.cs" />
-    <Compile Include="Magic\MCP\Audio\NetAudioPlayer.cs" />
-    <Compile Include="Magic\MCP\Audio\NoisePlayer.cs" />
+    <Compile Include="Magic\MCP\Audio\LoopStream.cs" />
+    <Compile Include="Magic\MCP\Audio\MixerAudioPlayer.cs" />
+    <Compile Include="Magic\MCP\Audio\NoiseWaveProvider.cs" />
     <Compile Include="Magic\MCP\Audio\VoiceStreamer.cs" />
-    <Compile Include="Magic\MCP\Audio\WaveProviderToWaveStream.cs" />
-    <Compile Include="Magic\MCP\Logic\AudioPlayerState.cs" />
+    <Compile Include="Magic\MCP\Logic\ERadioState.cs" />
+    <Compile Include="Magic\MCP\Logic\EventRadioArgs.cs" />
     <Compile Include="Magic\MCP\Logic\IBehavior.cs" />
-    <Compile Include="Magic\MCP\Logic\LogicStates.cs" />
-    <Compile Include="Magic\MCP\Logic\StorageState.cs" />
+    <Compile Include="Magic\MCP\Logic\RadioLogic.cs" />
+    <Compile Include="Magic\MCP\Logic\RadioState.cs" />
+    <Compile Include="Magic\MCP\Logic\RemoteRadioMachine.cs" />
     <Compile Include="Magic\MCP\MCP\AppConfigCreator.cs" />
     <Compile Include="Magic\MCP\MCP\MCPConnector.cs" />
-    <Compile Include="Magic\MCP\MCP\MCPDirector.cs" />
     <Compile Include="Magic\MCP\MCP\MCPPacket.cs" />
-    <Compile Include="Magic\MCP\MCP\MCPStorage.cs" />
-    <Compile Include="Magic\RadioLogic.cs" />
+    <Compile Include="Magic\RadioConnection.cs" />
+    <Compile Include="MainScreens\Learning.xaml.cs">
+      <DependentUpon>Learning.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainScreens\Standarts.xaml.cs">
+      <DependentUpon>Standarts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainScreens\WorkOnRadioStation.xaml.cs">
+      <DependentUpon>WorkOnRadioStation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\NetworkSettings.xaml.cs">
       <DependentUpon>NetworkSettings.xaml</DependentUpon>
     </Compile>
@@ -127,9 +141,36 @@
     <Compile Include="Pages\RadioPage.xaml.cs">
       <DependentUpon>RadioPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\TuningPage.xaml.cs">
+      <DependentUpon>TuningPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\WorkingCapacityPage.xaml.cs">
+      <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\XpsDocumentPage.xaml.cs">
       <DependentUpon>XpsDocumentPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Radio\TurnAnimation.cs" />
+    <Compile Include="Radio\ViewModel\Clamp.cs" />
+    <Compile Include="Radio\ViewModel\Encoder.cs" />
+    <Compile Include="Radio\Logic.cs" />
+    <Compile Include="Radio\ViewModel\PositionSwitcher.cs" />
+    <Compile Include="Radio\Property.cs" />
+    <Compile Include="Radio\Radio.cs" />
+    <Compile Include="Radio\ViewModel\Switch.cs" />
+    <Compile Include="Radio\ViewModel\Tangent.cs" />
+    <Compile Include="Radio\ViewModel\Antenna.cs" />
+    <Compile Include="Radio\View\DiscretelyRotatingElement.cs" />
+    <Compile Include="Radio\View\Display.cs" />
+    <Compile Include="Radio\ViewModel\Frequency.cs" />
+    <Compile Include="Radio\View\FixedFrequencySetting.cs" />
+    <Compile Include="Radio\View\FrequencyDisplay.cs" />
+    <Compile Include="Radio\View\RadioPage.xaml.cs">
+      <DependentUpon>RadioPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Radio\View\SwitchElement.cs" />
+    <Compile Include="Radio\View\VoltageDisplay.cs" />
+    <Compile Include="Radio\View\СontinuouslyRotatingElement.cs" />
     <Compile Include="Tasks\ListTasks.xaml.cs">
       <DependentUpon>ListTasks.xaml</DependentUpon>
     </Compile>
@@ -146,6 +187,8 @@
     <Compile Include="Pages\NewFolder1\TechPage.xaml.cs">
       <DependentUpon>TechPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\encoders\AntennaClip.cs" />
+    <Compile Include="View\encoders\VolumeController.cs" />
     <Compile Include="View\LineMouse.cs" />
     <Compile Include="View\Radio.xaml.cs">
       <DependentUpon>Radio.xaml</DependentUpon>
@@ -166,7 +209,6 @@
     <Compile Include="View\encoders\Encoder.cs" />
     <Compile Include="View\encoders\FrequencyController.cs" />
     <Compile Include="View\encoders\NoiseController.cs" />
-    <Compile Include="View\encoders\VolumeController.cs" />
     <Compile Include="View\FixedFrequencySetting.cs" />
     <Compile Include="View\ImagesControl.cs" />
     <Compile Include="View\Options.cs" />
@@ -186,6 +228,18 @@
     <Compile Include="Pages\WorkingCapacityTest.xaml.cs">
       <DependentUpon>WorkingCapacityTest.xaml</DependentUpon>
     </Compile>
+    <Page Include="MainScreens\Learning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainScreens\Standarts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainScreens\WorkOnRadioStation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\NetworkSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -198,7 +252,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\TuningPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\WorkingCapacityPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\XpsDocumentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Radio\View\RadioPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -317,6 +383,7 @@
     <Resource Include="Files\Images\tangenta_prd.png" />
     <Resource Include="Files\Images\tangenta_prm.png" />
     <Resource Include="Files\Images\AntennaFixer.png" />
+    <Resource Include="Files\Images\Learning\SetRadio.png" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

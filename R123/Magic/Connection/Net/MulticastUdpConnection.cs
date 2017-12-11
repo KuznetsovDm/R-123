@@ -26,7 +26,7 @@ namespace Connection.Net
 
         public override void Close()
         {
-            socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.DropMembership, new MulticastOption(Wherefrom.Address, IPAddress.Any));
+            //socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.DropMembership, new MulticastOption(Wherefrom.Address, IPAddress.Any));
             base.Close();
         }
     }

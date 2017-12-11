@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 
 namespace R123.View
 {
-    class LineMouse
+    public class LineMouse
     {
         Line line;
         public LineMouse(Line line)

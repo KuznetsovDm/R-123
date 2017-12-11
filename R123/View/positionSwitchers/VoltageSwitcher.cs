@@ -1,6 +1,6 @@
 ﻿namespace R123.View
 {
-    class VoltageSwitcher : PositionSwitcher
+    public class VoltageSwitcher : PositionSwitcher
     {
         public event DelegateChangeValue ValueChanged;
         public VoltageSwitcher(System.Windows.Controls.Image image) :

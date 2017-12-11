@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace R123.View
 {
-    class Clamp
+    public class Clamp
     {
         /// <summary>
         /// 
@@ -33,6 +33,12 @@ namespace R123.View
                 startAngle = 90;
 
             RotateImage(AngleRotate());
+
+            Options.InitialValue += SetInitialValue;
+        }
+        private void SetInitialValue(bool noise)
+        {
+            CurrentValue = 0;
         }
         public decimal Value
         {

@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 
 namespace R123.View
 {
-    abstract class ImagesControl
+    public abstract class ImagesControl
     {
         public delegate void DelegateChangeValue();
 

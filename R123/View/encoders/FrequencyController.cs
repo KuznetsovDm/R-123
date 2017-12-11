@@ -2,7 +2,7 @@
 
 namespace R123.View
 {
-    class FrequencyController : AnimationEncoder
+    public class FrequencyController : AnimationEncoder
     {
         public event DelegateChangeValue ValueChanged;
         public event DelegateChangeValue AngleChanged;

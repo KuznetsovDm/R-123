@@ -5,7 +5,7 @@ using System.Windows.Shapes;
 
 namespace R123.View
 {
-    class PositionSwitcher : ImagesControl
+    public class PositionSwitcher : ImagesControl
     {
         private int maxValue = 20;
         private int currentValue = 0;
@@ -20,10 +20,33 @@ namespace R123.View
             image.MouseDown += Image_MouseDown;
 
             Options.RandomValue += SetRandomValue;
+            Options.InitialValue += SetInitialValue;
         }
         private void SetRandomValue()
         {
             CurrentValue = Options.rnd.Next() % maxValue;
+        }
+        private void SetInitialValue(bool noise)
+        {
+            if (noise)
+            {
+                CurrentValue = 0;
+            }
+            else
+            {
+                int value = 0;
+
+                if (maxAngle != 360)
+                {
+                    if (value >= maxValue) currentValue = maxValue - 1;
+                    else if (value < 0) currentValue = 0;
+                    else currentValue = value;
+                }
+                else
+                    currentValue = (value + maxValue) % maxValue;
+
+                Angle = currentValue;
+            }
         }
         public int Value => currentValue;
 
@@ -34,7 +57,7 @@ namespace R123.View
         //========================================================
         private void Image_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MainWindow.Instance.MouseUp += Window_MouseUp;
+            Options.Window.MouseUp += Window_MouseUp;
             double centerX = Canvas.GetLeft(Image) + Image.ActualWidth / 2;
             double centerY = Canvas.GetTop(Image) + Image.ActualHeight / 2;
             double startAngle = minAngle * System.Math.PI * 2 / 360;
@@ -74,13 +97,13 @@ namespace R123.View
         }
         private void Window_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MainWindow.Instance.MouseUp -= Window_MouseUp;
+            Options.Window.MouseUp -= Window_MouseUp;
             while (Options.Disk.Children.Count > 0)
                 Options.Disk.Children.RemoveAt(0);
         }
         private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            Point point = e.GetPosition(MainWindow.Instance as IInputElement);
+            Point point = e.GetPosition(Options.Window as IInputElement);
             Vector norm = new Vector(1.0, 0.0);
             Vector mouse = new Vector(point.X - Canvas.GetLeft(Image), point.Y - Canvas.GetTop(Image));
             double angle = Vector.AngleBetween(norm, mouse);
@@ -113,7 +136,7 @@ namespace R123.View
                         currentValue = (value + maxValue) % maxValue;
 
                     Angle = currentValue;
-                    Options.PlayerPositionSwitcher.Start();
+                    //Options.PlayerPositionSwitcher.Start();
                 }
             }
         }

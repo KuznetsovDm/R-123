@@ -33,6 +33,7 @@ namespace Connection.Net
         public override void Close()
         {
             autoResetEvent.Set();
+            socket.Shutdown(SocketShutdown.Both);
             socket.Close();
         }
 
@@ -45,17 +46,28 @@ namespace Connection.Net
         {
             Task<byte[]> task = new Task<byte[]>(() =>
             {
-                byte[] buffer = new byte[64000];
+                try
+                {
+                    byte[] buffer = new byte[64000];
                 EndPoint remoteEP = Wherefrom;
                 IAsyncResult result = socket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref remoteEP, null, null);
                 int waitResult = WaitHandle.WaitAny(new WaitHandle[] { result.AsyncWaitHandle, autoResetEvent });
                 if (waitResult == 0)
                 {
-                    int received = socket.EndReceiveFrom(result, ref remoteEP);
-                    return buffer.Take(received).ToArray();
+                    
+                        int received = socket.EndReceiveFrom(result, ref remoteEP);
+                        return buffer.Take(received).ToArray();
+                    
                 }
+                else if (waitResult == 1)
+                    return null;
                 else
                     return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
             }
             );
             task.Start();

@@ -2,7 +2,7 @@
 
 namespace R123.View
 {
-    class FixedFrequencySetting
+    public class FixedFrequencySetting
     {
         Canvas canvas;
         double angle = 0;

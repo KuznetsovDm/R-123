@@ -3,14 +3,24 @@ using System.Net;
 using System.Threading;
 using Connection;
 using Connection.Net;
+using System.Collections;
+using System.Collections.Generic;
+
 namespace MCP
 {
     public class MCPConnector
     {
-        public class MCPEventArgs : EventArgs
+        public class MaintainEventArgs : EventArgs
         {
-            public MCPPacket packet;
+            public IPAddress Address;
+            public int Port;
         }
+        public class InformationEventArgs : MaintainEventArgs
+        {
+            public byte[] Information;
+        }
+        
+        public class CloseEventArgs : MaintainEventArgs{}
 
         Listener listener;
         Connection.Connection connection;
@@ -21,9 +31,12 @@ namespace MCP
         int maintainDelay;
         MCPPacket maintainPacket;
         public bool IsWork { get; private set; }
+        private Dictionary<IPAddress, uint> ipCounterTable = new Dictionary<IPAddress, uint>();
         EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
 
-        public event EventHandler<MCPEventArgs> NewMCPPacket;
+        public event EventHandler<InformationEventArgs> InformationEvent;
+        public event EventHandler<MaintainEventArgs> MaintainEvent;
+        public event EventHandler<CloseEventArgs> CloseEvent;
 
         public MCPConnector(IPAddress multicastAddress, int port, int ttl, IPAddress myIpAddress, int myPort, int maintainDelay)
         {
@@ -76,8 +89,45 @@ namespace MCP
         private void NewMessageTask(object obj, MessageAvailableEventArgs args)
         {
             MCPPacket packet = MCPPacket.Parse(args.Message);
-            if(packet.IpAddress.ToString()+":"+packet.Port.ToString() != myIpAddress.ToString()+":"+myPort.ToString())
-                NewMCPPacket(this, new MCPEventArgs() { packet = packet});
+            if (packet.IpAddress.ToString() + ":" + packet.Port.ToString() != myIpAddress.ToString() + ":" + myPort.ToString())
+            {
+                AnalysePacket(packet);
+            }
+        }
+
+        private void AnalysePacket(MCPPacket packet)
+        {
+            IPAddress ipKey = packet.IpAddress;
+            bool isNew = false;
+            if (ipCounterTable.ContainsKey(ipKey))
+            {
+                if (ipCounterTable[ipKey] < packet.Number || packet.State == MCPState.Reset)
+                {
+                    ipCounterTable[ipKey] = packet.Number;
+                    isNew = true;
+                }
+            }
+            else
+            {
+                ipCounterTable.Add(ipKey, packet.Number);
+                isNew = true;
+            }
+
+            if(isNew)
+            switch (packet.State)
+            {
+                case MCPState.Information: InformationEvent?.Invoke(this, new InformationEventArgs()
+                    { Address = packet.IpAddress, Port = packet.Port ,Information = packet.Information });
+                    break;
+                case MCPState.MaintainConnection: MaintainEvent?.Invoke(this, new MaintainEventArgs()
+                    { Address = packet.IpAddress, Port = packet.Port });
+                    break;
+                case MCPState.Close: CloseEvent?.Invoke(this, new CloseEventArgs()
+                    { Address = packet.IpAddress, Port = packet.Port });
+                    ipCounterTable.Remove(ipKey);
+                    break;
+                default: break;
+            }
         }
 
         private void MaintainConnection()

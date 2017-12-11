@@ -2,7 +2,7 @@
 
 namespace R123.View
 {
-    abstract class Switcher : ImagesControl
+    public abstract class Switcher : ImagesControl
     {
         private bool currentValue;
         public Switcher(Image image, bool defValue = false) : base(image)
@@ -12,6 +12,21 @@ namespace R123.View
 
             image.MouseWheel += Image_MouseWheel;
             image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
+
+            Options.InitialValue += SetInitialValue;
+        }
+        private void SetInitialValue(bool noise)
+        {
+            if (noise)
+            {
+                CurrentValue = false;
+            }
+            else
+            {
+                bool value = false;
+                currentValue = value;
+                Source = value;
+            }
         }
         private void Image_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -35,7 +50,7 @@ namespace R123.View
             {
                 currentValue = value;
                 Source = value;
-                Options.PlayerPositionSwitcher.Start();
+                //Options.PlayerPositionSwitcher.Start();
             }
         }
     }

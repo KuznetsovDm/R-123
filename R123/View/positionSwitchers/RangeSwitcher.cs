@@ -1,6 +1,6 @@
 ﻿namespace R123.View
 {
-    enum RangeSwitcherValues
+    public enum RangeSwitcherValues
     {
         FixFrequency1,
         FixFrequency2,
@@ -9,7 +9,7 @@
         SubFrequency2,
         SubFrequency1
     };
-    class RangeSwitcher : PositionSwitcher
+    public class RangeSwitcher : PositionSwitcher
     {
         public event DelegateChangeValue ValueChanged;
         public RangeSwitcher(System.Windows.Controls.Image image) :

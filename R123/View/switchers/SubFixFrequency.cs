@@ -3,7 +3,7 @@
 namespace R123.View
 {
     public enum SubFrequency { Two, One };
-    class SubFixFrequency : Switcher
+    public class SubFixFrequency : Switcher
     {
         public event DelegateChangeValue ValueChanged;
         private int number;

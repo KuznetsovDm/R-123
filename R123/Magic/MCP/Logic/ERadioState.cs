@@ -5,10 +5,12 @@ using System.Text;
 
 namespace MCP.Logic
 {
-    enum LogicStates
+    public enum ERadioState
     {
         Frequency = 1,
-        Signal = 2,
-        IsSaying = 4
+        SignalBegin = 2,
+        SignalEnd = 3,
+        SayingBegin = 4,
+        SayingEnd = 5
     }
 }

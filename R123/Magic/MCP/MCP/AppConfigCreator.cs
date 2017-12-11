@@ -15,13 +15,10 @@ namespace R123.AppConfig
     class AppConfigCreator
     {
         static MCPConnector connector;
-        static AudioManager manager;
         static VoiceStreamer microphone;
         static IPAddress myConstantIP;
         static Audio.AudioPlayer tonPlayer;
         static int myConstantPort;
-        //static decimal delta;
-
         public static MCPConnector GetConnector()
         {
             if (connector == null)
@@ -39,24 +36,15 @@ namespace R123.AppConfig
             }
             return connector;
         }
-
-        public static AudioManager GetAudioManager()
-        {
-            if (manager == null)
-                manager = new AudioManager(new WaveFormat(16000, 16, 1));//will be need take from app.config
-            return manager;
-        }
-
         public static VoiceStreamer GetMicrophone()
         {
             if (microphone == null)
             {
                 IPEndPoint endPoint = GenerateMulticastIpEndPoint(myConstantIP, myConstantPort);
-                microphone = new VoiceStreamer(endPoint.Address, endPoint.Port,new WaveFormat(16000,16,1));//only 16000 because codec
+                microphone = new VoiceStreamer(endPoint.Address, endPoint.Port, new WaveFormat(16000, 16, 1));//only 16000 because codec
             }
             return microphone;
         }
-
         public static Audio.AudioPlayer GetTonPlayer()
         {
             if (tonPlayer == null)
@@ -65,6 +53,18 @@ namespace R123.AppConfig
                 tonPlayer = new Audio.AudioPlayer(path);
             }
             return tonPlayer;
+        }
+
+
+        public static Audio.AudioPlayer CreateTonePlayer()
+        {
+            string path = "../../Files/Sounds/ton.mp3";
+            return new Audio.AudioPlayer(path);
+        }
+
+        public static Audio.AudioPlayer CreateAudioPlayer(string path)
+        {
+            return new Audio.AudioPlayer(path);
         }
 
         private static IPEndPoint GenerateMulticastIpEndPoint(IPAddress ipAddress, int port)
@@ -85,7 +85,6 @@ namespace R123.AppConfig
             IPEndPoint endPoint = new IPEndPoint(new IPAddress(gIP), port);
             return endPoint;
         }
-
         public static decimal Delta
         {
             get
@@ -95,7 +94,6 @@ namespace R123.AppConfig
             }
             private set { }
         }
-
         public static IPAddress GetSubnetMask(IPAddress address)
         {
             foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())

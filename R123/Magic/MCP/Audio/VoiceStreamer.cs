@@ -66,6 +66,7 @@ namespace MCP.Audio
 
         public void Start()
         {
+            System.Diagnostics.Trace.WriteLine("VoiceStream start");
             Input.StartRecording();
         }
 
@@ -74,7 +75,7 @@ namespace MCP.Audio
             Input.StopRecording();
         }
 
-        public void CLose()
+        public void Close()
         {
             Client.Close();
 

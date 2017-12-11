@@ -35,7 +35,7 @@ namespace R123.View
             Options.Encoders.Noise = new NoiseController(noiseControl_Image);
             Options.Encoders.Volume = new VolumeController(volumeControl_Image);
 
-            Options.Encoders.AthenaDisplay = new AntennaDisplay(antennaControl_Image, antennaFixer_Image);
+            Options.Encoders.AthenaDisplay = new AntennaDisplay(antennaControl_Image);
             Options.Display.VoltageControl = new VoltageDisplay(antennaLight_Ellipse, voltageDisplay_Line);
 
             Options.Display.Frequency = new FrequencyDisplay(frequencyDisplay_Canvas, frequencyBand_Canvas);
@@ -48,6 +48,7 @@ namespace R123.View
             Options.Ring = ring_Image;
             Options.Disk = disk_Canvas;
             Options.ToolTip = new View.ToolTip();
+            Options.AntennaClip = new AntennaClip(antennaFixer_Image);
         }
     }
 }

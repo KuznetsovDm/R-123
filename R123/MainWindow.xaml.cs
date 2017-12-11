@@ -1,30 +1,81 @@
-﻿using System.Windows;
+﻿using MCP.Logic;
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace R123
 {
+    public class TabSizeConverter : IMultiValueConverter
+    {
+        public object Convert(object[] values, Type targetType, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            TabControl tabControl = values[0] as TabControl;
+            double width = tabControl.ActualWidth / tabControl.Items.Count - 0.5;
+            return (width <= 1) ? 0 : (width - 1);
+        }
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter,
+            System.Globalization.CultureInfo culture)
+        {
+            throw new NotSupportedException();
+        }
+    }
     public partial class MainWindow : Window
     {
         public View.Radio Radio { get; private set; }
         public static MainWindow Instance { get; private set; }
 
-        private Logic logic = null;
+        public static Audio.AudioPlayer PlayerSwitcher { get; private set; }
+
         private MainMenu mainMenu = new MainMenu();
+        private System.Windows.Controls.Frame Frame = new System.Windows.Controls.Frame();
         public MainWindow()
         {
             Instance = this;
-            View.Options.PressSpaceControl = new View.PressSpaceControl(this);
+            PlayerSwitcher = new Audio.AudioPlayer("../../Files/Sounds/PositionSwitcher.wav");
+
+            View.Options.PressSpaceControl = new View.PressSpaceControl();
             Radio = new View.Radio();
             KeyDown += MainWindow_KeyDown;
 
             InitializeComponent();
 
+            //Frame0.Content = new R123.Radio.View.RadioPage();
+            Frame1.Content = new MainScreens.Learning();
+            Frame2.Content = new MainScreens.WorkOnRadioStation();
+            Frame3.Content = new MainScreens.Standarts();
+
             //Frame.Content = mainMenu;
             //Frame.Content = new WorkingCapacityTest();
-            ShowXpsDocument("Destination");
+            //ShowXpsDocument("Destination");
+            //Frame.Content = new Radio.RadioPage();
 
-            //logic = new Logic();
+            /*MainScreens.Standarts screen = new MainScreens.Standarts();
+            screen.Show();
+            Close();*/
 
             Closing += MainWindow_Closing;
+        }
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            RadioConnection.Close();
+        }
+        private void ShowLearning(object sender, RoutedEventArgs e)
+        {
+            /*MainScreens.Learning screen = new MainScreens.Learning();
+            screen.Show();*/
+        }
+        private void ShowWorkOnRadioStation(object sender, RoutedEventArgs e)
+        {
+            /*MainScreens.WorkOnRadioStation screen = new MainScreens.WorkOnRadioStation();
+            screen.Show();*/
+        }
+        private void ShowStandarts(object sender, RoutedEventArgs e)
+        {
+            /*MainScreens.Standarts screen = new MainScreens.Standarts();
+            screen.Show();*/
         }
 
         private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -32,6 +83,23 @@ namespace R123
             if (e.Key == System.Windows.Input.Key.F2 && e.IsDown)
                 Instance.Frame.Content = new NetworkSettings();
         }
+
+        private void EscButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 
         public void ShowMainMenu()
         {
@@ -49,10 +117,6 @@ namespace R123
         private void MainMenu_Click(object sender, RoutedEventArgs e)
         {
             Instance.Frame.Content = mainMenu;
-        }
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            logic?.Close();
         }
         private void ShowXpsDocument(string file)
         {

@@ -2,18 +2,15 @@
 
 namespace R123.View
 {
-    class AntennaDisplay : AnimationEncoder
+    public class AntennaDisplay : AnimationEncoder
     {
         public event DelegateChangeValue ValueChanged;
 
         public Image image, imageFixer;
         private double centerXImageFixer, centerYImageFixer;
-        public AntennaDisplay(Image image, Image image2) : base(image, 360)
+        public AntennaDisplay(Image image) : base(image, 360)
         {
             this.image = image;
-            this.imageFixer = image2;
-            centerXImageFixer = image2.Width / 2;
-            centerYImageFixer = image2.Height / 2;
             deltaValueMouseWheel = 5;
             defaultValueInAnimation = 2;
 

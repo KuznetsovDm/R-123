@@ -1,6 +1,6 @@
 ﻿namespace R123.View
 {
-    class ToolTip
+    public class ToolTip
     {
         public ToolTip()
         {

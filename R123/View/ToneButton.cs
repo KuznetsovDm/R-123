@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace R123.View
 {
-    class ToneButton : ImagesControl
+    public class ToneButton : ImagesControl
     {
         public event DelegateChangeValue ValueChanged;
         private bool currentValue;

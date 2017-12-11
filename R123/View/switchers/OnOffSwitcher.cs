@@ -2,8 +2,8 @@
 
 namespace R123.View
 {
-    enum State { off, on }
-    class OnOffSwitcher : Switcher
+    public enum State { off, on }
+    public class OnOffSwitcher : Switcher
     {
         public OnOffSwitcher(Image image, bool defValue = false) : base(image, defValue)
         {

@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace R123.View
 {
-    abstract class Encoder : ImagesControl
+    public abstract class Encoder : ImagesControl
     {
         private int currentValue = 0;
 
@@ -25,10 +25,15 @@ namespace R123.View
             image.MouseLeftButtonDown += Image_MouseLeftButtonDown;
 
             Options.RandomValue += SetRandomValue;
+            Options.InitialValue += SetInitialValue;
         }
         private void SetRandomValue()
         {
             CurrentValue = Options.rnd.Next() % maxValue;
+        }
+        private void SetInitialValue(bool noise)
+        {
+            CurrentValue = 0;
         }
         public int Value => currentValue;
 
@@ -73,18 +78,18 @@ namespace R123.View
         {
             if (ConditionMouseLeft)
             {
-                MainWindow.Instance.MouseMove += Window_MouseMove;
-                MainWindow.Instance.MouseUp += Window_MouseUp;
-                MainWindow.Instance.Cursor = Cursors.SizeAll;
+                Options.Window.MouseMove += Window_MouseMove;
+                Options.Window.MouseUp += Window_MouseUp;
+                Options.Window.Cursor = Cursors.SizeAll;
 
                 Point cursor = e.MouseDevice.GetPosition(Options.canvas as IInputElement);
                 v1 = new Vector(cursor.X - centerX, centerY - cursor.Y);
                 startAngle = CurrentAngle;
                 changeAngle = 0;
 
-                Options.lineMouse.SetCenter(centerX, centerY);
+                /*Options.lineMouse.SetCenter(centerX, centerY);
                 Options.lineMouse.SetMouse(cursor.X, cursor.Y);
-                Options.lineMouse.Visibility(true);
+                Options.lineMouse.Visibility(true);*/
             }
         }
         private void Window_MouseMove(object sender, MouseEventArgs e)
@@ -94,14 +99,14 @@ namespace R123.View
             changeAngle += Vector.AngleBetween(v2, v1) / coefficientMouseMove;
             CurrentValue = System.Convert.ToInt32((startAngle + changeAngle) * maxValue / 360);
             v1 = v2;
-            Options.lineMouse.SetMouse(cursor.X, cursor.Y);
+            //Options.lineMouse.SetMouse(cursor.X, cursor.Y);
         }
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            MainWindow.Instance.MouseMove -= Window_MouseMove;
-            MainWindow.Instance.MouseUp -= Window_MouseUp;
-            MainWindow.Instance.Cursor = Cursors.Arrow;
-            Options.lineMouse.Visibility(false);
+            Options.Window.MouseMove -= Window_MouseMove;
+            Options.Window.MouseUp -= Window_MouseUp;
+            Options.Window.Cursor = Cursors.Arrow;
+            //Options.lineMouse.Visibility(false);
         }
     }
 }
