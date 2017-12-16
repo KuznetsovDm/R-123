@@ -12,7 +12,7 @@ using System.Net.NetworkInformation;
 
 namespace R123.AppConfig
 {
-    class AppConfigCreator
+    public class AppConfigCreator
     {
         static MCPConnector connector;
         static VoiceStreamer microphone;
@@ -111,7 +111,7 @@ namespace R123.AppConfig
             }
             throw new ArgumentException(string.Format("Can't find subnetmask for IP address '{0}'", address));
         }
-        private static IPAddress GetLocalIpAddress()
+        public static IPAddress GetLocalIpAddress()
         {
             return Dns.GetHostAddresses(Dns.GetHostName()).First(a => a.AddressFamily == AddressFamily.InterNetwork);
         }

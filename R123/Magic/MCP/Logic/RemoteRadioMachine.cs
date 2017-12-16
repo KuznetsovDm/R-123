@@ -54,12 +54,11 @@ namespace MCP.Logic
             audioFilter.Noise = GetNoiseLevel(State.Frequency);
             if (baseRadioState != null)
                 ParseERadioState(State.RadioState);
-            StatePlaying();
+            
         }
 
         private void ParseERadioState(ERadioState radioState)
         {
-            System.Diagnostics.Trace.WriteLine(radioState+""+State.Frequency);
             bool canIPlay = Math.Abs(baseRadioState.Frequency - State.Frequency)<=Delta;
             if (radioState == ERadioState.SignalBegin && canIPlay)
                 RadioConnection.tone.Play();
@@ -68,13 +67,14 @@ namespace MCP.Logic
             {
                 Saying = true;
                 SayingState?.Invoke(this,null);
-                System.Diagnostics.Trace.WriteLine("SayingBegin");
+                StatePlaying(canIPlay);
             }
 
             if (radioState == ERadioState.SayingEnd && canIPlay)
             {
                 Saying = false;
                 SayingState?.Invoke(this, null);
+                StatePlaying(canIPlay);
             }  
         }
 
@@ -84,6 +84,7 @@ namespace MCP.Logic
                 return 0;
             var deltaFrequency = Math.Abs(baseRadioState.Frequency - frequency);
             float noise = (float)((deltaFrequency)<=Delta? (deltaFrequency / Delta)*0.01m:0.1m);
+            //если самозабитая частота
             if (badFrequency.Contains(frequency*10))
                 noise = 0.005f;
             return noise;
@@ -99,15 +100,16 @@ namespace MCP.Logic
             return volume;
         }
 
-        public void StatePlaying()
+        public void StatePlaying(bool canIPlay)
         {
-            if (Playing && audioFilter.IsListening && audioFilter.Volume == 0)
+            //если мы играем и прослушиваем, но при этом не може проигрывать
+            if (Playing && audioFilter.IsListening && !canIPlay)
             {
                 Playing = false;
                 audioFilter.Stop();
                 audioFilter.Flush();
             }
-            else if (!Playing && !audioFilter.IsListening && audioFilter.Volume > 0)
+            else if (!Playing && !audioFilter.IsListening && canIPlay)
             {
                 audioFilter.Flush();
                 Playing = true;

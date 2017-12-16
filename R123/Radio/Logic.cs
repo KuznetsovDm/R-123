@@ -15,9 +15,11 @@ namespace R123.Radio
         public PositionSwitcher Range { get; private set; }
         public Switch Power { get; private set; }
         public Switch Scale { get; private set; }
+        public Tone Tone { get; private set; }
         public Tangent Tangent { get; private set; }
         public NumberedSwitch[] SubFixFrequency { get; private set; } = new NumberedSwitch[4];
         public Clamp[] Clamp { get; private set; } = new Clamp[4];
+        public double[,] valueFixFrequency = new double[2, 4];
 
         private View.Display SubFrequency;
         private View.Display FixFrequency;
@@ -25,7 +27,6 @@ namespace R123.Radio
         private View.VoltageDisplay VoltageDisplay;
 
         private View.RadioPage RadioPage;
-        private double[,] valueFixFrequency = new double[2, 4];
         private TurnAnimation TurnAnimation;
         private View.FixedFrequencySetting FixedFrequencySetting;
 
@@ -43,6 +44,7 @@ namespace R123.Radio
             Range = new PositionSwitcher(page.rangeSwitcher_Image, 6, page.R123_Image);
             Power = new Switch(page.power_Image);
             Scale = new Switch(page.scale_Image);
+            Tone = new Tone(page.tone_Image);
             Tangent = new Tangent(page.tangenta_Image);
             for (int i = 0; i < SubFixFrequency.Length; i++)
                 SubFixFrequency[i] = new NumberedSwitch(page.subFixFrequencySwitcher_Images.Children[i] as System.Windows.Controls.Image, i);

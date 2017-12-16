@@ -109,7 +109,6 @@
     <Compile Include="Magic\MCP\Audio\AudioListener.cs" />
     <Compile Include="Magic\MCP\Audio\AudioLogicFilter.cs" />
     <Compile Include="Magic\MCP\Audio\G722ChatCodec.cs" />
-    <Compile Include="Magic\MCP\Audio\LoopStream.cs" />
     <Compile Include="Magic\MCP\Audio\MixerAudioPlayer.cs" />
     <Compile Include="Magic\MCP\Audio\NoiseWaveProvider.cs" />
     <Compile Include="Magic\MCP\Audio\VoiceStreamer.cs" />
@@ -160,6 +159,7 @@
     <Compile Include="Radio\ViewModel\Switch.cs" />
     <Compile Include="Radio\ViewModel\Tangent.cs" />
     <Compile Include="Radio\ViewModel\Antenna.cs" />
+    <Compile Include="Radio\ViewModel\Tone.cs" />
     <Compile Include="Radio\View\DiscretelyRotatingElement.cs" />
     <Compile Include="Radio\View\Display.cs" />
     <Compile Include="Radio\ViewModel\Frequency.cs" />

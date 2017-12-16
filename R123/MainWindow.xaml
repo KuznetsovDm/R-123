@@ -63,7 +63,7 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <!--<Rectangle Height="10" Width="10" Fill="Black" />-->
-                        <TextBlock Style="{StaticResource TextInTabItemHeader}">2. Работа на радиостанции</TextBlock>
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">2. Обучение</TextBlock> <!--Работа на радиостанции -->
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
@@ -74,7 +74,7 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <!--<Rectangle Height="10" Width="10" Fill="Black" />-->
-                        <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Задачи</TextBlock>
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Радиостанция</TextBlock> <!--Задачи -->
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>

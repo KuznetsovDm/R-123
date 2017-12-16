@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using MCP.Logic;
 using MCP.Audio;
 using R123.AppConfig;
 using Audio;
 using System.Net;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
-using R123.Magic.MCP.Audio;
-using System.Threading;
 
 namespace MCP.Logic
 {
@@ -27,15 +21,13 @@ namespace MCP.Logic
             //init behavior
             Behavior = behavior;
             Subscribe(behavior);
-
-            connector.InformationEvent += Connector_InformationEvent;
-            connector.CloseEvent += Connector_CloseEvent;
         }
 
         private static void Connector_CloseEvent(object sender, MCPConnector.CloseEventArgs e)
         {
             if (!IsNewRemoteMachine(e.Address))
             {
+                GetMachine(e.Address).SayingState -= AnalysisPlayNoise;
                 Behavior.StateChanged -= GetMachine(e.Address).BaseLogicStateChanged;
                 Player.RemoveInput(GetMachine(e.Address).audioFilter.Stream);
                 GetMachine(e.Address).Dispose();
@@ -48,7 +40,7 @@ namespace MCP.Logic
             if (IsNewRemoteMachine(e.Address))
             {
                 RemoteRadioMachine remoteRadioMachine = CreateRemoteMachine(e.Address, e.Port, Behavior);
-                remoteRadioMachine.audioFilter.Start();
+                //remoteRadioMachine.audioFilter.Start();
                 remoteCollection.Add(e.Address, remoteRadioMachine);
                 if(Behavior!=null)
                     Behavior.StateChanged += remoteRadioMachine.BaseLogicStateChanged;
@@ -62,8 +54,6 @@ namespace MCP.Logic
 
         public static void FinalizeRadioConnectionExemplar()
         {
-            connector.InformationEvent -= Connector_InformationEvent;
-            connector.CloseEvent -= Connector_CloseEvent;
             UnSubscribe(Behavior);
             Behavior = null;
         }
@@ -97,6 +87,9 @@ namespace MCP.Logic
             Player.PlaybackStopped += Player_PlaybackStopped;
             AlreadyInitialized = true;
             Closed = false;
+
+            connector.InformationEvent += Connector_InformationEvent;
+            connector.CloseEvent += Connector_CloseEvent;
         }
 
         public static void Start()
@@ -107,13 +100,11 @@ namespace MCP.Logic
                 elem.audioFilter.Flush();
             }
 
-            Player.Play();
             connector.Start();
         }
 
         public static void Stop()
         {
-            Player.Stop();
             connector.Stop();
         }
 
@@ -202,7 +193,7 @@ namespace MCP.Logic
             frequency = (decimal)BitConverter.ToSingle(bfrequency, 0);
         }
 
-        private static byte[] GetPacketInBytes(ERadioState state, decimal frequency)
+        public static byte[] GetPacketInBytes(ERadioState state, decimal frequency)
         {
             List<byte> bytes = BitConverter.GetBytes((float)frequency).ToList();
             bytes.Insert(0, (byte)state);
@@ -238,6 +229,9 @@ namespace MCP.Logic
         {
             if (!Closed)
             {
+                connector.InformationEvent -= Connector_InformationEvent;
+                connector.CloseEvent -= Connector_CloseEvent;
+
                 connector.Stop();
                 Player.Stop();
                 Player.Dispose();
