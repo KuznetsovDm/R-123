@@ -97,36 +97,44 @@ namespace MCP
 
         private void AnalysePacket(MCPPacket packet)
         {
-            IPAddress ipKey = packet.IpAddress;
-            bool isNew = false;
-            if (ipCounterTable.ContainsKey(ipKey))
+            lock (ipCounterTable)
             {
-                if (ipCounterTable[ipKey] < packet.Number || packet.State == MCPState.Reset)
+                IPAddress ipKey = packet.IpAddress;
+                bool isNew = false;
+                if (ipCounterTable.ContainsKey(ipKey))
                 {
-                    ipCounterTable[ipKey] = packet.Number;
+                    if (ipCounterTable[ipKey] < packet.Number || packet.State == MCPState.Reset)
+                    {
+                        ipCounterTable[ipKey] = packet.Number;
+                        isNew = true;
+                    }
+                }
+                else
+                {
+                    ipCounterTable.Add(ipKey, packet.Number);
                     isNew = true;
                 }
-            }
-            else
-            {
-                ipCounterTable.Add(ipKey, packet.Number);
-                isNew = true;
-            }
 
-            if(isNew)
-            switch (packet.State)
-            {
-                case MCPState.Information: InformationEvent?.Invoke(this, new InformationEventArgs()
-                    { Address = packet.IpAddress, Port = packet.Port ,Information = packet.Information });
-                    break;
-                case MCPState.MaintainConnection: MaintainEvent?.Invoke(this, new MaintainEventArgs()
-                    { Address = packet.IpAddress, Port = packet.Port });
-                    break;
-                case MCPState.Close: CloseEvent?.Invoke(this, new CloseEventArgs()
-                    { Address = packet.IpAddress, Port = packet.Port });
-                    ipCounterTable.Remove(ipKey);
-                    break;
-                default: break;
+                if (isNew)
+                {
+                    switch (packet.State)
+                    {
+                        case MCPState.Information:
+                            InformationEvent?.Invoke(this, new InformationEventArgs()
+                            { Address = packet.IpAddress, Port = packet.Port, Information = packet.Information });
+                            break;
+                        case MCPState.MaintainConnection:
+                            MaintainEvent?.Invoke(this, new MaintainEventArgs()
+                            { Address = packet.IpAddress, Port = packet.Port });
+                            break;
+                        case MCPState.Close:
+                            CloseEvent?.Invoke(this, new CloseEventArgs()
+                            { Address = packet.IpAddress, Port = packet.Port });
+                            ipCounterTable.Remove(ipKey);
+                            break;
+                        default: break;
+                    }
+                }
             }
         }
 
@@ -145,12 +153,14 @@ namespace MCP
 
         private void CheckPacketNumber()
         {
+            Random random = new Random();
             if (pocketNumber == UInt32.MaxValue)
             {
                 maintainPacket = new MCPPacket(0, myIpAddress, myPort, MCPState.Reset);
                 connection.Send(maintainPacket.GetPacketBytes());
                 pocketNumber = 1;
-                Thread.Sleep(2 * maintainDelay);
+                int sleeptime = random.Next()%(2*maintainDelay)+maintainDelay;
+                Thread.Sleep(sleeptime);
             }
         }
 

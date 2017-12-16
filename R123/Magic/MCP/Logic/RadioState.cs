@@ -5,20 +5,20 @@ namespace MCP.Logic
 {
     public class RadioState
     {
-        public RadioState(decimal frequency, decimal antenna = 0)
+        public RadioState(double frequency, double antenna = 0)
         {
             Frequency = frequency;
             Antenna = antenna;
         }
-        public decimal Frequency { get; set; }
-        public decimal Antenna { get; set; }
+        public double Frequency { get; set; }
+        public double Antenna { get; set; }
         
     }
 
     public class RemoteRadioState: RadioState
     {
         public ERadioState RadioState { get; set; }
-        public RemoteRadioState(decimal frequency, ERadioState radioState) : base(frequency)
+        public RemoteRadioState(double frequency, ERadioState radioState) : base(frequency)
         {
             RadioState = radioState;
         }

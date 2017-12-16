@@ -104,12 +104,10 @@
     <Compile Include="Magic\Connection\MessageAvailableEventArgs.cs" />
     <Compile Include="Magic\Connection\Net\MulticastUdpConnection.cs" />
     <Compile Include="Magic\Connection\Net\UdpConnection.cs" />
-    <Compile Include="Magic\Logic - Копировать.cs" />
     <Compile Include="Magic\Logic.cs" />
     <Compile Include="Magic\MCP\Audio\AudioListener.cs" />
     <Compile Include="Magic\MCP\Audio\AudioLogicFilter.cs" />
     <Compile Include="Magic\MCP\Audio\G722ChatCodec.cs" />
-    <Compile Include="Magic\MCP\Audio\LoopStream.cs" />
     <Compile Include="Magic\MCP\Audio\MixerAudioPlayer.cs" />
     <Compile Include="Magic\MCP\Audio\NoiseWaveProvider.cs" />
     <Compile Include="Magic\MCP\Audio\VoiceStreamer.cs" />
@@ -160,6 +158,7 @@
     <Compile Include="Radio\ViewModel\Switch.cs" />
     <Compile Include="Radio\ViewModel\Tangent.cs" />
     <Compile Include="Radio\ViewModel\Antenna.cs" />
+    <Compile Include="Radio\ViewModel\Tone.cs" />
     <Compile Include="Radio\View\DiscretelyRotatingElement.cs" />
     <Compile Include="Radio\View\Display.cs" />
     <Compile Include="Radio\ViewModel\Frequency.cs" />
@@ -335,7 +334,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Files\XSPLearning\Controls.xps" />
     <None Include="Files\XSPLearning\Destination.xps" />
     <None Include="Files\XSPLearning\Kit.xps" />

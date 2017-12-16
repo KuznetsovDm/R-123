@@ -20,6 +20,7 @@ namespace Connection.Net
         public override void Open()
         {
             base.Open();
+            //socket.MulticastLoopback = false;
             socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.AddMembership, new MulticastOption(Wherefrom.Address, IPAddress.Any));
             socket.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.MulticastTimeToLive, TimeToLive);
         }

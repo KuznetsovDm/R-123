@@ -3,325 +3,210 @@ using R123.View;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Threading;
+using System.Timers;
+using System.Collections.Generic;
 
 namespace R123.Learning
 {
-    //public interface IRadioTask
-    //{
-    //    decimal Frequency { get; }
-    //    decimal Antenna { get; }
-    //    bool Tone { get; }
-    //    WorkModeValue WorkMode { get; }
-    //    event EventHandler<EventArgs> AllConditionsDone;
-    //    bool CheckTone(bool toneState);
-    //    bool CheckFrequency(decimal frequencyMachine);
-    //    bool CheckAntenna(decimal antennaMachine);
-    //    bool CheckPower();
-    //    bool CheckWorkMode();
-    //    void CheckAll();
-    //}
-    public class RadioFrequencyTask
-    {
-        public decimal Frequency { get; private set; }
-        public decimal Antenna { get; private set; }
-        public WorkModeValue WorkMode { get; private set; }
-        public bool Tone { get; set; }
-        public bool PlayTone { get; private set; }
 
-        public RadioFrequencyTask(decimal frequency, decimal antenna, WorkModeValue workMode, bool playTone)
+    public class RadioTask : Task
+    {
+        public Radio.Radio Radio;
+        public RadioTask(Radio.Radio radio)
         {
-            Frequency = frequency;
-            Antenna = antenna;
-            WorkMode = workMode;
-            PlayTone = playTone;
+            Radio = radio;
         }
 
+        private double frequency;
+        public double Frequency
+        {
+            get { return frequency; }
+            set
+            {
+                TaskParam param = new TaskParam("Frequency", 
+                    () => 
+                    {
+                        if (InInterval(Radio.Frequency.Value, frequency, 0.00001))
+                            return true;
+                        else
+                            return false;
+                    });
+                frequency = value;
+                AddTaskParam(param);
+            }
+        }
+
+        private double antenna;
+        public double Antenna
+        {
+            get { return antenna; }
+            set
+            {
+                TaskParam param = new TaskParam("Antenna", 
+                    () => 
+                    {
+                        if (InInterval(Radio.Antenna.Value, Antenna, 0.00001))
+                            return true;
+                        else
+                            return false;
+                    });
+                antenna = value;
+                AddTaskParam(param);
+            }
+        }
+
+        private bool power_state;
+        public bool PowerState
+        {
+            get { return power_state; }
+            set
+            {
+                TaskParam param = new TaskParam("Power", 
+                    () => 
+                    { return Radio.Power.Value == power_state; });
+                power_state = value;
+                AddTaskParam(param);
+            }
+        }
+
+        //Надо подумать, спросить у Димы.
+        KeyValuePair<int, double> fixedKeyValue;
+        public KeyValuePair<int, double> FixedFriquency
+        {
+            get { return fixedKeyValue; }
+            set
+            {
+                TaskParam param = new TaskParam("FixedFriequency", 
+                    () => 
+                    {
+                        if (InInterval(Radio.SubFixFrequency[fixedKeyValue.Key].Value, fixedKeyValue.Value, 0.00001))
+                            return true;
+                        else
+                            return false;
+                    });
+                fixedKeyValue = value;
+                AddTaskParam(param);
+            }
+        }
+
+        private int work_mode;
+        public int WorkMode
+        {
+            get { return work_mode; }
+            set
+            {
+                TaskParam param = new TaskParam("WorkMode", () => 
+                {
+                    if (Radio.WorkMode.Value == work_mode)
+                        return true;
+                    else
+                        return false;
+                });
+                work_mode = value;
+                AddTaskParam(param);
+            }
+        }
+
+        public static bool InInterval(double a, double b,double delta)
+        {
+            if (Math.Abs((a - b)) < delta)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    public abstract class Task
+    {
+        public class TaskParam
+        {
+            public TaskParam(string name, Func<bool> check)
+            {
+                Name = name;
+                CheckParam = check;
+            }
+            public string Name { get; private set; }
+            public string Description;
+            public Func<bool> CheckParam { get; private set; }
+            public override bool Equals(object obj)
+            {
+                return Name.GetHashCode().Equals(obj.GetHashCode());
+            }
+            public override int GetHashCode()
+            {
+                return Name.GetHashCode();
+            }
+        }
+
+        Dictionary<string, TaskParam> dict = new Dictionary<string, TaskParam>();
         public event EventHandler<EventArgs> AllConditionsDone;
+        Timer check_timer;
 
-        public static bool CheckDecimal(decimal a, decimal b, decimal delta)
-        {
-            if (Math.Abs((double)(a - b)) < (double)delta)
-                return true;
-            else
-                return false;
-        }
-        public bool CheckFrequency(decimal frequencyMachine)
-        {
-            return CheckDecimal(frequencyMachine, Frequency, 0.001M);
-        }
-        public bool CheckAntenna(decimal antennaMachine)
-        {
-            return (antennaMachine > 0.8M) ? true : false;
-        }
-        public bool CheckPower()
-        {
-            return Options.Switchers.Power.Value == State.on;
-        }
-        public bool CheckWorkMode()
-        {
-            if (Options.PositionSwitchers.WorkMode.Value == WorkMode)
-                return true;
-            else
-                return false;
-        }
-        public bool CheckTone()
-        {
-            if (!PlayTone)
-                return true;
-            else
-                return Tone;
-        }
+        public string Name { get; private set; } = "";
 
-        protected void InvokeAllConditionsDone(object sender)
-        {
-            AllConditionsDone?.Invoke(sender, null);
-        }
+        public Timer Timer { get; private set; } = new Timer();
 
-        public virtual void CheckAll()
-        {
-            if (CheckAntenna((decimal)Options.Encoders.AthenaDisplay.Value) && CheckFrequency(Options.Encoders.Frequency.Value) &&
-                CheckPower() && CheckWorkMode() && CheckTone())
-                AllConditionsDone?.Invoke(this, null);
-        }
-    }
+        public string Description { get; set; } = "";
 
-    public class RadioFixedFrequencyTask : RadioFrequencyTask
-    {
-        RangeSwitcherValues fixFrequency;
-        public RadioFixedFrequencyTask(decimal frequency, decimal antenna,
-                                        WorkModeValue workMode, bool playTone,
-                                        RangeSwitcherValues fixFrequency) :
-                                        base(frequency, antenna, workMode, playTone)
+        /// <summary>
+        /// Проверяет выполнение условия этого задания.
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckState()
         {
-            this.fixFrequency = fixFrequency;
-        }
-
-        bool CheckDecimal(decimal a, decimal b)
-        {
-            return RadioFrequencyTask.CheckDecimal(a, b, 0.001m);
-        }
-
-        public bool CheckFixFrequency()
-        {
-            if (fixFrequency == RangeSwitcherValues.FixFrequency1)
+            //return true if set is empty
+            bool state = true;
+            foreach (var element in dict)
             {
-                if (Frequency == 35.75M)
-                {
-                    if (CheckDecimal(Properties.Settings.Default.FixedFrequency1_1,Frequency) ||
-                       CheckDecimal(Properties.Settings.Default.FixedFrequency1_2, Frequency))
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                if (IsFirstSubFrequency())
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency1_1, Frequency);
-                else
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency1_2, Frequency);
+                state &= element.Value.CheckParam();
             }
-            else if (fixFrequency == RangeSwitcherValues.FixFrequency2)
-            {
-                if (Frequency == 35.75M)
-                {
-                    if (CheckDecimal(Properties.Settings.Default.FixedFrequency2_1, Frequency) ||
-                       CheckDecimal(Properties.Settings.Default.FixedFrequency2_2, Frequency))
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                if (IsFirstSubFrequency())
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency2_1, Frequency);
-                else
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency2_2, Frequency);
-            }
-            else if (fixFrequency == RangeSwitcherValues.FixFrequency3)
-            {
-                if (Frequency == 35.75M)
-                {
-                    if (CheckDecimal(Properties.Settings.Default.FixedFrequency3_1, Frequency) ||
-                       CheckDecimal(Properties.Settings.Default.FixedFrequency3_2, Frequency))
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                if (IsFirstSubFrequency())
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency3_1, Frequency);
-                else
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency3_2, Frequency);
-            }
-            else if (fixFrequency == RangeSwitcherValues.FixFrequency4)
-            {
-                if (Frequency == 35.75M)
-                {
-                    if (CheckDecimal(Properties.Settings.Default.FixedFrequency4_1, Frequency) ||
-                       CheckDecimal(Properties.Settings.Default.FixedFrequency4_2, Frequency))
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                if (IsFirstSubFrequency())
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency4_1, Frequency);
-                else
-                    return CheckDecimal(Properties.Settings.Default.FixedFrequency4_2, Frequency);
-            }
-            else return false;
+            return state;
         }
 
-        public override void CheckAll()
+        public void AddTaskParam(TaskParam param)
         {
-            if (CheckAntenna((decimal)Options.Encoders.AthenaDisplay.Value) && CheckFrequency(Options.Encoders.Frequency.Value) &&
-                CheckPower() && CheckWorkMode() && CheckTone()
-                && CheckFixFrequency())
-                InvokeAllConditionsDone(this);
+            dict.Add(param.Name, param);
         }
 
-        public bool IsFirstSubFrequency()
+        /// <summary>
+        /// Если элемент не найден возвращает обьект TaskParam("NoName",()=>false).
+        /// </summary>
+        /// <param name="Name">Имя параметра.</param>
+        /// <returns></returns>
+        public TaskParam GetParam(string Name)
         {
-            if (Frequency >= 35.75M)
-                return false;
+            if (dict.ContainsKey(Name))
+                return dict[Name];
             else
-                return true;
-        }
-    }
-
-    public class TaskController
-    {
-        public RadioFrequencyTask Task { get; private set; }
-        private StackPanel panel;
-        private DispatcherTimer dispatcherTimer;
-        private int timeOut;
-        public TaskController(RadioFrequencyTask task, StackPanel panel)
-        {
-            Options.SetInitialValue(true);
-            dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            timeOut = 0;
-            dispatcherTimer.Start();
-            Task = task;
-            this.panel = panel;
-            UpdateInfoTask();
-            Options.Encoders.Frequency.ValueChanged += WorkMode_ValueChanged;
-            Options.Encoders.AthenaDisplay.ValueChanged += WorkMode_ValueChanged;
-            Options.PositionSwitchers.WorkMode.ValueChanged += WorkMode_ValueChanged;
-            Options.Tone.ValueChanged += WorkMode_ValueChanged;
-            Task.AllConditionsDone += Task_AllConditionsDone;
+                return new TaskParam("NoName", () => false);
         }
 
-        private void Task_AllConditionsDone(object sender, EventArgs e)
+        /// <summary>
+        /// Паравметр устанавливаемый по жланию. Используется для проверки выполнения условия.
+        /// Если уже указывался параметр, то устанавливается новое время.
+        /// </summary>
+        /// <param name="miliseconds">Интервал проверки.</param>
+        public void SetCheckTime(int miliseconds)
         {
-            dispatcherTimer.Stop();
-            MessageBox.Show("All conditionstDone!");
-            Close();
-        }
-
-        CheckBox boxFr, boxAn, boxT;
-        TextBlock timerBlock;
-        private void WorkMode_ValueChanged()
-        {
-            if (Task.CheckFrequency(Options.Encoders.Frequency.Value))
-                boxFr.IsChecked = true;
-            else
-                boxFr.IsChecked = false;
-
-            if (Task.CheckAntenna((decimal)Options.Encoders.AthenaDisplay.Value))
-                boxAn.IsChecked = true;
-            else
-                boxAn.IsChecked = false;
-
-            if (Options.Switchers.Power.Value == State.on)
+            if (check_timer == null)
             {
-                Task.Tone = true;
-                boxT.IsChecked = true;
+                check_timer = new Timer();
+                check_timer.Interval = miliseconds;
+                check_timer.AutoReset = true;
+                check_timer.Elapsed += TimerCheckState;
             }
             else
+                check_timer.Interval = miliseconds;
+        }
+
+        private void TimerCheckState(object sender, ElapsedEventArgs e)
+        {
+            bool state = CheckState();
+            if (state)
             {
-                Task.Tone = false;
-                boxT.IsChecked = false;
+                check_timer.Stop();
+                AllConditionsDone?.Invoke(this, new EventArgs());
             }
-
-            Task.CheckAll();
-        }
-
-        private void AthenaDisplay_ValueChanged()
-        {
-            Task.CheckAntenna((decimal)Options.Encoders.AthenaDisplay.Value);
-            Task.CheckAll();
-        }
-
-        private void Frequency_ValueChanged()
-        {
-            Task.CheckFrequency((decimal)Options.Encoders.Frequency.Value);
-            Task.CheckAll();
-        }
-        private void UpdateInfoTask()
-        {
-            while (panel.Children.Count > 0)
-                panel.Children.RemoveAt(0);
-
-            StackPanel frequency = new StackPanel();
-            frequency.Orientation = Orientation.Horizontal;
-            boxFr = new CheckBox();
-            boxFr.IsEnabled = false;
-            frequency.Children.Add(boxFr);
-            TextBlock textFr = new TextBlock();
-            textFr.Text = $"1) установите частоту {Task.Frequency} МГц";
-            frequency.Children.Add(textFr);
-            panel.Children.Add(frequency);
-
-
-            StackPanel antenna = new StackPanel();
-            antenna.Orientation = Orientation.Horizontal;
-            boxAn = new CheckBox();
-            boxAn.IsEnabled = false;
-            antenna.Children.Add(boxAn);
-            TextBlock textAn = new TextBlock();
-            textAn.Text = "2) настройте антену";
-            antenna.Children.Add(textAn);
-            panel.Children.Add(antenna);
-
-
-            StackPanel tone = new StackPanel();
-            tone.Orientation = Orientation.Horizontal;
-            boxT = new CheckBox();
-            boxT.IsEnabled = false;
-            tone.Children.Add(boxT);
-            TextBlock textT = new TextBlock();
-            textT.Text = "3) Нажмите кнопку \"Тон\"";
-            tone.Children.Add(textT);
-            panel.Children.Add(tone);
-
-
-            StackPanel timerStack = new StackPanel();
-            timerStack.Orientation = Orientation.Horizontal;
-            TextBlock textTi = new TextBlock();
-            textTi.Text = "Потраченное время: ";
-            timerStack.Children.Add(textTi);
-            timerBlock = new TextBlock();
-            timerBlock.Text = "0";
-            timerStack.Children.Add(timerBlock);
-            TextBlock sec = new TextBlock();
-            sec.Text = " сек.";
-            timerStack.Children.Add(sec);
-            panel.Children.Add(timerStack);
-        }
-        private void DispatcherTimer_Tick(object sender, System.EventArgs e)
-        {
-            timeOut++;
-            timerBlock.Text = timeOut.ToString();
-        }
-        public void Close()
-        {
-            Options.Encoders.Frequency.ValueChanged -= WorkMode_ValueChanged;
-            Options.Encoders.AthenaDisplay.ValueChanged -= WorkMode_ValueChanged;
-            Options.PositionSwitchers.WorkMode.ValueChanged -= WorkMode_ValueChanged;
-            Options.Tone.ValueChanged -= WorkMode_ValueChanged;
-            Task.AllConditionsDone -= Task_AllConditionsDone;
-
-            dispatcherTimer.Stop();
         }
     }
 }

@@ -49,14 +49,22 @@ namespace R123
 
             radioLogic = new RadioLogic();
             radioLogic.Init();
-            radioLogic.Frequency = Convert.ToDecimal(Radio.Frequency.Value);
+            radioLogic.Frequency = Radio.Frequency.Value;
             radioLogic.Noise.Volume = (float)Radio.Noise.Value;
             radioLogic.Volume = (float)Radio.Volume.Value;
-            radioLogic.Antenna = Convert.ToDecimal(Radio.Antenna.Value);
+            radioLogic.Antenna = Radio.Antenna.Value;
             radioLogic.Microphone.Volume = 1;
             
             radioLogic.UnSubscribe();
             IsInitialized = false;
+        }
+
+        private void Tone_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
+        {
+            if (Radio.Power.Value && Radio.Tone.Value && Radio.WorkMode.Value == 1)
+                radioLogic.PlayToneSimplex();
+            else if (Radio.Power.Value && Radio.Tone.Value && Radio.WorkMode.Value == 0)
+                radioLogic.PlayToneAcceptance();
         }
 
         private void Tangent_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
@@ -71,7 +79,7 @@ namespace R123
 
         private void Antenna_ValueChanged(object sender, Radio.ValueChangedEventArgsEncoder e)
         {
-            radioLogic.Antenna = Convert.ToDecimal(e.Value);
+            radioLogic.Antenna = e.Value;
         }
 
         private void Power_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
@@ -80,12 +88,14 @@ namespace R123
             {
                 radioLogic.Start();
                 radioLogic.Noise.Play();
+                RadioConnection.Player.Play();
                 OnSpaceChange();
             }
             else
             {
                 StartStreaming = false;
                 radioLogic.Stop();
+                RadioConnection.Player.Pause();
                 radioLogic.Noise.Stop();
             }
         }
@@ -102,7 +112,7 @@ namespace R123
 
         private void Frequency_ValueChanged(object sender, Radio.ValueChangedEventArgsFrequency e)
         {
-            radioLogic.Frequency = Convert.ToDecimal(e.Value);
+            radioLogic.Frequency = e.Value;
         }
 
         public void OnSpaceChange()
@@ -111,12 +121,12 @@ namespace R123
             {
                 if (Radio.WorkMode.Value == 1 && Radio.Tangent.Value)
                 {
-                    RadioConnection.Stop();
+                    RadioConnection.Player.Pause();
                     StartStreaming = true;
                 }
                 else
                 {
-                    RadioConnection.Start();
+                    RadioConnection.Player.Play();
                     StartStreaming = false;
                 }
             }
@@ -132,6 +142,7 @@ namespace R123
             Radio.WorkMode.ValueChanged += WorkMode_ValueChanged;
 
             Radio.Power.ValueChanged += Power_ValueChanged;
+            Radio.Tone.ValueChanged += Tone_ValueChanged;
             Radio.Tangent.ValueChanged += Tangent_ValueChanged;
 
             IsInitialized = true;
@@ -148,6 +159,7 @@ namespace R123
             Radio.WorkMode.ValueChanged -= WorkMode_ValueChanged;
 
             Radio.Power.ValueChanged -= Power_ValueChanged;
+            Radio.Tone.ValueChanged -= Tone_ValueChanged;
             Radio.Tangent.ValueChanged -= Tangent_ValueChanged;
 
             IsInitialized = false;
@@ -162,25 +174,26 @@ namespace R123
                 {
                     Subscribe();
                     if (Radio.Power.Value)
-                        MCP.Logic.RadioConnection.Start();
+                    {
+                        radioLogic.Start();
+                        radioLogic.Noise.Play();
+                        RadioConnection.Player.Play();
+                    }
                     else
-                        MCP.Logic.RadioConnection.Stop();
+                    {
+                        radioLogic.Stop();
+                        radioLogic.Noise.Stop();
+                        RadioConnection.Player.Pause();
+                    }
                 }
             }
             else
                 if (IsInitialized)
             {
                 UnSubscribe();
-                MCP.Logic.RadioConnection.Stop();
+                RadioConnection.Stop();
+                RadioConnection.Player.Pause();
             }
-        }
-
-        private void Tone_ValueChanged()
-        {
-            if (Options.Tone.Value && Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Simplex)
-                radioLogic.PlayToneSimplex();
-            else if (Options.Tone.Value && Options.PositionSwitchers.WorkMode.Value == WorkModeValue.Acceptance)
-                radioLogic.PlayToneAcceptance();
         }
     }
 }

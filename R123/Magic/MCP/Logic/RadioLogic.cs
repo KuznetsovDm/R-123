@@ -8,8 +8,8 @@ namespace MCP.Logic
 {
     public class RadioLogic : IBehavior
     {
-        decimal frequency;
-        decimal antenna;
+        double frequency;
+        double antenna;
         RadioConnection connection;
         public event EventHandler<EventRadioArgs<RadioState>> StateChanged;
 
@@ -29,7 +29,7 @@ namespace MCP.Logic
 
         public void Stop() => RadioConnection.Stop();
 
-        public decimal Frequency
+        public double Frequency
         {
             get
             {
@@ -79,7 +79,7 @@ namespace MCP.Logic
             private set { }
         }
 
-        public decimal Antenna
+        public double Antenna
         {
             get
             {

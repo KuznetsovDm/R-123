@@ -1,5 +1,4 @@
 ﻿using R123.Learning;
-using R123.View;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -65,7 +64,10 @@ namespace R123
 
         private void WorkingPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            logic.PageChanged(e.NewValue.Equals(true));
+            if (e.NewValue.Equals(true)) {
+                if (!logic.IsInitialized) logic.Subscribe();
+            }
+            else if (logic.IsInitialized) logic.UnSubscribe();
 
             MouseMove += WorkingCapacityPage_MouseMove;
         }
@@ -73,8 +75,8 @@ namespace R123
         private void WorkingCapacityPage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             MouseMove -= WorkingCapacityPage_MouseMove;
-            string message = "На текущем шаге вы научитесь проверять работоспособность радиостанции.\r\n" + 
-                             "Выполняйте последовательно шаги.\r\n" + 
+            string message = "На текущем шаге вы научитесь проверять работоспособность радиостанции.\r\n" +
+                             "Выполняйте последовательно шаги.\r\n" +
                              "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
                              "Просто наведите указатель мыши на непонятный пункт.";
             MessageBox.Show(message, "Проверка работоспособности", MessageBoxButton.OK);
@@ -137,20 +139,70 @@ namespace R123
         }
         private void SetTooltips()
         {
-            string[] tooltips = {
-                null,
+            string[] buttonTooltips = {
+                "Наденьте наушники",
                 "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"",
-                "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника."
+                "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" поставьте в положение \"ВКЛ\"",
+                "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника",
+                "Переключатель \"КОНТРОЛЬ НАПРЯЖЕНИЯ\" поставьте в положение \"РАБОТА 1\"",
+                "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость",
+                "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\""
             };
 
-            for(int i=0; i < tooltips.Length; i++) {
-                if(tooltips[i] != null) {
-                    Button button = (Button)canvas.Children[i];
-                    button.ToolTip = tooltips[i];
+            string[] borderTooltips = {
+                "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\" (зажмите левую клавишу мыши и вращайте или крутите колесико мыши)",
+                "Поверните влево до упора (зажмите левую клавишу мыши и вращайте до тех пор, пока ручка крутится)",
+                "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" поставьте в положение \"ВКЛ\"",
+                "Нажмите пробел и убедитесь, что стрелка отклонилась от нулевого положения",
+                "Поверните вправо до упора (зажмите левую клавишу мыши и вращайте до тех пор, пока ручка крутится)",
+                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши",
+                "Повращайте ручку частот",
+                "Установите \"ДЕЖ. ПРИЕМ\"(крайнее правое положение)",
+                "Ничего не делайте (для пропуска нажмите пробел)",
+                "Нажмите на кнопку \"ТОН-ВЫЗОВ\"",
+                "Нажмите пробел",
+                "Зажмите левую клавишу мыши и крутите до тех пор, пока световой индикатор не достигнет максимальной яркости или стрелка вольтметра не достигнет крайнего правого положения",
+                "Ничего не делайте, крышка и так открыта (для пропуска нажмите пробел)",
 
-                    Border border = (Border)borders.Children[i-1];
-                    border.ToolTip = tooltips[i];
-                }
+            };
+
+
+            for (int i = 0; i < buttonTooltips.Length; i++) {
+                Button button = (Button)canvas.Children[i];
+
+                TextBlock textBlock = new TextBlock {
+                    FontFamily = new FontFamily("Times New Roman"),
+                    TextWrapping = TextWrapping.Wrap,
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 16,
+                    Text = buttonTooltips[i],
+                    Foreground = new SolidColorBrush(Colors.Black)
+                };
+
+                ToolTip toolTip = new ToolTip {
+                    Content = textBlock
+                };
+
+                button.ToolTip = toolTip;
+            }
+
+            for (int i = 0; i < borderTooltips.Length; i++) {
+                Border border = (Border)borders.Children[i];
+
+                TextBlock textBlock = new TextBlock {
+                    FontFamily = new FontFamily("Times New Roman"),
+                    TextWrapping = TextWrapping.Wrap,
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 16,
+                    Text = borderTooltips[i],
+                    Foreground = new SolidColorBrush(Colors.Black)
+                };
+
+                ToolTip toolTip = new ToolTip {
+                    Content = textBlock
+                };
+
+                border.ToolTip = toolTip;
             }
         }
 
@@ -205,6 +257,5 @@ namespace R123
             RadioPage.Radio.Tangent.ValueChanged -= NextStep;
             RadioPage.Radio.Antenna.ValueChanged -= NextStep;
         }
-
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace R123.Magic.MCP.Audio
+namespace MCP.Audio
 {
     public class MixerAudioPlayer
     {
@@ -54,12 +54,26 @@ namespace R123.Magic.MCP.Audio
 
         public void Stop()
         {
-            player.Stop();
+            try
+            {
+                player.Stop();
+            }
+            catch
+            {
+
+            }
         }
 
         public void Pause()
         {
-            player.Pause();
+            try
+            {
+                player.Pause();
+            }
+            catch
+            {
+
+            }
         }
 
         public void Dispose()

@@ -12,18 +12,18 @@ namespace MCP.Logic
         public IAudioLogicFilter audioFilter;
         public RemoteRadioState State;
         public RadioState baseRadioState;
-        public decimal Delta { get; private set; }
+        public double Delta { get; private set; }
 
         public bool Playing { get; private set; } = false;
 
         public bool Saying { get; private set; } = false;
 
-        static decimal[] badFrequency = { 213.0m, 222.25m, 222.5m, 236.0m, 236.25m, 236.5m, 238.25m, 275.25m, 287.0m, 287.25m, 296.25m, 296.5m, 313.52m, 314.75m, 315.0m, 315.25m, 323.75m,
-            364.75m, 370.5m, 379.75m, 380.0m, 393.5m, 393.75m, 394.0m, 395.75m, 432.0m, 444.5m, 444.75m, 453.75m, 454.0m, 454.5m, 472.25m, 472.5m, 472.75m, 474.75m, 512.0m };
+        static double[] badFrequency = { 213.0, 222.25, 222.5, 236.0, 236.25, 236.5, 238.25, 275.25, 287.0, 287.25, 296.25, 296.5, 313.52, 314.75, 315.0, 315.25, 323.75,
+            364.75, 370.5, 379.75, 380.0, 393.5, 393.75, 394.0, 395.75, 432.0, 444.5, 444.75, 453.75, 454.0, 454.5, 472.25, 472.5, 472.75, 474.75, 512.0};
 
         public event EventHandler<EventArgs> SayingState;
 
-        public RemoteRadioMachine(IAudioLogicFilter audioFilter, RadioState baseRadioState, decimal delta)
+        public RemoteRadioMachine(IAudioLogicFilter audioFilter, RadioState baseRadioState, double delta)
         {
             this.audioFilter = audioFilter;
             this.baseRadioState = baseRadioState;
@@ -41,7 +41,7 @@ namespace MCP.Logic
             RemoteStateChanged(remoteState.State.Frequency, remoteState.State.RadioState);
         }
 
-        public void RemoteStateChanged(decimal frequency, ERadioState state)
+        public void RemoteStateChanged(double frequency, ERadioState state)
         {
             State.Frequency = frequency;
             State.RadioState = state;
@@ -54,12 +54,11 @@ namespace MCP.Logic
             audioFilter.Noise = GetNoiseLevel(State.Frequency);
             if (baseRadioState != null)
                 ParseERadioState(State.RadioState);
-            StatePlaying();
+            
         }
 
         private void ParseERadioState(ERadioState radioState)
         {
-            System.Diagnostics.Trace.WriteLine(radioState+""+State.Frequency);
             bool canIPlay = Math.Abs(baseRadioState.Frequency - State.Frequency)<=Delta;
             if (radioState == ERadioState.SignalBegin && canIPlay)
                 RadioConnection.tone.Play();
@@ -68,28 +67,43 @@ namespace MCP.Logic
             {
                 Saying = true;
                 SayingState?.Invoke(this,null);
-                System.Diagnostics.Trace.WriteLine("SayingBegin");
+                StatePlaying(canIPlay);
             }
 
             if (radioState == ERadioState.SayingEnd && canIPlay)
             {
                 Saying = false;
                 SayingState?.Invoke(this, null);
-            }  
+                StatePlaying(canIPlay);
+            }
+
+            if (!canIPlay && Saying)
+            {
+                Saying = false;
+                SayingState?.Invoke(this, null);
+                StatePlaying(canIPlay);
+            }
         }
 
-        private float GetNoiseLevel(decimal frequency)
+        private float GetNoiseLevel(double frequency)
         {
             if (baseRadioState == null)
                 return 0;
             var deltaFrequency = Math.Abs(baseRadioState.Frequency - frequency);
-            float noise = (float)((deltaFrequency)<=Delta? (deltaFrequency / Delta)*0.01m:0.1m);
-            if (badFrequency.Contains(frequency*10))
-                noise = 0.005f;
+            float noise = (float)((deltaFrequency)<=Delta? (deltaFrequency / Delta)*0.01:0.1);
+            //если самозабитая частота
+            int i = 0;
+            while (frequency * 10 <= badFrequency[i])
+            {
+                if (Math.Abs(badFrequency[i] - frequency)<0.00001)
+                    noise = 0.005f;
+                i++;
+            }
+                
             return noise;
         }
 
-        private float GetVolumeLevel(decimal frequency)
+        private float GetVolumeLevel(double frequency)
         {
             if (baseRadioState == null)
                 return 0;
@@ -99,15 +113,16 @@ namespace MCP.Logic
             return volume;
         }
 
-        public void StatePlaying()
+        public void StatePlaying(bool canIPlay)
         {
-            if (Playing && audioFilter.IsListening && audioFilter.Volume == 0)
+            //если мы играем и прослушиваем, но при этом не може проигрывать
+            if (Playing && audioFilter.IsListening && !canIPlay)
             {
                 Playing = false;
                 audioFilter.Stop();
                 audioFilter.Flush();
             }
-            else if (!Playing && !audioFilter.IsListening && audioFilter.Volume > 0)
+            else if (!Playing && !audioFilter.IsListening && canIPlay)
             {
                 audioFilter.Flush();
                 Playing = true;

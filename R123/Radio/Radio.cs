@@ -13,6 +13,7 @@
         public PositionSwitcherProperty Range { get; private set; }
         public SwitcherProperty Power { get; private set; }
         public SwitcherProperty Scale { get; private set; }
+        public SwitcherProperty Tone { get; private set; }
         public SwitcherProperty Tangent { get; private set; }
         public NumberedSwitcherProperty[] Clamp { get; private set; }
         public NumberedSwitcherProperty[] SubFixFrequency { get; private set; }
@@ -33,6 +34,7 @@
 
             Power = new SwitcherProperty(logic.Power);
             Scale = new SwitcherProperty(logic.Scale);
+            Tone = new SwitcherProperty(logic.Tone);
             Tangent = new SwitcherProperty(logic.Tangent);
 
             Clamp = new NumberedSwitcherProperty[4];
@@ -57,7 +59,9 @@
 
             Power.ValueChanged += (object sender, ValueChangedEventArgsSwitcher e) => Switcher_ValueChanged("Power", e);
             Scale.ValueChanged += (object sender, ValueChangedEventArgsSwitcher e) => Switcher_ValueChanged("Scale", e);
+            Tone.ValueChanged += (object sender, ValueChangedEventArgsSwitcher e) => Switcher_ValueChanged("Tone", e);
             Tangent.ValueChanged += (object sender, ValueChangedEventArgsSwitcher e) => Switcher_ValueChanged("Tangent", e);
+
             for (int i = 0; i < Clamp.Length; i++)
                 Clamp[i].ValueChanged += (object sender, ValueChangedEventArgsNumberedSwitcher e) => NumberedSwitcher_ValueChanged("Clamp", e);
             for (int i = 0; i < SubFixFrequency.Length; i++)
