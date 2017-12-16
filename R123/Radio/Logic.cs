@@ -19,6 +19,7 @@ namespace R123.Radio
         public Tangent Tangent { get; private set; }
         public NumberedSwitch[] SubFixFrequency { get; private set; } = new NumberedSwitch[4];
         public Clamp[] Clamp { get; private set; } = new Clamp[4];
+        public double[,] valueFixFrequency = new double[2, 4];
 
         private View.Display SubFrequency;
         private View.Display FixFrequency;
@@ -26,7 +27,6 @@ namespace R123.Radio
         private View.VoltageDisplay VoltageDisplay;
 
         private View.RadioPage RadioPage;
-        private double[,] valueFixFrequency = new double[2, 4];
         private TurnAnimation TurnAnimation;
         private View.FixedFrequencySetting FixedFrequencySetting;
 

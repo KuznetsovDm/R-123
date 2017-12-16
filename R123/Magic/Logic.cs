@@ -6,12 +6,12 @@ namespace R123
 {
     public class Logic
     {
-        private Radio.Radio Radio;
+        private static Radio.Radio Radio;
 
-        private bool startStreaming = false;
-        public RadioLogic radioLogic { get; private set; }
-        public bool IsInitialized { get; private set; }
-        private bool StartStreaming
+        private static bool startStreaming = false;
+        public static RadioLogic radioLogic { get; private set; } = new RadioLogic();
+        public static bool IsInitialized { get; private set; } = false;
+        private static bool StartStreaming
         {
             get
             {
@@ -33,33 +33,12 @@ namespace R123
                 }
             }
         }
-        public Logic(Radio.Radio Radio)
+        static Logic()
         {
-            this.Radio = Radio;
-            /*
-            Radio.Frequency.ValueChanged += Frequency_ValueChanged;
-            Radio.Noise.ValueChanged += Noise_ValueChanged;
-            Radio.Volume.ValueChanged += Volume_ValueChanged;
-            Radio.Antenna.ValueChanged += Antenna_ValueChanged;
-
-            Radio.WorkMode.ValueChanged += WorkMode_ValueChanged;
-
-            Radio.Power.ValueChanged += Power_ValueChanged;
-            Radio.Tangent.ValueChanged += Tangent_ValueChanged;*/
-
-            radioLogic = new RadioLogic();
             radioLogic.Init();
-            radioLogic.Frequency = Radio.Frequency.Value;
-            radioLogic.Noise.Volume = (float)Radio.Noise.Value;
-            radioLogic.Volume = (float)Radio.Volume.Value;
-            radioLogic.Antenna = Radio.Antenna.Value;
-            radioLogic.Microphone.Volume = 1;
-            
-            radioLogic.UnSubscribe();
-            IsInitialized = false;
         }
 
-        private void Tone_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
+        private static void Tone_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
         {
             if (Radio.Power.Value && Radio.Tone.Value && Radio.WorkMode.Value == 1)
                 radioLogic.PlayToneSimplex();
@@ -67,22 +46,22 @@ namespace R123
                 radioLogic.PlayToneAcceptance();
         }
 
-        private void Tangent_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
+        private static void Tangent_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
         {
             OnSpaceChange();
         }
 
-        private void WorkMode_ValueChanged(object sender, Radio.ValueChangedEventArgsPositionSwitcher e)
+        private static void WorkMode_ValueChanged(object sender, Radio.ValueChangedEventArgsPositionSwitcher e)
         {
             OnSpaceChange();
         }
 
-        private void Antenna_ValueChanged(object sender, Radio.ValueChangedEventArgsEncoder e)
+        private static void Antenna_ValueChanged(object sender, Radio.ValueChangedEventArgsEncoder e)
         {
             radioLogic.Antenna = e.Value;
         }
 
-        private void Power_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
+        private static void Power_ValueChanged(object sender, Radio.ValueChangedEventArgsSwitcher e)
         {
             if (e.Value)
             {
@@ -100,22 +79,22 @@ namespace R123
             }
         }
 
-        private void Volume_ValueChanged(object sender, Radio.ValueChangedEventArgsEncoder e)
+        private static void Volume_ValueChanged(object sender, Radio.ValueChangedEventArgsEncoder e)
         {
             radioLogic.Volume = (float)e.Value;
         }
 
-        private void Noise_ValueChanged(object sender, Radio.ValueChangedEventArgsEncoder e)
+        private static void Noise_ValueChanged(object sender, Radio.ValueChangedEventArgsEncoder e)
         {
             radioLogic.Noise.Volume = (float)e.Value;
         }
 
-        private void Frequency_ValueChanged(object sender, Radio.ValueChangedEventArgsFrequency e)
+        private static void Frequency_ValueChanged(object sender, Radio.ValueChangedEventArgsFrequency e)
         {
             radioLogic.Frequency = e.Value;
         }
 
-        public void OnSpaceChange()
+        public static void OnSpaceChange()
         {
             if (Radio.Power.Value)
             {
@@ -132,8 +111,15 @@ namespace R123
             }
         }
 
-        public void Subscribe()
+        public static void Subscribe(Radio.Radio radio)
         {
+            Radio = radio;
+            radioLogic.Frequency = Radio.Frequency.Value;
+            radioLogic.Noise.Volume = (float)Radio.Noise.Value;
+            radioLogic.Volume = (float)Radio.Volume.Value;
+            radioLogic.Antenna = Radio.Antenna.Value;
+            radioLogic.Microphone.Volume = 1;
+
             Radio.Frequency.ValueChanged += Frequency_ValueChanged;
             Radio.Noise.ValueChanged += Noise_ValueChanged;
             Radio.Volume.ValueChanged += Volume_ValueChanged;
@@ -146,10 +132,9 @@ namespace R123
             Radio.Tangent.ValueChanged += Tangent_ValueChanged;
 
             IsInitialized = true;
-            radioLogic.Subscribe();
         }
 
-        public void UnSubscribe()
+        public static void UnSubscribe(Radio.Radio radio)
         {
             Radio.Frequency.ValueChanged -= Frequency_ValueChanged;
             Radio.Noise.ValueChanged -= Noise_ValueChanged;
@@ -163,16 +148,15 @@ namespace R123
             Radio.Tangent.ValueChanged -= Tangent_ValueChanged;
 
             IsInitialized = false;
-            radioLogic.UnSubscribe();
         }
 
-        public void PageChanged(bool state)
+        public void PageChanged(bool state,Radio.Radio radio)
         {
             if (state)
             {
                 if (!IsInitialized)
                 {
-                    Subscribe();
+                    Subscribe(radio);
                     if (Radio.Power.Value)
                     {
                         radioLogic.Start();
@@ -190,7 +174,7 @@ namespace R123
             else
                 if (IsInitialized)
             {
-                UnSubscribe();
+                UnSubscribe(radio);
                 RadioConnection.Stop();
                 RadioConnection.Player.Pause();
             }

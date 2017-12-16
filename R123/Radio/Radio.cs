@@ -17,6 +17,7 @@
         public SwitcherProperty Tangent { get; private set; }
         public NumberedSwitcherProperty[] Clamp { get; private set; }
         public NumberedSwitcherProperty[] SubFixFrequency { get; private set; }
+        public double[,] ValueFixFrequency { get; private set; }
 
         public Radio(View.RadioPage page)
         {
@@ -44,6 +45,8 @@
             SubFixFrequency = new NumberedSwitcherProperty[4];
             for (int i = 0; i < SubFixFrequency.Length; i++)
                 SubFixFrequency[i] = new NumberedSwitcherProperty(logic.SubFixFrequency[i]);
+
+            ValueFixFrequency = logic.valueFixFrequency;
 
 
 

@@ -95,11 +95,14 @@ namespace MCP.Logic
             int i = 0;
             while (frequency * 10 <= badFrequency[i])
             {
-                if (Math.Abs(badFrequency[i] - frequency)<0.00001)
+                if (Math.Abs(badFrequency[i] - frequency) < 0.00001)
+                {
                     noise = 0.005f;
+                    break;
+                }
                 i++;
             }
-                
+             
             return noise;
         }
 

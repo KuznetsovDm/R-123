@@ -69,8 +69,7 @@ namespace R123.Learning
             }
         }
 
-        //Надо подумать, спросить у Димы.
-        KeyValuePair<int, double> fixedKeyValue;
+        KeyValuePair<int ,double> fixedKeyValue;
         public KeyValuePair<int, double> FixedFriquency
         {
             get { return fixedKeyValue; }
@@ -79,7 +78,9 @@ namespace R123.Learning
                 TaskParam param = new TaskParam("FixedFriequency", 
                     () => 
                     {
-                        if (InInterval(Radio.SubFixFrequency[fixedKeyValue.Key].Value, fixedKeyValue.Value, 0.00001))
+                        if (InInterval(Radio.ValueFixFrequency[0,fixedKeyValue.Key], fixedKeyValue.Value, 0.00001)
+                            || InInterval(Radio.ValueFixFrequency[1,fixedKeyValue.Key], fixedKeyValue.Value, 0.00001)
+                        )
                             return true;
                         else
                             return false;

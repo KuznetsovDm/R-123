@@ -96,7 +96,7 @@ namespace MCP.Logic
 
         public RadioState State { get; private set; }
 
-        public void Subscribe()
+        /*public void Subscribe()
         {
             RadioConnection.Subscribe(this);
         }
@@ -104,6 +104,6 @@ namespace MCP.Logic
         public void UnSubscribe()
         {
             RadioConnection.UnSubscribe(this);
-        }
+        }*/
     }
 }
