@@ -76,7 +76,7 @@ namespace R123.Radio
             valueFixFrequency[0, 1] = 23.5;
             valueFixFrequency[0, 2] = 25.6;
             valueFixFrequency[0, 3] = 31;
-            valueFixFrequency[1, 0] = 38;
+            valueFixFrequency[1, 0] = 39;
             valueFixFrequency[1, 1] = 43;
             valueFixFrequency[1, 2] = 47;
             valueFixFrequency[1, 3] = 51;

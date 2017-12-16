@@ -1,6 +1,4 @@
 ﻿using R123.Learning;
-using R123.View;
-using R123.Radio.View;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,7 +17,6 @@ namespace R123
         private int currentStep = 0;
         private TuningTest tuningTest;
         private Radio.View.RadioPage RadioPage { get; set; }
-        private Logic logic;
 
         private string[] Steps = {
             "Надеть и подогнать шлемофон",
@@ -46,18 +43,12 @@ namespace R123
             RadioPage = new Radio.View.RadioPage();
             tuningTest = new TuningTest(RadioPage.Radio);
             Frame.Content = RadioPage;
-            logic = new Logic(RadioPage.Radio);
 
             SetButtons();
             SetLines();
 
-            IsVisibleChanged += TuningPage_IsVisibleChanged;
+            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
             Subscribe();
-        }
-
-        private void TuningPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            logic.PageChanged(e.NewValue.Equals(true));
         }
 
         private void NextStep(object sender, EventArgs args)

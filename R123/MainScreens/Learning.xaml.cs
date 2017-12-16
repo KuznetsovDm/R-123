@@ -11,7 +11,6 @@ namespace R123.MainScreens
     {
         private Radio.View.RadioPage RadioPage;
         private Radio.Radio Radio;
-        private Logic logic;
 
         private int currentStep;
         private const int MAX_STEP = 4;
@@ -38,9 +37,8 @@ namespace R123.MainScreens
             RadioPage = new Radio.View.RadioPage();
             Radio = RadioPage.Radio;
             Radio_Frame.Content = RadioPage;
-            logic = new Logic(RadioPage.Radio);
 
-            IsVisibleChanged += TuningPage_IsVisibleChanged;
+            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
 
             ShowXPSDocument();
             AddToolTip(text.Split('\n'));
@@ -63,16 +61,6 @@ namespace R123.MainScreens
                 };
                 b.ToolTip = t;
             }
-        }
-
-        private void TuningPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue.Equals(true))
-            {
-                if (!logic.IsInitialized) logic.Subscribe();
-            }
-            else
-                if (logic.IsInitialized) logic.UnSubscribe();
         }
 
         private void PrevStep(object sender, RoutedEventArgs e)

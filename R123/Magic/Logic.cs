@@ -111,7 +111,7 @@ namespace R123
             }
         }
 
-        public static void Subscribe(Radio.Radio radio)
+        private static void Subscribe(Radio.Radio radio)
         {
             Radio = radio;
             radioLogic.Frequency = Radio.Frequency.Value;
@@ -134,7 +134,7 @@ namespace R123
             IsInitialized = true;
         }
 
-        public static void UnSubscribe(Radio.Radio radio)
+        private static void UnSubscribe(Radio.Radio radio)
         {
             Radio.Frequency.ValueChanged -= Frequency_ValueChanged;
             Radio.Noise.ValueChanged -= Noise_ValueChanged;
@@ -150,7 +150,7 @@ namespace R123
             IsInitialized = false;
         }
 
-        public void PageChanged(bool state,Radio.Radio radio)
+        public static void PageChanged(bool state, Radio.Radio radio)
         {
             if (state)
             {

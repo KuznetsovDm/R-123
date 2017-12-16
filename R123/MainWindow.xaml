@@ -37,17 +37,16 @@
     </Window.Resources>
     <Grid>
         <TabControl>
-            <!--<TabItem Visibility="Hidden">
+            <TabItem Visibility="Hidden">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Height="10" Width="10" Fill="Black" />
-                        <TextBlock Style="{StaticResource TextInTabItemHeader}">Secret</TextBlock>
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame0" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                    <TextBlock Text="Программа-симулятор радиостанции Р-123М"/>
                 </TabItem.Content>
-            </TabItem>-->
+            </TabItem>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">

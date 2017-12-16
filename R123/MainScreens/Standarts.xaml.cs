@@ -9,7 +9,6 @@ namespace R123.MainScreens
     public partial class Standarts : Page
     {
         private Radio.View.RadioPage RadioPage;
-        private Logic logic;
 
         public Standarts()
         {
@@ -19,13 +18,8 @@ namespace R123.MainScreens
 
             RadioPage = new Radio.View.RadioPage();
             frame_Frame.Content = RadioPage;
-            logic = new Logic(RadioPage.Radio);
 
-            IsVisibleChanged += TuningPage_IsVisibleChanged;
-        }
-        private void TuningPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            logic.PageChanged(e.NewValue.Equals(true));
+            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
         }
 
         private void Standarts_Closed(object sender, System.EventArgs e)

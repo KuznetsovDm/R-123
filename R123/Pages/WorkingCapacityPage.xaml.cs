@@ -17,7 +17,6 @@ namespace R123
         private int currentStep = 0;
         private WorkingTest workingTest;
         private Radio.View.RadioPage RadioPage { get; set; }
-        private Logic logic;
 
         private string[] Steps = {
             "Надеть и подогнать шлемофон",
@@ -52,24 +51,13 @@ namespace R123
             RadioPage = new Radio.View.RadioPage();
             workingTest = new WorkingTest(RadioPage.Radio);
             Frame.Content = RadioPage;
-            logic = new Logic(RadioPage.Radio);
 
             SetButtons();
             SetLines();
             SetTooltips();
 
-            IsVisibleChanged += WorkingPage_IsVisibleChanged;
+            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
             Subscribe();
-        }
-
-        private void WorkingPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue.Equals(true)) {
-                if (!logic.IsInitialized) logic.Subscribe();
-            }
-            else if (logic.IsInitialized) logic.UnSubscribe();
-
-            MouseMove += WorkingCapacityPage_MouseMove;
         }
 
         private void WorkingCapacityPage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
