@@ -28,6 +28,10 @@ namespace R123.Radio
     {
         event EventHandler<ValueChangedEventArgsNumberedSwitcher> ValueChanged;
     }
+    public interface IPropertyNumberedClamp : IPropertyNumberedSwitcher
+    {
+        event EventHandler<FixedFrequencyChanged> FixedFrequencyChanged;
+    }
     public class Property<T>
     {
         private IProperty<T> property;
@@ -83,6 +87,15 @@ namespace R123.Radio
             prop.ValueChanged += Prop_ValueChanged;
         }
         private void Prop_ValueChanged(object sender, ValueChangedEventArgsNumberedSwitcher e) => ValueChanged?.Invoke(sender, e);
+    }
+    public class NumberedClampProperty : NumberedSwitcherProperty
+    {
+        public event EventHandler<FixedFrequencyChanged> FixedFrequencyChanged;
+        public NumberedClampProperty(IPropertyNumberedClamp prop) : base(prop)
+        {
+            prop.FixedFrequencyChanged += Prop_FixedFrequencyChanged;
+        }
+        private void Prop_FixedFrequencyChanged(object sender, FixedFrequencyChanged e) => FixedFrequencyChanged?.Invoke(sender, e);
     }
     public class ValueChangedEventArgs<T> : EventArgs
     {
@@ -173,6 +186,21 @@ namespace R123.Radio
         {
             Value = value;
             Number = number;
+        }
+    }
+    public class FixedFrequencyChanged : EventArgs
+    {
+        public double NewValue { get; private set; }
+        public double OldValue { get; private set; }
+        public int NumberFixedFrequency { get; private set; }
+        public int NumberSubFrequency { get; private set; }
+
+        public FixedFrequencyChanged(double newValue, double oldValue, int numberFixedFrequency, int numberSubFrequency)
+        {
+            NewValue = newValue;
+            OldValue = oldValue;
+            NumberFixedFrequency = numberFixedFrequency;
+            NumberSubFrequency = numberSubFrequency;
         }
     }
 }

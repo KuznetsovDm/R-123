@@ -1,8 +1,12 @@
 ﻿using MCP.Logic;
 using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace R123
 {
@@ -12,7 +16,7 @@ namespace R123
             System.Globalization.CultureInfo culture)
         {
             TabControl tabControl = values[0] as TabControl;
-            double width = tabControl.ActualWidth / tabControl.Items.Count - 0.5;
+            double width = tabControl.ActualWidth / (tabControl.Items.Count - 1) - 3;
             return (width <= 1) ? 0 : (width - 1);
         }
 
@@ -58,6 +62,7 @@ namespace R123
 
             Closing += MainWindow_Closing;
         }
+
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             RadioConnection.Close();

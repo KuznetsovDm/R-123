@@ -4,9 +4,10 @@ using System.Windows.Controls;
 
 namespace R123.Radio
 {
-    class Clamp : IPropertyNumberedSwitcher
+    class Clamp : IPropertyNumberedClamp
     {
         public event EventHandler<ValueChangedEventArgsNumberedSwitcher> ValueChanged;
+        public event EventHandler<FixedFrequencyChanged> FixedFrequencyChanged;
         private View.СontinuouslyRotatingElement element;
         private int number;
         private bool open = false;
@@ -14,10 +15,12 @@ namespace R123.Radio
         public Clamp(Image image, IInputElement R123, double defAngle, int number)
         {
             this.number = number;
-            element = new View.СontinuouslyRotatingElement(image, image.Width, image.Height, R123);
-            element.maxAngle = 90;
-            element.defAngle = defAngle;
-            element.Angle = 90;
+            element = new View.СontinuouslyRotatingElement(image, image.Width, image.Height, R123)
+            {
+                maxAngle = 90,
+                defAngle = defAngle,
+                Angle = 90
+            };
             element.ValueChanged += (object sender, ValueChangedEventArgs<double> e) => OnValueChanged();
         }
 
@@ -37,6 +40,11 @@ namespace R123.Radio
                 open = Angle == 0;
                 ValueChanged?.Invoke(this, new ValueChangedEventArgsNumberedSwitcher(open, number));
             }
+        }
+
+        public void OnFixedFrequencyChanged(double newValue, double oldValue, int numberFixedFrequency, int numberSubFrequency)
+        {
+            FixedFrequencyChanged?.Invoke(this, new FixedFrequencyChanged(newValue, oldValue, numberFixedFrequency, numberSubFrequency));
         }
     }
 }

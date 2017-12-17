@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R123"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Title="Р-123" WindowStartupLocation="CenterScreen"
         d:DesignWidth="1280" d:DesignHeight="1024"
@@ -37,14 +38,16 @@
     </Window.Resources>
     <Grid>
         <TabControl>
-            <TabItem Visibility="Hidden">
+            <TabItem Visibility="Hidden" Width="0">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource TextInTabItemHeader}"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <TextBlock Text="Программа-симулятор радиостанции Р-123М"/>
+                    <StackPanel Name="test">
+                        <TextBlock Text="Программа-симулятор радиостанции Р-123М"/>
+                    </StackPanel>
                 </TabItem.Content>
             </TabItem>
             <TabItem>

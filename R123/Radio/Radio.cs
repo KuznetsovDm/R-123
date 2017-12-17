@@ -15,7 +15,7 @@
         public SwitcherProperty Scale { get; private set; }
         public SwitcherProperty Tone { get; private set; }
         public SwitcherProperty Tangent { get; private set; }
-        public NumberedSwitcherProperty[] Clamp { get; private set; }
+        public NumberedClampProperty[] Clamp { get; private set; }
         public NumberedSwitcherProperty[] SubFixFrequency { get; private set; }
         public double[,] ValueFixFrequency { get; private set; }
 
@@ -38,9 +38,9 @@
             Tone = new SwitcherProperty(logic.Tone);
             Tangent = new SwitcherProperty(logic.Tangent);
 
-            Clamp = new NumberedSwitcherProperty[4];
+            Clamp = new NumberedClampProperty[4];
             for (int i = 0; i < Clamp.Length; i++)
-                Clamp[i] = new NumberedSwitcherProperty(logic.Clamp[i]);
+                Clamp[i] = new NumberedClampProperty(logic.Clamp[i]);
 
             SubFixFrequency = new NumberedSwitcherProperty[4];
             for (int i = 0; i < SubFixFrequency.Length; i++)
@@ -66,7 +66,11 @@
             Tangent.ValueChanged += (object sender, ValueChangedEventArgsSwitcher e) => Switcher_ValueChanged("Tangent", e);
 
             for (int i = 0; i < Clamp.Length; i++)
+            {
                 Clamp[i].ValueChanged += (object sender, ValueChangedEventArgsNumberedSwitcher e) => NumberedSwitcher_ValueChanged("Clamp", e);
+                Clamp[i].FixedFrequencyChanged += (object sender, FixedFrequencyChanged e) => FidexFrequency_ValueChanged("FixFrequency", e);
+            }
+
             for (int i = 0; i < SubFixFrequency.Length; i++)
                 SubFixFrequency[i].ValueChanged += (object sender, ValueChangedEventArgsNumberedSwitcher e) => NumberedSwitcher_ValueChanged("SubFixFrequency", e);
         }
@@ -94,6 +98,11 @@
         private void NumberedSwitcher_ValueChanged(string name, ValueChangedEventArgsNumberedSwitcher e)
         {
             System.Diagnostics.Trace.WriteLine($"{name}[{e.Number}]: value = {e.Value}");
+        }
+
+        private void FidexFrequency_ValueChanged(string name, FixedFrequencyChanged e)
+        {
+            System.Diagnostics.Trace.WriteLine($"{name}[{e.NumberFixedFrequency}][{e.NumberSubFrequency}]: newValue = {e.NewValue}, oldValue = {e.OldValue}");
         }
     }
 }

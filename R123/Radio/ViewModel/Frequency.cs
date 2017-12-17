@@ -7,11 +7,14 @@ namespace R123.Radio
     class Frequency : Encoder, IPropertyFrequency
     {
         public new event EventHandler<ValueChangedEventArgsFrequency> ValueChanged;
+        public event EventHandler<ValueChangedEventArgsFrequency> FrequencyChanged;
+        public bool NowAnimation { get; set; }
         private int subFrequency;
 
         public Frequency(Image image, double minValue, double maxValue, int accuracy, IInputElement R123, int coefficientMouseMove)
             : base(image, minValue, maxValue, accuracy, R123, 360 / 15.75 * 0.025 / 10, coefficientMouseMove)
         {
+            NowAnimation = false;
             subFrequency = 2;
         }
 
@@ -44,7 +47,9 @@ namespace R123.Radio
 
         protected override void OnValueChanged()
         {
-            ValueChanged?.Invoke(this, new ValueChangedEventArgsFrequency(Value, minValue, maxValue, element.Angle, base.Value));
+            FrequencyChanged?.Invoke(this, new ValueChangedEventArgsFrequency(Value, minValue, maxValue, element.Angle, base.Value));
+            if (!NowAnimation)
+                ValueChanged?.Invoke(this, new ValueChangedEventArgsFrequency(Value, minValue, maxValue, element.Angle, base.Value));
         }
     }
 }

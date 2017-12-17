@@ -83,6 +83,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.15\lib\net\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -349,6 +352,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="g1.gif" />
     <Resource Include="Files\dest.txt" />
     <Resource Include="Files\Images\AntennaControl.png" />
     <Resource Include="Files\Images\AntennaControlOld.png" />
