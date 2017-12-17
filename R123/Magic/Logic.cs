@@ -105,6 +105,7 @@ namespace R123
                 }
                 else
                 {
+                    RadioConnection.FlushAll();
                     RadioConnection.Player.Play();
                     StartStreaming = false;
                 }
@@ -130,7 +131,6 @@ namespace R123
             Radio.Power.ValueChanged += Power_ValueChanged;
             Radio.Tone.ValueChanged += Tone_ValueChanged;
             Radio.Tangent.ValueChanged += Tangent_ValueChanged;
-
             IsInitialized = true;
         }
 
@@ -146,7 +146,6 @@ namespace R123
             Radio.Power.ValueChanged -= Power_ValueChanged;
             Radio.Tone.ValueChanged -= Tone_ValueChanged;
             Radio.Tangent.ValueChanged -= Tangent_ValueChanged;
-
             IsInitialized = false;
         }
 
@@ -159,6 +158,7 @@ namespace R123
                     Subscribe(radio);
                     if (Radio.Power.Value)
                     {
+                        RadioConnection.FlushAll();
                         radioLogic.Start();
                         radioLogic.Noise.Play();
                         RadioConnection.Player.Play();
@@ -169,6 +169,7 @@ namespace R123
                         radioLogic.Noise.Stop();
                         RadioConnection.Player.Pause();
                     }
+                    RadioConnection.AnalysisPlayNoise(null, null);
                 }
             }
             else

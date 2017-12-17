@@ -92,6 +92,7 @@
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
     <Compile Include="Learning\RadioTask.cs" />
+    <Compile Include="Learning\TaskFactory.cs" />
     <Compile Include="Learning\TuningTest.cs" />
     <Compile Include="Learning\WorkingCapacityTest.cs" />
     <Compile Include="Learning\WorkingTest.cs" />
