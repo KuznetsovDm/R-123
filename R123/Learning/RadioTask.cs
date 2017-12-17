@@ -1,10 +1,8 @@
 ﻿using System;
-using R123.View;
-using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Threading;
-using System.Timers;
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
+using System.Windows.Threading;
 
 namespace R123.Learning
 {
@@ -12,9 +10,47 @@ namespace R123.Learning
     public class RadioTask : Task
     {
         public Radio.Radio Radio;
-        public RadioTask(Radio.Radio radio)
+        public RadioTask(Radio.Radio radio,string name)
         {
             Radio = radio;
+            Name = name;
+        }
+
+        public new void Start()
+        {
+            Radio.Frequency.ValueChanged += EventCheckState;
+            Radio.Noise.ValueChanged += EventCheckState;
+            Radio.Volume.ValueChanged += EventCheckState;
+            Radio.Antenna.IsMovedChanged += EventCheckState;
+
+            Radio.WorkMode.ValueChanged += EventCheckState;
+            Radio.Power.ValueChanged += EventCheckState;
+            Radio.Tone.ValueChanged += EventCheckState;
+            Radio.Tangent.ValueChanged += EventCheckState;
+            foreach (var v in Radio.Clamp)
+                v.ValueChanged += EventCheckState;
+            base.Start();
+        }
+
+        public new void Stop()
+        {
+            Radio.Frequency.ValueChanged -= EventCheckState;
+            Radio.Noise.ValueChanged -= EventCheckState;
+            Radio.Volume.ValueChanged -= EventCheckState;
+            Radio.Antenna.IsMovedChanged -= EventCheckState;
+
+            Radio.WorkMode.ValueChanged -= EventCheckState;
+            Radio.Power.ValueChanged -= EventCheckState;
+            Radio.Tone.ValueChanged -= EventCheckState;
+            Radio.Tangent.ValueChanged -= EventCheckState;
+            foreach (var v in Radio.Clamp)
+                v.ValueChanged -= EventCheckState;
+            base.Stop();
+        }
+
+        public void EventCheckState(object sender, EventArgs e)
+        {
+            CheckState();
         }
 
         private double frequency;
@@ -26,11 +62,12 @@ namespace R123.Learning
                 TaskParam param = new TaskParam("Frequency", 
                     () => 
                     {
-                        if (InInterval(Radio.Frequency.Value, frequency, 0.00001))
+                        if (InInterval(Radio.Frequency.Value, frequency, 0.05))
                             return true;
                         else
                             return false;
-                    });
+                    },
+                    frequency);
                 frequency = value;
                 AddTaskParam(param);
             }
@@ -45,12 +82,53 @@ namespace R123.Learning
                 TaskParam param = new TaskParam("Antenna", 
                     () => 
                     {
-                        if (InInterval(Radio.Antenna.Value, Antenna, 0.00001))
+                        if (Radio.Antenna.Value>antenna)
                             return true;
                         else
                             return false;
-                    });
+                    },
+                    antenna);
                 antenna = value;
+                AddTaskParam(param);
+            }
+        }
+
+        private double volume;
+        public double Volume
+        {
+            get { return volume; }
+            set
+            {
+                TaskParam param = new TaskParam("Volume",
+                    () =>
+                    {
+                        if (Radio.Volume.Value > volume)
+                            return true;
+                        else
+                            return false;
+                    },
+                    volume);
+                volume = value;
+                AddTaskParam(param);
+            }
+        }
+
+        private double noise;
+        public double Noise
+        {
+            get { return noise; }
+            set
+            {
+                TaskParam param = new TaskParam("Antenna",
+                    () =>
+                    {
+                        if (Radio.Noise.Value > noise)
+                            return true;
+                        else
+                            return false;
+                    },
+                    noise);
+                noise = value;
                 AddTaskParam(param);
             }
         }
@@ -61,30 +139,33 @@ namespace R123.Learning
             get { return power_state; }
             set
             {
-                TaskParam param = new TaskParam("Power", 
+                TaskParam param = new TaskParam("PowerState", 
                     () => 
-                    { return Radio.Power.Value == power_state; });
+                    { return Radio.Power.Value == power_state; },
+                    power_state);
+
                 power_state = value;
                 AddTaskParam(param);
             }
         }
 
         KeyValuePair<int ,double> fixedKeyValue;
-        public KeyValuePair<int, double> FixedFriquency
+        public KeyValuePair<int, double> FixedFrequency
         {
             get { return fixedKeyValue; }
             set
             {
-                TaskParam param = new TaskParam("FixedFriequency", 
+                TaskParam param = new TaskParam("FixedFrequency", 
                     () => 
                     {
-                        if (InInterval(Radio.ValueFixFrequency[0,fixedKeyValue.Key], fixedKeyValue.Value, 0.00001)
-                            || InInterval(Radio.ValueFixFrequency[1,fixedKeyValue.Key], fixedKeyValue.Value, 0.00001)
+                        if (InInterval(Radio.ValueFixFrequency[0,fixedKeyValue.Key], fixedKeyValue.Value, 0.05)
+                            || InInterval(Radio.ValueFixFrequency[1,fixedKeyValue.Key], fixedKeyValue.Value, 0.05)
                         )
                             return true;
                         else
                             return false;
-                    });
+                    },
+                    fixedKeyValue);
                 fixedKeyValue = value;
                 AddTaskParam(param);
             }
@@ -102,8 +183,25 @@ namespace R123.Learning
                         return true;
                     else
                         return false;
-                });
+                },
+                work_mode);
                 work_mode = value;
+                AddTaskParam(param);
+            }
+        }
+
+        private bool tone;
+        public bool Tone
+        {
+            get { return tone; }
+            set
+            {
+                TaskParam param = new TaskParam("Tone",
+                    () =>
+                    { return Radio.Tone.Value == tone; },
+                    tone);
+
+                tone = value;
                 AddTaskParam(param);
             }
         }
@@ -115,19 +213,43 @@ namespace R123.Learning
             else
                 return false;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public new void Close()
+        {
+            Stop();
+            base.Close();
+        }
     }
 
     public abstract class Task
     {
         public class TaskParam
         {
-            public TaskParam(string name, Func<bool> check)
+            public TaskParam(string name, Func<bool> check,object value)
             {
                 Name = name;
                 CheckParam = check;
+                Value = value;
             }
             public string Name { get; private set; }
-            public string Description;
+            public object Value { get; private set; }
+            private bool state = false;
+            public bool State
+            {
+                get => state;
+                set
+                {
+                    state = value;
+                    StateChanged(this, new EventArgs());
+                }
+            }
+            public string Description = "";
+            public event EventHandler<EventArgs> StateChanged;
             public Func<bool> CheckParam { get; private set; }
             public override bool Equals(object obj)
             {
@@ -140,28 +262,40 @@ namespace R123.Learning
         }
 
         Dictionary<string, TaskParam> dict = new Dictionary<string, TaskParam>();
-        public event EventHandler<EventArgs> AllConditionsDone;
-        Timer check_timer;
+        public event EventHandler<EventArgs> AllConditionsDoneEvent;
+        public event EventHandler<EventArgs> EndOfTimeEvent;
+        public event EventHandler<EventArgs> TickEvent;
 
-        public string Name { get; private set; } = "";
+        public string Name { get; protected set; } = "";
 
-        public Timer Timer { get; private set; } = new Timer();
+        private DispatcherTimer Timer { get; set; } = new DispatcherTimer();
 
-        public string Description { get; set; } = "";
+        public int TimeForTask { get; private set; }
+
+        public string Description()
+        {
+            string description = "";
+            foreach (var element in dict)
+                description += element.Value.Description + "\n";
+            return description;
+        }
 
         /// <summary>
         /// Проверяет выполнение условия этого задания.
         /// </summary>
         /// <returns></returns>
-        public bool CheckState()
+        public void CheckState()
         {
             //return true if set is empty
             bool state = true;
             foreach (var element in dict)
             {
-                state &= element.Value.CheckParam();
+                element.Value.State = element.Value.CheckParam();
+                state &= element.Value.State;
             }
-            return state;
+
+            if (state)
+                AllConditionsDoneEvent?.Invoke(this, new EventArgs());
         }
 
         public void AddTaskParam(TaskParam param)
@@ -179,35 +313,51 @@ namespace R123.Learning
             if (dict.ContainsKey(Name))
                 return dict[Name];
             else
-                return new TaskParam("NoName", () => false);
+                return new TaskParam("NoName", () => false,new object());
         }
 
-        /// <summary>
-        /// Паравметр устанавливаемый по жланию. Используется для проверки выполнения условия.
-        /// Если уже указывался параметр, то устанавливается новое время.
-        /// </summary>
-        /// <param name="miliseconds">Интервал проверки.</param>
-        public void SetCheckTime(int miliseconds)
+        public void Start()
         {
-            if (check_timer == null)
+            counter = 0;
+            Timer.Start();
+            Timer.Tick += Timer_Tick;
+        }
+
+        private int counter = 0;
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            counter++;
+            if (counter >= TimeForTask)
             {
-                check_timer = new Timer();
-                check_timer.Interval = miliseconds;
-                check_timer.AutoReset = true;
-                check_timer.Elapsed += TimerCheckState;
+                Timer.Tick -= Timer_Tick;
+                Timer.Stop();
+                EndOfTimeEvent?.Invoke(this, new EventArgs());
             }
             else
-                check_timer.Interval = miliseconds;
+                TickEvent?.Invoke(this, new EventArgs());
         }
 
-        private void TimerCheckState(object sender, ElapsedEventArgs e)
+        public void Stop()
         {
-            bool state = CheckState();
-            if (state)
-            {
-                check_timer.Stop();
-                AllConditionsDone?.Invoke(this, new EventArgs());
-            }
+            Timer.Stop();
         }
+
+        public void SetTimeForTask(int seconds)
+        {
+            TimeForTask = seconds;
+            Timer.Interval = new TimeSpan(0, 0, 1);
+        }
+
+        public void Close()
+        {
+            Timer.Stop();
+        }
+
+        public TaskParam this[string Key]
+        {
+            get => GetParam(Key);
+        }
+
+        public TaskParam[] GetParams() => dict.Select((x)=>x.Value).ToArray();
     }
 }

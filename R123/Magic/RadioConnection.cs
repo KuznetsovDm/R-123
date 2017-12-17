@@ -20,7 +20,6 @@ namespace MCP.Logic
 
             //init behavior
             Behavior = behavior;
-            Subscribe(behavior);
         }
 
         private static void Connector_CloseEvent(object sender, MCPConnector.CloseEventArgs e)
@@ -88,18 +87,21 @@ namespace MCP.Logic
 
         public static void Start()
         {
-            var remotes = remoteCollection.Values.ToArray();
-            foreach (var elem in remotes)
-            {
-                elem.audioFilter.Flush();
-            }
-
             connector.Start();
         }
 
         public static void Stop()
         {
             connector.Stop();
+        }
+
+        public static void FlushAll()
+        {
+            var remotes = remoteCollection.Values.ToArray();
+            foreach (var elem in remotes)
+            {
+                elem.audioFilter.Flush();
+            }
         }
 
         private static bool IsNewRemoteMachine(IPAddress address)
@@ -194,7 +196,8 @@ namespace MCP.Logic
             return bytes.ToArray();
         }
 
-        public static void Subscribe(IBehavior behavior)
+        //не используется
+        private static void Subscribe(IBehavior behavior)
         {
             Behavior = behavior;
             var values = remoteCollection.Values.ToArray();
@@ -207,7 +210,7 @@ namespace MCP.Logic
             }
         }
 
-        public static void UnSubscribe(IBehavior behavior)
+        private static void UnSubscribe(IBehavior behavior)
         {
             Behavior = null;
             var values = remoteCollection.Values.ToArray();
@@ -218,7 +221,7 @@ namespace MCP.Logic
                 elem.Analysis();
             }
         }
-
+        //
         public static void Close()
         {
             if (!Closed)

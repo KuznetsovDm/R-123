@@ -93,7 +93,7 @@ namespace MCP.Logic
             float noise = (float)((deltaFrequency)<=Delta? (deltaFrequency / Delta)*0.01:0.1);
             //если самозабитая частота
             int i = 0;
-            while (frequency * 10 <= badFrequency[i])
+            while (i < badFrequency.Length && frequency * 10 <= badFrequency[i])
             {
                 if (Math.Abs(badFrequency[i] - frequency) < 0.00001)
                 {

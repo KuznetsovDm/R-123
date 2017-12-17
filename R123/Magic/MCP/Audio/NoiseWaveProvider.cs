@@ -33,7 +33,7 @@ namespace MCP.Audio
             System.Security.Cryptography.RNGCryptoServiceProvider random = 
                 new System.Security.Cryptography.RNGCryptoServiceProvider();
             random.GetBytes(noise);
-            AddNoise(noise);
+            //AddNoise(noise);
             while (true)
             {
                 while (Playing)
@@ -68,10 +68,10 @@ namespace MCP.Audio
 
         public void Stop()
         {
-            bufferedWaveProvider.ClearBuffer();
             Playing = false;
             if(!waitHandle.SafeWaitHandle.IsClosed)
                 waitHandle.Reset();
+            bufferedWaveProvider.ClearBuffer();
         }
 
         public void Dispose()

@@ -8,7 +8,6 @@
         d:DesignWidth="1280" d:DesignHeight="1024">
     <Page.Resources>
         <Style TargetType="Button">
-            <Setter Property="Width" Value="300"/>
             <Setter Property="Padding" Value="5"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="FontSize" Value="20"/>
@@ -45,19 +44,31 @@
             <TextBlock Name="title_TextBlock" Text="Радиостанция Р-123М" FontFamily="Times New Roman" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" MinWidth="500" TextAlignment="Center"/>
         </StackPanel>
         
-        <Frame x:Name="frame_Frame" Grid.Row="1" NavigationUIVisibility="Hidden" Grid.ColumnSpan="2"/>
+        <Frame x:Name="frame_Frame" Grid.Row="0" NavigationUIVisibility="Hidden" Grid.ColumnSpan="1"/>
 
-        <StackPanel Grid.Row="2" Grid.Column="0" Name="Task" Margin="5">
-            <!--<TextBlock Text="Выберете номер задачи:"/>-->
-            <!--<Button Content="Задача №1" Click="Task1_Click"/>
-            <Button Content="Задача №2" Click="Task2_Click"/>
-            <Button Content="Задача №3" Click="Task3_Click"/>-->
+        <StackPanel Grid.Row="0" Grid.Column="1" Name="TaskPanel" Margin="5" Visibility="Visible">
+            <TextBlock Text="Выберете номер задачи:"/>
+            <ListBox Name="LisBoxtOfTasks">
+                <ListBox.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="ListBoxItem.Background" Value="LightSlateGray"/>
+                        <Setter Property="ListBoxItem.Margin" Value="5"/>
+                        <Setter Property="ListBoxItem.Padding" Value="5"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+            <Button Content ="Начать задание" Click="RunSelectedItem"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <!--<TextBlock Text="Описание задачи: " FontWeight="Bold"/>
-            <StackPanel Name="description_Panel">
-            </StackPanel>-->
+        <StackPanel Name="CurrentTaskPanel" Grid.Row="0" Grid.Column="1" Visibility="Hidden">
+            <TextBlock Text="Описание задачи:"/>
+            <StackPanel Name="TaskDescriptionsPanel"/>
+            <TextBlock Name="Timer" Text="Потраченное время: 0 секунд"/>
+            <StackPanel Name="TaskResultPanel" Visibility="Hidden" Orientation="Horizontal">
+                <TextBlock Text="Состояние: "/>
+                <TextBlock Name="TaskResult"/>
+            </StackPanel>
+            <Button Name="ComeBackTask" Content="Вернуться к задачам." Visibility="Hidden" Click="ComeBackTask_Click"/>
         </StackPanel>
     </Grid>
 </Page>
