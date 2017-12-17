@@ -25,5 +25,10 @@ namespace R123.Radio.View
             InitializeComponent();
             Radio = new Radio(this);
         }
+        public void HideTangent()
+        {
+            tangenta_Image.Visibility = Visibility.Hidden;
+            Width = 848;
+        }
     }
 }

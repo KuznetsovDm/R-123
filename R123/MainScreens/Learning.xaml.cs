@@ -32,25 +32,35 @@ namespace R123.MainScreens
             titles[1] = "Технические характеристики";
             titles[2] = "Комплект радиостанции Р-123М";
             titles[3] = "Назначение органов управления";
-            titles[4] = "Исходное положение органов управления радиостанции";
+            titles[4] = "Исходное положение органов управления";
 
             RadioPage = new Radio.View.RadioPage();
-            Radio = RadioPage.Radio;
+            RadioPage.HideTangent();
             Radio_Frame.Content = RadioPage;
+            Radio = RadioPage.Radio;
 
             IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
 
             ShowXPSDocument();
             AddToolTip(text.Split('\n'));
+
+            for (int i = 0; i < Menu_StackPanel.Children.Count; i++)
+            {
+                (Menu_StackPanel.Children[i] as Button).Click += (object sender, RoutedEventArgs e) =>
+                {
+                    currentStep = Menu_StackPanel.Children.IndexOf(sender as UIElement);
+                    ShowCurrentStep();
+                };
+            }
         }
 
         private void AddToolTip(string[] textSplit)
         {
-            for (int i = 1; i < BorderSet_Canvas.Children.Count; i++)
+            for (int i = 0; i < textSplit.Length; i++)
             {
                 Border b = BorderSet_Canvas.Children[i] as Border;
                 TextBlock text = new TextBlock();
-                string s = textSplit[i - 1];
+                string s = textSplit[i];
                 text.Text = s.Substring(0, s.Length - 1);
                 text.FontSize = 15;
                 text.MaxWidth = 500;
@@ -68,19 +78,8 @@ namespace R123.MainScreens
             if (currentStep == 0) return;
 
             currentStep--;
-            if (currentStep == 0) prevStep_Button.IsEnabled = false;
-            nextStep_Button.IsEnabled = true;
 
-            if (currentStep == MAX_STEP - 1)
-            {
-                docViewer.Visibility = Visibility.Hidden;
-                AboutSwitcher_ViewBox.Visibility = Visibility.Visible;
-                AboutSwitcher_Image.Visibility = Visibility.Visible;
-                title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
-                AboutSwitcher_ViewBox.MouseMove += AboutSwitcher_ViewBox_MouseMove;
-            }
-            else
-                ShowXPSDocument();
+            ShowCurrentStep();
         }
 
         private void NextStep(object sender, RoutedEventArgs e)
@@ -91,6 +90,27 @@ namespace R123.MainScreens
             currentStep++;
             if (currentStep == MAX_STEP) nextStep_Button.IsEnabled = false;
             prevStep_Button.IsEnabled = true;
+
+            ShowCurrentStep();
+        }
+
+        private void ShowCurrentStep()
+        {
+            if (currentStep == 0)
+            {
+                prevStep_Button.IsEnabled = false;
+                nextStep_Button.IsEnabled = true;
+            }
+            else if (currentStep == MAX_STEP)
+            {
+                nextStep_Button.IsEnabled = false;
+                prevStep_Button.IsEnabled = true;
+            }
+            else
+            {
+                nextStep_Button.IsEnabled = true;
+                prevStep_Button.IsEnabled = true;
+            }
 
             if (currentStep == MAX_STEP - 1)
             {

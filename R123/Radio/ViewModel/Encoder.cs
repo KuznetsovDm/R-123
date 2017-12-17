@@ -7,7 +7,7 @@ namespace R123.Radio
     public class Encoder : IPropertyEncoder
     {
         public event EventHandler<ValueChangedEventArgsEncoder> ValueChanged;
-        protected View.СontinuouslyRotatingElement element;
+        public View.СontinuouslyRotatingElement element;
         protected double minValue, maxValue, diff;
         private int accuracy;
         private bool reverse;

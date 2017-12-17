@@ -10,6 +10,7 @@ namespace R123.Radio.View
     {
         public bool TurnBlocking { get; set; }
         public event EventHandler<ValueChangedEventArgs<double>> ValueChanged;
+        public event EventHandler<IsMovedChangedEventArgs> IsMovedChanged;
         public double deltaMouseWheel = 3.6;
         public double maxAngle;
         public double defAngle;
@@ -72,6 +73,7 @@ namespace R123.Radio.View
             }
             else
                 Angle = newValue;
+            IsMovedChanged?.Invoke(this, new IsMovedChangedEventArgs(false));
         }
         private Vector v1, v2;
         private double startAngle, changeAngle, newAngle;
@@ -91,6 +93,8 @@ namespace R123.Radio.View
             v1 = new Vector(cursor.X - centerXCanvas, centerYCanvas - cursor.Y);
             startAngle = angle;
             changeAngle = 0;
+
+            IsMovedChanged?.Invoke(this, new IsMovedChangedEventArgs(true));
         }
         public double coefficientMouseMove = 1;
         private void OnMouseMoveMax(object sender, MouseEventArgs e)
@@ -129,6 +133,7 @@ namespace R123.Radio.View
             MainWindow.Instance.MouseMove -= OnMouseMove;
             MainWindow.Instance.MouseUp -= OnMouseUp;
             MainWindow.Instance.Cursor = Cursors.Arrow;
+            IsMovedChanged?.Invoke(this, new IsMovedChangedEventArgs(false));
         }
     }
 }

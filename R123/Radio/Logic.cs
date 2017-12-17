@@ -57,14 +57,14 @@ namespace R123.Radio
             FrequencyDisplay = new View.FrequencyDisplay(page.frequencyDisplay_Canvas, page.frequencyBand_Canvas);
             VoltageDisplay = new View.VoltageDisplay(page.antennaLight_Ellipse, page.voltageDisplay_Line, Antenna);
 
-            Frequency.ValueChanged += Frequency_ValueChanged;
+            Frequency.FrequencyChanged += Frequency_ValueChanged;
             Range.ValueChanged += Range_ValueChanged;
             Power.ValueChanged += Power_ValueChanged;
             AntennaClip.ValueChanged += AntennaClip_ValueChanged;
             for (int i = 0; i < SubFixFrequency.Length; i++)
                 SubFixFrequency[i].ValueChanged += SubFixFrequency_ValueChanged;
             for (int i = 0; i < Clamp.Length; i++)
-                Clamp[i].ValueChanged += Logic_ValueChanged;
+                Clamp[i].ValueChanged += Clamp_ValueChanged;
             Scale.ValueChanged += (object sender, ValueChangedEventArgsSwitcher e) => UpdateFrequencyDisplayVisibility();
             WorkMode.ValueChanged += (object sender, ValueChangedEventArgsPositionSwitcher e) => UpdateVoltageDisplay();
             Tangent.ValueChanged += (object sender, ValueChangedEventArgsSwitcher e) => UpdateVoltageDisplay();
@@ -85,13 +85,16 @@ namespace R123.Radio
             TurnAnimation = new TurnAnimation(Frequency, FixedFrequencySetting, Antenna);
         }
 
-        private void Logic_ValueChanged(object sender, ValueChangedEventArgsNumberedSwitcher e)
+        private void Clamp_ValueChanged(object sender, ValueChangedEventArgsNumberedSwitcher e)
         {
             UpdateTurnBlockingFrequnecy();
             if (e.Value == false && Range.Value == e.Number && Power.Value)
             {
+                double oldValue = valueFixFrequency[SubFrequency.Value - 1, e.Number];
                 System.Diagnostics.Trace.WriteLine($"fixedFrequency[{SubFrequency.Value - 1}][{e.Number}] = {Frequency.Value}");
                 valueFixFrequency[SubFrequency.Value - 1, e.Number] = Frequency.Value;
+                double newValue = valueFixFrequency[SubFrequency.Value - 1, e.Number];
+                (sender as Clamp).OnFixedFrequencyChanged(newValue, oldValue, e.Number, SubFrequency.Value - 1);
             }
         }
 

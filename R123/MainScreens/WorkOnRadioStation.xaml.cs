@@ -47,7 +47,7 @@ namespace R123.MainScreens
         }
         private void ShowPage()
         {
-            title_TextBlock.Text = $"Шаг №{currentStep + 1 + 5}: {titles[currentStep]}";
+            title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}";
             if (currentStep == 0)
                 frame_Frame.Content = new TuningPage();
             else if (currentStep == 1)

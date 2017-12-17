@@ -4,15 +4,19 @@ using System.Windows.Controls;
 
 namespace R123.Radio
 {
-    class Antenna : Encoder, IPropertyEncoder
+    class Antenna : Encoder, IPropertyAnenna
     {
         public new event EventHandler<ValueChangedEventArgsEncoder> ValueChanged;
+        public event EventHandler<IsMovedChangedEventArgs> IsMovedChanged;
+        public bool NowAnimation { get; set; }
         private Frequency Frequency;
         public Antenna(Image image, IInputElement R123, Frequency frequency)
             : base(image, 0, 360, 5, R123, false)
         {
+            NowAnimation = false;
             Frequency = frequency;
             Frequency.ValueChanged += (object sender, ValueChangedEventArgsFrequency e) => OnValueChanged();
+            element.IsMovedChanged += (object sender, IsMovedChangedEventArgs e) => IsMovedChanged(this, e);
         }
 
         double coef = 360 / 31.5;
@@ -43,14 +47,28 @@ namespace R123.Radio
         public double Angle
         {
             get => base.Value;
+            set
+            {
+                base.Value = value;
+                OnValueChanged();
+            }
+        }
+
+        public double SetAnimationAngle
+        {
+            get => base.Value;
             set => base.Value = value;
         }
 
-        public void Update() => OnValueChanged();
+        public void ZeroValueChanged()
+        {
+            ValueChanged?.Invoke(this, new ValueChangedEventArgsEncoder(0, minValue, maxValue, element.Angle));
+        }
 
         protected override void OnValueChanged()
         {
-            ValueChanged?.Invoke(this, new ValueChangedEventArgsEncoder(Value, minValue, maxValue, element.Angle));
+            if (!NowAnimation)
+                ValueChanged?.Invoke(this, new ValueChangedEventArgsEncoder(Value, minValue, maxValue, element.Angle));
         }
     }
 }
