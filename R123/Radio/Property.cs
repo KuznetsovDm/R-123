@@ -16,6 +16,10 @@ namespace R123.Radio
     {
         event EventHandler<ValueChangedEventArgsFrequency> ValueChanged;
     }
+    public interface IPropertyAnenna : IPropertyEncoder
+    {
+        event EventHandler<IsMovedChangedEventArgs> IsMovedChanged;
+    }
     public interface IPropertyPositionSwitcher : IProperty<int>
     {
         event EventHandler<ValueChangedEventArgsPositionSwitcher> ValueChanged;
@@ -30,7 +34,7 @@ namespace R123.Radio
     }
     public interface IPropertyNumberedClamp : IPropertyNumberedSwitcher
     {
-        event EventHandler<FixedFrequencyChanged> FixedFrequencyChanged;
+        event EventHandler<FixedFrequencyChangedEventArgs> FixedFrequencyChanged;
     }
     public class Property<T>
     {
@@ -61,6 +65,15 @@ namespace R123.Radio
         }
         private void Prop_ValueChanged(object sender, ValueChangedEventArgsEncoder e) => ValueChanged?.Invoke(sender, e);
     }
+    public class AntennaProperty : EncoderProperty
+    {
+        public event EventHandler<IsMovedChangedEventArgs> IsMovedChanged;
+        public AntennaProperty(IPropertyAnenna prop) : base(prop)
+        {
+            prop.IsMovedChanged += Prop_IsMovedChanged;
+        }
+        private void Prop_IsMovedChanged(object sender, IsMovedChangedEventArgs e) => IsMovedChanged?.Invoke(sender, e);
+    }
     public class PositionSwitcherProperty : Property<int>
     {
         public event EventHandler<ValueChangedEventArgsPositionSwitcher> ValueChanged;
@@ -90,12 +103,12 @@ namespace R123.Radio
     }
     public class NumberedClampProperty : NumberedSwitcherProperty
     {
-        public event EventHandler<FixedFrequencyChanged> FixedFrequencyChanged;
+        public event EventHandler<FixedFrequencyChangedEventArgs> FixedFrequencyChanged;
         public NumberedClampProperty(IPropertyNumberedClamp prop) : base(prop)
         {
             prop.FixedFrequencyChanged += Prop_FixedFrequencyChanged;
         }
-        private void Prop_FixedFrequencyChanged(object sender, FixedFrequencyChanged e) => FixedFrequencyChanged?.Invoke(sender, e);
+        private void Prop_FixedFrequencyChanged(object sender, FixedFrequencyChangedEventArgs e) => FixedFrequencyChanged?.Invoke(sender, e);
     }
     public class ValueChangedEventArgs<T> : EventArgs
     {
@@ -188,19 +201,27 @@ namespace R123.Radio
             Number = number;
         }
     }
-    public class FixedFrequencyChanged : EventArgs
+    public class FixedFrequencyChangedEventArgs : EventArgs
     {
         public double NewValue { get; private set; }
         public double OldValue { get; private set; }
         public int NumberFixedFrequency { get; private set; }
         public int NumberSubFrequency { get; private set; }
 
-        public FixedFrequencyChanged(double newValue, double oldValue, int numberFixedFrequency, int numberSubFrequency)
+        public FixedFrequencyChangedEventArgs(double newValue, double oldValue, int numberFixedFrequency, int numberSubFrequency)
         {
             NewValue = newValue;
             OldValue = oldValue;
             NumberFixedFrequency = numberFixedFrequency;
             NumberSubFrequency = numberSubFrequency;
+        }
+    }
+    public class IsMovedChangedEventArgs : EventArgs
+    {
+        public bool Value { get; private set; }
+        public IsMovedChangedEventArgs(bool value)
+        {
+            Value = value;
         }
     }
 }

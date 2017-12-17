@@ -4,9 +4,10 @@ using System.Windows.Controls;
 
 namespace R123.Radio
 {
-    class Antenna : Encoder, IPropertyEncoder
+    class Antenna : Encoder, IPropertyAnenna
     {
         public new event EventHandler<ValueChangedEventArgsEncoder> ValueChanged;
+        public event EventHandler<IsMovedChangedEventArgs> IsMovedChanged;
         public bool NowAnimation { get; set; }
         private Frequency Frequency;
         public Antenna(Image image, IInputElement R123, Frequency frequency)
@@ -15,6 +16,7 @@ namespace R123.Radio
             NowAnimation = false;
             Frequency = frequency;
             Frequency.ValueChanged += (object sender, ValueChangedEventArgsFrequency e) => OnValueChanged();
+            element.IsMovedChanged += (object sender, IsMovedChangedEventArgs e) => IsMovedChanged(this, e);
         }
 
         double coef = 360 / 31.5;

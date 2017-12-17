@@ -6,7 +6,7 @@
         public FrequencyProperty Frequency { get; private set; }
         public EncoderProperty Volume { get; private set; }
         public EncoderProperty Noise { get; private set; }
-        public EncoderProperty Antenna { get; private set; }
+        public AntennaProperty Antenna { get; private set; }
         public EncoderProperty AntennaClip { get; private set; }
         public PositionSwitcherProperty WorkMode { get; private set; }
         public PositionSwitcherProperty Voltage { get; private set; }
@@ -26,7 +26,7 @@
             Frequency = new FrequencyProperty(logic.Frequency);
             Volume = new EncoderProperty(logic.Volume);
             Noise = new EncoderProperty(logic.Noise);
-            Antenna = new EncoderProperty(logic.Antenna);
+            Antenna = new AntennaProperty(logic.Antenna);
             AntennaClip = new EncoderProperty(logic.AntennaClip);
 
             WorkMode = new PositionSwitcherProperty(logic.WorkMode);
@@ -54,6 +54,7 @@
             Volume.ValueChanged += (object sender, ValueChangedEventArgsEncoder e) => Encoder_ValueChanged("Volume", e);
             Noise.ValueChanged += (object sender, ValueChangedEventArgsEncoder e) => Encoder_ValueChanged("Noise", e);
             Antenna.ValueChanged += (object sender, ValueChangedEventArgsEncoder e) => Encoder_ValueChanged("Antenna", e);
+            Antenna.IsMovedChanged += Antenna_IsMovedChanged;
             AntennaClip.ValueChanged += (object sender, ValueChangedEventArgsEncoder e) => Encoder_ValueChanged("AntennaClip", e);
 
             Range.ValueChanged += (object sender, ValueChangedEventArgsPositionSwitcher e) => PositionSwitcher_ValueChanged("Range", e);
@@ -68,11 +69,16 @@
             for (int i = 0; i < Clamp.Length; i++)
             {
                 Clamp[i].ValueChanged += (object sender, ValueChangedEventArgsNumberedSwitcher e) => NumberedSwitcher_ValueChanged("Clamp", e);
-                Clamp[i].FixedFrequencyChanged += (object sender, FixedFrequencyChanged e) => FidexFrequency_ValueChanged("FixFrequency", e);
+                Clamp[i].FixedFrequencyChanged += (object sender, FixedFrequencyChangedEventArgs e) => FidexFrequency_ValueChanged("FixFrequency", e);
             }
 
             for (int i = 0; i < SubFixFrequency.Length; i++)
                 SubFixFrequency[i].ValueChanged += (object sender, ValueChangedEventArgsNumberedSwitcher e) => NumberedSwitcher_ValueChanged("SubFixFrequency", e);
+        }
+
+        private void Antenna_IsMovedChanged(object sender, IsMovedChangedEventArgs e)
+        {
+            System.Diagnostics.Trace.WriteLine($"Antenna is moved = {e.Value}");
         }
 
         private void Frequency_ValueChanged(string name, ValueChangedEventArgsFrequency e)
@@ -100,7 +106,7 @@
             System.Diagnostics.Trace.WriteLine($"{name}[{e.Number}]: value = {e.Value}");
         }
 
-        private void FidexFrequency_ValueChanged(string name, FixedFrequencyChanged e)
+        private void FidexFrequency_ValueChanged(string name, FixedFrequencyChangedEventArgs e)
         {
             System.Diagnostics.Trace.WriteLine($"{name}[{e.NumberFixedFrequency}][{e.NumberSubFrequency}]: newValue = {e.NewValue}, oldValue = {e.OldValue}");
         }

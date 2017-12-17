@@ -7,7 +7,7 @@ namespace R123.Radio
     class Clamp : IPropertyNumberedClamp
     {
         public event EventHandler<ValueChangedEventArgsNumberedSwitcher> ValueChanged;
-        public event EventHandler<FixedFrequencyChanged> FixedFrequencyChanged;
+        public event EventHandler<FixedFrequencyChangedEventArgs> FixedFrequencyChanged;
         private View.СontinuouslyRotatingElement element;
         private int number;
         private bool open = false;
@@ -44,7 +44,7 @@ namespace R123.Radio
 
         public void OnFixedFrequencyChanged(double newValue, double oldValue, int numberFixedFrequency, int numberSubFrequency)
         {
-            FixedFrequencyChanged?.Invoke(this, new FixedFrequencyChanged(newValue, oldValue, numberFixedFrequency, numberSubFrequency));
+            FixedFrequencyChanged?.Invoke(this, new FixedFrequencyChangedEventArgs(newValue, oldValue, numberFixedFrequency, numberSubFrequency));
         }
     }
 }

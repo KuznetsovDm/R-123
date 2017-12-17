@@ -37,6 +37,8 @@ namespace R123.Radio
             dispatcherTimer.Stop();
             dispatcherSleep.Stop();
             Antenna.TurnBlocking = false;
+            Antenna.NowAnimation = false;
+            Frequency.NowAnimation = false;
             dispatcherTimer.Tick -= new EventHandler(UpFrequency);
             dispatcherTimer.Tick -= new EventHandler(DownFrequency);
             dispatcherTimer.Tick -= new EventHandler(UpAntenna);

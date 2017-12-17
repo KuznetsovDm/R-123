@@ -24,7 +24,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="Line">
-            <Setter Property="StrokeThickness" Value="5"/>
+            <Setter Property="StrokeThickness" Value="3"/>
             <Setter Property="Stroke" Value="Black"/>
         </Style>
         <Style x:Key="TitleButtons">
@@ -37,114 +37,180 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Grid.Row="1">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Padding" Value="10"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel Name="Menu_StackPanel">
+                <Button Content="1. Назначение радиостанции Р-123М"/>
+                <Button Content="2. Технические характеристики"/>
+                <Button Content="3. Комплект радиостанции Р-123М"/>
+                <Button Content="4. Назначение органов управления"/>
+                <Button Content="5. Исходное положение органов управления"/>
+            </StackPanel>
+            <TextBlock Name="Description"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Name="prevStep_Button" Content="Предыдущий шаг" IsEnabled="False" Click="PrevStep" Style="{StaticResource TitleButtons}"/>
             <TextBlock Name="title_TextBlock" Text="Шаг №1" FontFamily="Times New Roman" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" MinWidth="500" TextAlignment="Center"/>
             <Button Name="nextStep_Button" Content="Следующий шаг" IsEnabled="True" Click="NextStep" Style="{StaticResource TitleButtons}"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="Выход" IsCancel="True" Click="EscButton_Click" Visibility="Hidden"/>
         </StackPanel>
 
-        <DocumentViewer Grid.Row="1" Name="docViewer" Visibility="Visible"/>
+        <DocumentViewer Grid.Column="1" Grid.Row="1" Name="docViewer" Visibility="Visible"/>
 
+        <Image Grid.Column="1" Grid.Row="1" Name="AboutSwitcher_Image" Source="/Files/Images/Learning/SetRadio.png" Stretch="Fill"/>
 
-        <Image Grid.Row="1" Name="AboutSwitcher_Image" Source="/Files/Images/Learning/SetRadio.png" Stretch="Fill"/>
-
-        <Viewbox Grid.Row="1" Stretch="Fill" Name="AboutSwitcher_ViewBox" Visibility="Hidden">
-            <Canvas  Width="963" Height="449" Name="BorderSet_Canvas">
-                <Viewbox Grid.Row="1" Stretch="Fill" Width="625" Height="242" Canvas.Left="96" Canvas.Top="146" Visibility="Hidden">
+        <Viewbox Grid.Column="1" Grid.Row="1" Stretch="Fill" Name="AboutSwitcher_ViewBox">
+            <Canvas  Width="963" Height="449">
+                <Viewbox Grid.Row="1" Stretch="Fill" Width="609" Height="226" Canvas.Left="103" Canvas.Top="154">
                     <Frame Name="Radio_Frame" NavigationUIVisibility="Hidden"/>
                 </Viewbox>
-                <Border Style="{StaticResource Number}" Canvas.Left="213" Canvas.Top="418">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="1"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="115" Canvas.Top="420">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="2"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="5" Canvas.Top="282">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="3"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="8" Canvas.Top="257">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="4"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="234">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="5"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="210">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="6"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="186">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="7"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="9" Canvas.Top="162">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="8"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="9" Canvas.Top="135">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="9"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="94">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="10"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="142" Canvas.Top="1">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="11"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="177">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="12"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="251" Canvas.Top="-1">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="13"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="345" Canvas.Top="2">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="14"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="426" Canvas.Top="3">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="15"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="459" Canvas.Top="3">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="16"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="499" Canvas.Top="3">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="17"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="576" Canvas.Top="2">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="18"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="624" Canvas.Top="5">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="19"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="685" Canvas.Top="3">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="20"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="758" Canvas.Top="6">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="21"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="809" Canvas.Top="9">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="22"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="910" Canvas.Top="112">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="23"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="907" Canvas.Top="191">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="24"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="903" Canvas.Top="286">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="25"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="902" Canvas.Top="357">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="26"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="623" Canvas.Top="420">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="27"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="323" Canvas.Top="421">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="28"/>
-                </Border>
-                <Border Style="{StaticResource Number}" Canvas.Left="263" Canvas.Top="419">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="29"/>
-                </Border>
+                <!-- 1 - 5 -->
+                <Line X1="229" X2="238" Y1="438" Y2="364"/>
+                <Line X1="132" X2="150" Y1="440" Y2="350"/>
+                <Line X1="22" X2="210" Y1="296" Y2="307"/>
+                <Line X1="22" X2="180" Y1="272" Y2="281"/>
+                <Line X1="22" X2="130" Y1="247" Y2="270"/>
+                <!-- 6 - 10 -->
+                <Line X1="32" X2="150" Y1="225" Y2="270"/>
+                <Line X1="22" X2="150" Y1="202" Y2="237"/>
+                <Line X1="22" X2="150" Y1="180" Y2="173"/>
+                <Line X1="22" X2="180" Y1="152" Y2="171"/>
+                <Line X1="112" X2="250" Y1="10" Y2="250"/>
+                <!-- 11 - 15 -->
+                <Line X1="162" X2="230" Y1="10" Y2="170"/>
+                <Line X1="186" X2="320" Y1="10" Y2="180"/>
+                <Line X1="267" X2="347" Y1="10" Y2="170"/>
+                <Line X1="363" X2="431" Y1="21" Y2="93"/>
+                <Line X1="442" X2="450" Y1="16" Y2="140"/>
+                <!-- 16 - 20 -->
+                <Line X1="474" X2="488" Y1="16" Y2="172"/>
+                <Line X1="513" X2="544" Y1="17" Y2="88"/>
+                <Line X1="592" X2="530" Y1="16" Y2="190"/>
+                <Line X1="643" X2="549" Y1="24" Y2="210"/>
+                <Line X1="702" X2="630" Y1="16" Y2="168"/>
+                <!-- 21 - 25 -->
+                <Line X1="772" X2="670" Y1="26" Y2="198"/>
+                <Line X1="822" X2="680" Y1="26" Y2="248"/>
+                <Line X1="932" X2="760" Y1="119" Y2="248"/>
+                <Line X1="922" X2="775" Y1="203" Y2="284"/>
+                <Line X1="914" X2="700" Y1="303" Y2="295"/>
+                <!-- 26 - 29 -->
+                <Line X1="920" X2="680" Y1="376" Y2="332"/>
+                <Line X1="640" X2="580" Y1="438" Y2="342"/>
+                <Line X1="335" X2="366" Y1="436" Y2="392"/>
+                <Line X1="279" X2="330" Y1="438" Y2="300"/>
+
+                <Canvas Name="BorderSet_Canvas">
+                    <Border Style="{StaticResource Number}" Canvas.Left="213" Canvas.Top="418">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="1"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="115" Canvas.Top="420">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="2"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="5" Canvas.Top="282">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="3"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="8" Canvas.Top="257">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="4"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="234">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="5"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="210">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="6"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="186">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="7"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="9" Canvas.Top="162">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="8"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="9" Canvas.Top="135">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="9"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="97">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="10"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="147">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="11"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="177">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="12"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="251" Canvas.Top="-1">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="13"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="345" Canvas.Top="2">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="14"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="426" Canvas.Top="3">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="15"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="459" Canvas.Top="3">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="16"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="499" Canvas.Top="3">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="17"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="576" Canvas.Top="2">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="18"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="624" Canvas.Top="5">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="19"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="685" Canvas.Top="3">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="20"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="758" Canvas.Top="6">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="21"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="809" Canvas.Top="9">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="22"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="910" Canvas.Top="112">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="23"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="907" Canvas.Top="191">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="24"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="903" Canvas.Top="286">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="25"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="902" Canvas.Top="357">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="26"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="623" Canvas.Top="420">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="27"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="323" Canvas.Top="421">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="28"/>
+                    </Border>
+                    <Border Style="{StaticResource Number}" Canvas.Left="263" Canvas.Top="419">
+                        <TextBlock Style="{StaticResource TextNumber}" Text="29"/>
+                    </Border>
+                </Canvas>
             </Canvas>
         </Viewbox>
     </Grid>

@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R123"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
         Title="Р-123" WindowStartupLocation="CenterScreen"
         d:DesignWidth="1280" d:DesignHeight="1024"
@@ -45,9 +44,33 @@
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <StackPanel Name="test">
-                        <TextBlock Text="Программа-симулятор радиостанции Р-123М"/>
-                    </StackPanel>
+                    <Grid Background="#E8E6EA">
+                        <Grid.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="Margin" Value="10"/>
+                                <Setter Property="FontFamily" Value="Arial"/>
+                                <Setter Property="FontSize" Value="20"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <!--<TextBlock Grid.Column="0" Text="Справка"/>
+                        <TextBlock Grid.Column="1" Text="Обучение"/>
+                        <TextBlock Grid.Column="2" Text="Работа и задачи"/>-->
+                        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Name="test">
+                            <TextBlock Text="Обучающая программа-симулятор радиостанци Р-123М"/>
+                            <Image Source="Files/FotoR123.jpg" Height="400"/>
+                            <TextBlock Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ"/>
+                        </StackPanel>
+                    </Grid>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
