@@ -352,7 +352,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="g4.gif" />
     <Resource Include="Files\dest.txt" />
     <Resource Include="Files\Images\AntennaControl.png" />
     <Resource Include="Files\Images\AntennaControlOld.png" />
@@ -390,6 +389,17 @@
     <Resource Include="Files\Images\AntennaFixer.png" />
     <Resource Include="Files\Images\Learning\SetRadio.png" />
     <Resource Include="Files\FotoR123.jpg" />
+    <Resource Include="Files\Gifs\DeshPriem.gif" />
+    <Resource Include="Files\Gifs\NoiseLeft.gif" />
+    <Resource Include="Files\Gifs\NoiseRight.gif" />
+    <Resource Include="Files\Gifs\PowerAndScaleOn.gif" />
+    <Resource Include="Files\Gifs\PowerOff.gif" />
+    <Resource Include="Files\Gifs\Simplex.gif" />
+    <Resource Include="Files\Gifs\Tangent.gif" />
+    <Resource Include="Files\Gifs\TestVoltage.gif" />
+    <Resource Include="Files\Gifs\Tone.gif" />
+    <Resource Include="Files\Gifs\Voltage.gif" />
+    <Resource Include="Files\Gifs\Volume.gif" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

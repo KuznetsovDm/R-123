@@ -38,6 +38,15 @@ namespace R123.MainScreens
             RadioPage.HideTangent();
             Radio_Frame.Content = RadioPage;
             Radio = RadioPage.Radio;
+            Radio.Frequency.Image.ToolTip = "Частота = 35.75";
+            Radio.Frequency.ValueChanged += Frequency_ValueChanged;
+            Radio.Range.Image.ToolTip = "Фиксированная частота №1 поддиапазона 2";
+            Radio.Range.ValueChanged += (object sender, Radio.ValueChangedEventArgsPositionSwitcher e) => Range_ValueChanged(e.Value);
+            foreach (var switcher in Radio.SubFixFrequency)
+                switcher.ValueChanged += (object sender, Radio.ValueChangedEventArgsNumberedSwitcher e) => Range_ValueChanged(Radio.Range.Value);
+
+
+
 
             IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
 
@@ -52,6 +61,19 @@ namespace R123.MainScreens
                     ShowCurrentStep();
                 };
             }
+        }
+
+        private void Range_ValueChanged(int number)
+        {
+            if (number < 4)
+                Radio.Range.Image.ToolTip = $"Фиксированная частота №{number + 1} поддиапазона {(Radio.SubFixFrequency[number].Value ? 1 : 2)}";
+            else
+                Radio.Range.Image.ToolTip = $"Плавный поддиапазон №{number - 3}";
+        }
+
+        private void Frequency_ValueChanged(object sender, Radio.ValueChangedEventArgsFrequency e)
+        {
+            Radio.Frequency.Image.ToolTip = $"Частота = {e.Value}";
         }
 
         private void AddToolTip(string[] textSplit)
@@ -119,6 +141,7 @@ namespace R123.MainScreens
                 AboutSwitcher_Image.Visibility = Visibility.Visible;
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
                 AboutSwitcher_ViewBox.MouseMove += AboutSwitcher_ViewBox_MouseMove;
+                Description.Text = "Чтобы увидеть описание элемента наведите курсор на его номер.";
             }
             else if (currentStep == MAX_STEP)
             {
@@ -126,6 +149,7 @@ namespace R123.MainScreens
                 AboutSwitcher_ViewBox.Visibility = Visibility.Hidden;
                 AboutSwitcher_Image.Visibility = Visibility.Hidden;
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
+                Description.Text = "";
             }
             else
                 ShowXPSDocument();
@@ -134,11 +158,12 @@ namespace R123.MainScreens
         private void AboutSwitcher_ViewBox_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             AboutSwitcher_ViewBox.MouseMove -= AboutSwitcher_ViewBox_MouseMove;
-            MessageBox.Show("Наведите курсор мышы на номер элемента для показа его описания.");
+            //MessageBox.Show("Наведите курсор мышы на номер элемента для показа его описания.");
         }
 
         private void ShowXPSDocument()
         {
+            Description.Text = "";
             docViewer.Visibility = Visibility.Visible;
             AboutSwitcher_ViewBox.Visibility = Visibility.Hidden;
             AboutSwitcher_Image.Visibility = Visibility.Hidden;
