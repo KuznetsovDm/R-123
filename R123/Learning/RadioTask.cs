@@ -190,6 +190,25 @@ namespace R123.Learning
             }
         }
 
+        private int voltage;
+        public int Voltage
+        {
+            get { return voltage; }
+            set
+            {
+                TaskParam param = new TaskParam("Voltage", () =>
+                {
+                    if (Radio.Voltage.Value == voltage)
+                        return true;
+                    else
+                        return false;
+                },
+                voltage);
+                voltage = value;
+                AddTaskParam(param);
+            }
+        }
+
         private bool tone;
         public bool Tone
         {

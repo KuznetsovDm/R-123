@@ -55,7 +55,7 @@ namespace R123.Learning
         private static RadioTask AddFixFrequency(RadioTask task)
         {
             int key = random.Next(0, 3);
-            double frequency = GetRandomFrequency();
+            double frequency = GetNormRandomFrequency();
             KeyValuePair<int, double> valuePair = new KeyValuePair<int, double>(key,frequency);
             task.FixedFrequency = valuePair;
             task["FixedFrequency"].Description = $"Установите рабочую частоту, равную {frequency} для {key+1} фиксированной частоты";
@@ -71,8 +71,8 @@ namespace R123.Learning
 
         private static RadioTask AddFrequency(RadioTask task)
         {
-            task.Frequency = GetRandomFrequency();
-            task["Frequency"].Description = "Настройтесь на частоту " + task.Frequency + "МГц.";
+            task.Frequency = GetNormRandomFrequency();
+            task["Frequency"].Description = "Настройтесь на частоту " + task.Frequency + " МГц.";
             return task;
         }
 
@@ -97,6 +97,25 @@ namespace R123.Learning
         private static double GetRandomFrequency()
         {
             return random.Next(0, 1260) * 0.025 + 20;
+        }
+
+        private static double GetNormRandomFrequency()
+        {
+            double y = 0;
+            do
+            {
+                y = GetRandomFrequency();
+            }
+            while (
+            MCP.Logic.RemoteRadioMachine.badFrequency.Any(
+                (x) =>
+                {
+                    if (Math.Abs(x - y*10) < 0.001)
+                        return true;
+                    else return false;
+                }
+                ));
+            return y;
         }
     }
 }
