@@ -34,8 +34,13 @@ namespace R123.Learning
 
         public static RadioTask CreateFixFrequencyRadioTask(string name, Radio.Radio Radio)
         {
-            RadioTask task = CreateRadioTaskTemplate(name, Radio);
+            RadioTask task = new RadioTask(Radio, name);
+            task.PowerState = true;
+            task["PowerState"].Description = (task.PowerState ? "Включите" : "Выключите") + " радиостанцию.";
             AddFixFrequency(task);
+            AddFrequency(task);
+            AddWorkMode(task);
+            AddAntenna(task);
             task.SetTimeForTask(120);
             return task;
         }

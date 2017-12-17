@@ -21,7 +21,7 @@ namespace R123.Learning
             Radio.Frequency.ValueChanged += EventCheckState;
             Radio.Noise.ValueChanged += EventCheckState;
             Radio.Volume.ValueChanged += EventCheckState;
-            Radio.Antenna.ValueChanged += EventCheckState;
+            Radio.Antenna.IsMovedChanged += EventCheckState;
 
             Radio.WorkMode.ValueChanged += EventCheckState;
             Radio.Power.ValueChanged += EventCheckState;
@@ -37,7 +37,7 @@ namespace R123.Learning
             Radio.Frequency.ValueChanged -= EventCheckState;
             Radio.Noise.ValueChanged -= EventCheckState;
             Radio.Volume.ValueChanged -= EventCheckState;
-            Radio.Antenna.ValueChanged -= EventCheckState;
+            Radio.Antenna.IsMovedChanged -= EventCheckState;
 
             Radio.WorkMode.ValueChanged -= EventCheckState;
             Radio.Power.ValueChanged -= EventCheckState;
