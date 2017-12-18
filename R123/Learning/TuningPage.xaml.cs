@@ -46,6 +46,9 @@ namespace R123
         public TuningPage()
         {
             InitializeComponent();
+
+            subscribeMouseMove = false;
+
             RadioPage = new Radio.View.RadioPage();
             tuningTest = new TuningTest(RadioPage.Radio);
             Frame.Content = RadioPage;
@@ -61,9 +64,12 @@ namespace R123
             Subscribes[currentStep]();
         }
 
+        private bool subscribeMouseMove;
+
         private void TuningPage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             MouseMove -= TuningPage_MouseMove;
+            subscribeMouseMove = false;
             string message = "На текущем шаге вы научитесь подготавливать радиостанцию к работе.\r\n" +
                              "Выполняйте последовательно шаги.\r\n" +
                              "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
@@ -76,7 +82,11 @@ namespace R123
         private void TuningPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
-            MouseMove += TuningPage_MouseMove;
+            if (!subscribeMouseMove)
+            {
+                subscribeMouseMove = true;
+                MouseMove += TuningPage_MouseMove;
+            }
         }
 
         #region Setters

@@ -139,10 +139,9 @@
                 <Line X1="932" X2="760" Y1="119" Y2="248"/>
                 <Line X1="922" X2="775" Y1="203" Y2="284"/>
                 <Line X1="914" X2="700" Y1="303" Y2="295"/>
-                <!-- 26 - 29 -->
+                <!-- 26 - 28 -->
                 <Line X1="920" X2="680" Y1="376" Y2="332"/>
                 <Line X1="640" X2="580" Y1="438" Y2="342"/>
-                <Line X1="335" X2="366" Y1="436" Y2="392"/>
                 <Line X1="279" X2="330" Y1="438" Y2="300"/>
 
                 <Canvas Name="BorderSet_Canvas">
@@ -227,11 +226,8 @@
                     <Border Style="{StaticResource Number}" Canvas.Left="623" Canvas.Top="420">
                         <TextBlock Style="{StaticResource TextNumber}" Text="27"/>
                     </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="323" Canvas.Top="421">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="28"/>
-                    </Border>
                     <Border Style="{StaticResource Number}" Canvas.Left="263" Canvas.Top="419">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="29"/>
+                        <TextBlock Style="{StaticResource TextNumber}" Text="28"/>
                     </Border>
                 </Canvas>
             </Canvas>

@@ -37,10 +37,10 @@
     </Window.Resources>
     <Grid>
         <TabControl Name="Tabs_TabControl">
-            <TabItem Visibility="Hidden" Width="0">
+            <TabItem><!--Visibility="Hidden" Width="0"-->
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource TextInTabItemHeader}"></TextBlock>
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">Приветствие</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
@@ -59,10 +59,12 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="10*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="1" Text="Обучающая программа-симулятор радиостанци Р-123М" VerticalAlignment="Bottom"/>
                         <Image Grid.Row="2" Source="Files/FotoR123.jpg"/>
                         <TextBlock Grid.Row="3" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="4" Text="Чтобы веруться на это окно нажмите Esc" FontSize="10" Canvas.Bottom="0" Canvas.Right="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
@@ -92,7 +94,7 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <!--<Rectangle Height="10" Width="10" Fill="Black" />-->
-                        <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Радиостанция</TextBlock> <!--Задачи -->
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Тестирование</TextBlock> <!--Задачи -->
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>

@@ -49,6 +49,9 @@ namespace R123.Learning
         public WorkingCapacityPage()
         {
             InitializeComponent();
+
+            subscribeMouseMove = false;
+
             RadioPage = new Radio.View.RadioPage();
             workingTest = new WorkingTest(RadioPage.Radio);
             Frame.Content = RadioPage;
@@ -63,16 +66,23 @@ namespace R123.Learning
             Subscribes[currentStep]();
         }
 
+        private bool subscribeMouseMove;
+
         private void WorkingPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
 
-            MouseMove += WorkingCapacityPage_MouseMove;
+            if (!subscribeMouseMove)
+            {
+                subscribeMouseMove = true;
+                MouseMove += WorkingCapacityPage_MouseMove;
+            }
         }
 
         private void WorkingCapacityPage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             MouseMove -= WorkingCapacityPage_MouseMove;
+            subscribeMouseMove = false;
             string message = "На текущем шаге вы научитесь проверять работоспособность радиостанции.\r\n" +
                              "Выполняйте последовательно шаги.\r\n" +
                              "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
