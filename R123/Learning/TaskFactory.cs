@@ -48,7 +48,7 @@ namespace R123.Learning
             AddFixFrequency(task);
             AddAntennaWithClampForFrequency(task,Tuple.Create(0.9,task.FixedFrequency.Key,task.FixedFrequency.Value));
             AddWorkMode(task,1);
-            task.SetTimeForTask(10000);
+            task.SetTimeForTask(120);
             return task;
         }
 

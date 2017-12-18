@@ -117,6 +117,7 @@ namespace R123.MainScreens
         {
             if (LisBoxtOfTasks.SelectedItem!=null)
             {
+                RadioPage.Radio.SetDefaultValue();
                 RadioTask task = LisBoxtOfTasks.SelectedItem as RadioTask;
                 TaskPanel.Visibility = Visibility.Hidden;
                 CurrentTaskPanel.Visibility = Visibility.Visible;
