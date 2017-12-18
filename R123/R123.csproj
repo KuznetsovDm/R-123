@@ -94,9 +94,18 @@
     </ApplicationDefinition>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Learning\DefaultStatePage.xaml.cs">
+      <DependentUpon>DefaultStatePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Learning\RadioTask.cs" />
     <Compile Include="Learning\TaskFactory.cs" />
+    <Compile Include="Learning\TuningPage.xaml.cs">
+      <DependentUpon>TuningPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Learning\TuningTest.cs" />
+    <Compile Include="Learning\WorkingCapacityPage.xaml.cs">
+      <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Learning\WorkingCapacityTest.cs" />
     <Compile Include="Learning\WorkingTest.cs" />
     <Compile Include="Magic\Connection\Connection.cs" />
@@ -145,12 +154,6 @@
     </Compile>
     <Compile Include="Pages\RadioPage.xaml.cs">
       <DependentUpon>RadioPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\TuningPage.xaml.cs">
-      <DependentUpon>TuningPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\WorkingCapacityPage.xaml.cs">
-      <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\XpsDocumentPage.xaml.cs">
       <DependentUpon>XpsDocumentPage.xaml</DependentUpon>
@@ -234,6 +237,18 @@
     <Compile Include="Pages\WorkingCapacityTest.xaml.cs">
       <DependentUpon>WorkingCapacityTest.xaml</DependentUpon>
     </Compile>
+    <Page Include="Learning\DefaultStatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Learning\TuningPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Learning\WorkingCapacityPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainScreens\Learning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -261,14 +276,6 @@
     <Page Include="Pages\RadioPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\TuningPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\WorkingCapacityPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\XpsDocumentPage.xaml">
       <SubType>Designer</SubType>

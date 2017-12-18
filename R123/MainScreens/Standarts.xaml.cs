@@ -20,8 +20,6 @@ namespace R123.MainScreens
         public Standarts()
         {
             InitializeComponent();
-            //View.Options.Window = this;
-            //Closed += Standarts_Closed;
 
             RadioPage = new Radio.View.RadioPage();
             frame_Frame.Content = RadioPage;

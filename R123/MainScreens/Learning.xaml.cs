@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using R123.Learning;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Xps.Packaging;
 
@@ -139,10 +140,11 @@ namespace R123.MainScreens
                 nextStep_Button.IsEnabled = true;
                 prevStep_Button.IsEnabled = true;
             }
-
+            defaultFrame.Visibility = Visibility.Hidden;
             if (currentStep == MAX_STEP - 1)
             {
                 docViewer.Visibility = Visibility.Hidden;
+                defaultFrame.Visibility = Visibility.Hidden;
                 AboutSwitcher_ViewBox.Visibility = Visibility.Visible;
                 AboutSwitcher_Image.Visibility = Visibility.Visible;
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
@@ -156,6 +158,8 @@ namespace R123.MainScreens
                 AboutSwitcher_Image.Visibility = Visibility.Hidden;
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
                 Description.Text = "";
+                defaultFrame.Visibility = Visibility.Visible;
+                defaultFrame.Content = new DefaultStatePage();
             }
             else
                 ShowXPSDocument();
