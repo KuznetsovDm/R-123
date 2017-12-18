@@ -36,11 +36,11 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <TabControl>
-            <TabItem Visibility="Hidden" Width="0">
+        <TabControl Name="Tabs_TabControl">
+            <TabItem><!--Visibility="Hidden" Width="0"-->
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource TextInTabItemHeader}"></TextBlock>
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">Приветствие</TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>
@@ -49,27 +49,22 @@
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                                 <Setter Property="Margin" Value="10"/>
-                                <Setter Property="FontFamily" Value="Arial"/>
-                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="FontFamily" Value="Times New Roman"/>
+                                <Setter Property="FontSize" Value="24"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
                             </Style>
                         </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="10*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <!--<TextBlock Grid.Column="0" Text="Справка"/>
-                        <TextBlock Grid.Column="1" Text="Обучение"/>
-                        <TextBlock Grid.Column="2" Text="Работа и задачи"/>-->
-                        <StackPanel Grid.Row="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Name="test">
-                            <TextBlock Text="Обучающая программа-симулятор радиостанци Р-123М"/>
-                            <Image Source="Files/FotoR123.jpg" Height="400"/>
-                            <TextBlock Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ"/>
-                        </StackPanel>
+                        <TextBlock Grid.Row="1" Text="Обучающая программа-симулятор радиостанци Р-123М" VerticalAlignment="Bottom"/>
+                        <Image Grid.Row="2" Source="Files/FotoR123.jpg"/>
+                        <TextBlock Grid.Row="3" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="4" Text="Чтобы веруться на это окно нажмите Esc" FontSize="10" Canvas.Bottom="0" Canvas.Right="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
@@ -99,7 +94,7 @@
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <!--<Rectangle Height="10" Width="10" Fill="Black" />-->
-                        <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Радиостанция</TextBlock> <!--Задачи -->
+                        <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Тестирование</TextBlock> <!--Задачи -->
                     </StackPanel>
                 </TabItem.Header>
                 <TabItem.Content>

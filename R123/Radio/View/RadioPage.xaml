@@ -68,10 +68,10 @@
                 <Image Source="/Files/Images/FixedFrequencySwitcher.gif" Canvas.Left="284" Canvas.Top="134"/>
                 <Image x:Name="ring_Image" Source="/Files/Images/FixedFrequencySwitcherRing.gif" Canvas.Left="284" Canvas.Top="134"/>
                 <Canvas x:Name="clamp_Canvas">
-                    <Image x:Name="clamp0_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="330" Canvas.Top="154" Width="31" Height="31" ToolTip="Фиксатор закрыт"/>
-                    <Image x:Name="clamp1_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="400" Canvas.Top="179" Width="31" Height="31" ToolTip="Фиксатор закрыт"/>
-                    <Image x:Name="clamp2_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="378" Canvas.Top="251" Width="31" Height="31" ToolTip="Фиксатор закрыт"/>
-                    <Image x:Name="clamp3_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="306" Canvas.Top="233" Width="31" Height="31" ToolTip="Фиксатор закрыт"/>
+                    <Image x:Name="clamp0_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="330" Canvas.Top="154" Width="31" Height="31"/>
+                    <Image x:Name="clamp1_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="400" Canvas.Top="179" Width="31" Height="31"/>
+                    <Image x:Name="clamp2_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="378" Canvas.Top="251" Width="31" Height="31"/>
+                    <Image x:Name="clamp3_Image" Source="/Files/Images/FixedFrequencySwitcherScrew.gif" Canvas.Left="306" Canvas.Top="233" Width="31" Height="31"/>
                 </Canvas>
             </Canvas>
         </Canvas>

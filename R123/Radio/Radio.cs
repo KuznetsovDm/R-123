@@ -19,9 +19,11 @@
         public NumberedSwitcherProperty[] SubFixFrequency { get; private set; }
         public double[,] ValueFixFrequency { get; private set; }
 
+        private Logic logic;
+
         public Radio(View.RadioPage page)
         {
-            Logic logic = new Logic(page);
+            logic = new Logic(page);
 
             Frequency = new FrequencyProperty(logic.Frequency);
             Volume = new EncoderProperty(logic.Volume);
@@ -75,6 +77,8 @@
             for (int i = 0; i < SubFixFrequency.Length; i++)
                 SubFixFrequency[i].ValueChanged += (object sender, ValueChangedEventArgsNumberedSwitcher e) => NumberedSwitcher_ValueChanged("SubFixFrequency", e);
         }
+
+        public void SetDefaultValue() => logic.SetDefaultValue();
 
         private void Antenna_IsMovedChanged(object sender, IsMovedChangedEventArgs e)
         {

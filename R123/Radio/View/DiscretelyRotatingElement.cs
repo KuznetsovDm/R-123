@@ -43,7 +43,19 @@ namespace R123.Radio.View
                 defRet = 30;
             }
         }
-        double defRet = 0;
+        private double defRet = 0;
+        public void SetDefaultValue()
+        {
+
+            if (maxAngle != 360)
+            {
+                element.RenderTransform = new RotateTransform(angle = -30, centerXImage, centerYImage);
+            }
+            else
+            {
+                element.RenderTransform = new RotateTransform(angle = 0, centerXImage, centerYImage);
+            }
+        }
         public double Angle
         {
             get => angle + defRet;

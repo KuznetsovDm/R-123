@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace R123.Radio
 {
@@ -51,8 +50,10 @@ namespace R123.Radio
             for (int i = 0; i < Clamp.Length; i++)
                 Clamp[i] = new Clamp(page.clamp_Canvas.Children[i] as System.Windows.Controls.Image, page.R123_Image, (i % 2 == 1 ? 0 : 90), i);
 
-            SubFrequency = new View.Display(page.subFrequencyDisplay_Image, 2, "SubFrequency");
-            SubFrequency.Value = 2;
+            SubFrequency = new View.Display(page.subFrequencyDisplay_Image, 2, "SubFrequency")
+            {
+                Value = 2
+            };
             FixFrequency = new View.Display(page.fixedFrequencyDisplay_Image, 4, "FixedFrequencyDisplay");
             FrequencyDisplay = new View.FrequencyDisplay(page.frequencyDisplay_Canvas, page.frequencyBand_Canvas);
             VoltageDisplay = new View.VoltageDisplay(page.antennaLight_Ellipse, page.voltageDisplay_Line, Antenna);
@@ -181,6 +182,29 @@ namespace R123.Radio
             Frequency.SubFrequency = SubFrequency.Value;
             UpdateTurnBlockingFrequnecy();
             UpdateTurnAnimation();
+        }
+
+        public void SetDefaultValue()
+        {
+            Frequency.SubFrequency = 2;
+            Frequency.Value = 35.75;
+            Frequency.NowAnimation = false;
+            Noise.Value = 0.1;
+            Volume.Value = 0.1;
+            Antenna.Angle = 0;
+            Antenna.NowAnimation = false;
+            AntennaClip.Value = 1;
+
+            Voltage.Value = 0;
+            Range.Value = 0;
+            WorkMode.element.SetDefaultValue();
+
+            Power.Value = false;
+            Scale.Value = false;
+            foreach (var switcher in SubFixFrequency)
+                switcher.Value = false;
+            foreach (var clamp in Clamp)
+                clamp.Angle = 90;
         }
     }
 }

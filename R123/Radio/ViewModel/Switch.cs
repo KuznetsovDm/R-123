@@ -17,6 +17,7 @@ namespace R123.Radio
         public bool Value
         {
             get => element.Value;
+            set => element.Value = value;
         }
 
         public Image Image => element.image;

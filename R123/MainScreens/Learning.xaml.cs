@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using R123.Learning;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Xps.Packaging;
 
@@ -38,6 +39,15 @@ namespace R123.MainScreens
             RadioPage.HideTangent();
             Radio_Frame.Content = RadioPage;
             Radio = RadioPage.Radio;
+            Radio.Frequency.Image.ToolTip = "Частота = 35.75";
+            Radio.Frequency.ValueChanged += Frequency_ValueChanged;
+            Radio.Range.Image.ToolTip = "Фиксированная частота №1 поддиапазона 2";
+            Radio.Range.ValueChanged += (object sender, Radio.ValueChangedEventArgsPositionSwitcher e) => Range_ValueChanged(e.Value);
+            foreach (var switcher in Radio.SubFixFrequency)
+                switcher.ValueChanged += (object sender, Radio.ValueChangedEventArgsNumberedSwitcher e) => Range_ValueChanged(Radio.Range.Value);
+
+
+
 
             IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
 
@@ -54,20 +64,39 @@ namespace R123.MainScreens
             }
         }
 
+        private void Range_ValueChanged(int number)
+        {
+            if (number < 4)
+                Radio.Range.Image.ToolTip = $"Фиксированная частота №{number + 1} поддиапазона {(Radio.SubFixFrequency[number].Value ? 1 : 2)}";
+            else
+                Radio.Range.Image.ToolTip = $"Плавный поддиапазон №{number - 3}";
+        }
+
+        private void Frequency_ValueChanged(object sender, Radio.ValueChangedEventArgsFrequency e)
+        {
+            Radio.Frequency.Image.ToolTip = $"Частота = {e.Value}";
+        }
+
         private void AddToolTip(string[] textSplit)
         {
             for (int i = 0; i < textSplit.Length; i++)
             {
                 Border b = BorderSet_Canvas.Children[i] as Border;
-                TextBlock text = new TextBlock();
                 string s = textSplit[i];
-                text.Text = s.Substring(0, s.Length - 1);
-                text.FontSize = 15;
-                text.MaxWidth = 500;
-                text.TextWrapping = TextWrapping.Wrap;
+                TextBlock text = new TextBlock
+                {
+                    Text = s.Substring(0, s.Length - 1),
+                    FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
+                    Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black),
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 16,
+                    MaxWidth = 500,
+                    TextWrapping = TextWrapping.Wrap
+                };
                 ToolTip t = new ToolTip
                 {
                     Content = text,
+                    
                 };
                 b.ToolTip = t;
             }
@@ -111,14 +140,16 @@ namespace R123.MainScreens
                 nextStep_Button.IsEnabled = true;
                 prevStep_Button.IsEnabled = true;
             }
-
+            defaultFrame.Visibility = Visibility.Hidden;
             if (currentStep == MAX_STEP - 1)
             {
                 docViewer.Visibility = Visibility.Hidden;
+                defaultFrame.Visibility = Visibility.Hidden;
                 AboutSwitcher_ViewBox.Visibility = Visibility.Visible;
                 AboutSwitcher_Image.Visibility = Visibility.Visible;
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
                 AboutSwitcher_ViewBox.MouseMove += AboutSwitcher_ViewBox_MouseMove;
+                Description.Text = "Чтобы увидеть описание элемента наведите курсор на его номер.";
             }
             else if (currentStep == MAX_STEP)
             {
@@ -126,6 +157,9 @@ namespace R123.MainScreens
                 AboutSwitcher_ViewBox.Visibility = Visibility.Hidden;
                 AboutSwitcher_Image.Visibility = Visibility.Hidden;
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
+                Description.Text = "";
+                defaultFrame.Visibility = Visibility.Visible;
+                defaultFrame.Content = new DefaultStatePage();
             }
             else
                 ShowXPSDocument();
@@ -134,11 +168,12 @@ namespace R123.MainScreens
         private void AboutSwitcher_ViewBox_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             AboutSwitcher_ViewBox.MouseMove -= AboutSwitcher_ViewBox_MouseMove;
-            MessageBox.Show("Наведите курсор мышы на номер элемента для показа его описания.");
+            //MessageBox.Show("Наведите курсор мышы на номер элемента для показа его описания.");
         }
 
         private void ShowXPSDocument()
         {
+            Description.Text = "";
             docViewer.Visibility = Visibility.Visible;
             AboutSwitcher_ViewBox.Visibility = Visibility.Hidden;
             AboutSwitcher_Image.Visibility = Visibility.Hidden;
@@ -178,7 +213,6 @@ namespace R123.MainScreens
 25 - две лампочки светового табло поддиапазонов. При включении радостанции на I поддиапазон загорается лампочка 'I', при включении на II поддиапазон - лампочка 'II'
 26 - ручка регулятора громкости - 'ГРОМКОСТЬ'. При вращении ручки по часовой стрелке громкость возрастает, при вращении против часовой стрелки - уменьшается до некоторого небольшого уровня в крайнем положении
 27 - переключатель 'ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН'. Выбор фиксированной частоты производится установкой переключателя в одно из положений 'ФИКСИР. ЧАТСОТЫ 1, 2, 3 или 4'. При установке переключателя в положение 'ПЛАВНЫЙ ПОДДИАПАЗОН I (II)' механизм установки частоты расфиксируется
-28 - крышка люка барабана. При открытой крышке люка имеется доступ к четырем фиксаторам 29
-29 - четыре фиксатора дисков установки частоты, которыми с помощью ключа 17 фиксируются частоты, установленные переключателем 27. Первой фиксированной частоте соответствует фиксатор '1', второй '2' и т.д.";
+28 - четыре фиксатора дисков установки частоты, которыми с помощью ключа 17 фиксируются частоты, установленные переключателем 27. Первой фиксированной частоте соответствует фиксатор '1', второй '2' и т.д.";
     }
 }

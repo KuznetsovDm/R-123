@@ -60,7 +60,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
@@ -94,10 +94,19 @@
     </ApplicationDefinition>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Learning\DefaultStatePage.xaml.cs">
+      <DependentUpon>DefaultStatePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Learning\RadioTask.cs" />
     <Compile Include="Learning\Task.cs" />
     <Compile Include="Learning\TaskFactory.cs" />
+    <Compile Include="Learning\TuningPage.xaml.cs">
+      <DependentUpon>TuningPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Learning\TuningTest.cs" />
+    <Compile Include="Learning\WorkingCapacityPage.xaml.cs">
+      <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Learning\WorkingCapacityTest.cs" />
     <Compile Include="Learning\WorkingTest.cs" />
     <Compile Include="Magic\Connection\Connection.cs" />
@@ -135,6 +144,9 @@
     <Compile Include="MainScreens\WorkOnRadioStation.xaml.cs">
       <DependentUpon>WorkOnRadioStation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Message.xaml.cs">
+      <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\NetworkSettings.xaml.cs">
       <DependentUpon>NetworkSettings.xaml</DependentUpon>
     </Compile>
@@ -143,12 +155,6 @@
     </Compile>
     <Compile Include="Pages\RadioPage.xaml.cs">
       <DependentUpon>RadioPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\TuningPage.xaml.cs">
-      <DependentUpon>TuningPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\WorkingCapacityPage.xaml.cs">
-      <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\XpsDocumentPage.xaml.cs">
       <DependentUpon>XpsDocumentPage.xaml</DependentUpon>
@@ -232,6 +238,18 @@
     <Compile Include="Pages\WorkingCapacityTest.xaml.cs">
       <DependentUpon>WorkingCapacityTest.xaml</DependentUpon>
     </Compile>
+    <Page Include="Learning\DefaultStatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Learning\TuningPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Learning\WorkingCapacityPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainScreens\Learning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,6 +262,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Message.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\NetworkSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -255,14 +277,6 @@
     <Page Include="Pages\RadioPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\TuningPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\WorkingCapacityPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\XpsDocumentPage.xaml">
       <SubType>Designer</SubType>
@@ -354,7 +368,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="g4.gif" />
     <Resource Include="Files\dest.txt" />
     <Resource Include="Files\Images\AntennaControl.png" />
     <Resource Include="Files\Images\AntennaControlOld.png" />
@@ -392,6 +405,17 @@
     <Resource Include="Files\Images\AntennaFixer.png" />
     <Resource Include="Files\Images\Learning\SetRadio.png" />
     <Resource Include="Files\FotoR123.jpg" />
+    <Resource Include="Files\Gifs\DeshPriem.gif" />
+    <Resource Include="Files\Gifs\NoiseLeft.gif" />
+    <Resource Include="Files\Gifs\NoiseRight.gif" />
+    <Resource Include="Files\Gifs\PowerAndScaleOn.gif" />
+    <Resource Include="Files\Gifs\PowerOff.gif" />
+    <Resource Include="Files\Gifs\Simplex.gif" />
+    <Resource Include="Files\Gifs\Tangent.gif" />
+    <Resource Include="Files\Gifs\TestVoltage.gif" />
+    <Resource Include="Files\Gifs\Tone.gif" />
+    <Resource Include="Files\Gifs\Voltage.gif" />
+    <Resource Include="Files\Gifs\Volume.gif" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />
