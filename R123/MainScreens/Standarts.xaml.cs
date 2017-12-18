@@ -46,17 +46,22 @@ namespace R123.MainScreens
             }
             Tasks.Clear();
 
-            RadioTask task = TaskFactory.CreateFixFrequencyRadioTask("Задание " + Tasks.Count, RadioPage.Radio);
+            RadioTask task = TaskFactory.CreateFixFrequencyRadioTask("Настройка фиксированной частоты.", RadioPage.Radio);
             task.AllConditionsDoneEvent += Task_AllConditionsDone;
             task.EndOfTimeEvent += Task_EndOfTimeEvent;
             Tasks.Add(task);
 
-            task = TaskFactory.CreateToneRadioTask("Задание " + Tasks.Count, RadioPage.Radio);
+            task = TaskFactory.CreateToneRadioTask("Установка заданной частоты и передача тонального сигнала.", RadioPage.Radio);
             task.AllConditionsDoneEvent += Task_AllConditionsDone;
             task.EndOfTimeEvent += Task_EndOfTimeEvent;
             Tasks.Add(task);
 
-            task = TaskFactory.CreateBaseRadioTask("Задание " + Tasks.Count, RadioPage.Radio);
+            task = TaskFactory.CreateBaseRadioTask("Установка заданной частоты.", RadioPage.Radio);
+            task.AllConditionsDoneEvent += Task_AllConditionsDone;
+            task.EndOfTimeEvent += Task_EndOfTimeEvent;
+            Tasks.Add(task);
+
+            task = TaskFactory.CreateBaseRadioPositionTask("Подготовка органов радиостанции к работе.", RadioPage.Radio);
             task.AllConditionsDoneEvent += Task_AllConditionsDone;
             task.EndOfTimeEvent += Task_EndOfTimeEvent;
             Tasks.Add(task);

@@ -48,7 +48,7 @@
 
         <StackPanel Grid.Row="0" Grid.Column="1" Name="TaskPanel" Margin="5" Visibility="Visible">
             <TextBlock Text="Выберете номер задачи:"/>
-            <ListBox Name="LisBoxtOfTasks">
+            <ListBox Name="LisBoxtOfTasks" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemContainerStyle>
                     <Style>
                         <Setter Property="ListBoxItem.Background" Value="LightSlateGray"/>
@@ -56,6 +56,11 @@
                         <Setter Property="ListBoxItem.Padding" Value="5"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontFamily="Times New Roman" FontSize="18" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
             <Button Content ="Начать задание" Click="RunSelectedItem"/>
         </StackPanel>
