@@ -29,6 +29,11 @@ namespace R123.Radio
         public double Angle
         {
             get => element.Angle;
+            set
+            {
+                element.Angle = value;
+                open = false;
+            }
         }
 
         public Image Image => element.element as Image;

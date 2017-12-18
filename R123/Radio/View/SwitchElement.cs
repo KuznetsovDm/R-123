@@ -25,6 +25,14 @@ namespace R123.Radio.View
         public bool Value
         {
             get => currentValue;
+            set
+            {
+                currentValue = value;
+                string nameFile = $"/Files/Images/switcher_{(currentValue ? "on" : "off")}.gif";
+                image.Source = new BitmapImage(new Uri(nameFile, UriKind.Relative));
+
+                ValueChanged?.Invoke(this, new ValueChangedEventArgs<bool>(currentValue));
+            }
         }
 
         private void ChangeValue(object sender, MouseEventArgs e)

@@ -7,7 +7,7 @@ namespace R123.Radio
     public class PositionSwitcher : IPropertyPositionSwitcher
     {
         public event EventHandler<ValueChangedEventArgsPositionSwitcher> ValueChanged;
-        private View.DiscretelyRotatingElement element;
+        public View.DiscretelyRotatingElement element;
         private int maxValue;
         private double maxAngle;
 

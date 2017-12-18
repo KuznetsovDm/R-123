@@ -58,6 +58,20 @@
                 </Style>
             </StackPanel.Resources>
             <StackPanel Name="Menu_StackPanel">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" FontSize="18" TextAlignment="Center"/>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Padding" Value="2"/>
+                        <Setter Property="Height" Value="60"/>
+                    </Style>
+                </StackPanel.Resources>
                 <Button Content="1. Назначение радиостанции Р-123М"/>
                 <Button Content="2. Технические характеристики"/>
                 <Button Content="3. Комплект радиостанции Р-123М"/>

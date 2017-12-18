@@ -81,15 +81,21 @@ namespace R123.MainScreens
             for (int i = 0; i < textSplit.Length; i++)
             {
                 Border b = BorderSet_Canvas.Children[i] as Border;
-                TextBlock text = new TextBlock();
                 string s = textSplit[i];
-                text.Text = s.Substring(0, s.Length - 1);
-                text.FontSize = 15;
-                text.MaxWidth = 500;
-                text.TextWrapping = TextWrapping.Wrap;
+                TextBlock text = new TextBlock
+                {
+                    Text = s.Substring(0, s.Length - 1),
+                    FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
+                    Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black),
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 16,
+                    MaxWidth = 500,
+                    TextWrapping = TextWrapping.Wrap
+                };
                 ToolTip t = new ToolTip
                 {
                     Content = text,
+                    
                 };
                 b.ToolTip = t;
             }

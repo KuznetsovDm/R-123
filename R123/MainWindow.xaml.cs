@@ -84,10 +84,12 @@ namespace R123
             screen.Show();*/
         }
 
-        private void MainWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.F2 && e.IsDown)
+            if (e.Key == Key.F2 && e.IsDown)
                 Instance.Frame.Content = new NetworkSettings();
+            else if (e.Key == Key.Escape && e.IsDown)
+                Tabs_TabControl.SelectedIndex = 0;
         }
 
         private void EscButton_Click(object sender, RoutedEventArgs e)
