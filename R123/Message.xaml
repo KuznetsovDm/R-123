@@ -9,13 +9,33 @@
         WindowStyle="None"
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
         Title="Сообщение">
-    <Grid>
+    <Window.Resources>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        <Border BorderBrush="Black" BorderThickness="4" CornerRadius="5" Background="Black">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="FontSize" Value="18"/>
+        </Style>
+    </Window.Resources>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="textblock" TextWrapping="Wrap" FontFamily="Times New Roman"
-                   FontSize="18" Margin="15"/>
-        <Button Grid.Row="1" IsDefault="True" Click="Accept_Click" MinWidth="60" HorizontalAlignment="Right" Margin="0,5,15,10">OK</Button>
+                   FontSize="18" Margin="10,10,10,5"/>
+        <WrapPanel x:Name="wrapPanel" Grid.Row="1" HorizontalAlignment="Right">
+            <Button IsDefault="True" Click="Accept_Click" MinWidth="60"  Margin="0,5,10,10">OK</Button>
+            <Button IsCancel="True" Visibility="Collapsed" Click="Accept_Click" MinWidth="60" Margin="10,5,15,10">Отмена</Button>
+        </WrapPanel>
     </Grid>
 </Window>

@@ -23,7 +23,6 @@ namespace R123
         public Action[] Unsubscribes { get; private set; }
 
         private Radio.View.RadioPage RadioPage { get; set; }
-        private Logic logic;
 
         private string[] Steps = {
             "Надеть и подогнать шлемофон",
@@ -50,7 +49,6 @@ namespace R123
             RadioPage = new Radio.View.RadioPage();
             tuningTest = new TuningTest(RadioPage.Radio);
             Frame.Content = RadioPage;
-            logic = new Logic(RadioPage.Radio);
 
             SetButtons();
             SetLines();
@@ -63,11 +61,25 @@ namespace R123
             Subscribes[currentStep]();
         }
 
-        #region Setters
+        private void TuningPage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            MouseMove -= TuningPage_MouseMove;
+            string message = "На текущем шаге вы научитесь подготавливать радиостанцию к работе.\r\n" +
+                             "Выполняйте последовательно шаги.\r\n" +
+                             "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
+                             "Просто наведите указатель мыши на непонятный пункт.";
+
+            Message mes = new Message(message, false);
+            mes.ShowDialog();
+        }
+
         private void TuningPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            logic.PageChanged(e.NewValue.Equals(true));
+            Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
+            MouseMove += TuningPage_MouseMove;
         }
+
+        #region Setters
 
         private void SetButtons()
         {
@@ -192,13 +204,14 @@ namespace R123
             else if (currentStep == buttonsCount - 1) {
                 if (tuningTest.Conditions[currentStep]()) {
                     Unsubscribes[currentStep]();
-                }
 
-                SetColor(currentStep, Colors.Black, Colors.White);
-                MessageBox.Show("Вы прошли обучение!", "Обучение", MessageBoxButton.OK);
-                SetColor(currentStep, Color.FromRgb(232, 230, 234), Colors.Black);
-                currentStep = 0;
-                Subscribes[currentStep]();
+                    SetColor(currentStep, Colors.Black, Colors.White);
+                    MessageBox.Show("Вы прошли обучение!", "Обучение", MessageBoxButton.OK);
+                    //SetColor(currentStep, Color.FromRgb(232, 230, 234), Colors.Black);
+                    SetColor(currentStep, Colors.Yellow, Colors.Black);
+                    currentStep = 0;
+                    Subscribes[currentStep]();
+                }
             }
         }
         private void InitializeSubscribes()
