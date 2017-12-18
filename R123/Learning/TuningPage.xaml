@@ -283,8 +283,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerOff.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Tangent.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>

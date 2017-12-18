@@ -24,7 +24,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </Page.Resources>
-    <Grid Background="#E8E6EA">
+    <Grid Background="#E8E6EA" ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -35,16 +35,8 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <!--<StackPanel HorizontalAlignment="Right" Grid.ColumnSpan="2" Opacity="0">
-            <Button Content="Выход" IsCancel="True" Click="EscButton_Click" Width="70"/>
-        </StackPanel>-->
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2">
-            <TextBlock Name="title_TextBlock" Text="Радиостанция Р-123М" FontFamily="Times New Roman" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" MinWidth="500" TextAlignment="Center"/>
-        </StackPanel>
         
-        <Frame x:Name="frame_Frame" Grid.Row="0" NavigationUIVisibility="Hidden" Grid.ColumnSpan="1"/>
+        <Frame x:Name="frame_Frame" Grid.Row="0" NavigationUIVisibility="Hidden" VerticalAlignment="Top"/>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Name="TaskPanel" Margin="5" Visibility="Visible">
             <TextBlock Text="Выберете номер задачи:"/>

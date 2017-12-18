@@ -17,6 +17,7 @@ namespace R123.Radio
             Frequency = frequency;
             Frequency.ValueChanged += (object sender, ValueChangedEventArgsFrequency e) => OnValueChanged();
             element.IsMovedChanged += (object sender, IsMovedChangedEventArgs e) => IsMovedChanged(this, e);
+            base.Value = 360;
         }
 
         double coef = 360 / 31.5;
