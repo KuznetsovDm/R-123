@@ -10,28 +10,27 @@ namespace R123
     /// </summary>
     public partial class WorkingCapacityTest : Page
     {
-        private Learning.WorkingCapacityTest learning = new Learning.WorkingCapacityTest();
+        //private Learning.WorkingCapacityTest learning = new Learning.WorkingCapacityTest();
 
         private Button oldButton = null;
         private DispatcherTimer dispatcherTimer = new DispatcherTimer();
         public WorkingCapacityTest()
         {
-            InitializeComponent();
-            Frame.Content = MainWindow.Instance.Radio;
-            View.Options.SetRandomValue();
+            //InitializeComponent();
+            //View.Options.SetRandomValue();
 
-            MouseMove += WorkingCapacityTest_MouseMove;
+            //MouseMove += WorkingCapacityTest_MouseMove;
 
-            View.Options.Encoders.Noise.ValueChanged += Update;
-            View.Options.Encoders.Volume.ValueChanged += Update;
-            View.Options.Encoders.AthenaDisplay.ValueChanged += Update;
+            //View.Options.Encoders.Noise.ValueChanged += Update;
+            //View.Options.Encoders.Volume.ValueChanged += Update;
+            //View.Options.Encoders.AthenaDisplay.ValueChanged += Update;
 
-            View.Options.PositionSwitchers.WorkMode.ValueChanged += Update;
-            View.Options.PositionSwitchers.Voltage.ValueChanged += Update;
-            View.Options.PositionSwitchers.Range.ValueChanged += Update;
+            //View.Options.PositionSwitchers.WorkMode.ValueChanged += Update;
+            //View.Options.PositionSwitchers.Voltage.ValueChanged += Update;
+            //View.Options.PositionSwitchers.Range.ValueChanged += Update;
 
-            View.Options.Switchers.Power.ValueChanged += Update;
-            View.Options.Switchers.Scale.ValueChanged += Update;
+            //View.Options.Switchers.Power.ValueChanged += Update;
+            //View.Options.Switchers.Scale.ValueChanged += Update;
         }
         private void Update()
         {
@@ -55,17 +54,17 @@ namespace R123
         }
         private void TestStep(int numberButton)
         {
-            if (currentStepLearning != numberButton)
-                MessageBox.Show(learning.TextLearning[numberButton], "Справка");
-            else if (learning.Conditions[numberButton]()) // && step == numberButton
-            {
-                MessageBox.Show(learning.TextLearning[numberButton], "Справка");
+            //if (currentStepLearning != numberButton)
+            //    MessageBox.Show(learning.TextLearning[numberButton], "Справка");
+            //else if (learning.Conditions[numberButton]()) // && step == numberButton
+            //{
+            //    MessageBox.Show(learning.TextLearning[numberButton], "Справка");
 
-                NextStep();
-            }
-            else // if not conditions[numberButton]()
-                MessageBox.Show($"Шаг №{currentStepLearning} не выполнен.", "Справка");
-            //MessageBox.Show(textLearning[numberButton], $"Справка (ШАГ {currentStepLearning} НЕ ВЫПОЛНЕН)");
+            //    NextStep();
+            //}
+            //else // if not conditions[numberButton]()
+            //    MessageBox.Show($"Шаг №{currentStepLearning} не выполнен.", "Справка");
+            ////MessageBox.Show(textLearning[numberButton], $"Справка (ШАГ {currentStepLearning} НЕ ВЫПОЛНЕН)");
         }
         private void NextStep()
         {

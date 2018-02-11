@@ -22,7 +22,6 @@ namespace R123
         public RadioPage()
         {
             InitializeComponent();
-            Frame.Content = MainWindow.Instance.Radio;
         }
     }
 }

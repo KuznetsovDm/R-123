@@ -12,14 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace R123
+namespace R123.MainScreens
 {
     /// <summary>
-    /// Логика взаимодействия для NetworkSettings.xaml
+    /// Логика взаимодействия для Work.xaml
     /// </summary>
-    public partial class NetworkSettings : Page
+    public partial class Work : Page
     {
-        public NetworkSettings()
+        public Work()
         {
             InitializeComponent();
         }

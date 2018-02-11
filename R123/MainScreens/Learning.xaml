@@ -3,42 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:R123.MainScreens"
+        xmlns:local="clr-x:Namespace:R123.MainScreens"
         mc:Ignorable="d"
         d:DesignWidth="1280" d:DesignHeight="1024">
-    <!--ResizeMode="NoResize" WindowState="Maximized" WindowStyle="None"-->
-    <Page.Resources>
-        <Style TargetType="ToolTip">
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="FontFamily" Value="Times New Roman"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="MaxWidth" Value="400"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-        </Style>
-        <Style TargetType="Border" x:Key="Number">
-            <Setter Property="CornerRadius" Value="15"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Width" Value="30"/>
-            <Setter Property="BorderBrush" Value="Black"/>
-            <Setter Property="BorderThickness" Value="3"/>
-            <Setter Property="Background" Value="White"/>
-        </Style>
-        <Style TargetType="TextBlock" x:Key="TextNumber">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Foreground" Value="Black"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
-        <Style TargetType="Line">
-            <Setter Property="StrokeThickness" Value="3"/>
-            <Setter Property="Stroke" Value="Black"/>
-        </Style>
-        <Style x:Key="TitleButtons">
-            <Setter Property="Control.Margin" Value="5"/>
-            <Setter Property="Control.Padding" Value="5"/>
-        </Style>
-    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -50,33 +17,20 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="1">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Margin" Value="10"/>
-                    <Setter Property="Padding" Value="10"/>
-                </Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Margin" Value="10"/>
-                    <Setter Property="Padding" Value="10"/>
-                    <Setter Property="FontSize" Value="18"/>
-                    <Setter Property="Foreground" Value="Black"/>
-                    <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="TextWrapping" Value="Wrap"/>
-                </Style>
-            </StackPanel.Resources>
-            <StackPanel Name="Menu_StackPanel">
+            <StackPanel x:Name="Menu_StackPanel">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
                         <Setter Property="ContentTemplate">
                             <Setter.Value>
                                 <DataTemplate>
-                                    <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" FontSize="18" TextAlignment="Center"/>
+                                    <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap" TextAlignment="Center"
+                                               FontSize="18" FontFamily="Times New Roman" Foreground="Black" FontWeight="Bold"/>
                                 </DataTemplate>
                             </Setter.Value>
                         </Setter>
                         <Setter Property="Margin" Value="5"/>
-                        <Setter Property="Padding" Value="2"/>
-                        <Setter Property="Height" Value="60"/>
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="Height" Value="80"/>
                     </Style>
                 </StackPanel.Resources>
                 <Button Content="1. Назначение радиостанции Р-123М"/>
@@ -85,152 +39,200 @@
                 <Button Content="4. Назначение органов управления"/>
                 <Button Content="5. Исходное положение органов управления"/>
             </StackPanel>
-            <TextBlock Name="Description"/>
+            <TextBlock x:Name="Description_TextBlock" FontSize="18" FontFamily="Times New Roman" TextWrapping="Wrap"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button Name="prevStep_Button" Content="Предыдущий шаг" IsEnabled="False" Click="PrevStep" Style="{StaticResource TitleButtons}"/>
-            <TextBlock Name="title_TextBlock" Text="Шаг №1" FontFamily="Times New Roman" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" MinWidth="500" TextAlignment="Center"/>
-            <Button Name="nextStep_Button" Content="Следующий шаг" IsEnabled="True" Click="NextStep" Style="{StaticResource TitleButtons}"/>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="FontFamily" Value="Times New Roman"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="prevStep_Button" Content="Предыдущий шаг" IsEnabled="False" Click="PrevStep"/>
+            <TextBlock x:Name="title_TextBlock" Text="Шаг №1" FontFamily="Times New Roman" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" MinWidth="500" TextAlignment="Center"/>
+            <Button x:Name="nextStep_Button" Content="Следующий шаг" IsEnabled="True" Click="NextStep"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Выход" IsCancel="True" Click="EscButton_Click" Visibility="Hidden"/>
-        </StackPanel>
+        <DocumentViewer x:Name="DocViewer" Grid.Column="1" Grid.Row="1"/>
+        <Frame x:Name="Step4_Freme" Grid.Column="1" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+        
+        <Grid x:Name="Step3_Grid" Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            
+            <Image Source="/Files/Images/Learning/SetRadio.png" Stretch="Fill"/>
+            <Viewbox x:Name="AboutSwitcher_ViewBox" Stretch="Fill">
+                <Canvas  Width="963" Height="449">
+                    <Canvas.Resources>
+                        <Style TargetType="Line">
+                            <Setter Property="StrokeThickness" Value="3"/>
+                            <Setter Property="Stroke" Value="Black"/>
+                        </Style>
+                    </Canvas.Resources>
+                    <Viewbox Grid.Row="1" Stretch="Fill" Width="609" Height="226" Canvas.Left="103" Canvas.Top="154">
+                        <Frame x:Name="Radio_Frame" NavigationUIVisibility="Hidden"/>
+                    </Viewbox>
+                    <!-- 1 - 5 -->
+                    <Line X1="229" X2="238" Y1="438" Y2="364"/>
+                    <Line X1="132" X2="150" Y1="440" Y2="350"/>
+                    <Line X1="22" X2="210" Y1="296" Y2="307"/>
+                    <Line X1="22" X2="180" Y1="272" Y2="281"/>
+                    <Line X1="22" X2="130" Y1="247" Y2="270"/>
+                    <!-- 6 - 10 -->
+                    <Line X1="32" X2="150" Y1="225" Y2="270"/>
+                    <Line X1="22" X2="150" Y1="202" Y2="237"/>
+                    <Line X1="22" X2="150" Y1="180" Y2="173"/>
+                    <Line X1="22" X2="180" Y1="152" Y2="171"/>
+                    <Line X1="112" X2="250" Y1="10" Y2="250"/>
+                    <!-- 11 - 15 -->
+                    <Line X1="162" X2="230" Y1="10" Y2="170"/>
+                    <Line X1="186" X2="320" Y1="10" Y2="180"/>
+                    <Line X1="267" X2="347" Y1="10" Y2="170"/>
+                    <Line X1="363" X2="431" Y1="21" Y2="93"/>
+                    <Line X1="442" X2="450" Y1="16" Y2="140"/>
+                    <!-- 16 - 20 -->
+                    <Line X1="474" X2="488" Y1="16" Y2="172"/>
+                    <Line X1="513" X2="544" Y1="17" Y2="88"/>
+                    <Line X1="592" X2="530" Y1="16" Y2="190"/>
+                    <Line X1="643" X2="549" Y1="24" Y2="210"/>
+                    <Line X1="702" X2="630" Y1="16" Y2="168"/>
+                    <!-- 21 - 25 -->
+                    <Line X1="772" X2="670" Y1="26" Y2="198"/>
+                    <Line X1="822" X2="680" Y1="26" Y2="248"/>
+                    <Line X1="932" X2="760" Y1="119" Y2="248"/>
+                    <Line X1="922" X2="775" Y1="203" Y2="284"/>
+                    <Line X1="914" X2="700" Y1="303" Y2="295"/>
+                    <!-- 26 - 28 -->
+                    <Line X1="920" X2="680" Y1="376" Y2="332"/>
+                    <Line X1="640" X2="580" Y1="438" Y2="342"/>
+                    <Line X1="279" X2="330" Y1="438" Y2="300"/>
 
-        <DocumentViewer Grid.Column="1" Grid.Row="1" Name="docViewer" Visibility="Visible"/>
-
-        <Image Grid.Column="1" Grid.Row="1" Name="AboutSwitcher_Image" Source="/Files/Images/Learning/SetRadio.png" Stretch="Fill"/>
-
-        <Frame x:Name="defaultFrame" Grid.Column="1" Grid.Row="1" NavigationUIVisibility="Hidden" Visibility="Hidden"/>
-
-        <Viewbox Grid.Column="1" Grid.Row="1" Stretch="Fill" Name="AboutSwitcher_ViewBox">
-            <Canvas  Width="963" Height="449">
-                <Viewbox Grid.Row="1" Stretch="Fill" Width="609" Height="226" Canvas.Left="103" Canvas.Top="154">
-                    <Frame Name="Radio_Frame" NavigationUIVisibility="Hidden"/>
-                </Viewbox>
-                <!-- 1 - 5 -->
-                <Line X1="229" X2="238" Y1="438" Y2="364"/>
-                <Line X1="132" X2="150" Y1="440" Y2="350"/>
-                <Line X1="22" X2="210" Y1="296" Y2="307"/>
-                <Line X1="22" X2="180" Y1="272" Y2="281"/>
-                <Line X1="22" X2="130" Y1="247" Y2="270"/>
-                <!-- 6 - 10 -->
-                <Line X1="32" X2="150" Y1="225" Y2="270"/>
-                <Line X1="22" X2="150" Y1="202" Y2="237"/>
-                <Line X1="22" X2="150" Y1="180" Y2="173"/>
-                <Line X1="22" X2="180" Y1="152" Y2="171"/>
-                <Line X1="112" X2="250" Y1="10" Y2="250"/>
-                <!-- 11 - 15 -->
-                <Line X1="162" X2="230" Y1="10" Y2="170"/>
-                <Line X1="186" X2="320" Y1="10" Y2="180"/>
-                <Line X1="267" X2="347" Y1="10" Y2="170"/>
-                <Line X1="363" X2="431" Y1="21" Y2="93"/>
-                <Line X1="442" X2="450" Y1="16" Y2="140"/>
-                <!-- 16 - 20 -->
-                <Line X1="474" X2="488" Y1="16" Y2="172"/>
-                <Line X1="513" X2="544" Y1="17" Y2="88"/>
-                <Line X1="592" X2="530" Y1="16" Y2="190"/>
-                <Line X1="643" X2="549" Y1="24" Y2="210"/>
-                <Line X1="702" X2="630" Y1="16" Y2="168"/>
-                <!-- 21 - 25 -->
-                <Line X1="772" X2="670" Y1="26" Y2="198"/>
-                <Line X1="822" X2="680" Y1="26" Y2="248"/>
-                <Line X1="932" X2="760" Y1="119" Y2="248"/>
-                <Line X1="922" X2="775" Y1="203" Y2="284"/>
-                <Line X1="914" X2="700" Y1="303" Y2="295"/>
-                <!-- 26 - 28 -->
-                <Line X1="920" X2="680" Y1="376" Y2="332"/>
-                <Line X1="640" X2="580" Y1="438" Y2="342"/>
-                <Line X1="279" X2="330" Y1="438" Y2="300"/>
-
-                <Canvas Name="BorderSet_Canvas">
-                    <Border Style="{StaticResource Number}" Canvas.Left="213" Canvas.Top="418">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="1"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="115" Canvas.Top="420">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="2"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="5" Canvas.Top="282">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="3"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="8" Canvas.Top="257">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="4"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="234">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="5"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="210">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="6"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="10" Canvas.Top="186">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="7"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="9" Canvas.Top="162">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="8"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="9" Canvas.Top="135">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="9"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="97">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="10"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="147">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="11"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="177">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="12"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="251" Canvas.Top="-1">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="13"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="345" Canvas.Top="2">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="14"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="426" Canvas.Top="3">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="15"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="459" Canvas.Top="3">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="16"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="499" Canvas.Top="3">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="17"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="576" Canvas.Top="2">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="18"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="624" Canvas.Top="5">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="19"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="685" Canvas.Top="3">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="20"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="758" Canvas.Top="6">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="21"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="809" Canvas.Top="9">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="22"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="910" Canvas.Top="112">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="23"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="907" Canvas.Top="191">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="24"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="903" Canvas.Top="286">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="25"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="902" Canvas.Top="357">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="26"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="623" Canvas.Top="420">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="27"/>
-                    </Border>
-                    <Border Style="{StaticResource Number}" Canvas.Left="263" Canvas.Top="419">
-                        <TextBlock Style="{StaticResource TextNumber}" Text="28"/>
-                    </Border>
+                    <Canvas x:Name="BorderSet_Canvas">
+                        <Canvas.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="TextAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="FontFamily" Value="Times New Roman"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Width" Value="500"/>
+                            </Style>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="15"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Setter Property="Width" Value="30"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+                                <Setter Property="BorderThickness" Value="3"/>
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="ToolTipService.ShowDuration" Value="99999"/>
+                            </Style>
+                        </Canvas.Resources>
+                        <Border Canvas.Left="213" Canvas.Top="418">
+                            <TextBlock Text="1"/>
+                        </Border>
+                        <Border Canvas.Left="115" Canvas.Top="420">
+                            <TextBlock Text="2"/>
+                        </Border>
+                        <Border Canvas.Left="5" Canvas.Top="282">
+                            <TextBlock Text="3"/>
+                        </Border>
+                        <Border Canvas.Left="8" Canvas.Top="257">
+                            <TextBlock Text="4"/>
+                        </Border>
+                        <Border Canvas.Left="10" Canvas.Top="234">
+                            <TextBlock Text="5"/>
+                        </Border>
+                        <Border Canvas.Left="10" Canvas.Top="210">
+                            <TextBlock Text="6"/>
+                        </Border>
+                        <Border Canvas.Left="10" Canvas.Top="186">
+                            <TextBlock Text="7"/>
+                        </Border>
+                        <Border Canvas.Left="9" Canvas.Top="162">
+                            <TextBlock Text="8"/>
+                        </Border>
+                        <Border Canvas.Left="9" Canvas.Top="135">
+                            <TextBlock Text="9"/>
+                        </Border>
+                        <Border Canvas.Left="97">
+                            <TextBlock Text="10"/>
+                        </Border>
+                        <Border Canvas.Left="147">
+                            <TextBlock Text="11"/>
+                        </Border>
+                        <Border Canvas.Left="177">
+                            <TextBlock Text="12"/>
+                        </Border>
+                        <Border Canvas.Left="251" Canvas.Top="-1">
+                            <TextBlock Text="13"/>
+                        </Border>
+                        <Border Canvas.Left="345" Canvas.Top="2">
+                            <TextBlock Text="14"/>
+                        </Border>
+                        <Border Canvas.Left="426" Canvas.Top="3">
+                            <TextBlock Text="15"/>
+                        </Border>
+                        <Border Canvas.Left="459" Canvas.Top="3">
+                            <TextBlock Text="16"/>
+                        </Border>
+                        <Border Canvas.Left="499" Canvas.Top="3">
+                            <TextBlock Text="17"/>
+                        </Border>
+                        <Border Canvas.Left="576" Canvas.Top="2">
+                            <TextBlock Text="18"/>
+                        </Border>
+                        <Border Canvas.Left="624" Canvas.Top="5">
+                            <TextBlock Text="19"/>
+                        </Border>
+                        <Border Canvas.Left="685" Canvas.Top="3">
+                            <TextBlock Text="20"/>
+                        </Border>
+                        <Border Canvas.Left="758" Canvas.Top="6">
+                            <TextBlock Text="21"/>
+                        </Border>
+                        <Border Canvas.Left="809" Canvas.Top="9">
+                            <TextBlock Text="22"/>
+                        </Border>
+                        <Border Canvas.Left="910" Canvas.Top="112">
+                            <TextBlock Text="23"/>
+                        </Border>
+                        <Border Canvas.Left="907" Canvas.Top="191">
+                            <TextBlock Text="24"/>
+                        </Border>
+                        <Border Canvas.Left="903" Canvas.Top="286">
+                            <TextBlock Text="25"/>
+                        </Border>
+                        <Border Canvas.Left="902" Canvas.Top="357">
+                            <TextBlock Text="26"/>
+                        </Border>
+                        <Border Canvas.Left="623" Canvas.Top="420">
+                            <TextBlock Text="27"/>
+                        </Border>
+                        <Border Canvas.Left="263" Canvas.Top="419">
+                            <TextBlock Text="28"/>
+                        </Border>
+                    </Canvas>
                 </Canvas>
-            </Canvas>
-        </Viewbox>
+            </Viewbox>
+
+            <ScrollViewer x:Name="Viewer_ScrollViewer" VerticalScrollBarVisibility="Auto" Grid.Row="1" Height="100">
+                <StackPanel x:Name="State_StackPanel">
+                    <StackPanel.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                </StackPanel>
+            </ScrollViewer>
+            <!--<TextBox x:Name="StateChange_TextBox" Grid.Row="1" TextWrapping="Wrap" 
+                     VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>-->
+        </Grid>
     </Grid>
 </Page>

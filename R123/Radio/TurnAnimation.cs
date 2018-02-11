@@ -105,7 +105,6 @@ namespace R123.Radio
                 dispatcherTimer.Stop();
             }
         }
-        
         private void UpFrequency(object sender, EventArgs e)
         {
             if (Frequency.Value < maxFrequencyValue)

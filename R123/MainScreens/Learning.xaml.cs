@@ -1,6 +1,10 @@
 ﻿using R123.Learning;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Xps.Packaging;
 
 namespace R123.MainScreens
@@ -10,183 +14,144 @@ namespace R123.MainScreens
     /// </summary>
     public partial class Learning : Page
     {
-        private Radio.View.RadioPage RadioPage;
-        private Radio.Radio Radio;
-
-        private int currentStep;
-        private const int MAX_STEP = 4;
-        string[] nameXPSFiles = new string[MAX_STEP + 1];
-        private string[] titles;
+        private const int NUMBER_STEPS = 5;
+        private string[] nameXPSFiles, titles, descriptions;
         public Learning()
         {
             InitializeComponent();
 
-            currentStep = 0;
+            nameXPSFiles = new string[]
+            {
+                "Destination",
+                "Tech",
+                "Kit",
+            };
 
-            nameXPSFiles[0] = "Destination";
-            nameXPSFiles[1] = "Tech";
-            nameXPSFiles[2] = "Kit";
+            titles = new string[]
+            {
+                "Назначение радиостанции Р-123М",
+                "Технические характеристики",
+                "Комплект радиостанции Р-123М",
+                "Назначение органов управления",
+                "Исходное положение органов управления"
+            };
 
+            descriptions = new string[]
+            {
+                "",
+                "",
+                "",
+                "Чтобы увидеть описание элемента наведите курсор на его номер.",
+                "$description"
+            };
 
-            titles = new string[MAX_STEP + 1];
-            titles[0] = "Назначение радиостанции Р-123М";
-            titles[1] = "Технические характеристики";
-            titles[2] = "Комплект радиостанции Р-123М";
-            titles[3] = "Назначение органов управления";
-            titles[4] = "Исходное положение органов управления";
+            NewRadio.MainView RadioView = new NewRadio.MainView();
+            RadioView.HideTangent();
 
-            RadioPage = new Radio.View.RadioPage();
-            RadioPage.HideTangent();
-            Radio_Frame.Content = RadioPage;
-            Radio = RadioPage.Radio;
-            Radio.Frequency.Image.ToolTip = "Частота = 35.75";
-            Radio.Frequency.ValueChanged += Frequency_ValueChanged;
-            Radio.Range.Image.ToolTip = "Фиксированная частота №1 поддиапазона 2";
-            Radio.Range.ValueChanged += (object sender, Radio.ValueChangedEventArgsPositionSwitcher e) => Range_ValueChanged(e.Value);
-            foreach (var switcher in Radio.SubFixFrequency)
-                switcher.ValueChanged += (object sender, Radio.ValueChangedEventArgsNumberedSwitcher e) => Range_ValueChanged(Radio.Range.Value);
+            Radio_Frame.Content = RadioView;
 
+            //IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
 
-
-
-            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
-
-            ShowXPSDocument();
-            AddToolTip(text.Split('\n'));
+            string[] textSplit = borderText.Split('\n');
+            for (int i = 0; i < textSplit.Length && i < BorderSet_Canvas.Children.Count; i++)
+            {
+                (BorderSet_Canvas.Children[i] as Border).ToolTip = new ToolTip
+                {
+                    Content = new TextBlock()
+                    {
+                        Text = textSplit[i].Substring(0, textSplit[i].Length - 1)
+                    },
+                };
+            }
 
             for (int i = 0; i < Menu_StackPanel.Children.Count; i++)
             {
                 (Menu_StackPanel.Children[i] as Button).Click += (object sender, RoutedEventArgs e) =>
-                {
-                    currentStep = Menu_StackPanel.Children.IndexOf(sender as UIElement);
-                    ShowCurrentStep();
-                };
+                    CurrentStep = Menu_StackPanel.Children.IndexOf(sender as UIElement);
             }
+
+            CurrentStep = 0;
+
+            NewRadio.Model.MainModel Radio = RadioView.Model;
+
+            Radio.Frequency.ValueChanged += (s, e) => AddText("Частота = ", Math.Round(e.NewValue, 4));
+            Radio.Volume.ValueChanged += (s, e) => AddText("Громкость ", ChangeValue(e.NewValue, e.OldValue));
+            Radio.Noise.ValueChanged += (s, e) => AddText("Громкость шумов ", ChangeValue(e.NewValue, e.OldValue));
+
+            Radio.Range.ValueChanged += (s, e) => AddText("Фикс. частота - плавный поддиапазон = ", RangeState(e.NewValue));
+
+            queue = new Queue<SelfDestroyingLabel>(10);
+            queue.Enqueue(new SelfDestroyingLabel("", new StackPanel()));
+            queue.Enqueue(new SelfDestroyingLabel("", new StackPanel()));
+            queue.Enqueue(new SelfDestroyingLabel("", new StackPanel()));
+            queue.Enqueue(new SelfDestroyingLabel("", new StackPanel()));
+        }
+        Queue<SelfDestroyingLabel> queue;
+        private void AddText(string text, object o)
+        {
+            if (o.Equals(null)) return;
+
+            SelfDestroyingLabel label = new SelfDestroyingLabel(text + o.ToString(), State_StackPanel);
+            State_StackPanel.Children.Add(label);
+            Viewer_ScrollViewer.ScrollToEnd();
+
+            queue.Enqueue(label);
+            queue.Dequeue().Start();
         }
 
-        private void Range_ValueChanged(int number)
+        private string RangeState(NewRadio.Model.RangeState state)
         {
-            if (number < 4)
-                Radio.Range.Image.ToolTip = $"Фиксированная частота №{number + 1} поддиапазона {(Radio.SubFixFrequency[number].Value ? 1 : 2)}";
-            else
-                Radio.Range.Image.ToolTip = $"Плавный поддиапазон №{number - 3}";
+            if (state == NewRadio.Model.RangeState.FixedFrequency1) return "фиксированная частота 1";
+            else if (state == NewRadio.Model.RangeState.FixedFrequency2) return "фиксированная частота 2";
+            else if (state == NewRadio.Model.RangeState.FixedFrequency3) return "фиксированная частота 3";
+            else if (state == NewRadio.Model.RangeState.FixedFrequency4) return "фиксированная частота 4";
+            else if (state == NewRadio.Model.RangeState.SmoothRange1) return "плавный поддиапазон 1";
+            else if (state == NewRadio.Model.RangeState.SmoothRange2) return "плавный поддиапазон 2";
+            else return "";
         }
 
-        private void Frequency_ValueChanged(object sender, Radio.ValueChangedEventArgsFrequency e)
+        private string ChangeValue(double newValue, double oldValue)
         {
-            Radio.Frequency.Image.ToolTip = $"Частота = {e.Value}";
+            if (newValue > oldValue) return "увеличилась";
+            else if (newValue < oldValue) return "уменьшилась";
+            else return null;
         }
 
-        private void AddToolTip(string[] textSplit)
+        private void PrevStep(object sender, RoutedEventArgs e) => CurrentStep--;
+
+        private void NextStep(object sender, RoutedEventArgs e) => CurrentStep++;
+
+        private Visibility BoolToVisible(bool value) => value ? Visibility.Visible : Visibility.Hidden;
+
+        private int currentStep;
+        private int CurrentStep
         {
-            for (int i = 0; i < textSplit.Length; i++)
+            get => currentStep;
+            set
             {
-                Border b = BorderSet_Canvas.Children[i] as Border;
-                string s = textSplit[i];
-                TextBlock text = new TextBlock
-                {
-                    Text = s.Substring(0, s.Length - 1),
-                    FontFamily = new System.Windows.Media.FontFamily("Times New Roman"),
-                    Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Black),
-                    FontWeight = FontWeights.Bold,
-                    FontSize = 16,
-                    MaxWidth = 500,
-                    TextWrapping = TextWrapping.Wrap
-                };
-                ToolTip t = new ToolTip
-                {
-                    Content = text,
-                    
-                };
-                b.ToolTip = t;
-            }
-        }
+                if (value < 0 || value >= NUMBER_STEPS) return;
+                currentStep = value;
 
-        private void PrevStep(object sender, RoutedEventArgs e)
-        {
-            if (currentStep == 0) return;
+                prevStep_Button.IsEnabled = currentStep > 0;
+                nextStep_Button.IsEnabled = currentStep < NUMBER_STEPS - 1;
 
-            currentStep--;
+                Step4_Freme.Visibility = BoolToVisible(currentStep == 4);
+                Step3_Grid.Visibility = BoolToVisible(currentStep == 3);
+                DocViewer.Visibility = BoolToVisible(currentStep < 3);
 
-            ShowCurrentStep();
-        }
-
-        private void NextStep(object sender, RoutedEventArgs e)
-        {
-            AboutSwitcher_ViewBox.MouseMove -= AboutSwitcher_ViewBox_MouseMove;
-            if (currentStep == MAX_STEP) return;
-
-            currentStep++;
-            if (currentStep == MAX_STEP) nextStep_Button.IsEnabled = false;
-            prevStep_Button.IsEnabled = true;
-
-            ShowCurrentStep();
-        }
-
-        private void ShowCurrentStep()
-        {
-            if (currentStep == 0)
-            {
-                prevStep_Button.IsEnabled = false;
-                nextStep_Button.IsEnabled = true;
-            }
-            else if (currentStep == MAX_STEP)
-            {
-                nextStep_Button.IsEnabled = false;
-                prevStep_Button.IsEnabled = true;
-            }
-            else
-            {
-                nextStep_Button.IsEnabled = true;
-                prevStep_Button.IsEnabled = true;
-            }
-            defaultFrame.Visibility = Visibility.Hidden;
-            if (currentStep == MAX_STEP - 1)
-            {
-                docViewer.Visibility = Visibility.Hidden;
-                defaultFrame.Visibility = Visibility.Hidden;
-                AboutSwitcher_ViewBox.Visibility = Visibility.Visible;
-                AboutSwitcher_Image.Visibility = Visibility.Visible;
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
-                AboutSwitcher_ViewBox.MouseMove += AboutSwitcher_ViewBox_MouseMove;
-                Description.Text = "Чтобы увидеть описание элемента наведите курсор на его номер.";
+                Description_TextBlock.Text = descriptions[currentStep];
+
+                if (currentStep == 4)
+                    Step4_Freme.Content = new DefaultStatePage();
+                else if (currentStep < 3)
+                    DocViewer.Document = (
+                        new XpsDocument($"../../Files/XSPLearning/{nameXPSFiles[currentStep]}.xps", System.IO.FileAccess.Read)
+                            ).GetFixedDocumentSequence();
             }
-            else if (currentStep == MAX_STEP)
-            {
-                docViewer.Visibility = Visibility.Hidden;
-                AboutSwitcher_ViewBox.Visibility = Visibility.Hidden;
-                AboutSwitcher_Image.Visibility = Visibility.Hidden;
-                title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
-                Description.Text = "";
-                defaultFrame.Visibility = Visibility.Visible;
-                defaultFrame.Content = new DefaultStatePage();
-            }
-            else
-                ShowXPSDocument();
         }
 
-        private void AboutSwitcher_ViewBox_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            AboutSwitcher_ViewBox.MouseMove -= AboutSwitcher_ViewBox_MouseMove;
-            //MessageBox.Show("Наведите курсор мышы на номер элемента для показа его описания.");
-        }
-
-        private void ShowXPSDocument()
-        {
-            Description.Text = "";
-            docViewer.Visibility = Visibility.Visible;
-            AboutSwitcher_ViewBox.Visibility = Visibility.Hidden;
-            AboutSwitcher_Image.Visibility = Visibility.Hidden;
-            title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
-            XpsDocument xpsDocument = new XpsDocument($"../../Files/XSPLearning/{nameXPSFiles[currentStep]}.xps", System.IO.FileAccess.Read);
-            docViewer.Document = xpsDocument.GetFixedDocumentSequence();
-        }
-        private void EscButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Close();
-        }
-
-        private string text = @"1 - разъем 'Р-124' для подключения кабеля от переговорного устройства Р-124 или нагрудного переключателя
+        private string borderText = @"1 - разъем 'Р-124' для подключения кабеля от переговорного устройства Р-124 или нагрудного переключателя
 2 - разъем 'ПИТАНИЕ' для подключения кабеля от блока питания
 3 - заглушка отверстия для доступа к триммеру 'КАЛИБРОВКА'
 4 - тумблер включения питания радиостанции 'ПИТАНИЕ ВКЛ.-ВЫКЛ.'

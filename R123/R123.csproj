@@ -63,8 +63,11 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio, Version=1.8.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.8.3\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.9.0\lib\net40\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
@@ -138,8 +141,12 @@
     <Compile Include="MainScreens\Learning.xaml.cs">
       <DependentUpon>Learning.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainScreens\SelfDestroyingLabel.cs" />
     <Compile Include="MainScreens\Standarts.xaml.cs">
       <DependentUpon>Standarts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainScreens\Work.xaml.cs">
+      <DependentUpon>Work.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainScreens\WorkOnRadioStation.xaml.cs">
       <DependentUpon>WorkOnRadioStation.xaml</DependentUpon>
@@ -147,6 +154,34 @@
     <Compile Include="Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NewRadio\Model\Animation.cs" />
+    <Compile Include="NewRadio\Model\Converter.cs" />
+    <Compile Include="NewRadio\Model\LineAndEllipseAnimation.cs" />
+    <Compile Include="NewRadio\Model\InteriorModel.cs" />
+    <Compile Include="NewRadio\Model\MainModel.cs" />
+    <Compile Include="NewRadio\SimpleCommand.cs" />
+    <Compile Include="NewRadio\ViewModel\Displays.cs" />
+    <Compile Include="NewRadio\ViewModel\Encoders.cs" />
+    <Compile Include="NewRadio\ViewModel\PositionSwitchers.cs" />
+    <Compile Include="NewRadio\ViewModel\Switches.cs" />
+    <Compile Include="NewRadio\View\DiscretelyRotating.cs" />
+    <Compile Include="NewRadio\View\FrequencyDisplay.xaml.cs">
+      <DependentUpon>FrequencyDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewRadio\View\Display.cs" />
+    <Compile Include="NewRadio\View\Switch.cs" />
+    <Compile Include="NewRadio\View\Tangent.cs" />
+    <Compile Include="NewRadio\View\Tone.cs" />
+    <Compile Include="NewRadio\View\СontinuouslyRotating.xaml.cs">
+      <DependentUpon>СontinuouslyRotating.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewRadio\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewRadio\TestView.xaml.cs">
+      <DependentUpon>TestView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewRadio\ViewModel\ViewModel.cs" />
     <Compile Include="Pages\NetworkSettings.xaml.cs">
       <DependentUpon>NetworkSettings.xaml</DependentUpon>
     </Compile>
@@ -197,44 +232,12 @@
     <Compile Include="Pages\NewFolder1\TechPage.xaml.cs">
       <DependentUpon>TechPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\encoders\AntennaClip.cs" />
-    <Compile Include="View\encoders\VolumeController.cs" />
-    <Compile Include="View\LineMouse.cs" />
-    <Compile Include="View\Radio.xaml.cs">
-      <DependentUpon>Radio.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Reference.xaml.cs">
       <DependentUpon>Reference.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tasks\Tasks.xaml.cs">
       <DependentUpon>Tasks.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Clamp.cs" />
-    <Compile Include="View\displays\FixedFrequencyDisplay.cs" />
-    <Compile Include="View\displays\FrequencyDisplay.cs" />
-    <Compile Include="View\displays\SubFrequencyDisplay.cs" />
-    <Compile Include="View\displays\VoltageDisplay.cs" />
-    <Compile Include="View\encoders\AnimationEncoder.cs" />
-    <Compile Include="View\encoders\AntennaDisplay.cs" />
-    <Compile Include="View\encoders\Encoder.cs" />
-    <Compile Include="View\encoders\FrequencyController.cs" />
-    <Compile Include="View\encoders\NoiseController.cs" />
-    <Compile Include="View\FixedFrequencySetting.cs" />
-    <Compile Include="View\ImagesControl.cs" />
-    <Compile Include="View\Options.cs" />
-    <Compile Include="View\positionSwitchers\PositionSwitcher.cs" />
-    <Compile Include="View\positionSwitchers\RangeSwitcher.cs" />
-    <Compile Include="View\positionSwitchers\VoltageSwitcher.cs" />
-    <Compile Include="View\positionSwitchers\WorkModeSwitcher.cs" />
-    <Compile Include="View\PressSpaceControl.cs" />
-    <Compile Include="View\Selector.cs" />
-    <Compile Include="View\switchers\OnOffSwitcher.cs" />
-    <Compile Include="View\switchers\Power.cs" />
-    <Compile Include="View\switchers\Scale.cs" />
-    <Compile Include="View\switchers\SubFixFrequency.cs" />
-    <Compile Include="View\switchers\Switcher.cs" />
-    <Compile Include="View\ToneButton.cs" />
-    <Compile Include="View\ToolTip.cs" />
     <Compile Include="Pages\WorkingCapacityTest.xaml.cs">
       <DependentUpon>WorkingCapacityTest.xaml</DependentUpon>
     </Compile>
@@ -258,6 +261,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MainScreens\Work.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainScreens\WorkOnRadioStation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -265,6 +272,22 @@
     <Page Include="Message.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NewRadio\View\FrequencyDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRadio\View\СontinuouslyRotating.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRadio\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewRadio\TestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\NetworkSettings.xaml">
       <SubType>Designer</SubType>
@@ -317,10 +340,6 @@
     <Page Include="Pages\NewFolder1\TechPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Radio.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Reference.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -416,6 +435,11 @@
     <Resource Include="Files\Gifs\Tone.gif" />
     <Resource Include="Files\Gifs\Voltage.gif" />
     <Resource Include="Files\Gifs\Volume.gif" />
+    <Resource Include="Files\Gifs\PowerOn.gif" />
+    <Resource Include="Files\Gifs\Range0.gif" />
+    <Resource Include="Files\Gifs\ScaleOn.gif" />
+    <Resource Include="Files\Images\ToneOn.png" />
+    <Resource Include="Files\Images\ToneOff.png" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

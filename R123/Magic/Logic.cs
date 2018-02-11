@@ -1,5 +1,4 @@
-﻿using R123.View;
-using MCP.Logic;
+﻿using MCP.Logic;
 using System;
 
 namespace R123

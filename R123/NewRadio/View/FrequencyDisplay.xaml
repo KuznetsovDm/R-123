@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="R123.NewRadio.View.FrequencyDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:R123.NewRadio.View"
+             mc:Ignorable="d">
+    <Grid>
+        <Canvas x:Name="frequencyDisplay_Canvas" Width="108" Height="45" ClipToBounds="True">
+            <Canvas x:Name="frequencyBand_Canvas" Visibility="Visible"></Canvas>
+        </Canvas>
+    </Grid>
+</UserControl>

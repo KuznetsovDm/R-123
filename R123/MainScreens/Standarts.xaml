@@ -24,7 +24,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </Page.Resources>
-    <Grid Background="#E8E6EA" ShowGridLines="True">
+    <Grid Background="#E8E6EA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
