@@ -121,7 +121,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/2.setSimplex.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
@@ -133,7 +133,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/3.noiseToLeft.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/NoiseLeft.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
@@ -146,7 +146,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/4.broadcast1.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Voltage.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
@@ -158,7 +158,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/5.scaleOn.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerAndScaleOn.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
@@ -170,7 +170,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/6.powerOn.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerAndScaleOn.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
@@ -183,7 +183,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/7.volumeToRight.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Volume.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
@@ -195,8 +195,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/8.rangeToFixFrequency1.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerOff.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>
@@ -207,8 +207,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/9.clamp1Open.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerOff.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>
@@ -219,8 +219,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/10.WorkFrequencyAndClampClose.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerOff.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>
@@ -231,8 +231,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/11.SubFrequency1.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerOff.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>
@@ -244,7 +244,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/12.prd.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Tangent.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
@@ -256,8 +256,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/13.setSettingsAntenna.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerOff.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>
@@ -268,6 +268,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/PowerOff.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>
@@ -278,7 +280,7 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep1/15.setStandbyReception.gif"
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/DeshPriem.gif"
                                        gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>

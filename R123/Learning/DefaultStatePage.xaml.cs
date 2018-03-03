@@ -18,7 +18,7 @@ namespace R123.Learning
             "Переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в одном из положений \"ФИКСИР, ЧАСТОТЫ 1, 2, 3 или 4\"",
             "Регулятор \"ГРОМКОСТЬ\" выведен на максимум громкости",
             "Регулятор \"ШУМЫ\" выведен (в левом крайнем положении)",
-            "Переключатель контроля напряжений в положении \"РАБОТА \"",
+            "Переключатель контроля напряжений в положении \"РАБОТА 1\"",
             "Переключатель рода работ в положении \"СИМПЛЕКС\"",
             "Тумблеры \"ПОДДИАПАЗОН\" каждый в положении, соответствующем заданной фиксированной частоте",
             "Тумблер \"ШКАЛА\" в положении \"ВЫКЛ\"",
@@ -28,6 +28,7 @@ namespace R123.Learning
         public DefaultStatePage()
         {
             InitializeComponent();
+            InitializeControls();
 
             Conditions = new Func<bool>[10];
             Conditions[0] = () => Radio.Model.AntennaFixer.Value == ClampState.Fixed;
@@ -63,8 +64,6 @@ namespace R123.Learning
             }
 
             InitializeSubscribe();
-
-            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
         }
 
         private void Check(object sender, EventArgs args)
@@ -74,7 +73,10 @@ namespace R123.Learning
                 if (CheckCondition(i)) {
                     ((CheckBox)((StackPanel)panel.Children[i]).Children[0]).IsChecked = true;
                 }
-                else allChecked = false;
+                else {
+                    ((CheckBox)((StackPanel)panel.Children[i]).Children[0]).IsChecked = false;
+                    allChecked = false;
+                }
             }
 
             if (allChecked) {
@@ -116,6 +118,18 @@ namespace R123.Learning
             Radio.Model.Clamps.ValueChanged -= Check;
             Radio.Model.NumberSubFrequency.ValueChanged -= Check;
             Radio.Model.AntennaFixer.ValueChanged -= Check;
+        }
+
+        private void InitializeControls()
+        {
+            Radio.Model.Noise.Value = 0.5;
+            Radio.Model.Voltage.Value = VoltageState.Broadcast250;
+            Radio.Model.Power.Value = Turned.On;
+            Radio.Model.Scale.Value = Turned.On;
+            Radio.Model.WorkMode.Value = WorkModeState.WasIstDas;
+            Radio.Model.Volume.Value = 0.5;
+            Radio.Model.Range.Value = RangeState.SmoothRange2;
+            Radio.Model.AntennaFixer.Value = ClampState.Medium;
         }
     }
 }
