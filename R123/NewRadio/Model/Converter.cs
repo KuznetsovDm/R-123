@@ -14,6 +14,7 @@ namespace R123.NewRadio.Model
 
             public static double ToValue(double angle, int numberSubFrequency) =>
                 (numberSubFrequency == 1) ? (angle / k + minValue) : (angle / k + maxValueRange);
+
             public static double ToAngle(double value) => (value - minValue) * k;
 
             public static bool OutOfRange(double value) => value < minValue || value > maxValue;
@@ -22,7 +23,7 @@ namespace R123.NewRadio.Model
 
         public static class Volume
         {
-            public const double minValue = 0;
+            public const double minValue = 0.1;
             public const double maxValue = 1;
 
             private static double k = 360 / (maxValue - minValue);
@@ -40,8 +41,8 @@ namespace R123.NewRadio.Model
 
             private static double k = 360 / (maxValue - minValue);
 
-            public static double ToValue(double angle) => angle / k + minValue;
-            public static double ToAngle(double value) => (value - minValue) * k;
+            public static double ToValue(double angle) => 1 - angle / k;
+            public static double ToAngle(double value) => value * k;
 
             public static bool OutOfRange(double value) => value < minValue || value > maxValue;
         }
@@ -61,6 +62,7 @@ namespace R123.NewRadio.Model
                 return value;
             }
 
+            public static double ToAngle(double value) => value;
             public static bool OutOfRange(double value) => value < minValue || value > maxValue;
             public static bool AngleOutOfRange(double angle) => angle < 0 || angle > 360;
         }

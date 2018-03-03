@@ -19,6 +19,7 @@ namespace R123.NewRadio.View
         {
             InitializeComponent();
             this.maxAngle = maxAngle;
+            TheImage.Cursor = Cursors.Hand;
 
             Loaded += (object sender, RoutedEventArgs e) => {
                 centerImage.X = TheImage.ActualWidth / 2;

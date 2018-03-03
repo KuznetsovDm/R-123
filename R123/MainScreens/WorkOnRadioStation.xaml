@@ -22,7 +22,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Button Name="prevStep_Button" Content="Предыдущий шаг" IsEnabled="False" Click="PrevStep"/>
             <TextBlock Name="title_TextBlock" Text="Шаг №1" FontFamily="Times New Roman" FontSize="26" FontWeight="Bold" VerticalAlignment="Center" MinWidth="500" TextAlignment="Center"/>
-            <Button Name="nextStep_Button" Content="Следующий шаг" IsEnabled="True" Click="NextStep"/>
+            <Button Name="nextStep_Button" Content="Следующий шаг" IsEnabled="False" Click="NextStep"/>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">

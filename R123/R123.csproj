@@ -97,6 +97,7 @@
     </ApplicationDefinition>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Learning\DefaultStateChecker.cs" />
     <Compile Include="Learning\DefaultStatePage.xaml.cs">
       <DependentUpon>DefaultStatePage.xaml</DependentUpon>
     </Compile>
@@ -440,6 +441,34 @@
     <Resource Include="Files\Gifs\ScaleOn.gif" />
     <Resource Include="Files\Images\ToneOn.png" />
     <Resource Include="Files\Images\ToneOff.png" />
+    <Resource Include="Files\Gifs\GifsStep1\10.WorkFrequencyAndClampClose.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\11.SubFrequency1.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\12.prd.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\13.setSettingsAntenna.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\15.setStandbyReception.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\2.setSimplex.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\3.noiseToLeft.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\4.broadcast1.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\5.scaleOn.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\6.powerOn.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\7.volumeToRight.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\8.rangeToFixFrequency1.gif" />
+    <Resource Include="Files\Gifs\GifsStep1\9.clamp1Open.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\11.setStandbyReception.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\13.testTone.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\14.setSimplex.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\15.prd.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\16.settingAntenna.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\18.testTone.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\2.setSimplex.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\21.fixClamp.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\23.testFixFrequency.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\24.powerOff.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\3.noiseToLeft.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\4.powerAndScaleOn.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\5.testVoltagePower.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\6.volumeToRight.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\7.subFrequency1.gif" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

@@ -20,24 +20,26 @@ namespace R123.NewRadio.Model
         public readonly ClampsState Clamps;
 
         private Animation Animation;
+        private InteriorModel Model;
 
-        public MainModel(InteriorModel Model, Animation Animation)
+        public MainModel(InteriorModel Model, Animation Animation, ViewModel.ViewModel ViewModel)
         {
             this.Animation = Animation;
-            Frequency = new FrequencyValue(Model);
-            Volume = new VolumeValue(Model);
-            Noise = new NoiseValue(Model);
-            Antenna = new AntennaValue(Model);
-            AntennaFixer = new AntennaFixerValue(Model);
-            Range = new RangeValue(Model);
-            WorkMode = new WorkModeValue(Model);
-            Voltage = new VoltageValue(Model);
-            NumberSubFrequency = new NumberSubFrequencyValue(Model);
-            Power = new PowerValue(Model);
-            Scale = new ScaleValue(Model);
-            Tone = new ToneValue(Model);
-            Tangent = new TangentValue(Model);
-            Clamps = new ClampsState(Model);
+            this.Model = Model;
+            Frequency = new FrequencyValue(Model, ViewModel);
+            Volume = new VolumeValue(Model, ViewModel);
+            Noise = new NoiseValue(Model, ViewModel);
+            Antenna = new AntennaValue(Model, ViewModel);
+            AntennaFixer = new AntennaFixerValue(Model, ViewModel);
+            Range = new RangeValue(Model, ViewModel);
+            WorkMode = new WorkModeValue(Model, ViewModel);
+            Voltage = new VoltageValue(Model, ViewModel);
+            NumberSubFrequency = new NumberSubFrequencyValue(Model, ViewModel);
+            Power = new PowerValue(Model, ViewModel);
+            Scale = new ScaleValue(Model, ViewModel);
+            Tone = new ToneValue(Model, ViewModel);
+            Tangent = new TangentValue(Model, ViewModel);
+            Clamps = new ClampsState(Model, ViewModel);
         }
 
         public double ValuesFixedFrequency(int subFrequency, int range) => Animation.ValuesFixedFrequency(subFrequency, range);
@@ -46,13 +48,14 @@ namespace R123.NewRadio.Model
         public class Template<T>
         {
             protected InteriorModel Model;
-            public Template(InteriorModel Model) { this.Model = Model; }
+            protected ViewModel.ViewModel ViewModel;
+            public Template(InteriorModel Model, ViewModel.ViewModel ViewModel) { this.Model = Model; this.ViewModel = ViewModel; }
         }
 
         public class FrequencyValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<double, double>> ValueChanged;
-            public FrequencyValue(InteriorModel Model) : base(Model)
+            public FrequencyValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.FrequencyChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -62,6 +65,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.Frequency.OutOfRange(value)) new ArgumentOutOfRangeException("Frequency");
+                    ViewModel.FrequencyAngle = Converter.Frequency.ToAngle(value);
                 }
             }
         }
@@ -69,7 +73,7 @@ namespace R123.NewRadio.Model
         public class VolumeValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<double, double>> ValueChanged;
-            public VolumeValue(InteriorModel Model) : base(Model)
+            public VolumeValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.VolumeChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -79,6 +83,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.Volume.OutOfRange(value)) new ArgumentOutOfRangeException("Volume");
+                    ViewModel.VolumeAngle = Converter.Volume.ToAngle(value);
                 }
             }
         }
@@ -86,7 +91,7 @@ namespace R123.NewRadio.Model
         public class NoiseValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<double, double>> ValueChanged;
-            public NoiseValue(InteriorModel Model) : base(Model)
+            public NoiseValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.NoiseChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -96,6 +101,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.Noise.OutOfRange(value)) new ArgumentOutOfRangeException("Noise");
+                    ViewModel.NoiseAngle = Converter.Noise.ToAngle(value);
                 }
             }
         }
@@ -103,7 +109,7 @@ namespace R123.NewRadio.Model
         public class AntennaValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<double, double>> ValueChanged;
-            public AntennaValue(InteriorModel Model) : base(Model)
+            public AntennaValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.AntennaChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -113,6 +119,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.Antenna.AngleOutOfRange(value)) new ArgumentOutOfRangeException("AntennaAngle");
+                    ViewModel.AntennaAngle = Converter.Antenna.ToAngle(value);
                 }
             }
         }
@@ -120,7 +127,7 @@ namespace R123.NewRadio.Model
         public class AntennaFixerValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<ClampState>> ValueChanged;
-            public AntennaFixerValue(InteriorModel Model) : base(Model)
+            public AntennaFixerValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.AntennaFixerChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -130,6 +137,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.AntennaFixer.OutOfRange(value)) new ArgumentOutOfRangeException("AntennaFixer");
+                    ViewModel.AntennaFixerAngle = Converter.AntennaFixer.ToAngle(value);
                 }
             }
         }
@@ -137,7 +145,7 @@ namespace R123.NewRadio.Model
         public class RangeValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<RangeState>> ValueChanged;
-            public RangeValue(InteriorModel Model) : base(Model)
+            public RangeValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.RangeChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -147,6 +155,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.Range.OutOfRange(value)) new ArgumentOutOfRangeException("Range");
+                    ViewModel.RangeAngle = Converter.Range.ToAngle(value);
                 }
             }
         }
@@ -154,7 +163,7 @@ namespace R123.NewRadio.Model
         public class WorkModeValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<WorkModeState>> ValueChanged;
-            public WorkModeValue(InteriorModel Model) : base(Model)
+            public WorkModeValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.WorkModeChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -164,6 +173,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.WorkMode.OutOfRange(value)) new ArgumentOutOfRangeException("WorkMode");
+                    ViewModel.WorkModeAngle = Converter.WorkMode.ToAngle(value);
                 }
             }
         }
@@ -171,7 +181,7 @@ namespace R123.NewRadio.Model
         public class VoltageValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<VoltageState>> ValueChanged;
-            public VoltageValue(InteriorModel Model) : base(Model)
+            public VoltageValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.VoltageChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -181,6 +191,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.Voltage.OutOfRange(value)) throw new IndexOutOfRangeException("Voltage");
+                    ViewModel.VoltageAngle = Converter.Voltage.ToAngle(value);
                 }
             }
         }
@@ -188,7 +199,7 @@ namespace R123.NewRadio.Model
         public class NumberSubFrequencyValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<SubFrequencyState>> ValueChanged;
-            public NumberSubFrequencyValue(InteriorModel Model) : base(Model)
+            public NumberSubFrequencyValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.NumberSubFrequencyChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -198,7 +209,7 @@ namespace R123.NewRadio.Model
         public class PowerValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<Turned>> ValueChanged;
-            public PowerValue(InteriorModel Model) : base(Model)
+            public PowerValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.PowerChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -208,6 +219,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.TurnedState.OutOfRange(value)) throw new IndexOutOfRangeException("Power");
+                    ViewModel.PowerValue = Converter.TurnedState.ToBoolean(value);
                 }
             }
         }
@@ -215,7 +227,7 @@ namespace R123.NewRadio.Model
         public class ScaleValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<Turned>> ValueChanged;
-            public ScaleValue(InteriorModel Model) : base(Model)
+            public ScaleValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.ScaleChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -225,6 +237,7 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.TurnedState.OutOfRange(value)) throw new IndexOutOfRangeException("Scale");
+                    ViewModel.ScaleValue = Converter.TurnedState.ToBoolean(value);
                 }
             }
         }
@@ -232,7 +245,7 @@ namespace R123.NewRadio.Model
         public class TangentValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<Turned>> ValueChanged;
-            public TangentValue(InteriorModel Model) : base(Model)
+            public TangentValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.TangentChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -242,7 +255,7 @@ namespace R123.NewRadio.Model
         public class ToneValue : Template<double>
         {
             public event EventHandler<ValueChangedEventArgs<Turned>> ValueChanged;
-            public ToneValue(InteriorModel Model) : base(Model)
+            public ToneValue(InteriorModel Model, ViewModel.ViewModel ViewModel) : base(Model, ViewModel)
             {
                 Model.ToneChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
@@ -253,9 +266,11 @@ namespace R123.NewRadio.Model
         {
             public event EventHandler<ClampChangedEventArgs> ValueChanged;
             private InteriorModel Model;
-            public ClampsState(InteriorModel Model)
+            private ViewModel.ViewModel ViewModel;
+            public ClampsState(InteriorModel Model, ViewModel.ViewModel ViewModel)
             {
                 this.Model = Model;
+                this.ViewModel = ViewModel;
                 Model.Clamps.ClampsChanged += (s, e) => ValueChanged?.Invoke(this, e);
             }
             public ClampState this[int i]
@@ -264,6 +279,14 @@ namespace R123.NewRadio.Model
                 set
                 {
                     if (Converter.AntennaFixer.OutOfRange(value)) throw new IndexOutOfRangeException("Clamp");
+                    if (i == 0)
+                        ViewModel.Clamp0Angle = Converter.Clamp.ToAngle(value);
+                    else if (i == 1)
+                        ViewModel.Clamp1Angle = Converter.Clamp.ToAngle(value);
+                    else if (i == 2)
+                        ViewModel.Clamp2Angle = Converter.Clamp.ToAngle(value);
+                    else if (i == 3)
+                        ViewModel.Clamp3Angle = Converter.Clamp.ToAngle(value);
                 }
             }
         }

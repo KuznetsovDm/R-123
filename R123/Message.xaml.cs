@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace R123
 {
@@ -14,6 +15,7 @@ namespace R123
             if (cancelled) {
                 wrapPanel.Children[1].Visibility = Visibility.Visible;
             }
+            
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)

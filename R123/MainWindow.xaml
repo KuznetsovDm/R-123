@@ -47,14 +47,19 @@
                         </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Обучающая программа-симулятор радиостанци Р-123М" VerticalAlignment="Bottom"/>
-                        <Image Grid.Row="1" Source="Files/FotoR123.jpg"/>
-                        <TextBlock Grid.Row="2" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
-                        <TextBlock Grid.Row="3" Text="Чтобы веруться на это окно нажмите Esc" FontSize="10" Canvas.Bottom="0" Canvas.Right="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                        <StackPanel Grid.Row="1">
+                            <TextBlock FontSize="14" Text="Для активации вкладки '2. Обучение' установите все органы управления в исходное положения во 2-ой вкладке на 5-ом шаге"/>
+                            <TextBlock FontSize="14" Text="Для актвации вкладок '3. Работа' и '4. Тестирвание' выподните обучение на 2-ой вкладке."/>
+                        </StackPanel>
+                        <Image Grid.Row="2" Source="Files/FotoR123.jpg"/>
+                        <TextBlock Grid.Row="3" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="4" Text="Чтобы веруться на это окно нажмите Esc" FontSize="10" Canvas.Bottom="0" Canvas.Right="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
@@ -76,7 +81,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Работа на радиостанции</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Работа</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame3" NavigationUIVisibility="Hidden" Grid.Column="1"/>

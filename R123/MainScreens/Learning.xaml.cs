@@ -16,6 +16,7 @@ namespace R123.MainScreens
     {
         private const int NUMBER_STEPS = 5;
         private string[] nameXPSFiles, titles, descriptions;
+        NewRadio.MainView RadioView;
         public Learning()
         {
             InitializeComponent();
@@ -42,15 +43,13 @@ namespace R123.MainScreens
                 "",
                 "",
                 "Чтобы увидеть описание элемента наведите курсор на его номер.",
-                "$description"
+                "Установите переключатели в исходное положение. Процесс отображается под радиостанцией."
             };
 
-            NewRadio.MainView RadioView = new NewRadio.MainView();
+            RadioView = new NewRadio.MainView();
             RadioView.HideTangent();
 
             Radio_Frame.Content = RadioView;
-
-            //IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
 
             string[] textSplit = borderText.Split('\n');
             for (int i = 0; i < textSplit.Length && i < BorderSet_Canvas.Children.Count; i++)
@@ -138,6 +137,8 @@ namespace R123.MainScreens
                 Step4_Freme.Visibility = BoolToVisible(currentStep == 4);
                 Step3_Grid.Visibility = BoolToVisible(currentStep == 3);
                 DocViewer.Visibility = BoolToVisible(currentStep < 3);
+
+                Logic.PageChanged2(currentStep == 3, RadioView.Model);
 
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
                 Description_TextBlock.Text = descriptions[currentStep];

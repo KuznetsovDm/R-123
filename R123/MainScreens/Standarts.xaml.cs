@@ -22,9 +22,8 @@ namespace R123.MainScreens
             InitializeComponent();
 
             RadioPage = new Radio.View.RadioPage();
-            frame_Frame.Content = RadioPage;
 
-            IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) => Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
+            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
             AddTasks();
         }
 
@@ -129,6 +128,9 @@ namespace R123.MainScreens
                         StackPanel row = new StackPanel();
                         row.Orientation = Orientation.Horizontal;
                         TextBlock text = new TextBlock();
+                        //установка параметров описания.
+                        text.FontFamily = new FontFamily("Times New Roman");
+                        text.FontSize = 18;
                         text.Text = element.Description;
                         text.TextWrapping = TextWrapping.Wrap;
                         text.MaxWidth = 300;

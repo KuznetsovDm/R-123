@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:R123.Learning"
+      xmlns:radio="clr-namespace:R123.NewRadio"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="DefaultStatePage">
@@ -20,17 +20,14 @@
         </Style>
     </Page.Resources>
     <Grid Width="1000" Background="#E8E6EA">
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>-->
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <!--<Viewbox Stretch="Uniform">-->
-            <Frame x:Name="frame" NavigationUIVisibility="Hidden"/>
-        <!--</Viewbox>-->
+        
+        <radio:MainView x:Name="Radio"/>
+        
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel Grid.Row="1" x:Name="panel"  Orientation="Vertical"/>
         </ScrollViewer>

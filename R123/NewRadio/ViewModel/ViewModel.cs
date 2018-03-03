@@ -17,7 +17,7 @@ namespace R123.NewRadio.ViewModel
             Animation = new Animation(this);
             InteriorModel = new InteriorModel();
             lineAndEllipse = new LineAndEllipseAnimation(InteriorModel, this);
-            PublicModel = new MainModel(InteriorModel, Animation);
+            PublicModel = new MainModel(InteriorModel, Animation, this);
 
             #region Requests
             RequestRotateFrequency = new SimpleCommand<double>(RotateFrequencyTo);
@@ -85,8 +85,14 @@ namespace R123.NewRadio.ViewModel
         }
         public ICommand RequestRotateFrequency { get; }
         private void RotateFrequencyTo(double newAngle) => FrequencyAngle = newAngle;
-        private void UpdateCanChangeFrequency() =>
-            (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = !(InteriorModel.Range <= RangeState.FixedFrequency4  && PowerValue);
+        private void UpdateCanChangeFrequency()
+        {
+            if (InteriorModel.Range <= RangeState.FixedFrequency1)
+                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[0] == ClampState.Unfixed;
+            else
+                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = !PowerValue;
+            //(RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = !(InteriorModel.Range <= RangeState.FixedFrequency4 && PowerValue);
+        }
         #endregion
 
         #region double NoiseAngle
@@ -419,6 +425,7 @@ namespace R123.NewRadio.ViewModel
                 clampAngle[0] = value;
                 OnPropertyChanged("Clamp0Angle");
                 InteriorModel.Clamps[0] = Converter.Clamp.ToValue(value);
+                UpdateCanChangeFrequency();
             }
         }
         public ICommand RequestRotateClamp0 { get; }
@@ -435,6 +442,7 @@ namespace R123.NewRadio.ViewModel
                 clampAngle[1] = value;
                 OnPropertyChanged("Clamp1Angle");
                 InteriorModel.Clamps[1] = Converter.Clamp.ToValue(value);
+                UpdateCanChangeFrequency();
             }
         }
         public ICommand RequestRotateClamp1 { get; }
@@ -451,6 +459,7 @@ namespace R123.NewRadio.ViewModel
                 clampAngle[2] = value;
                 OnPropertyChanged("Clamp2Angle");
                 InteriorModel.Clamps[2] = Converter.Clamp.ToValue(value);
+                UpdateCanChangeFrequency();
             }
         }
         public ICommand RequestRotateClamp2 { get; }
@@ -467,6 +476,7 @@ namespace R123.NewRadio.ViewModel
                 clampAngle[3] = value;
                 OnPropertyChanged("Clamp3Angle");
                 InteriorModel.Clamps[3] = Converter.Clamp.ToValue(value);
+                UpdateCanChangeFrequency();
             }
         }
         public ICommand RequestRotateClamp3 { get; }

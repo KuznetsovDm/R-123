@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:R123"
+      xmlns:gif="http://wpfanimatedgif.codeplex.com"
+      xmlns:radio="clr-namespace:R123.NewRadio"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
       Title="WorkingCapacity">
@@ -97,38 +98,278 @@
             <Canvas x:Name="canvas" Width="850" Height="700">
 
                 <!--Верхний край-->
-                <Button Canvas.Left="460" Canvas.Top="60" Background="Blue"/>
-                <Button Canvas.Left="360" Canvas.Top="60" Background="Blue"/>
-                <Button Canvas.Left="260" Canvas.Top="60" Background="Blue"/>
-                <Button Canvas.Left="160" Canvas.Top="60" Background="Blue" FontSize="10" Padding="1"/>
-                <Button Canvas.Left="60"  Canvas.Top="60" Background="Blue"/>
+                <Button Canvas.Left="460" Canvas.Top="60" Background="Blue">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="360" Canvas.Top="60" Background="Blue">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/2.setSimplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="260" Canvas.Top="60" Background="Blue">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/3.noiseToLeft.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="160" Canvas.Top="60" Background="Blue" FontSize="10" Padding="1">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/4.powerAndScaleOn.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="60"  Canvas.Top="60" Background="Blue">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/5.testVoltagePower.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
 
                 <!--Левый край-->
-                <Button Canvas.Left="60" Canvas.Top="160" Background="Yellow"/>
-                <Button Canvas.Left="60" Canvas.Top="260" Background="Yellow"/>
-                <Button Canvas.Left="60" Canvas.Top="360" Background="Yellow"/>
-                <Button Canvas.Left="60" Canvas.Top="460" Background="Yellow"/>
+                <Button Canvas.Left="60" Canvas.Top="160" Background="Yellow">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/6.volumeToRight.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="60" Canvas.Top="260" Background="Yellow">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/7.subFrequency1.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="60" Canvas.Top="360" Background="Yellow">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="60" Canvas.Top="460" Background="Yellow">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
 
                 <!--Нижний край-->
-                <Button Canvas.Left="60"  Canvas.Top="560" Background="Yellow"/>
-                <Button Canvas.Left="160" Canvas.Top="560" Background="Green"/>
-                <Button Canvas.Left="260" Canvas.Top="560" Background="Green"/>
-                <Button Canvas.Left="360" Canvas.Top="560" Background="Green"/>
-                <Button Canvas.Left="460" Canvas.Top="560" Background="Red"/>
-                <Button Canvas.Left="560" Canvas.Top="560" Background="Red"/>
-                <Button Canvas.Left="660" Canvas.Top="560" Background="Red"/>
-                <Button Canvas.Left="760" Canvas.Top="560" Background="Red"/>
+                <Button Canvas.Left="60"  Canvas.Top="560" Background="Yellow">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="160" Canvas.Top="560" Background="Green">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/11.setStandbyReception.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="260" Canvas.Top="560" Background="Green">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="360" Canvas.Top="560" Background="Green">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/13.testTone.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="460" Canvas.Top="560" Background="Red">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/14.setSimplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="560" Canvas.Top="560" Background="Red">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/15.prd.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="660" Canvas.Top="560" Background="Red">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/16.settingAntenna.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="760" Canvas.Top="560" Background="Red">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
 
                 <!--Правый край-->
-                <Button Canvas.Left="760" Canvas.Top="460" Background="Red"/>
-                <Button Canvas.Left="760" Canvas.Top="360" Background="Red"/>
-                <Button Canvas.Left="760" Canvas.Top="260" Background="Chocolate"/>
-                <Button Canvas.Left="760" Canvas.Top="160" Background="Chocolate"/>
+                <Button Canvas.Left="760" Canvas.Top="460" Background="Red">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/18.testTone.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="760" Canvas.Top="360" Background="Red">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="760" Canvas.Top="260" Background="Chocolate">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="760" Canvas.Top="160" Background="Chocolate">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/21.fixClamp.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
 
                 <!--Верхний край-->
-                <Button Canvas.Left="760" Canvas.Top="60" Background="Chocolate"/>
-                <Button Canvas.Left="660" Canvas.Top="60" Background="Chocolate"/>
-                <Button Canvas.Left="560" Canvas.Top="60" Background="Chocolate"/>
+                <Button Canvas.Left="760" Canvas.Top="60" Background="Chocolate">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="660" Canvas.Top="60" Background="Chocolate">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/23.testFixFrequency.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Canvas.Left="560" Canvas.Top="60" Background="Chocolate">
+                    <Button.ToolTip>
+                        <ToolTip>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock />
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/24.powerOff.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
 
                 <Border BorderThickness="4" BorderBrush="Black" Width="480" Height="36" Canvas.Left="60" Canvas.Top="10" Background="Blue">
                     <TextBlock x:Name="text1" Text="Подготовительные операции" Style="{StaticResource Title}"/>
@@ -162,13 +403,13 @@
         </Viewbox>
 
         <Viewbox Grid.Column="1" Grid.Row="1" Stretch="Uniform">
-            <Frame x:Name="Frame" NavigationUIVisibility="Hidden"/>
+            <radio:MainView x:Name="Radio"/>
         </Viewbox>
 
         <Viewbox Grid.Column="1" Grid.Row="1" Stretch="Uniform">
             <Canvas x:Name="borders" Width="963" Height="449">
 
-                <Border Style="{StaticResource Number}" Canvas.Left="180" Canvas.Top="120">
+                <Border Style="{StaticResource Number}" Canvas.Left="189" Canvas.Top="18">
                     <TextBlock Style="{StaticResource TextNumber}" Text="2"/>
                 </Border>
 
@@ -180,7 +421,7 @@
                     <TextBlock Style="{StaticResource TextNumber}" Text="4"/>
                 </Border>
 
-                <Border Style="{StaticResource Number}" Canvas.Left="740" Canvas.Top="195">
+                <Border Style="{StaticResource Number}" Canvas.Left="800" Canvas.Top="178">
                     <TextBlock Style="{StaticResource TextNumber}" Text="5"/>
                 </Border>
 
@@ -196,7 +437,7 @@
                     <TextBlock Style="{StaticResource TextNumber}" Text="8"/>
                 </Border>
 
-                <Border Style="{StaticResource Number}" Canvas.Left="240" Canvas.Top="100">
+                <Border Style="{StaticResource Number}" Canvas.Left="265" Canvas.Top="100">
                     <TextBlock Style="{StaticResource TextNumber}" Text="11"/>
                 </Border>
 
@@ -224,7 +465,7 @@
                     <TextBlock Style="{StaticResource TextNumber}" Text="21"/>
                 </Border>
 
-                <Border Style="{StaticResource Number}" Canvas.Left="555" Canvas.Top="65">
+                <Border Style="{StaticResource Number}" Canvas.Left="555" Canvas.Top="26">
                     <TextBlock Style="{StaticResource TextNumber}" Text="22"/>
                 </Border>
 

@@ -12,10 +12,12 @@ namespace R123.MainScreens
         private int currentStep;
         private const int MAX_STEP = 1;
         private string[] titles;
+        private static WorkOnRadioStation instance;
+
         public WorkOnRadioStation()
         {
             InitializeComponent();
-            //View.Options.PressSpaceControl.SetWindow(MainWindow.Instance);
+            instance = this;
 
             currentStep = 0;
 
@@ -26,13 +28,23 @@ namespace R123.MainScreens
             ShowPage();
         }
 
+        public static WorkOnRadioStation Instance { get { return instance; } }
+
+
+        bool step2IsActive = false;
+        public void Activate2Step(bool value)
+        {
+            step2IsActive = value;
+            nextStep_Button.IsEnabled = step2IsActive;
+        }
+
         private void PrevStep(object sender, RoutedEventArgs e)
         {
             if (currentStep == 0) return;
 
             currentStep--;
             if (currentStep == 0) prevStep_Button.IsEnabled = false;
-            nextStep_Button.IsEnabled = true;
+            nextStep_Button.IsEnabled = step2IsActive;
 
             ShowPage();
         }
@@ -48,11 +60,13 @@ namespace R123.MainScreens
         }
         private void ShowPage()
         {
-            title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}";
+            title_TextBlock.Text = $"Шаг №{currentStep + 1} / 2: {titles[currentStep]}";
             if (currentStep == 0)
                 frame_Frame.Content = new TuningPage();
             else if (currentStep == 1)
                 frame_Frame.Content = new WorkingCapacityPage();
+
+            frame_Frame.Focus();
         }
         private void EscButton_Click(object sender, RoutedEventArgs e)
         {

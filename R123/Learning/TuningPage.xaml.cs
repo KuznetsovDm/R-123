@@ -5,8 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System;
-using System.Windows.Media.Imaging;
-using WpfAnimatedGif;
+using System.Threading;
 
 namespace R123
 {
@@ -19,10 +18,9 @@ namespace R123
         private int currentStep = 0;
 
         private TuningTest tuningTest;
+        private DefaultStateChecker stateChecker;
         public Action[] Subscribes { get; private set; }
         public Action[] Unsubscribes { get; private set; }
-
-        private Radio.View.RadioPage RadioPage { get; set; }
 
         private string[] Steps = {
             "Надеть и подогнать шлемофон",
@@ -47,11 +45,11 @@ namespace R123
         {
             InitializeComponent();
 
+            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
+
             subscribeMouseMove = false;
 
-            RadioPage = new Radio.View.RadioPage();
-            tuningTest = new TuningTest(RadioPage.Radio);
-            Frame.Content = RadioPage;
+            tuningTest = new TuningTest(Radio.Model);
 
             SetButtons();
             SetLines();
@@ -61,7 +59,8 @@ namespace R123
 
             InitializeSubscribes();
             InitializeUnsubscribes();
-            Subscribes[currentStep]();
+
+            Subscribe(currentStep);
         }
 
         private bool subscribeMouseMove;
@@ -73,7 +72,7 @@ namespace R123
             string message = "На текущем шаге вы научитесь подготавливать радиостанцию к работе.\r\n" +
                              "Выполняйте последовательно шаги.\r\n" +
                              "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
-                             "Просто наведите указатель мыши на непонятный пункт.\r\n\r\n" + 
+                             "Просто наведите указатель мыши на непонятный пункт.\r\n\r\n" +
                              "После завершения всех шагов установите все переключатели в исходное положение, чтобы перейти на следующий шаг.";
 
             Message mes = new Message(message, false);
@@ -82,9 +81,7 @@ namespace R123
 
         private void TuningPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            Logic.PageChanged(e.NewValue.Equals(true), RadioPage.Radio);
-            if (!subscribeMouseMove)
-            {
+            if (!subscribeMouseMove) {
                 subscribeMouseMove = true;
                 MouseMove += TuningPage_MouseMove;
             }
@@ -175,21 +172,27 @@ namespace R123
                 StackPanel panel = (StackPanel)toolTip.Content;
                 TextBlock textblock = (TextBlock)panel.Children[0];
                 textblock.Text = buttonTooltips[i];
+                textblock.Foreground = new SolidColorBrush(Colors.Black);
                 textblock.FontFamily = new FontFamily("Times New Roman");
                 textblock.FontSize = 15;
                 textblock.TextWrapping = TextWrapping.Wrap;
-
             }
 
             for (int i = 0; i < borderTooltips.Length; i++) {
                 Border border = (Border)borders.Children[i];
 
                 border.ToolTip = new ToolTip {
-                    Content = borderTooltips[i]
+                    Content = new TextBlock {
+                        FontFamily = new FontFamily("Times New Roman"),
+                        TextWrapping = TextWrapping.Wrap,
+                        FontWeight = FontWeights.Bold,
+                        FontSize = 16,
+                        Text = borderTooltips[i],
+                        Foreground = new SolidColorBrush(Colors.Black)
+                    },
                 };
             }
         }
-
 
         private void SetColor(int count, Color background, Color foreground)
         {
@@ -201,128 +204,139 @@ namespace R123
         }
         #endregion
 
-        #region New Learning
+        #region Learning
         private void StepCheck(object sender, EventArgs args)
         {
             if (currentStep < buttonsCount - 1) {
-                if (tuningTest.Conditions[currentStep]()) {
-                    Unsubscribes[currentStep]();
-                    Subscribes[++currentStep]();
+                if (CheckCondition(currentStep)) {
+                    Unsubscribe(currentStep);
+                    Subscribe(++currentStep);
                 }
 
                 SetColor(currentStep, Colors.Black, Colors.White);
             }
             else if (currentStep == buttonsCount - 1) {
-                if (tuningTest.Conditions[currentStep]()) {
-                    Unsubscribes[currentStep]();
+                if (CheckCondition(currentStep)) {
+                    Unsubscribe(currentStep);
 
-                    SetColor(currentStep, Colors.Black, Colors.White);
-                    MessageBox.Show("Вы прошли обучение!", "Обучение", MessageBoxButton.OK);
-                    //SetColor(currentStep, Color.FromRgb(232, 230, 234), Colors.Black);
-                    SetColor(currentStep, Colors.Yellow, Colors.Black);
+                    SetColor(currentStep + 1, Colors.Black, Colors.White);
+                    string mess = $"Поздравляем! Вы прошли обучение.{Environment.NewLine}Для перехода к следующему шагу установите " +
+                        $"все органы управления в исходное положение.";
+                    Message message = new Message(mess, false);
+                    message.ShowDialog();
+                    SetColor(currentStep + 1, Colors.Yellow, Colors.Black);
                     currentStep = 0;
-                    Subscribes[currentStep]();
+                    Subscribe(currentStep);
+                    stateChecker = new DefaultStateChecker(Radio);
+                    InitializeCheckSubscribes();
                 }
             }
         }
+
+        private void StateCheck(object sender, EventArgs args)
+        {
+            if (stateChecker.Check()) {
+                string mess = "Вы установили органы управления в исходное положение.";
+                Message message = new Message(mess, false);
+                message.ShowDialog();
+                InitializeCheckUnsubscribes();
+                MainScreens.WorkOnRadioStation.Instance.Activate2Step(true);
+            }
+        }
+
+        private void Subscribe(int index)
+        {
+            Subscribes[index]();
+        }
+
+        private void Unsubscribe(int index)
+        {
+            Unsubscribes[index]();
+        }
+
+        private bool CheckCondition(int index)
+        {
+            return tuningTest.Conditions[index]();
+        }
+
         private void InitializeSubscribes()
         {
             Subscribes = new Action[16];
 
-            Subscribes[0] = () => RadioPage.Radio.Tangent.ValueChanged += StepCheck;
-            Subscribes[1] = () => RadioPage.Radio.WorkMode.ValueChanged += StepCheck;
-            Subscribes[2] = () => RadioPage.Radio.Noise.ValueChanged += StepCheck;
-            Subscribes[3] = () => RadioPage.Radio.Voltage.ValueChanged += StepCheck;
-            Subscribes[4] = () => RadioPage.Radio.Scale.ValueChanged += StepCheck;
-            Subscribes[5] = () => RadioPage.Radio.Power.ValueChanged += StepCheck;
-            Subscribes[6] = () => RadioPage.Radio.Volume.ValueChanged += StepCheck;
-            Subscribes[7] = () => RadioPage.Radio.Range.ValueChanged += StepCheck;
-            Subscribes[8] = () => RadioPage.Radio.Clamp[0].ValueChanged += StepCheck;
-            Subscribes[9] = () => RadioPage.Radio.Clamp[0].ValueChanged += StepCheck;
-            Subscribes[10] = () => RadioPage.Radio.SubFixFrequency[0].ValueChanged += StepCheck;
-            Subscribes[11] = () => RadioPage.Radio.Tangent.ValueChanged += StepCheck;
+            Subscribes[0] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
+            Subscribes[1] = () => Radio.Model.WorkMode.ValueChanged += StepCheck;
+            Subscribes[2] = () => Radio.Model.Noise.ValueChanged += StepCheck;
+            Subscribes[3] = () => Radio.Model.Voltage.ValueChanged += StepCheck;
+            Subscribes[4] = () => Radio.Model.Scale.ValueChanged += StepCheck;
+            Subscribes[5] = () => Radio.Model.Power.ValueChanged += StepCheck;
+            Subscribes[6] = () => Radio.Model.Volume.ValueChanged += StepCheck;
+            Subscribes[7] = () => Radio.Model.Range.ValueChanged += StepCheck;
+            Subscribes[8] = () => Radio.Model.Clamps.ValueChanged += StepCheck;
+            Subscribes[9] = () => Radio.Model.Clamps.ValueChanged += StepCheck;
+            Subscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged += StepCheck;
+            Subscribes[11] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
             Subscribes[12] = () => {
-                RadioPage.Radio.Antenna.ValueChanged += StepCheck;
-                RadioPage.Radio.AntennaClip.ValueChanged += StepCheck;
+                Radio.Model.Antenna.ValueChanged += StepCheck;
+                Radio.Model.AntennaFixer.ValueChanged += StepCheck;
             };
-            Subscribes[13] = () => RadioPage.Radio.Tangent.ValueChanged += StepCheck;
-            Subscribes[14] = () => RadioPage.Radio.WorkMode.ValueChanged += StepCheck;
-            Subscribes[15] = () => RadioPage.Radio.Range.ValueChanged += StepCheck;
+            Subscribes[13] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
+            Subscribes[14] = () => Radio.Model.WorkMode.ValueChanged += StepCheck;
+            Subscribes[15] = () => Radio.Model.Range.ValueChanged += StepCheck;
         }
         private void InitializeUnsubscribes()
         {
             Unsubscribes = new Action[16];
 
-            Unsubscribes[0] = () => RadioPage.Radio.Tangent.ValueChanged -= StepCheck;
-            Unsubscribes[1] = () => RadioPage.Radio.WorkMode.ValueChanged -= StepCheck;
-            Unsubscribes[2] = () => RadioPage.Radio.Noise.ValueChanged -= StepCheck;
-            Unsubscribes[3] = () => RadioPage.Radio.Voltage.ValueChanged -= StepCheck;
-            Unsubscribes[4] = () => RadioPage.Radio.Scale.ValueChanged -= StepCheck;
-            Unsubscribes[5] = () => RadioPage.Radio.Power.ValueChanged -= StepCheck;
-            Unsubscribes[6] = () => RadioPage.Radio.Volume.ValueChanged -= StepCheck;
-            Unsubscribes[7] = () => RadioPage.Radio.Range.ValueChanged -= StepCheck;
-            Unsubscribes[8] = () => RadioPage.Radio.Clamp[0].ValueChanged -= StepCheck;
-            Unsubscribes[9] = () => RadioPage.Radio.Clamp[0].ValueChanged -= StepCheck;
-            Unsubscribes[10] = () => RadioPage.Radio.SubFixFrequency[0].ValueChanged -= StepCheck;
-            Unsubscribes[11] = () => RadioPage.Radio.Tangent.ValueChanged -= StepCheck;
+            Unsubscribes[0] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
+            Unsubscribes[1] = () => Radio.Model.WorkMode.ValueChanged -= StepCheck;
+            Unsubscribes[2] = () => Radio.Model.Noise.ValueChanged -= StepCheck;
+            Unsubscribes[3] = () => Radio.Model.Voltage.ValueChanged -= StepCheck;
+            Unsubscribes[4] = () => Radio.Model.Scale.ValueChanged -= StepCheck;
+            Unsubscribes[5] = () => Radio.Model.Power.ValueChanged -= StepCheck;
+            Unsubscribes[6] = () => Radio.Model.Volume.ValueChanged -= StepCheck;
+            Unsubscribes[7] = () => Radio.Model.Range.ValueChanged -= StepCheck;
+            Unsubscribes[8] = () => Radio.Model.Clamps.ValueChanged -= StepCheck;
+            Unsubscribes[9] = () => Radio.Model.Clamps.ValueChanged -= StepCheck;
+            Unsubscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged -= StepCheck;
+            Unsubscribes[11] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
             Unsubscribes[12] = () => {
-                RadioPage.Radio.Antenna.ValueChanged -= StepCheck;
-                RadioPage.Radio.AntennaClip.ValueChanged -= StepCheck;
+                Radio.Model.Antenna.ValueChanged -= StepCheck;
+                Radio.Model.AntennaFixer.ValueChanged -= StepCheck;
             };
-            Unsubscribes[13] = () => RadioPage.Radio.WorkMode.ValueChanged -= StepCheck;
-            Unsubscribes[14] = () => RadioPage.Radio.Tangent.ValueChanged -= StepCheck;
-            Unsubscribes[15] = () => RadioPage.Radio.Range.ValueChanged -= StepCheck;
+            Unsubscribes[13] = () => Radio.Model.WorkMode.ValueChanged -= StepCheck;
+            Unsubscribes[14] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
+            Unsubscribes[15] = () => Radio.Model.Range.ValueChanged -= StepCheck;
         }
+
+        private void InitializeCheckSubscribes()
+        {
+            Radio.Model.Noise.ValueChanged += StateCheck;
+            Radio.Model.Voltage.ValueChanged += StateCheck;
+            Radio.Model.Power.ValueChanged += StateCheck;
+            Radio.Model.Scale.ValueChanged += StateCheck;
+            Radio.Model.WorkMode.ValueChanged += StateCheck;
+            Radio.Model.Volume.ValueChanged += StateCheck;
+            Radio.Model.Range.ValueChanged += StateCheck;
+            Radio.Model.Clamps.ValueChanged += StateCheck;
+            Radio.Model.NumberSubFrequency.ValueChanged += StateCheck;
+            Radio.Model.AntennaFixer.ValueChanged += StateCheck;
+        }
+
+        private void InitializeCheckUnsubscribes()
+        {
+            Radio.Model.Noise.ValueChanged -= StateCheck;
+            Radio.Model.Voltage.ValueChanged -= StateCheck;
+            Radio.Model.Power.ValueChanged -= StateCheck;
+            Radio.Model.Scale.ValueChanged -= StateCheck;
+            Radio.Model.WorkMode.ValueChanged -= StateCheck;
+            Radio.Model.Volume.ValueChanged -= StateCheck;
+            Radio.Model.Range.ValueChanged -= StateCheck;
+            Radio.Model.Clamps.ValueChanged -= StateCheck;
+            Radio.Model.NumberSubFrequency.ValueChanged -= StateCheck;
+            Radio.Model.AntennaFixer.ValueChanged -= StateCheck;
+        }
+
         #endregion
 
-        #region Old Learning
-        private void NextStep(object sender, EventArgs args)
-        {
-            if (canvas.Children[currentStep] is Button button) {
-                if (tuningTest.Conditions[currentStep]()) {
-                    currentStep++;
-                }
-
-                SetColor(currentStep, Colors.Black, Colors.White);
-            }
-            else {
-                Unsubscribe();
-                MessageBox.Show("Вы прошли обучение!", "Обучение", MessageBoxButton.OK);
-                SetColor(currentStep, Color.FromRgb(232, 230, 234), Colors.Black);
-                currentStep = 0;
-            }
-
-        }
-        public void Subscribe()
-        {
-            RadioPage.Radio.Noise.ValueChanged += NextStep;
-            RadioPage.Radio.Voltage.ValueChanged += NextStep;
-            RadioPage.Radio.Power.ValueChanged += NextStep;
-            RadioPage.Radio.WorkMode.ValueChanged += NextStep;
-            RadioPage.Radio.Scale.ValueChanged += NextStep;
-            RadioPage.Radio.Volume.ValueChanged += NextStep;
-            RadioPage.Radio.Range.ValueChanged += NextStep;
-            RadioPage.Radio.Clamp[0].ValueChanged += NextStep;
-            RadioPage.Radio.Frequency.ValueChanged += NextStep;
-            RadioPage.Radio.SubFixFrequency[0].ValueChanged += NextStep;
-            RadioPage.Radio.Tangent.ValueChanged += NextStep;
-            RadioPage.Radio.Antenna.ValueChanged += NextStep;
-        }
-        public void Unsubscribe()
-        {
-            RadioPage.Radio.WorkMode.ValueChanged -= NextStep;
-            RadioPage.Radio.Noise.ValueChanged -= NextStep;
-            RadioPage.Radio.Voltage.ValueChanged -= NextStep;
-            RadioPage.Radio.Power.ValueChanged -= NextStep;
-            RadioPage.Radio.Scale.ValueChanged -= NextStep;
-            RadioPage.Radio.Volume.ValueChanged -= NextStep;
-            RadioPage.Radio.Range.ValueChanged -= NextStep;
-            RadioPage.Radio.Clamp[0].ValueChanged -= NextStep;
-            RadioPage.Radio.Frequency.ValueChanged -= NextStep;
-            RadioPage.Radio.SubFixFrequency[0].ValueChanged -= NextStep;
-            RadioPage.Radio.Tangent.ValueChanged -= NextStep;
-            RadioPage.Radio.Antenna.ValueChanged -= NextStep;
-        }
-        #endregion
     }
 }

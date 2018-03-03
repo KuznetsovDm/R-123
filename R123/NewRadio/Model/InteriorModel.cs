@@ -50,6 +50,15 @@ namespace R123.NewRadio.Model
 
         public readonly ClampsState Clamps = new ClampsState();
 
+        public InteriorModel()
+        {
+            power = scale = tangent = tone = Turned.Off;
+            frequency = 20;
+            volume = 1;
+            noise = 1;
+            numberSubFrequency = SubFrequencyState.Second;
+        }
+
         public event EventHandler<ValueChangedEventArgs<double, double>> FrequencyChanged;
         public event EventHandler<ValueChangedEventArgs<double, double>> VolumeChanged;
         public event EventHandler<ValueChangedEventArgs<double, double>> NoiseChanged;

@@ -41,13 +41,36 @@ namespace R123
             Frame3.Content = new MainScreens.Work();
             Frame4.Content = new MainScreens.Standarts();
 
-            Closing += (s, e) => RadioConnection.Close(); ;
+            Closing += (s, e) => RadioConnection.Close();
+
+            ActivateChangeTab(false);
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape && e.IsDown)
                 Tabs_TabControl.SelectedIndex = 0;
+            else if (e.Key == Key.F1 && e.IsDown)
+                ActivateChangeTab(!tabsIsActive);
+        }
+
+        private bool tabsIsActive = false;
+
+        private void ActivateChangeTab(bool value)
+        {
+            tabsIsActive = value;
+            for (int i = 2; i < Tabs_TabControl.Items.Count; i++)
+                if (Tabs_TabControl.Items[i] is TabItem tab)
+                    tab.IsEnabled = value;
+
+            MainScreens.WorkOnRadioStation.Instance.Activate2Step(value);
+        }
+
+        public void ActivateTab(int index)
+        {
+            tabsIsActive = true;
+            if (Tabs_TabControl.Items[index] is TabItem tab)
+                tab.IsEnabled = true;
         }
     }
 }

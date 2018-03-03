@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using R123.NewRadio.Model;
 
 namespace R123.Learning
 {
@@ -19,7 +10,7 @@ namespace R123.Learning
     /// </summary>
     public partial class DefaultStatePage : Page
     {
-        public Radio.View.RadioPage RadioPage { get; private set; }
+        //public Radio.View.RadioPage RadioPage { get; private set; }
         private Func<bool>[] Conditions { get; set; }
         private string[] Checks = {
             "Фиксатор ручки \"НАСТРОЙКА АНТЕННЫ\" затянут",
@@ -37,21 +28,21 @@ namespace R123.Learning
         public DefaultStatePage()
         {
             InitializeComponent();
-            RadioPage = new Radio.View.RadioPage();
-            frame.Content = RadioPage;
 
             Conditions = new Func<bool>[10];
-            Conditions[0] = () => RadioPage.Radio.AntennaClip.Value == 1.0;
-            Conditions[1] = () => !(RadioPage.Radio.Clamp[0].Value || RadioPage.Radio.Clamp[1].Value
-                                || RadioPage.Radio.Clamp[2].Value || RadioPage.Radio.Clamp[3].Value);
-            Conditions[2] = () => RadioPage.Radio.Range.Value >= 0 && RadioPage.Radio.Range.Value < 4;
-            Conditions[3] = () => RadioPage.Radio.Volume.Value == 1.0;
-            Conditions[4] = () => RadioPage.Radio.Noise.Value == 1.0;
-            Conditions[5] = () => RadioPage.Radio.Voltage.Value == 0;
-            Conditions[6] = () => RadioPage.Radio.WorkMode.Value == 1;
+            Conditions[0] = () => Radio.Model.AntennaFixer.Value == ClampState.Fixed;
+            Conditions[1] = () => Radio.Model.Clamps[0] == ClampState.Fixed &&
+                                  Radio.Model.Clamps[1] == ClampState.Fixed &&
+                                  Radio.Model.Clamps[2] == ClampState.Fixed &&
+                                  Radio.Model.Clamps[3] == ClampState.Fixed;
+            Conditions[2] = () => Radio.Model.Range.Value >= 0 && (int)Radio.Model.Range.Value < 4;
+            Conditions[3] = () => Radio.Model.Volume.Value == 1.0;
+            Conditions[4] = () => Radio.Model.Noise.Value == 1.0;
+            Conditions[5] = () => Radio.Model.Voltage.Value == VoltageState.Broadcast1;
+            Conditions[6] = () => Radio.Model.WorkMode.Value == WorkModeState.Simplex;
             Conditions[7] = () => true;
-            Conditions[8] = () => !RadioPage.Radio.Scale.Value;
-            Conditions[9] = () => !RadioPage.Radio.Power.Value;
+            Conditions[8] = () => Radio.Model.Scale.Value == Turned.Off;
+            Conditions[9] = () => Radio.Model.Power.Value == Turned.Off;
 
             foreach (string check in Checks) {
                 StackPanel horizontalPanel = new StackPanel {
@@ -61,6 +52,7 @@ namespace R123.Learning
                 horizontalPanel.Children.Add(new CheckBox {
                     VerticalAlignment = VerticalAlignment.Center
                 });
+
                 horizontalPanel.Children.Add(
                     new TextBlock {
                         Text = check,
@@ -71,63 +63,59 @@ namespace R123.Learning
             }
 
             InitializeSubscribe();
+
+            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
         }
 
         private void Check(object sender, EventArgs args)
         {
             bool allChecked = true;
             for (int i = 0; i < Conditions.Length; i++) {
-                if (Conditions[i]()) {
+                if (CheckCondition(i)) {
                     ((CheckBox)((StackPanel)panel.Children[i]).Children[0]).IsChecked = true;
                 }
                 else allChecked = false;
             }
 
             if (allChecked) {
-                Message message = new Message("Все органы управления находятся в исходном положении", false);
+                Message message = new Message("Все органы управления находятся в исходном положении.", false);
                 message.ShowDialog();
                 InitializeUnsubscribe();
+                MainWindow.Instance.ActivateTab(2);
             }
+        }
+
+        private bool CheckCondition(int index)
+        {
+            return Conditions[index]();
         }
 
         private void InitializeSubscribe()
         {
-            RadioPage.Radio.Noise.ValueChanged += Check;
-            RadioPage.Radio.Voltage.ValueChanged += Check;
-            RadioPage.Radio.Power.ValueChanged += Check;
-            RadioPage.Radio.Scale.ValueChanged += Check;
-            RadioPage.Radio.WorkMode.ValueChanged += Check;
-            RadioPage.Radio.Volume.ValueChanged += Check;
-            RadioPage.Radio.Range.ValueChanged += Check;
-            RadioPage.Radio.Clamp[0].ValueChanged += Check;
-            RadioPage.Radio.Clamp[1].ValueChanged += Check;
-            RadioPage.Radio.Clamp[2].ValueChanged += Check;
-            RadioPage.Radio.Clamp[3].ValueChanged += Check;
-            RadioPage.Radio.SubFixFrequency[0].ValueChanged += Check;
-            RadioPage.Radio.SubFixFrequency[1].ValueChanged += Check;
-            RadioPage.Radio.SubFixFrequency[2].ValueChanged += Check;
-            RadioPage.Radio.SubFixFrequency[3].ValueChanged += Check;
-            RadioPage.Radio.AntennaClip.ValueChanged += Check;
+            Radio.Model.Noise.ValueChanged += Check;
+            Radio.Model.Voltage.ValueChanged += Check;
+            Radio.Model.Power.ValueChanged += Check;
+            Radio.Model.Scale.ValueChanged += Check;
+            Radio.Model.WorkMode.ValueChanged += Check;
+            Radio.Model.Volume.ValueChanged += Check;
+            Radio.Model.Range.ValueChanged += Check;
+            Radio.Model.Clamps.ValueChanged += Check;
+            Radio.Model.NumberSubFrequency.ValueChanged += Check;
+            Radio.Model.AntennaFixer.ValueChanged += Check;
         }
 
         private void InitializeUnsubscribe()
         {
-            RadioPage.Radio.Noise.ValueChanged -= Check;
-            RadioPage.Radio.Voltage.ValueChanged -= Check;
-            RadioPage.Radio.Power.ValueChanged -= Check;
-            RadioPage.Radio.Scale.ValueChanged -= Check;
-            RadioPage.Radio.WorkMode.ValueChanged -= Check;
-            RadioPage.Radio.Volume.ValueChanged -= Check;
-            RadioPage.Radio.Range.ValueChanged -= Check;
-            RadioPage.Radio.Clamp[0].ValueChanged -= Check;
-            RadioPage.Radio.Clamp[1].ValueChanged -= Check;
-            RadioPage.Radio.Clamp[2].ValueChanged -= Check;
-            RadioPage.Radio.Clamp[3].ValueChanged -= Check;
-            RadioPage.Radio.SubFixFrequency[0].ValueChanged -= Check;
-            RadioPage.Radio.SubFixFrequency[1].ValueChanged -= Check;
-            RadioPage.Radio.SubFixFrequency[2].ValueChanged -= Check;
-            RadioPage.Radio.SubFixFrequency[3].ValueChanged -= Check;
-            RadioPage.Radio.AntennaClip.ValueChanged -= Check;
+            Radio.Model.Noise.ValueChanged -= Check;
+            Radio.Model.Voltage.ValueChanged -= Check;
+            Radio.Model.Power.ValueChanged -= Check;
+            Radio.Model.Scale.ValueChanged -= Check;
+            Radio.Model.WorkMode.ValueChanged -= Check;
+            Radio.Model.Volume.ValueChanged -= Check;
+            Radio.Model.Range.ValueChanged -= Check;
+            Radio.Model.Clamps.ValueChanged -= Check;
+            Radio.Model.NumberSubFrequency.ValueChanged -= Check;
+            Radio.Model.AntennaFixer.ValueChanged -= Check;
         }
     }
 }

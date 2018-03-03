@@ -11,11 +11,13 @@ namespace R123.NewRadio.View
         public Switch(string source)
         {
             Source = new BitmapImage(new Uri(source, UriKind.Relative));
+            Cursor = Cursors.Hand;
         }
 
         public Switch()
         {
             Source = new BitmapImage(new Uri("/Files/Images/switcher_off.gif", UriKind.Relative));
+            Cursor = Cursors.Hand;
             MouseDown += OnMouseDown;
             MouseWheel += OnMouseWheel;
         }
