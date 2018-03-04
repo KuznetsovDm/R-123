@@ -7,8 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System;
-using RadioTask.Constraints;
-using RadioTask.Handlers;
 using R123.NewRadio.Model;
 
 namespace R123

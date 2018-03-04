@@ -111,7 +111,6 @@
     <Compile Include="Learning\WorkingCapacityPage.xaml.cs">
       <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Learning\WorkingCapacityTest.cs" />
     <Compile Include="Learning\WorkingTest.cs" />
     <Compile Include="Magic\Connection\Connection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IConnection.cs" />
@@ -165,6 +164,9 @@
     <Compile Include="NewRadio\ViewModel\Encoders.cs" />
     <Compile Include="NewRadio\ViewModel\PositionSwitchers.cs" />
     <Compile Include="NewRadio\ViewModel\Switches.cs" />
+    <Compile Include="NewRadio\View\ContinuouslyRotating.xaml.cs">
+      <DependentUpon>ContinuouslyRotating.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewRadio\View\DiscretelyRotating.cs" />
     <Compile Include="NewRadio\View\FrequencyDisplay.xaml.cs">
       <DependentUpon>FrequencyDisplay.xaml</DependentUpon>
@@ -173,9 +175,6 @@
     <Compile Include="NewRadio\View\Switch.cs" />
     <Compile Include="NewRadio\View\Tangent.cs" />
     <Compile Include="NewRadio\View\Tone.cs" />
-    <Compile Include="NewRadio\View\СontinuouslyRotating.xaml.cs">
-      <DependentUpon>СontinuouslyRotating.xaml</DependentUpon>
-    </Compile>
     <Compile Include="NewRadio\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
@@ -274,11 +273,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NewRadio\View\FrequencyDisplay.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="NewRadio\View\ContinuouslyRotating.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="NewRadio\View\СontinuouslyRotating.xaml">
+    <Page Include="NewRadio\View\FrequencyDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
