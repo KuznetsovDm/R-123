@@ -222,7 +222,6 @@
     <Compile Include="Tasks\CreateTask.xaml.cs">
       <DependentUpon>CreateTask.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LearningMode.cs" />
     <Compile Include="Pages\NewFolder1\DestPage.xaml.cs">
       <DependentUpon>DestPage.xaml</DependentUpon>
     </Compile>
@@ -231,9 +230,6 @@
     </Compile>
     <Compile Include="Pages\NewFolder1\TechPage.xaml.cs">
       <DependentUpon>TechPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Reference.xaml.cs">
-      <DependentUpon>Reference.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tasks\Tasks.xaml.cs">
       <DependentUpon>Tasks.xaml</DependentUpon>
@@ -338,10 +334,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\NewFolder1\TechPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Reference.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

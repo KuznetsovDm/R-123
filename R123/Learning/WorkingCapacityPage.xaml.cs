@@ -87,10 +87,11 @@ namespace R123.Learning
         {
             MouseMove -= WorkingCapacityPage_MouseMove;
             subscribeMouseMove = false;
+            // если будет разделение на новичка и радиста, то последнее предложение надо поменять
             string message = "На текущем шаге вы научитесь проверять работоспособность радиостанции.\r\n" +
-                             "Выполняйте последовательно шаги.\r\n" +
-                             "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
-                             "Просто наведите указатель мыши на непонятный пункт.";
+                             "Выполняйте последовательно шаги обучения.\r\n" +
+                             "Если что-то не понятно, наведите указатель мыши на непонятный пункт и всплывающие подсказки помогут вам разобраться.\r\n" +
+                             "После прохождения обучения установите органы управления в исходное положение, чтобы разблокировать вкладки \"Работа\" и \"Тестирование\"";
 
             Message mes = new Message(message, false);
             mes.ShowDialog();
@@ -135,34 +136,49 @@ namespace R123.Learning
         }
         private void SetTooltips()
         {
-            string[] buttonTooltips = {
-                "Наденьте наушники (для продолжения нажмите пробел)",
-                "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"",
-                "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника",
-                "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" установите в положение \"ВКЛ\"",
-                "Зажмите пробел и убедитесь, что стрелка вольтметра отклонилась от нулевого положения",
-                "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость",
-                "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\"",
-                "Услышьте звук шума (для продолжения нажмите пробел)"
-            };
+            string[] buttonTooltips = new string[24];
+            buttonTooltips[0] = "Наденьте наушники (для продолжения нажмите пробел)";
+            buttonTooltips[1] = "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"";
+            buttonTooltips[2] = "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника";
+            buttonTooltips[3] = "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" установите в положение \"ВКЛ\"";
+            buttonTooltips[4] = "Зажмите пробел и убедитесь, что стрелка вольтметра отклонилась от нулевого положения";
+            buttonTooltips[5] = "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость";
+            buttonTooltips[6] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\"";
+            buttonTooltips[7] = "Повращайте ручку установки частоты";
+            buttonTooltips[8] = "Повращайте ручку \"ШУМЫ\"";
+            buttonTooltips[9] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН II\"";
+            buttonTooltips[10] = "Переключатель рода работ поставьте в положение \"ДЕЖ. ПРИЕМ\"";
+            buttonTooltips[11] = "Ничего не делайте (для продолжения нажмите пробел)";
+            buttonTooltips[12] = "Нажмите кнопку \"ТОН-ВЫЗОВ\"";
+            buttonTooltips[13] = "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"";
+            buttonTooltips[14] = "Зажмите пробел и выполняйте следующий пункт";
+            buttonTooltips[15] = "Зажав пробел, вращайте ручку \"НАСТРОЙКА АНТЕННЫ\", пока стрелка индикатора не отклонится в максимально правое положение";
+            buttonTooltips[16] = "Ничего не делайте (для продолжения нажмите пробел)";
+            buttonTooltips[17] = "Нажмите кнопку \"ТОН-ВЫЗОВ\"";
+            buttonTooltips[18] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\"";
+            buttonTooltips[19] = "Ничего не делайте, крышка люка уже открыта (для продолжения нажмите пробел)";
+            buttonTooltips[20] = "Зафиксируйте фиксаторы, установив их параллельно линии круга";
+            buttonTooltips[21] = "Зажав пробел, вращайте ручку \"НАСТРОЙКА АНТЕННЫ\", пока стрелка индикатора не отклонится в максимально правое положение";
+            buttonTooltips[22] = "Последовательно установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ФИКС. ЧАСТОТА 1\", \"ФИКС. ЧАСТОТА 2\", \"ФИКС. ЧАСТОТА 3\" и\"ФИКС. ЧАСТОТА 4\"";
+            buttonTooltips[23] = "Тумблер \"ПИТАНИЕ\" установите в положение \"ВЫКЛ\"";
 
-            string[] borderTooltips = {
-                "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\" (зажмите левую клавишу мыши и вращайте или крутите колесико мыши)",
-                "Поверните влево до упора (зажмите левую клавишу мыши и вращайте до тех пор, пока ручка крутится)",
-                "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" поставьте в положение \"ВКЛ\"",
-                "Нажмите пробел и убедитесь, что стрелка отклонилась от нулевого положения",
-                "Поверните вправо до упора (зажмите левую клавишу мыши и вращайте до тех пор, пока ручка крутится)",
-                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши",
-                "Повращайте ручку частот",
-                "Установите \"ДЕЖ. ПРИЕМ\"(крайнее правое положение)",
-                "Ничего не делайте (для пропуска нажмите пробел)",
-                "Нажмите на кнопку \"ТОН-ВЫЗОВ\"",
-                "Нажмите пробел",
-                "Зажмите левую клавишу мыши и крутите до тех пор, пока световой индикатор не достигнет максимальной яркости или стрелка вольтметра не достигнет крайнего правого положения",
-                "Ничего не делайте, крышка и так открыта (для пропуска нажмите пробел)",
-
-            };
-
+            string[] borderTooltips = new string[16];
+            borderTooltips[0] = "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\" (зажмите левую клавишу мыши и вращайте или крутите колесико мыши)";
+            borderTooltips[1] = "Поверните влево до упора (зажмите левую клавишу мыши и вращайте до тех пор, пока ручка крутится)";
+            borderTooltips[2] = "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" поставьте в положение \"ВКЛ\"";
+            borderTooltips[3] = "Нажмите пробел и убедитесь, что стрелка отклонилась от нулевого положения";
+            borderTooltips[4] = "Поверните вправо до упора (зажмите левую клавишу мыши и вращайте до тех пор, пока ручка крутится)";
+            borderTooltips[5] = "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши";
+            borderTooltips[6] = "Повращайте ручку установки частоты";
+            borderTooltips[7] = "Установите \"ДЕЖ. ПРИЕМ\"(крайнее правое положение)";
+            borderTooltips[8] = "Ничего не делайте (для пропуска нажмите пробел)";
+            borderTooltips[9] = "Нажмите на кнопку \"ТОН-ВЫЗОВ\"";
+            borderTooltips[10] = "Нажмите пробел";
+            borderTooltips[11] = "Зажмите левую клавишу мыши и крутите до тех пор, пока световой индикатор не достигнет максимальной яркости или стрелка вольтметра не достигнет крайнего правого положения";
+            borderTooltips[12] = "Ничего не делайте, крышка и так открыта (для пропуска нажмите пробел)";
+            borderTooltips[13] = "Зафиксируйте фиксаторы, установив их параллельно линии круга";
+            borderTooltips[14] = "Зажав пробел, вращайте ручку \"НАСТРОЙКА АНТЕННЫ\", пока стрелка индикатора не отклонится в максимально правое положение";
+            borderTooltips[15] = "Последовательно установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ФИКС. ЧАСТОТА 1\", \"ФИКС. ЧАСТОТА 2\", \"ФИКС. ЧАСТОТА 3\" и\"ФИКС. ЧАСТОТА 4\"";
 
             for (int i = 0; i < buttonTooltips.Length; i++) {
                 Button button = (Button)canvas.Children[i];
@@ -209,7 +225,7 @@ namespace R123.Learning
             if (index < 5) color = Colors.Blue;
             else if (index < 10) color = Colors.Yellow;
             else if (index < 13) color = Colors.Green;
-            else if (index < 18) color = Colors.Red;
+            else if (index < 19) color = Colors.Red;
             else color = Colors.Chocolate;
 
             return color;
@@ -242,13 +258,17 @@ namespace R123.Learning
         private void InitializeControls()
         {
             Radio.Model.Noise.Value = 0.5;
-            Radio.Model.Voltage.Value = VoltageState.Broadcast250;
+            Radio.Model.Voltage.Value = VoltageState.Reception12;
             Radio.Model.Power.Value = Turned.Off;
             Radio.Model.Scale.Value = Turned.Off;
-            Radio.Model.WorkMode.Value = WorkModeState.WasIstDas;
+            Radio.Model.WorkMode.Value = WorkModeState.StandbyReception;
             Radio.Model.Volume.Value = 0.5;
-            Radio.Model.Range.Value = RangeState.SmoothRange2;
+            Radio.Model.Range.Value = RangeState.FixedFrequency1;
             Radio.Model.AntennaFixer.Value = ClampState.Fixed;
+            Radio.Model.Clamps[0] = ClampState.Medium;
+            Radio.Model.Clamps[1] = ClampState.Medium;
+            Radio.Model.Clamps[2] = ClampState.Medium;
+            Radio.Model.Clamps[3] = ClampState.Medium;
         }
 
         #endregion
@@ -256,14 +276,15 @@ namespace R123.Learning
         #region Learning
         private void StepCheck(object sender, EventArgs args)
         {
-#if NEW
             if (currentStep < buttonsCount - 1) {
                 if (currentStep == 5 || currentStep == 15)
                     workingTest.RemoveCondition(currentStep - 1); // удаляем предыдущий пункт из проверки условий
                 else if (currentStep == 8)
                     workingTest.RemoveCondition(2); // удаляем проверку шумов
-                else if (currentStep == 9)
+                else if (currentStep == 9) {
                     workingTest.RemoveCondition(6); // удаляем проверку 1 поддиапазона
+                    workingTest.RemoveCondition(currentStep - 1); // удаляем предыдущий пункт из проверки условий
+                }
                 else if (currentStep == 10)
                     workingTest.RemoveCondition(1); // удаляем проверку симплекса
                 else if (currentStep == 13) {
@@ -274,16 +295,17 @@ namespace R123.Learning
                     workingTest.RemoveCondition(9); // удаляем проверку 2 поддиапазона
                     workingTest.RemoveCondition(currentStep - 1); // удаляем предыдущий пункт из проверки условий
                 }
-                else if (currentStep == 22)
+                else if (currentStep == 22) {
                     workingTest.RemoveCondition(18); // удаляем проверку 1 поддиапазона
+                    workingTest.RemoveCondition(15); // удаляем проверку настройки антенны
+                    workingTest.RemoveCondition(21); // удаляем проверку настройки антенны
+                }
 
                 CheckWithAddingCondition(ref currentStep);
                 SetColor(currentStep, Colors.Black, Colors.White);
             }
             else if (currentStep == buttonsCount - 1) {
                 workingTest.RemoveCondition(3); // удаляем проверку 1 поддиапазона
-                //workingTest.RemoveCondition(7); // удаляем проверку установку первой фикс. частоты
-                //workingTest.RemoveCondition(10); // там тоже проверялась 1 фикс. частота
                 if (!workingTest.CheckCondition(out currentStep))
                     return;
 
@@ -306,32 +328,6 @@ namespace R123.Learning
                 stateChecker = new DefaultStateChecker(Radio);
                 InitializeCheckSubscribes();
             }
-#else
-            if (currentStep < buttonsCount - 1) {
-                if (CheckCondition(currentStep)) {
-                    Unsubscribe(currentStep);
-                    Subscribe(++currentStep);
-                }
-
-                SetColor(currentStep, Colors.Black, Colors.White);
-            }
-            else if (currentStep == buttonsCount - 1) {
-                if (CheckCondition(currentStep)) {
-                    Unsubscribe(currentStep);
-
-                    SetColor(currentStep + 1, Colors.Black, Colors.White);
-                    string mess = $"Поздравляем! Вы прошли обучение.{Environment.NewLine}Для перехода к следующему этапу установите " +
-                        $"все переключатели в исходное положение.";
-                    Message message = new Message(mess, false);
-                    message.ShowDialog();
-                    SetButtonsColor();
-                    currentStep = 0;
-                    Subscribe(currentStep);
-                    stateChecker = new DefaultStateChecker(Radio);
-                    InitializeCheckSubscribes();
-                }
-            }
-#endif
         }
 
         private void StateCheck(object sender, EventArgs args)
