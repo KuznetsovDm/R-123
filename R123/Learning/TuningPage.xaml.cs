@@ -1,10 +1,13 @@
-﻿using R123.Learning;
+﻿#define NEW
+
+using R123.Learning;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System;
+using R123.NewRadio.Model;
 
 namespace R123
 {
@@ -44,8 +47,6 @@ namespace R123
         {
             InitializeComponent();
 
-            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
-
             subscribeMouseMove = false;
 
             tuningTest = new TuningTest(Radio.Model);
@@ -55,7 +56,9 @@ namespace R123
             SetTooltips();
 
             IsVisibleChanged += TuningPage_IsVisibleChanged;
+            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
 
+            InitializeControls();
             InitializeSubscribes();
             InitializeUnsubscribes();
 
@@ -127,7 +130,7 @@ namespace R123
         private void SetTooltips()
         {
             string[] buttonTooltips = {
-                "Наденьте наушники",
+                "Наденьте наушники (для продолжения нажмите пробел)",
                 "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"",
                 "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника",
                 "Переключатель \"КОНТРОЛЬ НАПРЯЖЕНИЙ\" установите в положение \"РАБОТА-1\"",
@@ -175,6 +178,7 @@ namespace R123
                 textblock.FontFamily = new FontFamily("Times New Roman");
                 textblock.FontSize = 15;
                 textblock.TextWrapping = TextWrapping.Wrap;
+
             }
 
             for (int i = 0; i < borderTooltips.Length; i++) {
@@ -189,49 +193,28 @@ namespace R123
                         Text = borderTooltips[i],
                         Foreground = new SolidColorBrush(Colors.Black)
                     },
+
                 };
             }
         }
 
         private void SetColor(int count, Color background, Color foreground)
         {
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < buttonsCount; i++) {
                 Button button = (Button)canvas.Children[i];
-                button.Background = new SolidColorBrush(background);
-                button.Foreground = new SolidColorBrush(foreground);
+                if (i < count) {
+                    button.Background = new SolidColorBrush(background);
+                    button.Foreground = new SolidColorBrush(foreground);
+                }
+                else {
+                    button.Background = new SolidColorBrush(Colors.Yellow);
+                    button.Foreground = new SolidColorBrush(Colors.Black);
+                }
             }
         }
         #endregion
 
         #region Learning
-        private void StepCheck(object sender, EventArgs args)
-        {
-            if (currentStep < buttonsCount - 1) {
-                if (CheckCondition(currentStep)) {
-                    Unsubscribe(currentStep);
-                    Subscribe(++currentStep);
-                }
-
-                SetColor(currentStep, Colors.Black, Colors.White);
-            }
-            else if (currentStep == buttonsCount - 1) {
-                if (CheckCondition(currentStep)) {
-                    Unsubscribe(currentStep);
-
-                    SetColor(currentStep + 1, Colors.Black, Colors.White);
-                    string mess = $"Поздравляем! Вы прошли обучение.{Environment.NewLine}Для перехода к следующему шагу установите " +
-                        $"все органы управления в исходное положение.";
-                    Message message = new Message(mess, false);
-                    message.ShowDialog();
-                    SetColor(currentStep + 1, Colors.Yellow, Colors.Black);
-                    currentStep = 0;
-                    Subscribe(currentStep);
-                    stateChecker = new DefaultStateChecker(Radio);
-                    InitializeCheckSubscribes();
-                }
-            }
-        }
-
         private void StateCheck(object sender, EventArgs args)
         {
             if (stateChecker.Check()) {
@@ -245,17 +228,12 @@ namespace R123
 
         private void Subscribe(int index)
         {
-            Subscribes[index]();
+            Subscribes[index]?.Invoke();
         }
 
         private void Unsubscribe(int index)
         {
-            Unsubscribes[index]();
-        }
-
-        private bool CheckCondition(int index)
-        {
-            return tuningTest.Conditions[index]();
+            Unsubscribes[index]?.Invoke();
         }
 
         private void InitializeSubscribes()
@@ -271,17 +249,27 @@ namespace R123
             Subscribes[6] = () => Radio.Model.Volume.ValueChanged += StepCheck;
             Subscribes[7] = () => Radio.Model.Range.ValueChanged += StepCheck;
             Subscribes[8] = () => Radio.Model.Clamps.ValueChanged += StepCheck;
+#if OLD_LEARNING
             Subscribes[9] = () => Radio.Model.Clamps.ValueChanged += StepCheck;
-            Subscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged += StepCheck;
             Subscribes[11] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
-            Subscribes[12] = () => {
-                Radio.Model.Antenna.ValueChanged += StepCheck;
-                Radio.Model.AntennaFixer.ValueChanged += StepCheck;
-            };
             Subscribes[13] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
             Subscribes[14] = () => Radio.Model.WorkMode.ValueChanged += StepCheck;
             Subscribes[15] = () => Radio.Model.Range.ValueChanged += StepCheck;
+#elif NEW
+            //Subscribes[9] = null;
+            //Subscribes[11] = null;
+            //Subscribes[13] = null;
+            //Subscribes[14] = null;
+            //Subscribes[15] = null;
+#endif
+            Subscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged += StepCheck;
+            Subscribes[12] = () => {
+                Radio.Model.Antenna.ValueChanged += AntennaCheck;
+                Radio.Model.AntennaFixer.ValueChanged += StepCheck;
+            };
+
         }
+
         private void InitializeUnsubscribes()
         {
             Unsubscribes = new Action[16];
@@ -299,7 +287,7 @@ namespace R123
             Unsubscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged -= StepCheck;
             Unsubscribes[11] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
             Unsubscribes[12] = () => {
-                Radio.Model.Antenna.ValueChanged -= StepCheck;
+                Radio.Model.Antenna.ValueChanged -= AntennaCheck;
                 Radio.Model.AntennaFixer.ValueChanged -= StepCheck;
             };
             Unsubscribes[13] = () => Radio.Model.WorkMode.ValueChanged -= StepCheck;
@@ -335,7 +323,71 @@ namespace R123
             Radio.Model.AntennaFixer.ValueChanged -= StateCheck;
         }
 
-        #endregion
+        private void InitializeControls()
+        {
+            Radio.Model.Noise.Value = 0.5;
+            Radio.Model.Voltage.Value = VoltageState.Broadcast250;
+            Radio.Model.Power.Value = Turned.Off;
+            Radio.Model.Scale.Value = Turned.Off;
+            Radio.Model.WorkMode.Value = WorkModeState.WasIstDas;
+            Radio.Model.Volume.Value = 0.5;
+            Radio.Model.Range.Value = RangeState.SmoothRange2;
+            Radio.Model.AntennaFixer.Value = ClampState.Fixed;
+        }
+        private void StepCheck(object sender, EventArgs args)
+        {
+            if (currentStep < buttonsCount - 1) {
+                if (currentStep == 9 || currentStep == 12)
+                    tuningTest.RemoveCondition(currentStep - 1); // удаляем предыдущий пункт из проверки условий
+                else if (currentStep == 14)
+                    tuningTest.RemoveCondition(1); // удаляем проверку симплекса
 
+                CheckWithAddingCondition(ref currentStep);
+                SetColor(currentStep, Colors.Black, Colors.White);
+            }
+            else if (currentStep == buttonsCount - 1) {
+                tuningTest.RemoveCondition(7); // удаляем проверку установку первой фикс. частоты
+                tuningTest.RemoveCondition(10); // там тоже проверялась 1 фикс. частота
+                if (!tuningTest.CheckCondition(out currentStep))
+                    return;
+
+                tuningTest.Clear();
+
+                // отписаться от всех событий
+                foreach (var unsub in Unsubscribes)
+                    unsub();
+
+                //Unsubscribe(currentStep - 1); 
+
+                SetColor(currentStep, Colors.Black, Colors.White);
+                string mess = $"Поздравляем! Вы прошли обучение.{Environment.NewLine}Для перехода к следующему шагу установите " +
+                    $"все органы управления в исходное положение.";
+                Message message = new Message(mess, false);
+                message.ShowDialog();
+                SetColor(currentStep, Colors.Yellow, Colors.Black);
+                currentStep = 0;
+                Subscribe(currentStep);
+                stateChecker = new DefaultStateChecker(Radio);
+                InitializeCheckSubscribes();
+            }
+        }
+
+        private void AntennaCheck(object sender, EventArgs args)
+        {
+            if (Radio.Model.Antenna.Value < 0.8)
+                return;
+
+            StepCheck(sender, args);
+        }
+
+        private void CheckWithAddingCondition(ref int current)
+        {
+            if (tuningTest.CheckCondition(out currentStep)) {
+                tuningTest.AddCondition(currentStep);
+                Subscribe(currentStep);
+            }
+        }
+        #endregion
     }
 }
+

@@ -8,14 +8,14 @@ namespace R123.NewRadio.View
     /// <summary>
     /// Логика взаимодействия для RotateImage.xaml
     /// </summary>
-    public partial class СontinuouslyRotating : UserControl
+    public partial class ContinuouslyRotating : UserControl
     {
         protected Point centerImage;
         protected double mouseMoveFactor = 1;
         protected double changeAngleMouseWheel = 1;
         private double maxAngle;
 
-        public СontinuouslyRotating(double maxAngle = 360)
+        public ContinuouslyRotating(double maxAngle = 360)
         {
             InitializeComponent();
             this.maxAngle = maxAngle;
@@ -100,11 +100,11 @@ namespace R123.NewRadio.View
 
         public static readonly DependencyProperty RequestRotateCommandProperty =
             DependencyProperty.Register("RequestRotateCommand", typeof(ICommand),
-                                        typeof(СontinuouslyRotating), new FrameworkPropertyMetadata(null, OnRequestRotateCommandChanged));
+                                        typeof(ContinuouslyRotating), new FrameworkPropertyMetadata(null, OnRequestRotateCommandChanged));
 
         private static void OnRequestRotateCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            СontinuouslyRotating o = d as СontinuouslyRotating;
+            ContinuouslyRotating o = d as ContinuouslyRotating;
             o.TestRequestRotateCommand(e.NewValue as ICommand);
         }
 
@@ -117,7 +117,7 @@ namespace R123.NewRadio.View
         public static readonly DependencyProperty AngleProperty = DependencyProperty.Register(
             "Angle",
             typeof(double),
-            typeof(СontinuouslyRotating),
+            typeof(ContinuouslyRotating),
             new UIPropertyMetadata(0.0,
                 new PropertyChangedCallback(AngleChanged)));
 
@@ -129,7 +129,7 @@ namespace R123.NewRadio.View
 
         private static void AngleChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs args)
         {
-            СontinuouslyRotating image = (СontinuouslyRotating)depObj;
+            ContinuouslyRotating image = (ContinuouslyRotating)depObj;
             image.RotateControl.Angle = Convert.ToDouble(args.NewValue);
         }
         #endregion

@@ -1,5 +1,5 @@
 ﻿using System;
-using R123.NewRadio;
+using System.Collections.Generic;
 using R123.NewRadio.Model;
 
 namespace R123.Learning
@@ -7,12 +7,13 @@ namespace R123.Learning
     public class TuningTest
     {
         private MainModel radio;
+        public List<Func<bool>> ConditionList { get; private set; }
         public Func<bool>[] Conditions { get; private set; }
-        
         public TuningTest(MainModel radio)
         {
             this.radio = radio;
             InitializeConditions();
+            InitializeConditionList();
         }
 
         private void InitializeConditions()
@@ -36,8 +37,40 @@ namespace R123.Learning
             Conditions[11] = () => radio.Tangent.Value == Turned.On;
             Conditions[12] = () => radio.Antenna.Value > 0.8 && radio.AntennaFixer.Value == ClampState.Fixed;
             Conditions[13] = () => true;
-            Conditions[14] = () => radio.WorkMode.Value == 0;
+            Conditions[14] = () => radio.WorkMode.Value == WorkModeState.StandbyReception;
             Conditions[15] = () => radio.Range.Value == RangeState.FixedFrequency4;
+        }
+        private void InitializeConditionList()
+        {
+            ConditionList = new List<Func<bool>> {
+                Conditions[0]
+            };
+        }
+
+        public bool CheckCondition(out int index)
+        {
+            for(index = 0; index < ConditionList.Count; index++) {
+                if (!ConditionList[index]()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public void AddCondition(int index)
+        {
+            ConditionList.Add(Conditions[index]);
+        }
+
+        public void RemoveCondition(int index)
+        {
+            ConditionList[index] = () => true;
+        }
+
+        public void Clear()
+        {
+            InitializeConditionList();
         }
     }
 }

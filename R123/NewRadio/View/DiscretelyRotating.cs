@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace R123.NewRadio.View
 {
-    class DiscretelyRotating : СontinuouslyRotating
+    class DiscretelyRotating : ContinuouslyRotating
     {
         private readonly Vector baseVector;
         private readonly double maxAngle;

@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 
 namespace R123.NewRadio.ViewModel
 {
-    class Frequency : View.СontinuouslyRotating
+    class Frequency : View.ContinuouslyRotating
     {
         public Frequency()
         {
@@ -25,7 +25,7 @@ namespace R123.NewRadio.ViewModel
         }
     }
 
-    class Volume : View.СontinuouslyRotating
+    class Volume : View.ContinuouslyRotating
     {
         public Volume()
         {
@@ -35,7 +35,7 @@ namespace R123.NewRadio.ViewModel
         }
     }
 
-    class Noise : View.СontinuouslyRotating
+    class Noise : View.ContinuouslyRotating
     {
         public Noise()
         {
@@ -45,7 +45,7 @@ namespace R123.NewRadio.ViewModel
         }
     }
 
-    class Antenna : View.СontinuouslyRotating
+    class Antenna : View.ContinuouslyRotating
     {
         public Antenna()
         {
@@ -109,7 +109,7 @@ namespace R123.NewRadio.ViewModel
         #endregion
     }
 
-    class AntennaFixer : View.СontinuouslyRotating
+    class AntennaFixer : View.ContinuouslyRotating
     {
         public AntennaFixer()
         {
@@ -145,7 +145,7 @@ namespace R123.NewRadio.ViewModel
         #endregion
     }
 
-    class Clamp0 : View.СontinuouslyRotating
+    class Clamp0 : View.ContinuouslyRotating
     {
         public Clamp0() : base(90)
         {
@@ -155,7 +155,7 @@ namespace R123.NewRadio.ViewModel
             DefaultRotateTransform.Angle = 90;
         }
     }
-    class Clamp1 : View.СontinuouslyRotating
+    class Clamp1 : View.ContinuouslyRotating
     {
         public Clamp1() : base(90)
         {
@@ -164,7 +164,7 @@ namespace R123.NewRadio.ViewModel
             changeAngleMouseWheel = 360 / 1 * 0.1;
         }
     }
-    class Clamp2 : View.СontinuouslyRotating
+    class Clamp2 : View.ContinuouslyRotating
     {
         public Clamp2() : base(90)
         {
@@ -174,7 +174,7 @@ namespace R123.NewRadio.ViewModel
             DefaultRotateTransform.Angle = 90;
         }
     }
-    class Clamp3 : View.СontinuouslyRotating
+    class Clamp3 : View.ContinuouslyRotating
     {
         public Clamp3() : base(90)
         {

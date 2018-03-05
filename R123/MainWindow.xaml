@@ -55,7 +55,7 @@
                         <TextBlock Grid.Row="0" Text="Обучающая программа-симулятор радиостанци Р-123М" VerticalAlignment="Bottom"/>
                         <StackPanel Grid.Row="1">
                             <TextBlock FontSize="14" Text="Для активации вкладки '2. Обучение' установите все органы управления в исходное положения во 2-ой вкладке на 5-ом шаге"/>
-                            <TextBlock FontSize="14" Text="Для актвации вкладок '3. Работа' и '4. Тестирвание' выподните обучение на 2-ой вкладке."/>
+                            <TextBlock FontSize="14" Text="Для актвации вкладок '3. Работа' и '4. Тестирование' выполните обучение на 2-ой вкладке."/>
                         </StackPanel>
                         <Image Grid.Row="2" Source="Files/FotoR123.jpg"/>
                         <TextBlock Grid.Row="3" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
