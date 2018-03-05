@@ -23,9 +23,9 @@
             <Canvas Visibility="Hidden"></Canvas>
         </Canvas>
 
-        <Image Source="/Files/Images/WorkModeChangerArrow.gif" Canvas.Left="143" Canvas.Top="10"/>
+        <Image Source="/Files/Images/WorkModeChangerArrow.png" Canvas.Left="169" Canvas.Top="33" RenderTransformOrigin="0.5,0.5"/>
         <Image Source="/Files/Images/Range_switcher.gif" Canvas.Left="505" Canvas.Top="240"/>
-        <Image Source="/Files/Images/VoltageTesterArrow.gif" Canvas.Left="6" Canvas.Top="102"/>
+        <Image Source="/Files/Images/VoltageTesterArrow.png" Canvas.Left="32" Canvas.Top="127" RenderTransformOrigin="0.5,0.5"/>
 
         <Image Source="/Files/Images/Switcher_off.gif" Canvas.Left="95" Canvas.Top="231"/>
         <Image Source="/Files/Images/Switcher_off.gif" Canvas.Left="30" Canvas.Top="231"/>

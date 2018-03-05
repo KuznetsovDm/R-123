@@ -18,7 +18,7 @@ namespace R123.NewRadio.ViewModel
     {
         public Voltage() : base(new Vector(-13, -45), 12)
         {
-            TheImage.Source = new BitmapImage(new Uri("/Files/Images/VoltageTesterArrow.gif", UriKind.Relative));
+            TheImage.Source = new BitmapImage(new Uri("/Files/Images/VoltageTesterArrow.png", UriKind.Relative));
             SetBinding(RequestRotateCommandProperty, new Binding("RequestRotateVoltage"));
         }
     }
@@ -30,7 +30,7 @@ namespace R123.NewRadio.ViewModel
                                  Model.Converter.WorkMode.maxAngle,
                                  Model.Converter.WorkMode.defaultAngle)
         {
-            TheImage.Source = new BitmapImage(new Uri("/Files/Images/WorkModeChangerArrow.gif", UriKind.Relative));
+            TheImage.Source = new BitmapImage(new Uri("/Files/Images/WorkModeChangerArrow.png", UriKind.Relative));
             SetBinding(RequestRotateCommandProperty, new Binding("RequestRotateWorkMode"));
         }
     }

@@ -54,8 +54,8 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Обучающая программа-симулятор радиостанци Р-123М" VerticalAlignment="Bottom"/>
                         <StackPanel Grid.Row="1">
-                            <TextBlock FontSize="14" Text="Для активации вкладки '2. Обучение' установите все органы управления в исходное положения во 2-ой вкладке на 5-ом шаге"/>
-                            <TextBlock FontSize="14" Text="Для актвации вкладок '3. Работа' и '4. Тестирование' выполните обучение на 2-ой вкладке."/>
+                            <TextBlock FontSize="14" Text="Для активации вкладки 'Обучение' установите все органы управления в исходное положения во 2-ой вкладке на 5-ом шаге"/>
+                            <TextBlock FontSize="14" Text="Для актвации вкладок 'Работа' и 'Тестирование' выполните обучение на 2-ой вкладке."/>
                         </StackPanel>
                         <Image Grid.Row="2" Source="Files/FotoR123.jpg"/>
                         <TextBlock Grid.Row="3" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
@@ -65,7 +65,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">1. Назначение, ТТХ, состав</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Назначение, ТТХ, состав</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame1" NavigationUIVisibility="Hidden" Grid.Column="1"/>
@@ -73,7 +73,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">2. Обучение</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Обучение</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame2" NavigationUIVisibility="Hidden" Grid.Column="1"/>
@@ -81,7 +81,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Работа</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Работа</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame3" NavigationUIVisibility="Hidden" Grid.Column="1"/>
@@ -89,7 +89,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">4. Тестирование</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Тестирование</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame4" NavigationUIVisibility="Hidden" Grid.Column="1"/>

@@ -88,9 +88,7 @@ namespace R123.NewRadio.ViewModel
         private void RotateFrequencyTo(double newAngle) => FrequencyAngle = newAngle;
         private void UpdateCanChangeFrequency()
         {
-            if (!PowerValue)
-                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = true;
-            else if (InteriorModel.Range == RangeState.FixedFrequency1)
+            if (InteriorModel.Range == RangeState.FixedFrequency1)
                 (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[0] == ClampState.Unfixed;
             else if (InteriorModel.Range == RangeState.FixedFrequency2)
                 (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[1] == ClampState.Unfixed;
@@ -99,7 +97,7 @@ namespace R123.NewRadio.ViewModel
             else if (InteriorModel.Range == RangeState.FixedFrequency4)
                 (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[3] == ClampState.Unfixed;
             else
-                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = !PowerValue;
+                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = true;
             //(RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = !(InteriorModel.Range <= RangeState.FixedFrequency4 && PowerValue);
         }
         #endregion

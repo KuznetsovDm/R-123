@@ -23,8 +23,8 @@
         <controls:FixedFrequencyDisplay Value="{Binding NumberFixedFrequency}" Visible="{Binding PowerValue, Mode=OneWay}" Canvas.Left="700" Canvas.Top="30"/>
 
         <controls:Range Angle="{Binding RangeAngle}" Canvas.Left="505" Canvas.Top="240"/>
-        <controls:WorkMode Angle="{Binding WorkModeAngle}" Canvas.Left="143" Canvas.Top="10"/>
-        <controls:Voltage Angle="{Binding VoltageAngle}" Canvas.Left="6" Canvas.Top="102"/>
+        <controls:WorkMode Angle="{Binding WorkModeAngle}" Canvas.Left="169" Canvas.Top="33"/>
+        <controls:Voltage Angle="{Binding VoltageAngle}" Canvas.Left="32" Canvas.Top="127"/>
 
         <controls:Power Value="{Binding PowerValue}" Canvas.Left="95" Canvas.Top="231"/>
         <controls:Scale Value="{Binding ScaleValue}" Canvas.Left="30" Canvas.Top="231"/>
