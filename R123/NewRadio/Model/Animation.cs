@@ -52,6 +52,13 @@ namespace R123.NewRadio.Model
         }
 
         public double ValuesFixedFrequency(int subFrequency, int range) => valueFixFrequency[subFrequency, range];
+        public double ValuesAntennaForFixedFrequency(int subFrequency, int range) => valueFixAntenna[subFrequency, range];
+
+        public double SetFixedFrequency(int subFrequency, int range, double value) =>
+            valueFixFrequency[subFrequency, range] = value;
+
+        public double SetAntennaForFixedFrequency(int subFrequency, int range, double value) =>
+            valueFixAntenna[subFrequency, range] = value;
 
         private const int degreeFrequencyPerFrame = 1;
         private const int degreeAntennaPerFrame = 1;

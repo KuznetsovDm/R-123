@@ -469,6 +469,7 @@
     <Resource Include="Files\Gifs\GifsStep2\5.testVoltagePower.gif" />
     <Resource Include="Files\Gifs\GifsStep2\6.volumeToRight.gif" />
     <Resource Include="Files\Gifs\GifsStep2\7.subFrequency1.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\20.openHatchCover.gif" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

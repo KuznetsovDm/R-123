@@ -63,6 +63,14 @@ namespace R123.NewRadio.ViewModel
             };
         }
 
+        protected override void OnMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            double newAngle = CheckingAngle(RotateControl.Angle + changeAngleMouseWheel * Math.Sign(e.Delta) * mouseMoveFactor);
+
+            if (RotateControl.Angle != newAngle && canRotate)
+                RequestRotateCommand?.Execute(newAngle);
+        }
+
         protected override double CheckingAngle(double angle)
         {
             return (angle + 360) % 360;

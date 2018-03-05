@@ -318,8 +318,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/20.openHatchCover.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>

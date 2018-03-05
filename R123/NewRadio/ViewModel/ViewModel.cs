@@ -55,6 +55,7 @@ namespace R123.NewRadio.ViewModel
 
             UpdateNumberSubFrequency();
             UpdateNumberFixFrequency();
+            UpdateCanChangeFrequency();
         }
 
         public void SetFrequency(double newAngle)
@@ -87,8 +88,16 @@ namespace R123.NewRadio.ViewModel
         private void RotateFrequencyTo(double newAngle) => FrequencyAngle = newAngle;
         private void UpdateCanChangeFrequency()
         {
-            if (InteriorModel.Range <= RangeState.FixedFrequency1)
+            if (!PowerValue)
+                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = true;
+            else if (InteriorModel.Range == RangeState.FixedFrequency1)
                 (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[0] == ClampState.Unfixed;
+            else if (InteriorModel.Range == RangeState.FixedFrequency2)
+                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[1] == ClampState.Unfixed;
+            else if (InteriorModel.Range == RangeState.FixedFrequency3)
+                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[2] == ClampState.Unfixed;
+            else if (InteriorModel.Range == RangeState.FixedFrequency4)
+                (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = InteriorModel.Clamps[3] == ClampState.Unfixed;
             else
                 (RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = !PowerValue;
             //(RequestRotateFrequency as SimpleCommand<double>).SetCanExecute = !(InteriorModel.Range <= RangeState.FixedFrequency4 && PowerValue);
@@ -148,6 +157,7 @@ namespace R123.NewRadio.ViewModel
 
         #region double AntennaFixerAngle
         private double antennaFixerAngle;
+        private bool unfixedFixerAngle;
         public double AntennaFixerAngle
         {
             get => antennaFixerAngle;
@@ -157,6 +167,11 @@ namespace R123.NewRadio.ViewModel
                 antennaFixerAngle = value;
                 OnPropertyChanged("AntennaFixerAngle");
                 InteriorModel.AntennaFixer = Converter.AntennaFixer.ToValue(value);
+
+                if (InteriorModel.AntennaFixer == ClampState.Fixed && InteriorModel.Range <= RangeState.FixedFrequency4 && unfixedFixerAngle)
+                    Animation.SetAntennaForFixedFrequency(NumberSubFrequency - 1, (int)InteriorModel.Range, antennaAngle);
+
+                unfixedFixerAngle = InteriorModel.AntennaFixer > ClampState.Fixed;
             }
         }
         public ICommand RequestRotateAntennaFixer { get; }
@@ -363,7 +378,7 @@ namespace R123.NewRadio.ViewModel
         #endregion
 
         #region int NumberSubFrequency
-        private int numberSubFrequency;
+        private int numberSubFrequency = 2;
         public int NumberSubFrequency
         {
             get => numberSubFrequency;
@@ -377,7 +392,8 @@ namespace R123.NewRadio.ViewModel
             }
         }
         private void UpdateNumberSubFrequency() =>
-            NumberSubFrequency = InteriorModel.Range == RangeState.SmoothRange2 || InteriorModel.Range == RangeState.SmoothRange1 ? 
+            NumberSubFrequency = (InteriorModel.Range == RangeState.SmoothRange2 ||
+                                  InteriorModel.Range == RangeState.SmoothRange1) ? 
                 -(int)InteriorModel.Range + 6 : (subFrequencyValues[(int)InteriorModel.Range] ? 1 : 2);
         #endregion
 
@@ -426,6 +442,8 @@ namespace R123.NewRadio.ViewModel
                 OnPropertyChanged("Clamp0Angle");
                 InteriorModel.Clamps[0] = Converter.Clamp.ToValue(value);
                 UpdateCanChangeFrequency();
+                if (InteriorModel.Range == RangeState.FixedFrequency1 && value == 90)
+                    Animation.SetFixedFrequency(SubFrequency0 ? 0 : 1, 0, Converter.Frequency.ToValue(FrequencyAngle, 1));
             }
         }
         public ICommand RequestRotateClamp0 { get; }
@@ -443,6 +461,8 @@ namespace R123.NewRadio.ViewModel
                 OnPropertyChanged("Clamp1Angle");
                 InteriorModel.Clamps[1] = Converter.Clamp.ToValue(value);
                 UpdateCanChangeFrequency();
+                if (InteriorModel.Range == RangeState.FixedFrequency2 && value == 90)
+                    Animation.SetFixedFrequency(SubFrequency1 ? 0 : 1, 1, Converter.Frequency.ToValue(FrequencyAngle, 1));
             }
         }
         public ICommand RequestRotateClamp1 { get; }
@@ -460,6 +480,8 @@ namespace R123.NewRadio.ViewModel
                 OnPropertyChanged("Clamp2Angle");
                 InteriorModel.Clamps[2] = Converter.Clamp.ToValue(value);
                 UpdateCanChangeFrequency();
+                if (InteriorModel.Range == RangeState.FixedFrequency3 && value == 90)
+                    Animation.SetFixedFrequency(SubFrequency2 ? 0 : 1, 2, Converter.Frequency.ToValue(FrequencyAngle, 1));
             }
         }
         public ICommand RequestRotateClamp2 { get; }
@@ -477,6 +499,8 @@ namespace R123.NewRadio.ViewModel
                 OnPropertyChanged("Clamp3Angle");
                 InteriorModel.Clamps[3] = Converter.Clamp.ToValue(value);
                 UpdateCanChangeFrequency();
+                if (InteriorModel.Range == RangeState.FixedFrequency4 && value == 90)
+                    Animation.SetFixedFrequency(SubFrequency3 ? 0 : 1, 3, Converter.Frequency.ToValue(FrequencyAngle, 1));
             }
         }
         public ICommand RequestRotateClamp3 { get; }

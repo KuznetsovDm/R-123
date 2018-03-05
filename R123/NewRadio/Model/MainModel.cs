@@ -44,6 +44,13 @@ namespace R123.NewRadio.Model
 
         public double ValuesFixedFrequency(int subFrequency, int range) => Animation.ValuesFixedFrequency(subFrequency, range);
 
+        public double AntennaForFixedFrequency(int numberFixedFrequency, int numberSubFrequency)
+        {
+            return Converter.Antenna.ToValue(
+                Converter.Frequency.ToAngle(Animation.ValuesFixedFrequency(numberSubFrequency, numberFixedFrequency)),
+                Animation.ValuesAntennaForFixedFrequency(numberSubFrequency, numberFixedFrequency));
+        }
+
 
         public class Template<T>
         {
@@ -64,7 +71,6 @@ namespace R123.NewRadio.Model
                 get => Model.Frequency;
                 set
                 {
-                    if (Converter.Frequency.OutOfRange(value)) new ArgumentOutOfRangeException("Frequency");
                     ViewModel.FrequencyAngle = Converter.Frequency.ToAngle(value);
                 }
             }
@@ -82,7 +88,6 @@ namespace R123.NewRadio.Model
                 get => Model.Volume;
                 set
                 {
-                    if (Converter.Volume.OutOfRange(value)) new ArgumentOutOfRangeException("Volume");
                     ViewModel.VolumeAngle = Converter.Volume.ToAngle(value);
                 }
             }
@@ -100,7 +105,6 @@ namespace R123.NewRadio.Model
                 get => Model.Noise;
                 set
                 {
-                    if (Converter.Noise.OutOfRange(value)) new ArgumentOutOfRangeException("Noise");
                     ViewModel.NoiseAngle = Converter.Noise.ToAngle(value);
                 }
             }
@@ -118,7 +122,6 @@ namespace R123.NewRadio.Model
             {
                 set
                 {
-                    if (Converter.Antenna.AngleOutOfRange(value)) new ArgumentOutOfRangeException("AntennaAngle");
                     ViewModel.AntennaAngle = Converter.Antenna.ToAngle(value);
                 }
             }
@@ -136,7 +139,6 @@ namespace R123.NewRadio.Model
                 get => Model.AntennaFixer;
                 set
                 {
-                    if (Converter.AntennaFixer.OutOfRange(value)) new ArgumentOutOfRangeException("AntennaFixer");
                     ViewModel.AntennaFixerAngle = Converter.AntennaFixer.ToAngle(value);
                 }
             }
@@ -154,7 +156,6 @@ namespace R123.NewRadio.Model
                 get => Model.Range;
                 set
                 {
-                    if (Converter.Range.OutOfRange(value)) new ArgumentOutOfRangeException("Range");
                     ViewModel.RangeAngle = Converter.Range.ToAngle(value);
                 }
             }
@@ -172,7 +173,6 @@ namespace R123.NewRadio.Model
                 get => Model.WorkMode;
                 set
                 {
-                    if (Converter.WorkMode.OutOfRange(value)) new ArgumentOutOfRangeException("WorkMode");
                     ViewModel.WorkModeAngle = Converter.WorkMode.ToAngle(value);
                 }
             }
@@ -190,7 +190,6 @@ namespace R123.NewRadio.Model
                 get => Model.Voltage;
                 set
                 {
-                    if (Converter.Voltage.OutOfRange(value)) throw new IndexOutOfRangeException("Voltage");
                     ViewModel.VoltageAngle = Converter.Voltage.ToAngle(value);
                 }
             }
@@ -218,7 +217,6 @@ namespace R123.NewRadio.Model
                 get => Model.Power;
                 set
                 {
-                    if (Converter.TurnedState.OutOfRange(value)) throw new IndexOutOfRangeException("Power");
                     ViewModel.PowerValue = Converter.TurnedState.ToBoolean(value);
                 }
             }
@@ -236,7 +234,6 @@ namespace R123.NewRadio.Model
                 get => Model.Scale;
                 set
                 {
-                    if (Converter.TurnedState.OutOfRange(value)) throw new IndexOutOfRangeException("Scale");
                     ViewModel.ScaleValue = Converter.TurnedState.ToBoolean(value);
                 }
             }
@@ -278,7 +275,6 @@ namespace R123.NewRadio.Model
                 get => Model.Clamps[i];
                 set
                 {
-                    if (Converter.AntennaFixer.OutOfRange(value)) throw new IndexOutOfRangeException("Clamp");
                     if (i == 0)
                         ViewModel.Clamp0Angle = Converter.Clamp.ToAngle(value);
                     else if (i == 1)
