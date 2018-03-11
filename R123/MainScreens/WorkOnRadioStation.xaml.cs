@@ -26,6 +26,12 @@ namespace R123.MainScreens
             titles[1] = "Проверка работоспособности радиостанции.";
 
             ShowPage();
+
+            restart_Button.Click += (s, e) => {
+                IRestartable content = frame_Frame.Content as IRestartable;
+                if (content != null)
+                    content.Restart();
+            };
         }
 
         public static WorkOnRadioStation Instance { get { return instance; } }

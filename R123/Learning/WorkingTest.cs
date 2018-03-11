@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using R123.NewRadio.Model;
+using R123.Radio.Model;
 
 namespace R123.Learning
 {
@@ -42,10 +42,10 @@ namespace R123.Learning
             Conditions[17] = () => radio.Tone.Value == Turned.On;
             Conditions[18] = () => radio.Range.Value == RangeState.SmoothRange1;
             Conditions[19] = () => true;
-            Conditions[20] = () => radio.Clamps[0] == ClampState.Fixed &&
-                                   radio.Clamps[1] == ClampState.Fixed &&
-                                   radio.Clamps[2] == ClampState.Fixed &&
-                                   radio.Clamps[3] == ClampState.Fixed;
+            Conditions[20] = () => radio.Clamps[0].Value == ClampState.Fixed &&
+                                   radio.Clamps[1].Value == ClampState.Fixed &&
+                                   radio.Clamps[2].Value == ClampState.Fixed &&
+                                   radio.Clamps[3].Value == ClampState.Fixed;
             Conditions[21] = () => radio.Antenna.Value > 0.8;
             Conditions[22] = () => radio.Range.Value == RangeState.FixedFrequency4;
             Conditions[23] = () => radio.Power.Value == Turned.Off;

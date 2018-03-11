@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:radio="clr-namespace:R123.NewRadio"
+        xmlns:radio="clr-namespace:R123.Radio"
         xmlns:local="clr-namespace:R123.MainScreens"
         mc:Ignorable="d"
         d:DesignWidth="1280" d:DesignHeight="1024">
@@ -65,9 +65,10 @@
             <TextBlock Style="{StaticResource TextBlock}" Text="Описание задачи:"/>
             <StackPanel Name="TaskDescriptionsPanel"/>
             <TextBlock Style="{StaticResource TextBlock}" Name="Timer" Text="Потраченное время: 0 секунд"/>
-            <StackPanel Name="TaskResultPanel" Visibility="Hidden" Orientation="Horizontal">
-                <TextBlock Style="{StaticResource TextBlock}" Text="Состояние: "/>
+            <StackPanel Name="TaskResultPanel" Visibility="Hidden" Orientation="Vertical">
+                <TextBlock Style="{StaticResource TextBlock}" Name="TaskErrors"/>
                 <TextBlock Style="{StaticResource TextBlock}" Name="TaskResult"/>
+                <Button Name="InterraptTask" FontFamily="TimesNewRoman" FontSize="20" Content="Прервать задачу." Click="InterraptTask_Click"/>
             </StackPanel>
             <Button Name="ComeBackTask" FontFamily="TimesNewRoman" FontSize="20" Content="Вернуться к задачам." Visibility="Hidden" Click="ComeBackTask_Click"/>
         </StackPanel>

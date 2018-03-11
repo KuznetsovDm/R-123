@@ -25,8 +25,8 @@
             <Button Name="nextStep_Button" Content="Следующий шаг" IsEnabled="False" Click="NextStep"/>
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Выход" IsCancel="True" Click="EscButton_Click" Visibility="Hidden"/>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Начать сначала" x:Name="restart_Button" Focusable="False"/>
         </StackPanel>
 
         <Frame x:Name="frame_Frame" Grid.Row="1" NavigationUIVisibility="Hidden"/>

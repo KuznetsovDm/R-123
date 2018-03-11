@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R123"
-        xmlns:radio="clr-namespace:R123.NewRadio"
+        xmlns:radio="clr-namespace:R123.Radio"
         mc:Ignorable="d"
         Title="Р-123" WindowStartupLocation="CenterScreen"
         d:DesignWidth="1280" d:DesignHeight="1024"

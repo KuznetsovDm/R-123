@@ -7,14 +7,14 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System;
-using R123.NewRadio.Model;
+using R123.Radio.Model;
 
 namespace R123
 {
     /// <summary>
     /// Логика взаимодействия для TuningPage.xaml
     /// </summary>
-    public partial class TuningPage : Page
+    public partial class TuningPage : Page, IRestartable
     {
         private int buttonsCount = 0;
         private int currentStep = 0;
@@ -56,7 +56,7 @@ namespace R123
             SetTooltips();
 
             IsVisibleChanged += TuningPage_IsVisibleChanged;
-            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
+            IsVisibleChanged += (s, e) => Logic.PageChanged(Convert.ToBoolean(e.NewValue), Radio.Model);
 
             InitializeControls();
             InitializeSubscribes();
@@ -66,11 +66,16 @@ namespace R123
         }
 
         private bool subscribeMouseMove;
+        private bool isFirstTimeLoaded = true;
 
         private void TuningPage_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             MouseMove -= TuningPage_MouseMove;
             subscribeMouseMove = false;
+            if (!isFirstTimeLoaded) {
+                return;
+            }
+
             string message = "На текущем шаге вы научитесь подготавливать радиостанцию к работе.\r\n" +
                              "Выполняйте последовательно шаги.\r\n" +
                              "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
@@ -79,6 +84,7 @@ namespace R123
 
             Message mes = new Message(message, false);
             mes.ShowDialog();
+            isFirstTimeLoaded = false;
         }
 
         private void TuningPage_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -145,7 +151,7 @@ namespace R123
                 "Расфиксируйте фиксатор ручки настройки антенны, настройте антенну на максимальную мощность и зафиксируйте фиксатор ручки настройки антенны",
                 "Проверьте модуляцию (зажмите пробел)",
                 "Переключатель рода работ поставьте в положение \"ДЕЖ. ПРИЕМ\"",
-                "Повторите операции 8-15 для фиксированных частот \"2\",\"3\",\"4\""
+                "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"IV\""
             };
 
             string[] borderTooltips = {
@@ -246,22 +252,9 @@ namespace R123
             Subscribes[3] = () => Radio.Model.Voltage.ValueChanged += StepCheck;
             Subscribes[4] = () => Radio.Model.Scale.ValueChanged += StepCheck;
             Subscribes[5] = () => Radio.Model.Power.ValueChanged += StepCheck;
-            Subscribes[6] = () => Radio.Model.Volume.ValueChanged += StepCheck;
+            Subscribes[6] = () => Radio.Model.Volume.ValueChanged += VolumeCheck;
             Subscribes[7] = () => Radio.Model.Range.ValueChanged += StepCheck;
-            Subscribes[8] = () => Radio.Model.Clamps.ValueChanged += StepCheck;
-#if OLD_LEARNING
-            Subscribes[9] = () => Radio.Model.Clamps.ValueChanged += StepCheck;
-            Subscribes[11] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
-            Subscribes[13] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
-            Subscribes[14] = () => Radio.Model.WorkMode.ValueChanged += StepCheck;
-            Subscribes[15] = () => Radio.Model.Range.ValueChanged += StepCheck;
-#elif NEW
-            //Subscribes[9] = null;
-            //Subscribes[11] = null;
-            //Subscribes[13] = null;
-            //Subscribes[14] = null;
-            //Subscribes[15] = null;
-#endif
+            Subscribes[8] = () => Radio.Model.Clamps[0].ValueChanged += StepCheck;
             Subscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged += StepCheck;
             Subscribes[12] = () => {
                 Radio.Model.Antenna.ValueChanged += AntennaCheck;
@@ -280,10 +273,10 @@ namespace R123
             Unsubscribes[3] = () => Radio.Model.Voltage.ValueChanged -= StepCheck;
             Unsubscribes[4] = () => Radio.Model.Scale.ValueChanged -= StepCheck;
             Unsubscribes[5] = () => Radio.Model.Power.ValueChanged -= StepCheck;
-            Unsubscribes[6] = () => Radio.Model.Volume.ValueChanged -= StepCheck;
+            Unsubscribes[6] = () => Radio.Model.Volume.ValueChanged -= VolumeCheck;
             Unsubscribes[7] = () => Radio.Model.Range.ValueChanged -= StepCheck;
-            Unsubscribes[8] = () => Radio.Model.Clamps.ValueChanged -= StepCheck;
-            Unsubscribes[9] = () => Radio.Model.Clamps.ValueChanged -= StepCheck;
+            Unsubscribes[8] = () => Radio.Model.Clamps[0].ValueChanged -= StepCheck;
+            //Unsubscribes[9] = () => Radio.Model.Clamps[0].ValueChanged -= StepCheck;
             Unsubscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged -= StepCheck;
             Unsubscribes[11] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
             Unsubscribes[12] = () => {
@@ -304,7 +297,8 @@ namespace R123
             Radio.Model.WorkMode.ValueChanged += StateCheck;
             Radio.Model.Volume.ValueChanged += StateCheck;
             Radio.Model.Range.ValueChanged += StateCheck;
-            Radio.Model.Clamps.ValueChanged += StateCheck;
+            for (int i = 0; i < Radio.Model.Clamps.Length; i++)
+                Radio.Model.Clamps[i].ValueChanged += StateCheck;
             Radio.Model.NumberSubFrequency.ValueChanged += StateCheck;
             Radio.Model.AntennaFixer.ValueChanged += StateCheck;
         }
@@ -318,7 +312,8 @@ namespace R123
             Radio.Model.WorkMode.ValueChanged -= StateCheck;
             Radio.Model.Volume.ValueChanged -= StateCheck;
             Radio.Model.Range.ValueChanged -= StateCheck;
-            Radio.Model.Clamps.ValueChanged -= StateCheck;
+            for (int i = 0; i < Radio.Model.Clamps.Length; i++)
+                Radio.Model.Clamps[i].ValueChanged -= StateCheck;
             Radio.Model.NumberSubFrequency.ValueChanged -= StateCheck;
             Radio.Model.AntennaFixer.ValueChanged -= StateCheck;
         }
@@ -334,6 +329,7 @@ namespace R123
             Radio.Model.Range.Value = RangeState.SmoothRange2;
             Radio.Model.AntennaFixer.Value = ClampState.Fixed;
         }
+
         private void StepCheck(object sender, EventArgs args)
         {
             if (currentStep < buttonsCount - 1) {
@@ -348,25 +344,30 @@ namespace R123
             else if (currentStep == buttonsCount - 1) {
                 tuningTest.RemoveCondition(7); // удаляем проверку установку первой фикс. частоты
                 tuningTest.RemoveCondition(10); // там тоже проверялась 1 фикс. частота
-                if (!tuningTest.CheckCondition(out currentStep))
+                if (!tuningTest.CheckCondition(out currentStep)) {
+                    SetColor(currentStep, Colors.Black, Colors.White);
                     return;
+                }
 
                 tuningTest.Clear();
 
                 // отписаться от всех событий
-                foreach (var unsub in Unsubscribes)
-                    unsub();
-
-                //Unsubscribe(currentStep - 1); 
+                UnsubscribeAll();
 
                 SetColor(currentStep, Colors.Black, Colors.White);
-                string mess = $"Поздравляем! Вы прошли обучение.{Environment.NewLine}Для перехода к следующему шагу установите " +
-                    $"все органы управления в исходное положение.";
+                string mess = $"Поздравляем! Вы прошли обучение.{Environment.NewLine}" +
+                    $"Если хотите пройти обучение еще раз, нажмите кнопку \"Начать сначала\"{Environment.NewLine}";
+
+                // Добавить проверку на разблокированные вкладки
+                if (true) {
+                    mess += $"Для разблокировки следующего шага установите все органы управления в исходное положение.";
+                }
+
                 Message message = new Message(mess, false);
                 message.ShowDialog();
                 SetColor(currentStep, Colors.Yellow, Colors.Black);
                 currentStep = 0;
-                Subscribe(currentStep);
+                // Подписка на события
                 stateChecker = new DefaultStateChecker(Radio);
                 InitializeCheckSubscribes();
             }
@@ -379,12 +380,34 @@ namespace R123
 
             StepCheck(sender, args);
         }
+        private void VolumeCheck(object sender, EventArgs args)
+        {
+            if (Radio.Model.Volume.Value < 1.0)
+                return;
+
+            StepCheck(sender, args);
+        }
 
         private void CheckWithAddingCondition(ref int current)
         {
             if (tuningTest.CheckCondition(out currentStep)) {
                 tuningTest.AddCondition(currentStep);
                 Subscribe(currentStep);
+            }
+        }
+
+        public void Restart()
+        {
+            UnsubscribeAll();
+            tuningTest.Clear();
+            Subscribe(0);
+            SetColor(0, Colors.Yellow, Colors.Black);
+        }
+
+        private void UnsubscribeAll()
+        {
+            for (int i = 0; i < Unsubscribes.Length; i++) {
+                Unsubscribe(i);
             }
         }
         #endregion

@@ -5,14 +5,14 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System;
-using R123.NewRadio.Model;
+using R123.Radio.Model;
 
 namespace R123.Learning
 {
     /// <summary>
     /// Логика взаимодействия для TuningPage.xaml
     /// </summary>
-    public partial class WorkingCapacityPage : Page
+    public partial class WorkingCapacityPage : Page, IRestartable
     {
         private int buttonsCount = 0;
         private int currentStep = 0;
@@ -62,7 +62,7 @@ namespace R123.Learning
             SetTooltips();
 
             IsVisibleChanged += WorkingPage_IsVisibleChanged;
-            IsVisibleChanged += (s, e) => Logic.PageChanged2(Convert.ToBoolean(e.NewValue), Radio.Model);
+            IsVisibleChanged += (s, e) => Logic.PageChanged(Convert.ToBoolean(e.NewValue), Radio.Model);
 
             InitializeSubscribes();
             InitializeUnsubscribes();
@@ -108,6 +108,7 @@ namespace R123.Learning
                 }
             }
         }
+
         private void SetLines()
         {
             List<Point> points = new List<Point>();
@@ -134,6 +135,7 @@ namespace R123.Learning
                 canvas.Children.Add(line);
             }
         }
+
         private void SetTooltips()
         {
             string[] buttonTooltips = new string[24];
@@ -145,7 +147,7 @@ namespace R123.Learning
             buttonTooltips[5] = "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость";
             buttonTooltips[6] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\"";
             buttonTooltips[7] = "Повращайте ручку установки частоты";
-            buttonTooltips[8] = "Повращайте ручку \"ШУМЫ\"";
+            buttonTooltips[8] = "Повращайте ручку \"ШУМЫ\" от максимального до минимального значения. Вы должны услышать уменьшения громкости";
             buttonTooltips[9] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН II\"";
             buttonTooltips[10] = "Переключатель рода работ поставьте в положение \"ДЕЖ. ПРИЕМ\"";
             buttonTooltips[11] = "Ничего не делайте (для продолжения нажмите пробел)";
@@ -182,18 +184,16 @@ namespace R123.Learning
 
             for (int i = 0; i < buttonTooltips.Length; i++) {
                 Button button = (Button)canvas.Children[i];
-                
-                button.ToolTip = new ToolTip {
-                    Content = new TextBlock {
-                        FontFamily = new FontFamily("Times New Roman"),
-                        TextWrapping = TextWrapping.Wrap,
-                        FontWeight = FontWeights.Bold,
-                        FontSize = 16,
-                        Text = buttonTooltips[i],
-                        Foreground = new SolidColorBrush(Colors.Black)
-                    }
-                };
-            }
+
+                ToolTip toolTip = (ToolTip)button.ToolTip;
+                toolTip.MaxWidth = 300;
+                StackPanel panel = (StackPanel)toolTip.Content;
+                TextBlock textblock = (TextBlock)panel.Children[0];
+                textblock.Text = buttonTooltips[i];
+                textblock.Foreground = new SolidColorBrush(Colors.Black);
+                textblock.FontFamily = new FontFamily("Times New Roman");
+                textblock.FontSize = 15;
+                textblock.TextWrapping = TextWrapping.Wrap;            }
 
             for (int i = 0; i < borderTooltips.Length; i++) {
                 Border border = (Border)borders.Children[i];
@@ -265,10 +265,10 @@ namespace R123.Learning
             Radio.Model.Volume.Value = 0.5;
             Radio.Model.Range.Value = RangeState.FixedFrequency1;
             Radio.Model.AntennaFixer.Value = ClampState.Fixed;
-            Radio.Model.Clamps[0] = ClampState.Medium;
-            Radio.Model.Clamps[1] = ClampState.Medium;
-            Radio.Model.Clamps[2] = ClampState.Medium;
-            Radio.Model.Clamps[3] = ClampState.Medium;
+            Radio.Model.Clamps[0].Value = ClampState.Medium;
+            Radio.Model.Clamps[1].Value = ClampState.Medium;
+            Radio.Model.Clamps[2].Value = ClampState.Medium;
+            Radio.Model.Clamps[3].Value = ClampState.Medium;
         }
 
         #endregion
@@ -312,8 +312,9 @@ namespace R123.Learning
                 workingTest.Clear();
 
                 // отписаться от всех событий
-                foreach (var unsub in Unsubscribes)
-                    unsub();
+                //foreach (var unsub in Unsubscribes)
+                //    unsub();
+                UnsubscribeAll();
 
                 //Unsubscribe(currentStep - 1); 
 
@@ -324,7 +325,7 @@ namespace R123.Learning
                 message.ShowDialog();
                 SetButtonsColor();
                 currentStep = 0;
-                Subscribe(currentStep);
+                //Subscribe(currentStep);
                 stateChecker = new DefaultStateChecker(Radio);
                 InitializeCheckSubscribes();
             }
@@ -384,11 +385,12 @@ namespace R123.Learning
             //Subscribes[17] = () => Radio.Model.Tone.ValueChanged += StepCheck;
             //Subscribes[18] = () => Radio.Model.Range.ValueChanged += StepCheck;
             //Subscribes[19] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
-            Subscribes[20] = () => Radio.Model.Clamps.ValueChanged += StepCheck;
+            Subscribes[20] = () => Radio.Model.Clamps[0].ValueChanged += StepCheck;
             //Subscribes[21] = () => Radio.Model.Antenna.ValueChanged += StepCheck;
             //Subscribes[22] = () => Radio.Model.Range.ValueChanged += StepCheck;
             //Subscribes[23] = () => Radio.Model.Power.ValueChanged += StepCheck;
         }
+
         private void InitializeUnsubscribes()
         {
             Unsubscribes = new Action[24];
@@ -416,7 +418,7 @@ namespace R123.Learning
             Unsubscribes[17] = () => Radio.Model.Tone.ValueChanged -= StepCheck;
             Unsubscribes[18] = () => Radio.Model.Range.ValueChanged -= StepCheck;
             Unsubscribes[19] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
-            Unsubscribes[20] = () => Radio.Model.Clamps.ValueChanged -= StepCheck;
+            Unsubscribes[20] = () => Radio.Model.Clamps[0].ValueChanged -= StepCheck;
             Unsubscribes[21] = () => Radio.Model.Antenna.ValueChanged -= StepCheck;
             Unsubscribes[22] = () => Radio.Model.Range.ValueChanged -= StepCheck;
             Unsubscribes[23] = () => Radio.Model.Power.ValueChanged -= StepCheck;
@@ -463,6 +465,20 @@ namespace R123.Learning
             if (workingTest.CheckCondition(out currentStep)) {
                 workingTest.AddCondition(currentStep);
                 Subscribe(currentStep);
+            }
+        }
+        public void Restart()
+        {
+            UnsubscribeAll();
+            workingTest.Clear();
+            Subscribe(0);
+            SetButtonsColor();
+        }
+
+        private void UnsubscribeAll()
+        {
+            for (int i = 0; i < Unsubscribes.Length; i++) {
+                Unsubscribe(i);
             }
         }
         #endregion

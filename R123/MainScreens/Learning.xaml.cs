@@ -16,7 +16,7 @@ namespace R123.MainScreens
     {
         private const int NUMBER_STEPS = 5;
         private string[] nameXPSFiles, titles, descriptions;
-        NewRadio.MainView RadioView;
+        Radio.MainView RadioView;
         public Learning()
         {
             InitializeComponent();
@@ -46,7 +46,7 @@ namespace R123.MainScreens
                 "Установите переключатели в исходное положение. Процесс отображается под радиостанцией."
             };
 
-            RadioView = new NewRadio.MainView();
+            RadioView = new Radio.MainView();
             RadioView.HideTangent();
 
             Radio_Frame.Content = RadioView;
@@ -71,13 +71,14 @@ namespace R123.MainScreens
 
             CurrentStep = 0;
 
-            NewRadio.Model.MainModel Radio = RadioView.Model;
+            Radio.Model.MainModel Radio = RadioView.Model;
 
             Radio.Frequency.ValueChanged += (s, e) => AddText("Частота = ", Math.Round(e.NewValue, 4));
             Radio.Volume.ValueChanged += (s, e) => AddText("Громкость ", ChangeValue(e.NewValue, e.OldValue));
             Radio.Noise.ValueChanged += (s, e) => AddText("Громкость шумов ", ChangeValue(e.NewValue, e.OldValue));
 
             Radio.Range.ValueChanged += (s, e) => AddText("Фикс. частота - плавный поддиапазон = ", RangeState(e.NewValue));
+            Radio.WorkMode.ValueChanged += (s, e) => AddText("Режим работы = ", WorkModeState(e.NewValue));
 
             queue = new Queue<SelfDestroyingLabel>(10);
             queue.Enqueue(new SelfDestroyingLabel("", new StackPanel()));
@@ -98,14 +99,22 @@ namespace R123.MainScreens
             queue.Dequeue().Start();
         }
 
-        private string RangeState(NewRadio.Model.RangeState state)
+        private string RangeState(Radio.Model.RangeState state)
         {
-            if (state == NewRadio.Model.RangeState.FixedFrequency1) return "фиксированная частота 1";
-            else if (state == NewRadio.Model.RangeState.FixedFrequency2) return "фиксированная частота 2";
-            else if (state == NewRadio.Model.RangeState.FixedFrequency3) return "фиксированная частота 3";
-            else if (state == NewRadio.Model.RangeState.FixedFrequency4) return "фиксированная частота 4";
-            else if (state == NewRadio.Model.RangeState.SmoothRange1) return "плавный поддиапазон 1";
-            else if (state == NewRadio.Model.RangeState.SmoothRange2) return "плавный поддиапазон 2";
+            if (state == Radio.Model.RangeState.FixedFrequency1) return "фиксированная частота 1";
+            else if (state == Radio.Model.RangeState.FixedFrequency2) return "фиксированная частота 2";
+            else if (state == Radio.Model.RangeState.FixedFrequency3) return "фиксированная частота 3";
+            else if (state == Radio.Model.RangeState.FixedFrequency4) return "фиксированная частота 4";
+            else if (state == Radio.Model.RangeState.SmoothRange1) return "плавный поддиапазон 1";
+            else if (state == Radio.Model.RangeState.SmoothRange2) return "плавный поддиапазон 2";
+            else return "";
+        }
+
+        private string WorkModeState(Radio.Model.WorkModeState state)
+        {
+            if (state == Radio.Model.WorkModeState.Simplex) return "симплекс (прием и передача сигнала)";
+            else if (state == Radio.Model.WorkModeState.StandbyReception) return "дежурный прием (толко прием сигнала)";
+            else if (state == Radio.Model.WorkModeState.WasIstDas) return "ОК. АП.";
             else return "";
         }
 
@@ -113,7 +122,7 @@ namespace R123.MainScreens
         {
             if (newValue > oldValue) return "увеличилась";
             else if (newValue < oldValue) return "уменьшилась";
-            else return null;
+            else return "не изменилась";
         }
 
         private void PrevStep(object sender, RoutedEventArgs e) => CurrentStep--;
@@ -138,7 +147,7 @@ namespace R123.MainScreens
                 Step3_Grid.Visibility = BoolToVisible(currentStep == 3);
                 DocViewer.Visibility = BoolToVisible(currentStep < 3);
 
-                Logic.PageChanged2(currentStep == 3, RadioView.Model);
+                Logic.PageChanged(currentStep == 3, RadioView.Model);
 
                 title_TextBlock.Text = $"Шаг №{currentStep + 1}: {titles[currentStep]}.";
                 Description_TextBlock.Text = descriptions[currentStep];

@@ -24,12 +24,6 @@ namespace Audio
             audioFile = new AudioFileReader(path);
             player = new WaveOut();
             player.Init(audioFile);
-            player.PlaybackStopped += Player_PlaybackStopped;
-        }
-
-        private void Player_PlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            Console.WriteLine("asdasd");
         }
 
         public AudioPlayer(WaveStream waveStream)

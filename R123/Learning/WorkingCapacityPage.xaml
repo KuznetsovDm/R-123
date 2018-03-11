@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:gif="http://wpfanimatedgif.codeplex.com"
-      xmlns:radio="clr-namespace:R123.NewRadio"
+      xmlns:radio="clr-namespace:R123.Radio"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
       Title="WorkingCapacity">
@@ -33,6 +33,7 @@
             <Setter Property="Stroke" Value="Black"/>
         </Style>
         <Style TargetType="Button">
+            <Setter Property="ToolTipService.ShowDuration" Value="100000"/>
             <Setter Property="Panel.ZIndex" Value="3"/>
             <Setter Property="BorderThickness" Value="3"/>
             <Setter Property="BorderBrush" Value="Black"/>
@@ -342,8 +343,8 @@
                         <ToolTip>
                             <StackPanel Orientation="Vertical">
                                 <TextBlock />
-                                <!--<Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/Simplex.gif"
-                                       gif:ImageBehavior.RepeatBehavior="100x"/>-->
+                                <Image gif:ImageBehavior.AnimatedSource="../Files/Gifs/GifsStep2/16.settingAntenna.gif"
+                                       gif:ImageBehavior.RepeatBehavior="100x"/>
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>

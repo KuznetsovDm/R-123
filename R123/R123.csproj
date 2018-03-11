@@ -97,13 +97,12 @@
     </ApplicationDefinition>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Files\NewCheckBox.cs" />
     <Compile Include="Learning\DefaultStateChecker.cs" />
     <Compile Include="Learning\DefaultStatePage.xaml.cs">
       <DependentUpon>DefaultStatePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Learning\RadioTask.cs" />
-    <Compile Include="Learning\Task.cs" />
-    <Compile Include="Learning\TaskFactory.cs" />
+    <Compile Include="Learning\IRestartable.cs" />
     <Compile Include="Learning\TuningPage.xaml.cs">
       <DependentUpon>TuningPage.xaml</DependentUpon>
     </Compile>
@@ -154,34 +153,34 @@
     <Compile Include="Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewRadio\Model\Animation.cs" />
-    <Compile Include="NewRadio\Model\Converter.cs" />
-    <Compile Include="NewRadio\Model\LineAndEllipseAnimation.cs" />
-    <Compile Include="NewRadio\Model\InteriorModel.cs" />
-    <Compile Include="NewRadio\Model\MainModel.cs" />
-    <Compile Include="NewRadio\SimpleCommand.cs" />
-    <Compile Include="NewRadio\ViewModel\Displays.cs" />
-    <Compile Include="NewRadio\ViewModel\Encoders.cs" />
-    <Compile Include="NewRadio\ViewModel\PositionSwitchers.cs" />
-    <Compile Include="NewRadio\ViewModel\Switches.cs" />
-    <Compile Include="NewRadio\View\ContinuouslyRotating.xaml.cs">
+    <Compile Include="Radio\Model\Animation.cs" />
+    <Compile Include="Radio\Model\Converter.cs" />
+    <Compile Include="Radio\Model\LineAndEllipseAnimation.cs" />
+    <Compile Include="Radio\Model\InteriorModel.cs" />
+    <Compile Include="Radio\Model\MainModel.cs" />
+    <Compile Include="Radio\SimpleCommand.cs" />
+    <Compile Include="Radio\ViewModel\Displays.cs" />
+    <Compile Include="Radio\ViewModel\Encoders.cs" />
+    <Compile Include="Radio\ViewModel\PositionSwitchers.cs" />
+    <Compile Include="Radio\ViewModel\Switches.cs" />
+    <Compile Include="Radio\View\ContinuouslyRotating.xaml.cs">
       <DependentUpon>ContinuouslyRotating.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewRadio\View\DiscretelyRotating.cs" />
-    <Compile Include="NewRadio\View\FrequencyDisplay.xaml.cs">
+    <Compile Include="Radio\View\DiscretelyRotating.cs" />
+    <Compile Include="Radio\View\FrequencyDisplay.xaml.cs">
       <DependentUpon>FrequencyDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewRadio\View\Display.cs" />
-    <Compile Include="NewRadio\View\Switch.cs" />
-    <Compile Include="NewRadio\View\Tangent.cs" />
-    <Compile Include="NewRadio\View\Tone.cs" />
-    <Compile Include="NewRadio\MainView.xaml.cs">
+    <Compile Include="Radio\View\Display.cs" />
+    <Compile Include="Radio\View\Switch.cs" />
+    <Compile Include="Radio\View\Tangent.cs" />
+    <Compile Include="Radio\View\Tone.cs" />
+    <Compile Include="Radio\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewRadio\TestView.xaml.cs">
+    <Compile Include="Radio\View\TestView.xaml.cs">
       <DependentUpon>TestView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NewRadio\ViewModel\ViewModel.cs" />
+    <Compile Include="Radio\ViewModel\ViewModel.cs" />
     <Compile Include="Pages\NetworkSettings.xaml.cs">
       <DependentUpon>NetworkSettings.xaml</DependentUpon>
     </Compile>
@@ -194,34 +193,6 @@
     <Compile Include="Pages\XpsDocumentPage.xaml.cs">
       <DependentUpon>XpsDocumentPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Radio\TurnAnimation.cs" />
-    <Compile Include="Radio\ViewModel\Clamp.cs" />
-    <Compile Include="Radio\ViewModel\Encoder.cs" />
-    <Compile Include="Radio\Logic.cs" />
-    <Compile Include="Radio\ViewModel\PositionSwitcher.cs" />
-    <Compile Include="Radio\Property.cs" />
-    <Compile Include="Radio\Radio.cs" />
-    <Compile Include="Radio\ViewModel\Switch.cs" />
-    <Compile Include="Radio\ViewModel\Tangent.cs" />
-    <Compile Include="Radio\ViewModel\Antenna.cs" />
-    <Compile Include="Radio\ViewModel\Tone.cs" />
-    <Compile Include="Radio\View\DiscretelyRotatingElement.cs" />
-    <Compile Include="Radio\View\Display.cs" />
-    <Compile Include="Radio\ViewModel\Frequency.cs" />
-    <Compile Include="Radio\View\FixedFrequencySetting.cs" />
-    <Compile Include="Radio\View\FrequencyDisplay.cs" />
-    <Compile Include="Radio\View\RadioPage.xaml.cs">
-      <DependentUpon>RadioPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Radio\View\SwitchElement.cs" />
-    <Compile Include="Radio\View\VoltageDisplay.cs" />
-    <Compile Include="Radio\View\СontinuouslyRotatingElement.cs" />
-    <Compile Include="Tasks\ListTasks.xaml.cs">
-      <DependentUpon>ListTasks.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tasks\CreateTask.xaml.cs">
-      <DependentUpon>CreateTask.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\NewFolder1\DestPage.xaml.cs">
       <DependentUpon>DestPage.xaml</DependentUpon>
     </Compile>
@@ -231,12 +202,51 @@
     <Compile Include="Pages\NewFolder1\TechPage.xaml.cs">
       <DependentUpon>TechPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\Tasks.xaml.cs">
-      <DependentUpon>Tasks.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\WorkingCapacityTest.xaml.cs">
       <DependentUpon>WorkingCapacityTest.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Tasks\CreateTask.xaml.cs">
+      <DependentUpon>CreateTask.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tasks\ListTasks.xaml.cs">
+      <DependentUpon>ListTasks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tasks\RadioTaskModel\Interface\InterfaceController.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Builder\BuilderConfiguration\HandlerConfiguration.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Builder\BuilderConfiguration\StepConfiguration.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Builder\HandlerBuilder.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\ErrorEventArgs.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\ErrorHandler.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\Handler.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\IObservable.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\IObserver.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\Step.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\TypeRadioAction.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Generator\InfoGenerator.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Generator\RadioTaskGenerator.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Info\FixFrequencyParameter.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Info\StepController.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\RadioContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\AntenaClampContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\AntennaContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\DisplayContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\FrequencyClampContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\NoiseContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\PowerContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\SetFixAntenna.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\SetFixFrequencyContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\SetFrequencyContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\TonRadioContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\VoltageContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\VolumeContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\WorkModeContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Task\RadioTask.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Task\TimeRadioTask.cs" />
+    <Compile Include="Tasks\Tasks.xaml.cs">
+      <DependentUpon>Tasks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tasks\Utils\DoubleExtentions.cs" />
+    <Compile Include="Tasks\Utils\RadioStation\BadFrequency.cs" />
     <Page Include="Learning\DefaultStatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -269,19 +279,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NewRadio\View\ContinuouslyRotating.xaml">
+    <Page Include="Radio\View\ContinuouslyRotating.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NewRadio\View\FrequencyDisplay.xaml">
+    <Page Include="Radio\View\FrequencyDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewRadio\MainView.xaml">
+    <Page Include="Radio\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NewRadio\TestView.xaml">
+    <Page Include="Radio\View\TestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,18 +308,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\XpsDocumentPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Radio\View\RadioPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tasks\ListTasks.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Tasks\CreateTask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -337,13 +335,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Tasks\Tasks.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\WorkingCapacityTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Tasks\CreateTask.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tasks\ListTasks.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Tasks\Tasks.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -416,20 +422,6 @@
     <Resource Include="Files\Images\AntennaFixer.png" />
     <Resource Include="Files\Images\Learning\SetRadio.png" />
     <Resource Include="Files\FotoR123.jpg" />
-    <Resource Include="Files\Gifs\DeshPriem.gif" />
-    <Resource Include="Files\Gifs\NoiseLeft.gif" />
-    <Resource Include="Files\Gifs\NoiseRight.gif" />
-    <Resource Include="Files\Gifs\PowerAndScaleOn.gif" />
-    <Resource Include="Files\Gifs\PowerOff.gif" />
-    <Resource Include="Files\Gifs\Simplex.gif" />
-    <Resource Include="Files\Gifs\Tangent.gif" />
-    <Resource Include="Files\Gifs\TestVoltage.gif" />
-    <Resource Include="Files\Gifs\Tone.gif" />
-    <Resource Include="Files\Gifs\Voltage.gif" />
-    <Resource Include="Files\Gifs\Volume.gif" />
-    <Resource Include="Files\Gifs\PowerOn.gif" />
-    <Resource Include="Files\Gifs\Range0.gif" />
-    <Resource Include="Files\Gifs\ScaleOn.gif" />
     <Resource Include="Files\Images\ToneOn.png" />
     <Resource Include="Files\Images\ToneOff.png" />
     <Resource Include="Files\Gifs\GifsStep1\10.WorkFrequencyAndClampClose.gif" />
@@ -463,6 +455,10 @@
     <Resource Include="Files\Gifs\GifsStep2\20.openHatchCover.gif" />
     <Resource Include="Files\Images\VoltageTesterArrow.png" />
     <Resource Include="Files\Images\WorkModeChangerArrow.png" />
+    <Resource Include="Files\Gifs\GifsStep2\8.listenFrequency.gif" />
+    <Resource Include="Files\Gifs\GifsStep2\9.listenNoise.gif" />
+    <Resource Include="Files\Images\no.png" />
+    <Resource Include="Files\Images\yes.png" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

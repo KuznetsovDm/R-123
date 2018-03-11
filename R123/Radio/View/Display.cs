@@ -1,53 +1,95 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace R123.Radio.View
 {
-    class Display
+    public class Display : Image
     {
-        private Image image;
-        private int currentValue;
         private int maxValue;
-        private bool visible;
-        private string name;
+        private string pathImage;
 
-        public Display(Image image, int maxValue, string nameImage)
+        public Display(int maxValue, string pathImage)
         {
-            this.image = image;
             this.maxValue = maxValue;
-            currentValue = 1;
-            visible = false;
-            name = nameImage;
+            this.pathImage = pathImage;
+            Source = new BitmapImage(new Uri($"/Files/Images/{pathImage}{0}.gif", UriKind.Relative));
+
+            currentValue = 0;
         }
 
-        public int Value
+        private int currentValue;
+        public int CurrentValue
         {
             get => currentValue;
             set
             {
                 if (value > maxValue || value < 0)
-                    throw new ArgumentException("Некорректный номер изображения!");
+                    throw new IndexOutOfRangeException("CurrentValue");
 
                 currentValue = value;
-                Update();
+                UpdateImage();
             }
         }
 
-        public bool Visibility
+        private bool visible;
+        public bool VisibleImage
         {
             get => visible;
             set
             {
                 visible = value;
-                Update();
+                UpdateImage();
             }
         }
 
-        private void Update()
+        private void UpdateImage()
         {
-            int number = visible ? currentValue : 0;
-            image.Source = new BitmapImage(new Uri($"/Files/Images/{name}{number}.gif", UriKind.Relative));
+            int numberImage = VisibleImage ? CurrentValue : 0;
+            Source = new BitmapImage(new Uri($"/Files/Images/{pathImage}{numberImage}.gif", UriKind.Relative));
         }
+
+        #region dp int Value
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
+            "Value",
+            typeof(int),
+            typeof(Display),
+            new UIPropertyMetadata(0,
+                new PropertyChangedCallback(ValueChanged)));
+
+        public int Value
+        {
+            get { return (int)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        private static void ValueChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs args)
+        {
+            Display display = (Display)depObj;
+            display.CurrentValue = Convert.ToInt32(args.NewValue);
+        }
+        #endregion
+
+        #region dp bool Visible
+        public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register(
+            "Visible",
+            typeof(bool),
+            typeof(Display),
+            new UIPropertyMetadata(false,
+                new PropertyChangedCallback(VisibleChanged)));
+
+        public bool Visible
+        {
+            get { return (bool)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        private static void VisibleChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs args)
+        {
+            Display display = (Display)depObj;
+            display.VisibleImage = Convert.ToBoolean(args.NewValue);
+        }
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using R123.NewRadio.Model;
+using R123.Radio.Model;
 
 namespace R123.Learning
 {
@@ -28,8 +28,8 @@ namespace R123.Learning
             Conditions[5] = () => radio.Power.Value == Turned.On;
             Conditions[6] = () => radio.Volume.Value == 1.0;
             Conditions[7] = () => radio.Range.Value == RangeState.FixedFrequency1;
-            Conditions[8] = () => radio.Clamps[0] == ClampState.Unfixed;
-            Conditions[9] = () => radio.Clamps[0] == ClampState.Fixed;
+            Conditions[8] = () => radio.Clamps[0].Value == ClampState.Unfixed;
+            Conditions[9] = () => radio.Clamps[0].Value == ClampState.Fixed;
             Conditions[10] = () => {
                 return radio.NumberSubFrequency.Value == SubFrequencyState.First &&
                        radio.Range.Value == RangeState.FixedFrequency1;
@@ -60,11 +60,17 @@ namespace R123.Learning
 
         public void AddCondition(int index)
         {
+            if (index >= Conditions.Length)
+                return;
+
             ConditionList.Add(Conditions[index]);
         }
 
         public void RemoveCondition(int index)
         {
+            if (index >= Conditions.Length)
+                return;
+
             ConditionList[index] = () => true;
         }
 

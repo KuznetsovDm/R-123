@@ -72,5 +72,10 @@ namespace R123
             if (Tabs_TabControl.Items[index] is TabItem tab)
                 tab.IsEnabled = true;
         }
+
+        public bool TabIsActive(int index)
+        {
+            return (Tabs_TabControl.Items[index] as TabItem).IsEnabled;
+        }
     }
 }
