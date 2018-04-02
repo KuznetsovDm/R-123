@@ -60,8 +60,7 @@ namespace RadioTask.Model.RadioContexts
         public override string ToString()
         {
             return $"Установите рабочую частоту, равную " +
-                $"{verify.Frequency } МГц для { ((int)verify.Range + 1)} фиксированной частоты и" +
-                $" {((int)verify.SubFrequency+1)} поддиапазона.";
+                $"{verify.Frequency } МГц для { ((int)verify.Range + 1)} фиксированной частоты." ;
         }
     }
 }

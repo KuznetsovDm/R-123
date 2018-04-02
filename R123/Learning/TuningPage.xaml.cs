@@ -1,6 +1,4 @@
-﻿#define NEW
-
-using R123.Learning;
+﻿using R123.Learning;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System;
 using R123.Radio.Model;
+using R123.MainScreens;
 
 namespace R123
 {
@@ -18,11 +17,15 @@ namespace R123
     {
         private int buttonsCount = 0;
         private int currentStep = 0;
+        private int previousStep = 0;
 
         private TuningTest tuningTest;
         private DefaultStateChecker stateChecker;
         public Action[] Subscribes { get; private set; }
         public Action[] Unsubscribes { get; private set; }
+
+        string[] buttonTooltips;
+        private string[] path;
 
         private string[] Steps = {
             "Надеть и подогнать шлемофон",
@@ -56,7 +59,6 @@ namespace R123
             SetTooltips();
 
             IsVisibleChanged += TuningPage_IsVisibleChanged;
-            IsVisibleChanged += (s, e) => Logic.PageChanged(Convert.ToBoolean(e.NewValue), Radio.Model);
 
             InitializeControls();
             InitializeSubscribes();
@@ -76,11 +78,10 @@ namespace R123
                 return;
             }
 
-            string message = "На текущем шаге вы научитесь подготавливать радиостанцию к работе.\r\n" +
-                             "Выполняйте последовательно шаги.\r\n" +
-                             "Если что-то не понятно, то всплывающие подсказки помогут вам разобраться.\r\n" +
-                             "Просто наведите указатель мыши на непонятный пункт.\r\n\r\n" +
-                             "После завершения всех шагов установите все переключатели в исходное положение, чтобы перейти на следующий шаг.";
+            string message = "На данном этапе вы должны подготовить радиостанцию к работе.\r\n" +
+                             "Выполняйте последовательно шаги обучения.\r\n" +
+                             "Если непонятен какой-то шаг, нажмите на него и Вы получите пояснение.\r\n\r\n" +
+                             "После завершения всех этапов подготовки радиостанции к работе установите все органы управления в исходное положение, чтобы перейти на следующий этап.";
 
             Message mes = new Message(message, false);
             mes.ShowDialog();
@@ -93,6 +94,64 @@ namespace R123
                 subscribeMouseMove = true;
                 MouseMove += TuningPage_MouseMove;
             }
+        }
+
+        private void ButtonClick(object sender, RoutedEventArgs e)
+        {
+            int num = canvas.Children.IndexOf(sender as Button);
+
+            StackPanel panel = new StackPanel();
+
+            // Установка текста
+            TextBlock textblock = new TextBlock {
+                Text = buttonTooltips[num],
+                Foreground = new SolidColorBrush(Colors.Black),
+                FontFamily = new FontFamily("Times New Roman"),
+                FontSize = 18,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(20)
+            };
+
+            panel.HorizontalAlignment = HorizontalAlignment.Center;
+            panel.Children.Add(textblock);
+
+            if (!string.IsNullOrEmpty(path[num])) {
+
+                System.Drawing.Image img = new System.Drawing.Bitmap(path[num]);
+
+                panel.Width = img.Width*2 + 20;
+
+                System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost {
+                    Child = new System.Windows.Forms.PictureBox() {
+                        ImageLocation = path[num],
+                        Height = img.Height,
+                        Width = img.Width
+                    },
+                    Margin = new Thickness(10),
+                    Width = img.Width
+                };
+                panel.Children.Add(host);
+
+            }
+
+            Message message = new Message(panel, false);
+            message.ShowDialog();
+        }
+
+        private void OnMouseEnter(object sender, EventArgs args)
+        {
+            Button button = sender as Button;
+
+            button.BorderBrush = new SolidColorBrush(Colors.Red);
+            button.BorderThickness = new Thickness(6);
+        }
+
+        private void OnMouseLeave(object sender, EventArgs args)
+        {
+            Button button = sender as Button;
+
+            button.BorderBrush = new SolidColorBrush(Colors.Black);
+            button.BorderThickness = new Thickness(3);
         }
 
         #region Setters
@@ -135,7 +194,7 @@ namespace R123
         }
         private void SetTooltips()
         {
-            string[] buttonTooltips = {
+            buttonTooltips = new string[] {
                 "Наденьте наушники (для продолжения нажмите пробел)",
                 "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"",
                 "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника",
@@ -155,36 +214,46 @@ namespace R123
             };
 
             string[] borderTooltips = {
-                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Добейтесь установки стрелки в положение \"СИМПЛЕКС\"",
+                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите стрелку в положение \"СИМПЛЕКС\"",
                 "Зажмите левую клавишу мыши и вращайте влево до тех пор, пока ручка крутится",
-                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Добейтесь установки стрелки в положение \"1\"",
+                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите стрелку стрелки в положение \"1\"",
                 "Установите в положение \"ВКЛ\"",
                 "Установите в положение \"ВКЛ\"",
                 "Зажмите левую клавишу мыши и вращайте вправо до тех пор, пока ручка крутится",
-                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Добейтесь установки стрелки в положение \"I\"",
-                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Добейтесь установки фиксатора в положение перпендикулярное линии круга",
-                "Установите необходимую частоту, для этого зажмите левую клавишу мыши и вращайте или крутите колесико мыши для более точной настройки частоты. Добейтесь установки фиксатора в положение параллельное линии круга",
+                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите стрелку в положение \"I\"",
+                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите фиксатор в положение перпендикулярное линии круга",
+                "Установите необходимую частоту, для этого зажмите левую клавишу мыши и вращайте или крутите колесико мыши для более точной настройки частоты. Для фиксации установленной частоты установите фиксатор в положение параллельное линии круга",
                 "Установите в положение \"ПОДДИАПАЗОН I\"",
                 "Нажмите и удерживайте пробел",
                 "Для расфиксирования крутите красный фиксатор против часовой стрелки до упора.\r\n"
                     +"Для настройки зажмите левую клавишу мыши на ручке настройки антенны и вращайте до тех пор, пока стрелка на шкале вольтметра не отклонится в максимальное правое положение.\r\n"
-                    +"Для расфиксирования крутите красный фиксатор против часовой стрелки до упора.",
-                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Добейтесь установки стрелки в положение \"ДЕЖ. ПРИЕМ\""
+                    +"Для фиксации крутите красный фиксатор по часовой стрелке до упора.",
+                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите стрелку в положение \"ДЕЖ. ПРИЕМ\""
             };
+
+            path = new string[30];
+            path[1] = @"../../Files/Gifs/GifsStep1\2.setSimplex.gif";
+            path[2] = @"../../Files/Gifs/GifsStep1\3.noiseToLeft.gif";
+            path[3] = @"../../Files/Gifs/GifsStep1\4.broadcast1.gif";
+            path[4] = @"../../Files/Gifs/GifsStep1\5.scaleOn.gif";
+            path[5] = @"../../Files/Gifs/GifsStep1\6.powerOn.gif";
+            path[6] = @"../../Files/Gifs/GifsStep1\7.volumeToRight.gif";
+            path[7] = @"../../Files/Gifs/GifsStep1\8.rangeToFixFrequency1.gif";
+            path[8] = @"../../Files/Gifs/GifsStep1\9.clamp1Open.gif";
+            path[9] = @"../../Files/Gifs/GifsStep1\10.WorkFrequencyAndClampClose.gif";
+            path[10] = @"../../Files/Gifs/GifsStep1\11.SubFrequency1.gif";
+            path[11] = @"../../Files/Gifs/GifsStep1\12.prd.gif";
+            path[12] = @"../../Files/Gifs/GifsStep1\13.setSettingsAntenna.gif";
+            path[14] = @"../../Files/Gifs/GifsStep1\15.setStandbyReception.gif";
 
             for (int i = 0; i < buttonTooltips.Length; i++) {
                 Button button = (Button)canvas.Children[i];
 
-                ToolTip toolTip = (ToolTip)button.ToolTip;
-                toolTip.MaxWidth = 300;
-                StackPanel panel = (StackPanel)toolTip.Content;
-                TextBlock textblock = (TextBlock)panel.Children[0];
-                textblock.Text = buttonTooltips[i];
-                textblock.Foreground = new SolidColorBrush(Colors.Black);
-                textblock.FontFamily = new FontFamily("Times New Roman");
-                textblock.FontSize = 15;
-                textblock.TextWrapping = TextWrapping.Wrap;
+                button.Click += ButtonClick;
+                button.MouseEnter += OnMouseEnter;
+                button.MouseLeave += OnMouseLeave;
 
+                button.ToolTip = "Нажмите для подсказки";
             }
 
             for (int i = 0; i < borderTooltips.Length; i++) {
@@ -228,7 +297,7 @@ namespace R123
                 Message message = new Message(mess, false);
                 message.ShowDialog();
                 InitializeCheckUnsubscribes();
-                MainScreens.WorkOnRadioStation.Instance.Activate2Step(true);
+                MainScreens.WorkOnRadioStation.Instance.ActivateNextStep();
             }
         }
 
@@ -257,10 +326,9 @@ namespace R123
             Subscribes[8] = () => Radio.Model.Clamps[0].ValueChanged += StepCheck;
             Subscribes[10] = () => Radio.Model.NumberSubFrequency.ValueChanged += StepCheck;
             Subscribes[12] = () => {
-                Radio.Model.Antenna.ValueChanged += AntennaCheck;
+                Radio.Model.Antenna.EndValueChanged += AntennaCheck;
                 Radio.Model.AntennaFixer.ValueChanged += StepCheck;
             };
-
         }
 
         private void InitializeUnsubscribes()
@@ -339,7 +407,11 @@ namespace R123
                     tuningTest.RemoveCondition(1); // удаляем проверку симплекса
 
                 CheckWithAddingCondition(ref currentStep);
+                if (currentStep == previousStep)
+                    return;
+
                 SetColor(currentStep, Colors.Black, Colors.White);
+                previousStep = currentStep;
             }
             else if (currentStep == buttonsCount - 1) {
                 tuningTest.RemoveCondition(7); // удаляем проверку установку первой фикс. частоты
@@ -355,12 +427,11 @@ namespace R123
                 UnsubscribeAll();
 
                 SetColor(currentStep, Colors.Black, Colors.White);
-                string mess = $"Поздравляем! Вы прошли обучение.{Environment.NewLine}" +
-                    $"Если хотите пройти обучение еще раз, нажмите кнопку \"Начать сначала\"{Environment.NewLine}";
-
+                string mess = $"Поздравляем! Вы умеете подготавливать радиостанцию к работе.{Environment.NewLine}" +
+                    $"Если хотите пройти данный этап обучения еще раз, нажмите кнопку \"Начать сначала\"{Environment.NewLine}";
                 // Добавить проверку на разблокированные вкладки
                 if (true) {
-                    mess += $"Для разблокировки следующего шага установите все органы управления в исходное положение.";
+                    mess += $"Для разблокировки следующего этапа обучения установите все органы управления в исходное положение.";
                 }
 
                 Message message = new Message(mess, false);
@@ -380,6 +451,7 @@ namespace R123
 
             StepCheck(sender, args);
         }
+
         private void VolumeCheck(object sender, EventArgs args)
         {
             if (Radio.Model.Volume.Value < 1.0)
@@ -400,6 +472,7 @@ namespace R123
         {
             UnsubscribeAll();
             tuningTest.Clear();
+            InitializeControls();
             Subscribe(0);
             SetColor(0, Colors.Yellow, Colors.Black);
         }

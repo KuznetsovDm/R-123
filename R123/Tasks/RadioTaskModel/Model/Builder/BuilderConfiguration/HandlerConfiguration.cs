@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using RadioTask.Model.RadioContexts.Realization.Specialized;
 using RadioTask.Model.RadioContexts.Realization;
 using RadioTask.Model.RadioContexts;
 using RadioTask.Model.RadioContexts.Info;
@@ -97,6 +98,26 @@ namespace RadioTask.Model.Builder.BuilderConfiguration
         public StepConfiguration FixAntenna(RangeState frequencyState, SubFrequencyState subFrequency)
         {
             return LoadContext(new FixAntenaContext(radio, frequencyState, subFrequency));
+        }
+
+        public StepConfiguration FixedRangeStateSpecialized()
+        {
+            return LoadContext(new FixedRangeStateContextSpecialized(radio));
+        }
+
+        public StepConfiguration SubrangeSwitcherSpecialized()
+        {
+            return LoadContext(new SubrangeSwitcherSpecializerContext(radio));
+        }
+
+        public StepConfiguration Range(RangeState state)
+        {
+            return LoadContext(new FixedRangeContext(radio,state));
+        }
+
+        public StepConfiguration Subrange(int switcher, Turned state)
+        {
+            return LoadContext(new SubrangeSwither(radio, switcher,state));
         }
 
         private StepConfiguration LoadContext(RadioContext context)

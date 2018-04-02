@@ -3,73 +3,45 @@ using R123.Radio.Model;
 
 namespace R123
 {
-    public class Logic
+    public static class Logic
     {
+        private static readonly RadioLogic radioLogic;
         private static MainModel RadioModel;
-        private static bool startStreaming = false;
 
-        public static RadioLogic radioLogic { get; private set; } = new RadioLogic();
-        public static bool IsInitialized { get; private set; } = false;
-        private static bool StartStreaming
-        {
-            get
-            {
-                return startStreaming;
-            }
-            set
-            {
-                if (startStreaming == true && value == false)
-                {
-                    radioLogic.Microphone.Stop();
-                    startStreaming = false;
-                    RadioConnection.SendStateToRemoteMachine(ERadioState.SayingEnd);
-                }
-                else if (startStreaming == false && value == true)
-                {
-                    radioLogic.Microphone.Start();
-                    startStreaming = true;
-                    RadioConnection.SendStateToRemoteMachine(ERadioState.SayingBegin);
-                }
-            }
-        }
         static Logic()
         {
+            radioLogic = new RadioLogic();
             radioLogic.Init();
         }
 
-        // ===============================================
+        public static bool IsInitialized => RadioModel != null;
 
-        
+        private static void StartStreaming()
+        {
+            radioLogic.Microphone.Start();
+            RadioConnection.SendStateToRemoteMachine(ERadioState.SayingBegin);
+        }
+
+        private static void StopStreaming()
+        {
+            radioLogic.Microphone.Stop();
+            RadioConnection.SendStateToRemoteMachine(ERadioState.SayingEnd);
+        }
+
         public static void PageChanged(bool state, MainModel Model)
         {
-            if (state)
-            {
-                if (!IsInitialized)
-                {
-                    Subscribe(Model);
-                    if (Model.Power.Value == Turned.On)
-                    {
-                        RadioConnection.FlushAll();
-                        radioLogic.Start();
-                        radioLogic.Noise.Play();
-                        RadioConnection.Player.Play();
-                    }
-                    else
-                    {
-                        radioLogic.Stop();
-                        radioLogic.Noise.Stop();
-                        RadioConnection.Player.Pause();
-                    }
-                    RadioConnection.AnalysisPlayNoise(null, null);
-                }
-            }
-            else
-                if (IsInitialized)
+            System.Diagnostics.Trace.WriteLine("state = " + state + ", init = " + IsInitialized);
+            if (IsInitialized)
             {
                 UnSubscribe(Model);
                 RadioConnection.Stop();
                 RadioConnection.Player.Pause();
             }
+
+            if (state == false) return;
+
+            Subscribe(Model);
+            RadioConnection.AnalysisPlayNoise(null, null);
         }
 
         private static void Subscribe(MainModel Model)
@@ -91,7 +63,9 @@ namespace R123
             Model.Power.ValueChanged += Power_ValueChanged;
             Model.Tone.ValueChanged += Tone_ValueChanged;
             Model.Tangent.ValueChanged += Tangent_ValueChanged;
-            IsInitialized = true;
+
+            OnPowerChange();
+            OnToneChange();
         }
 
         private static void UnSubscribe(MainModel Model)
@@ -106,80 +80,69 @@ namespace R123
             Model.Power.ValueChanged -= Power_ValueChanged;
             Model.Tone.ValueChanged -= Tone_ValueChanged;
             Model.Tangent.ValueChanged -= Tangent_ValueChanged;
-            IsInitialized = false;
         }
 
-        private static void Tangent_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e)
+        private static void Frequency_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
         {
-            OnSpaceChange();
+            radioLogic.Frequency = e.NewValue;
+            ViewConnerction.LocalConnections.SetFrequency(e.NewValue);
         }
 
-        private static void Tone_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e)
+        private static void Noise_ValueChanged(object sender, ValueChangedEventArgs<double, double> e) => radioLogic.Noise.Volume = (float)e.NewValue;
+        private static void Volume_ValueChanged(object sender, ValueChangedEventArgs<double, double> e) => radioLogic.Volume = (float)e.NewValue;
+        private static void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
         {
-            if (RadioModel.Power.Value == Turned.On && RadioModel.Tone.Value == Turned.On && RadioModel.WorkMode.Value == WorkModeState.Simplex)
-                radioLogic.PlayToneSimplex();
-            else if (RadioModel.Power.Value == Turned.On && RadioModel.Tone.Value == Turned.On && RadioModel.WorkMode.Value == WorkModeState.StandbyReception)
-                radioLogic.PlayToneAcceptance();
+            radioLogic.Antenna = e.NewValue;
+            ViewConnerction.LocalConnections.SetAntenna(e.NewValue);
         }
 
-        private static void Power_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e)
+        private static void WorkMode_ValueChanged(object sender, ValueChangedEventArgs<WorkModeState, WorkModeState> e) => OnTangentChange();
+
+        private static void Power_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e) => OnPowerChange();
+        private static void Tone_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e) => OnToneChange();
+        private static void Tangent_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e) => OnTangentChange();
+
+
+
+        private static void OnPowerChange()
         {
-            if (e.NewValue == Turned.On)
+            if (RadioModel.Power.Value == Turned.On)
             {
+                RadioConnection.FlushAll();
                 radioLogic.Start();
                 radioLogic.Noise.Play();
                 RadioConnection.Player.Play();
-                OnSpaceChange();
+                OnTangentChange();
             }
             else
             {
-                StartStreaming = false;
+                StopStreaming();
                 radioLogic.Stop();
                 RadioConnection.Player.Pause();
                 radioLogic.Noise.Stop();
             }
         }
 
-        private static void WorkMode_ValueChanged(object sender, ValueChangedEventArgs<WorkModeState, WorkModeState> e)
+        private static void OnToneChange()
         {
-            OnSpaceChange();
+            if (RadioModel.Power.Value == Turned.On && RadioModel.Tone.Value == Turned.On)
+                radioLogic.PlayToneSimplex(RadioModel.WorkMode.Value == WorkModeState.Simplex);
         }
 
-        private static void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
+        private static void OnTangentChange()
         {
-            radioLogic.Antenna = e.NewValue;
-        }
+            if (RadioModel.Power.Value != Turned.On) return;
 
-        private static void Volume_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
-        {
-            radioLogic.Volume = (float)e.NewValue;
-        }
-
-        private static void Noise_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
-        {
-            radioLogic.Noise.Volume = (float)e.NewValue;
-        }
-
-        private static void Frequency_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
-        {
-            radioLogic.Frequency = e.NewValue;
-        }
-
-        public static void OnSpaceChange()
-        {
-            if (RadioModel.Power.Value == Turned.On)
+            if (RadioModel.WorkMode.Value == WorkModeState.Simplex && RadioModel.Tangent.Value == Turned.On)
             {
-                if (RadioModel.WorkMode.Value == WorkModeState.Simplex && RadioModel.Tangent.Value == Turned.On)
-                {
-                    RadioConnection.Player.Pause();
-                    StartStreaming = true;
-                }
-                else
-                {
-                    RadioConnection.FlushAll();
-                    RadioConnection.Player.Play();
-                    StartStreaming = false;
-                }
+                RadioConnection.Player.Pause();
+                StartStreaming();
+            }
+            else
+            {
+                RadioConnection.FlushAll();
+                RadioConnection.Player.Play();
+                StopStreaming();
             }
         }
     }

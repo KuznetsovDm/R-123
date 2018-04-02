@@ -86,6 +86,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WpfAnimatedGif.1.4.15\lib\net\WpfAnimatedGif.dll</HintPath>
     </Reference>
@@ -111,6 +112,9 @@
       <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Learning\WorkingTest.cs" />
+    <Compile Include="LocalConnections.xaml.cs">
+      <DependentUpon>LocalConnections.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Magic\Connection\Connection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IConnection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IListener.cs" />
@@ -140,7 +144,6 @@
     <Compile Include="MainScreens\Learning.xaml.cs">
       <DependentUpon>Learning.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainScreens\SelfDestroyingLabel.cs" />
     <Compile Include="MainScreens\Standarts.xaml.cs">
       <DependentUpon>Standarts.xaml</DependentUpon>
     </Compile>
@@ -205,13 +208,10 @@
     <Compile Include="Pages\WorkingCapacityTest.xaml.cs">
       <DependentUpon>WorkingCapacityTest.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\CreateTask.xaml.cs">
-      <DependentUpon>CreateTask.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Tasks\ListTasks.xaml.cs">
-      <DependentUpon>ListTasks.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Tasks\RadioTaskModel\Interface\FixFrequencyDescriptor.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Interface\FrequencyDescriptor.cs" />
     <Compile Include="Tasks\RadioTaskModel\Interface\InterfaceController.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Interface\RadioTaskDescription.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Builder\BuilderConfiguration\HandlerConfiguration.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Builder\BuilderConfiguration\StepConfiguration.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Builder\HandlerBuilder.cs" />
@@ -220,31 +220,37 @@
     <Compile Include="Tasks\RadioTaskModel\Model\Chain\Handler.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Chain\IObservable.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Chain\IObserver.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Chain\Specialized\HandlerSpecialized.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Chain\Step.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Chain\TypeRadioAction.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Generator\InfoGenerator.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Generator\RadioTaskGenerator.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Generator\RadioTaskType.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Info\FixFrequencyParameter.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Info\FrequencyParameter.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Info\StepController.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\RadioContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\AntenaClampContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\AntennaContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\DisplayContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\FixedRangeContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\FrequencyClampContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\NoiseContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\PowerContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\SetFixAntenna.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\SetFixFrequencyContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\SetFrequencyContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\Specialized\FixedRangeStateSpecializedContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\Specialized\SubrangeSwitcherSpecializerContext.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\SubrangeSwither.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\TonRadioContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\VoltageContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\VolumeContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\RadioContexts\Realization\WorkModeContext.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Task\RadioTask.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Task\TaskType.cs" />
+    <Compile Include="Tasks\RadioTaskModel\Model\Task\TimeControllFacade.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Task\TimeRadioTask.cs" />
-    <Compile Include="Tasks\Tasks.xaml.cs">
-      <DependentUpon>Tasks.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Tasks\Utils\DoubleExtentions.cs" />
     <Compile Include="Tasks\Utils\RadioStation\BadFrequency.cs" />
     <Page Include="Learning\DefaultStatePage.xaml">
@@ -258,6 +264,10 @@
     <Page Include="Learning\WorkingCapacityPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LocalConnections.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainScreens\Learning.xaml">
       <SubType>Designer</SubType>
@@ -339,18 +349,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Tasks\CreateTask.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Tasks\ListTasks.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Tasks\Tasks.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -398,13 +396,7 @@
     <Resource Include="Files\Images\FixedFrequencySwitcherScrew.gif" />
     <Resource Include="Files\Images\fone.png" />
     <Resource Include="Files\Images\FrequencyControl.gif" />
-    <Resource Include="Files\Images\load\123.png" />
-    <Resource Include="Files\Images\mouseIcon\MouseIcon.png" />
-    <Resource Include="Files\Images\mouseIcon\mouseIconCenter.png" />
-    <Resource Include="Files\Images\mouseIcon\mouseIconLeft.png" />
-    <Resource Include="Files\Images\mouseIcon\mouseIconLeftCenter.png" />
     <Resource Include="Files\Images\NoiseVolumeControl.gif" />
-    <Resource Include="Files\Images\R123.gif" />
     <Resource Include="Files\Images\Range_switcher.gif" />
     <Resource Include="Files\Images\SubFrequency0.gif" />
     <Resource Include="Files\Images\SubFrequency1.gif" />
@@ -459,6 +451,9 @@
     <Resource Include="Files\Gifs\GifsStep2\9.listenNoise.gif" />
     <Resource Include="Files\Images\no.png" />
     <Resource Include="Files\Images\yes.png" />
+    <Resource Include="Files\r123.jpg" />
+    <Resource Include="Files\radio.jpg" />
+    <Resource Include="Files\Images\R123.png" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

@@ -56,7 +56,7 @@ namespace R123.Radio.Model
 
             AntennaFixer = new PropertyOfModel<ClampState>(
                 interiorModel.AntennaFixer,
-                (value) => viewModel.AntennaAngle = Converter.AntennaFixer.ToAngle(value));
+                (value) => viewModel.AntennaFixerAngle = Converter.AntennaFixer.ToAngle(value));
 
             Range = new PropertyOfModel<RangeState>(
                 interiorModel.Range,

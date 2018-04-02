@@ -14,6 +14,7 @@ using RadioTask.Model.Builder;
 using R123.Radio.Model;
 using RadioTask.Model.Task;
 using RadioTask.Interface;
+using System.ComponentModel;
 
 namespace R123.MainScreens
 {
@@ -27,47 +28,81 @@ namespace R123.MainScreens
         public Standarts()
         {
             InitializeComponent();
+
+            DataContext = new ViewModel();
+
             interfaceController = new InterfaceController(this);
-            interfaceController.LoadTasks();
-        }
-
-        private void Standarts_Closed(object sender, System.EventArgs e)
-        {
-
         }
 
         private void RunSelectedItem(object sender, RoutedEventArgs e)
         {
-            if (LisBoxtOfTasks.SelectedItem != null)
+            if (ListBoxTasks.SelectedItem != null)
             {
-                TaskPanel.Visibility = Visibility.Hidden;
                 CurrentTaskPanel.Visibility = Visibility.Visible;
-                TaskResultPanel.Visibility = Visibility.Visible;
-                interfaceController.RunSelectedItem(LisBoxtOfTasks.SelectedItem);
+                InterraptTask.Visibility = Visibility.Visible;
+                TaskResultPanel.Visibility = Visibility.Collapsed;
+                TasksPanel.Visibility = Visibility.Collapsed;
+                ComeBackTask.Visibility = Visibility.Collapsed;
+
+                interfaceController.RunSelectedItem(ListBoxTasks.SelectedItem);
             }
         }
 
         private void ComeBackTask_Click(object sender, RoutedEventArgs e)
         {
-            TaskPanel.Visibility = Visibility.Visible;
-            CurrentTaskPanel.Visibility = Visibility.Hidden;
-            TaskResultPanel.Visibility = Visibility.Hidden;
-            LisBoxtOfTasks.Items.Clear();
-            interfaceController.InitialTasks();
-            interfaceController.LoadTasks();
+            TasksPanel.Visibility = Visibility.Visible;
+            CurrentTaskPanel.Visibility = Visibility.Collapsed;
         }
 
         private void InterraptTask_Click(object sender, RoutedEventArgs e)
         {
-            TaskPanel.Visibility = Visibility.Visible;
-            CurrentTaskPanel.Visibility = Visibility.Hidden;
-            TaskResultPanel.Visibility = Visibility.Hidden;
-            LisBoxtOfTasks.Items.Clear();
-            interfaceController.InitialTasks();
-            interfaceController.LoadTasks();
+            TasksPanel.Visibility = Visibility.Visible;
+            CurrentTaskPanel.Visibility = Visibility.Collapsed;
 
             interfaceController.InterraptTask();
         }
+
+        private void ListBoxTasks_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var description = ListBoxTasks.SelectedItem as RadioTaskDescription;
+
+            if (description.Type == RadioTask.Model.Generator.RadioTaskType.FixFrequency
+                || description.Type == RadioTask.Model.Generator.RadioTaskType.Frequency)
+            {
+                description.Visibility = Visibility.Visible;
+            }
+            else
+            {
+            }
+        }
     }
 
+    public class ViewModel : INotifyPropertyChanged
+    {
+        private RadioTaskDescription prev_description = null;
+
+        public RadioTaskDescription SelectedTask
+        {
+            set
+            {
+                if (prev_description != null)
+                    prev_description.Visibility = Visibility.Collapsed;
+                if (value.Type == RadioTask.Model.Generator.RadioTaskType.FixFrequency
+                    || value.Type == RadioTask.Model.Generator.RadioTaskType.Frequency)
+                {
+                    value.Visibility = Visibility.Visible;
+                }
+
+                prev_description = value;
+            }
+        }
+
+        #region PropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string prop = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        }
+        #endregion
+    }
 }

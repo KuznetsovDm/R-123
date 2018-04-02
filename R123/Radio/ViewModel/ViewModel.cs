@@ -80,7 +80,6 @@ namespace R123.Radio.ViewModel
             get => frequencyAngle;
             set
             {
-                //if (frequencyAngle == value) return;
                 frequencyAngle = value;
                 OnPropertyChanged("FrequencyAngle");
                 InteriorModel.Frequency.Value = Converter.Frequency.ToValue(FrequencyAngle, NumberSubFrequency);
@@ -90,10 +89,8 @@ namespace R123.Radio.ViewModel
         public ICommand RequestRotateFrequency { get; }
         public ICommand RequestEndRotateFrequency { get; }
         private void RotateFrequencyTo(double newAngle) => FrequencyAngle = newAngle;
-        private void EndRotateFrequencyTo(double value)
-        {
+        private void EndRotateFrequencyTo(double value) => 
             InteriorModel.Frequency.EndChangeValue(Converter.Frequency.ToValue(value, NumberSubFrequency));
-        }
         private void UpdateCanChangeFrequency()
         {
             if (InteriorModel.Power.Value == Turned.Off || InteriorModel.Range.Value > RangeState.FixedFrequency4)
@@ -118,11 +115,8 @@ namespace R123.Radio.ViewModel
         }
         public ICommand RequestRotateNoise { get; }
         public ICommand RequestEndRotateNoise { get; }
-        public void EndRotateNoiseTo(double value)
-        {
-            InteriorModel.Noise.EndChangeValue(Converter.Noise.ToValue(value));
-        }
         private void RotateNoiseTo(double newAngle) => NoiseAngle = newAngle;
+        public void EndRotateNoiseTo(double value) => InteriorModel.Noise.EndChangeValue(Converter.Noise.ToValue(value));
         #endregion
 
         #region double VolumeAngle
@@ -140,11 +134,8 @@ namespace R123.Radio.ViewModel
         }
         public ICommand RequestRotateVolume { get; }
         public ICommand RequestEndRotateVolume { get; }
-        public void EndRotateVolumeTo(double value)
-        {
-            InteriorModel.Volume.EndChangeValue(Converter.Volume.ToValue(value));
-        }
         private void RotateVolumeTo(double newAngle) => VolumeAngle = newAngle;
+        public void EndRotateVolumeTo(double value) => InteriorModel.Volume.EndChangeValue(Converter.Volume.ToValue(value));
         #endregion
 
         #region double AntennaAngle
@@ -162,11 +153,8 @@ namespace R123.Radio.ViewModel
         }
         public ICommand RequestRotateAntenna { get; }
         public ICommand RequestEndRotateAntenna { get; }
-        public void EndRotateAntennaTo(double value)
-        {
-            InteriorModel.Antenna.EndChangeValue(Converter.Antenna.ToValue(FrequencyAngle, AntennaAngle));
-        }
         private void RotateAntennaTo(double newAngle) => AntennaAngle = newAngle;
+        public void EndRotateAntennaTo(double value) => InteriorModel.Antenna.EndChangeValue(Converter.Antenna.ToValue(FrequencyAngle, AntennaAngle));
         #endregion
 
         #region double AntennaFixerAngle
@@ -188,11 +176,8 @@ namespace R123.Radio.ViewModel
         }
         public ICommand RequestRotateAntennaFixer { get; }
         public ICommand RequestEndRotateAntennaFixer { get; }
-        public void EndRotateAntennaFixerTo(double value)
-        {
-            InteriorModel.AntennaFixer.EndChangeValue(Converter.AntennaFixer.ToValue(value));
-        }
         private void RotateAntennaFixerTo(double newAngle) => AntennaFixerAngle = newAngle;
+        public void EndRotateAntennaFixerTo(double value) => InteriorModel.AntennaFixer.EndChangeValue(Converter.AntennaFixer.ToValue(value));
         #endregion
 
         #region double RangeAngle

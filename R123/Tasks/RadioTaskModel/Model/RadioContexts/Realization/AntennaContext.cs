@@ -26,7 +26,7 @@ namespace RadioTask.Model.RadioContexts.Realization
         {
             if (IsSubscribe)
                 throw new Exception("Already subscribed.");
-            Radio.Antenna.ValueChanged += Antenna_ValueChanged;
+            Radio.Antenna.EndValueChanged += Antenna_ValueChanged;
             IsSubscribe = true;
         }
 
@@ -40,7 +40,7 @@ namespace RadioTask.Model.RadioContexts.Realization
         {
             if (!IsSubscribe)
                 throw new Exception("Already unsubscribed.");
-            Radio.Antenna.ValueChanged -= Antenna_ValueChanged;
+            Radio.Antenna.EndValueChanged -= Antenna_ValueChanged;
             IsSubscribe = false;
         }
 

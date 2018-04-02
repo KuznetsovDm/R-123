@@ -44,11 +44,14 @@ namespace MCP.Logic
             }
         }
 
-        public void PlayToneSimplex()
+        public void PlayToneSimplex(bool simplex = true)
         {
             PlayToneAcceptance();
-            RadioConnection.SendStateToRemoteMachine(State, ERadioState.SignalBegin);
-            RadioConnection.SendStateToRemoteMachine(State, ERadioState.SignalEnd);
+            if (simplex)
+            {
+                RadioConnection.SendStateToRemoteMachine(State, ERadioState.SignalBegin);
+                RadioConnection.SendStateToRemoteMachine(State, ERadioState.SignalEnd);
+            }
         }
 
         public void PlayToneAcceptance()

@@ -42,8 +42,6 @@ namespace R123
             Frame4.Content = new MainScreens.Standarts();
 
             Closing += (s, e) => RadioConnection.Close();
-
-            ActivateChangeTab(false);
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -51,19 +49,26 @@ namespace R123
             if (e.Key == Key.Escape && e.IsDown)
                 Tabs_TabControl.SelectedIndex = 0;
             else if (e.Key == Key.F1 && e.IsDown)
-                ActivateChangeTab(!tabsIsActive);
+                MainScreens.WorkOnRadioStation.Instance.ActivateAllStep();
+            else if (e.Key == Key.F2 && e.IsDown)
+                MainScreens.WorkOnRadioStation.Instance.ActivateNextStep();
+            else if (e.Key == Key.F3 && e.IsDown)
+                ViewConnerction.LocalConnections.ShowWindow();
         }
 
         private bool tabsIsActive = false;
 
+        public int CurrentTabIndex
+        {
+            set => Tabs_TabControl.SelectedIndex = value;
+        }
+
         private void ActivateChangeTab(bool value)
         {
             tabsIsActive = value;
-            for (int i = 2; i < Tabs_TabControl.Items.Count; i++)
+            for (int i = 2; i < Tabs_TabControl.Items.Count - 2; i++)
                 if (Tabs_TabControl.Items[i] is TabItem tab)
                     tab.IsEnabled = value;
-
-            MainScreens.WorkOnRadioStation.Instance.Activate2Step(value);
         }
 
         public void ActivateTab(int index)

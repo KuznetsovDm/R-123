@@ -29,7 +29,7 @@ namespace R123.Learning
             Conditions[4] = () => radio.Tangent.Value == Turned.On;
             Conditions[5] = () => radio.Volume.Value == 1.0;
             Conditions[6] = () => radio.Range.Value == RangeState.SmoothRange1;
-            Conditions[7] = () => true;
+            Conditions[7] = () => radio.Frequency.Value > 21;
             Conditions[8] = () => radio.Noise.Value < 0.5;
             Conditions[9] = () => radio.Range.Value == RangeState.SmoothRange2;
             Conditions[10] = () => radio.WorkMode.Value == WorkModeState.StandbyReception;

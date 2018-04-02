@@ -8,7 +8,7 @@
              mc:Ignorable="d"
              Width="964" Height="450">
     <Canvas>
-        <Image Source="/Files/Images/R123.gif"/>
+        <Image Source="/Files/Images/R123.png"/>
         <Image Source="/Files/Images/fone.png" Canvas.Left="497" Canvas.Top="77"/>
         <Image Source="/Files/Images/VoltageControl.jpg" Canvas.Left="715" Canvas.Top="144"/>
 

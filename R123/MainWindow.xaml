@@ -24,7 +24,7 @@
         </Style>
         <Style x:Key="TextInTabItemHeader">
             <Setter Property="Control.Margin" Value="3" />
-            <Setter Property="Control.FontSize" Value="20"/>
+            <Setter Property="Control.FontSize" Value="18"/>
             <Setter Property="Control.FontFamily" Value="Times New Roman"/>
         </Style>
     </Window.Resources>
@@ -47,19 +47,14 @@
                         </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Обучающая программа-симулятор радиостанци Р-123М" VerticalAlignment="Bottom"/>
-                        <StackPanel Grid.Row="1">
-                            <TextBlock FontSize="14" Text="Для активации вкладки 'Обучение' установите все органы управления в исходное положения во 2-ой вкладке на 5-ом шаге"/>
-                            <TextBlock FontSize="14" Text="Для актвации вкладок 'Работа' и 'Тестирование' выполните обучение на 2-ой вкладке."/>
-                        </StackPanel>
-                        <Image Grid.Row="2" Source="Files/FotoR123.jpg"/>
-                        <TextBlock Grid.Row="3" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
-                        <TextBlock Grid.Row="4" Text="Чтобы веруться на это окно нажмите Esc" FontSize="10" Canvas.Bottom="0" Canvas.Right="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                        <Image Grid.Row="1" Source="Files/FotoR123.jpg"/>
+                        <TextBlock Grid.Row="2" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="3" Text="Чтобы веруться на это окно нажмите Esc" FontSize="10" Canvas.Bottom="0" Canvas.Right="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
                     </Grid>
                 </TabItem.Content>
             </TabItem>
@@ -81,18 +76,18 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Работа</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Задачи</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame3" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                    <Frame Name="Frame4" NavigationUIVisibility="Hidden" Grid.Column="1"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Тестирование</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Работа на радиостанции</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame4" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                    <Frame Name="Frame3" NavigationUIVisibility="Hidden" Grid.Column="1"/>
                 </TabItem.Content>
             </TabItem>
         </TabControl>

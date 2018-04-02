@@ -1,10 +1,13 @@
-﻿using R123.MainScreens;
+﻿using R123;
+using R123.MainScreens;
 using R123.Radio.Model;
 using R123.RadioTaskModel.Model.Generator;
+using RadioTask.Model.Generator;
 using RadioTask.Model.RadioContexts.Info;
 using RadioTask.Model.Task;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -18,40 +21,43 @@ namespace RadioTask.Interface
     {
         private Standarts window;
 
-        private List<TimeRadioTask> tasks = new List<TimeRadioTask>();
+        private ObservableCollection<RadioTaskDescription> descriptions = new ObservableCollection<RadioTaskDescription>();
 
         private TimeRadioTask selectedTask = null;
-
-        private List<StepController> stepControllers;
 
         public InterfaceController(Standarts window)
         {
             this.window = window;
-            InitialTasks();
+            window.ListBoxTasks.ItemsSource = descriptions;
+            System.Diagnostics.Trace.WriteLine(window.ListBoxTasks.ItemsSource);
+            InitializeDescriptions();
         }
 
-        public void InitialTasks()
+        private void InitializeDescriptions()
         {
-            if (tasks.Count > 0)
-                tasks.ForEach(x => x.Dispose());
-            tasks.Clear();
-            RadioTaskGenerator generator = new RadioTaskGenerator(window.Radio.Model);
-
-            tasks.Add(generator.CreateFrequencyTask());
-            tasks.Add(generator.CreateFrequencyWithTonTask());
-            tasks.Add(generator.CreateFixFrequencyTask());
+            var fixDescriptions = InfoGenerator.GetTenFixFrequencyDescriptors();
+            var Descriptions = InfoGenerator.GetTenFrequencyDescriptors();
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.Frequency, Description = InfoGenerator.Descriptions[RadioTaskType.Frequency], Frequencys = Descriptions, SelectedItem = Descriptions.First() });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.FixFrequency, Description = InfoGenerator.Descriptions[RadioTaskType.FixFrequency], Frequencys = fixDescriptions, SelectedItem = fixDescriptions.First() });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.InitialState, Description = InfoGenerator.Descriptions[RadioTaskType.InitialState] });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.PrepareStationForWork, Description = InfoGenerator.Descriptions[RadioTaskType.PrepareStationForWork] });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.CheckStation, Description = InfoGenerator.Descriptions[RadioTaskType.CheckStation] });
         }
 
-        public void LoadTasks()
+        private void InitializeMiddle()
         {
-            foreach (var item in tasks)
-                window.LisBoxtOfTasks.Items.Add(item);
-        }
-
-        public void RemoveTasks()
-        {
-            window.TaskDescriptionsPanel.Children.Clear();
-            window.LisBoxtOfTasks.Items.Clear();
+            window.Radio.Model.Noise.Value = 0.5;
+            window.Radio.Model.Voltage.Value = VoltageState.Broadcast250;
+            window.Radio.Model.Power.Value = Turned.On;
+            window.Radio.Model.Scale.Value = Turned.On;
+            window.Radio.Model.WorkMode.Value = WorkModeState.WasIstDas;
+            window.Radio.Model.Volume.Value = 0.5;
+            window.Radio.Model.Range.Value = RangeState.SmoothRange2;
+            window.Radio.Model.AntennaFixer.Value = ClampState.Medium;
+            window.Radio.Model.Clamps[0].Value = ClampState.Medium;
+            window.Radio.Model.Clamps[1].Value = ClampState.Medium;
+            window.Radio.Model.Clamps[2].Value = ClampState.Medium;
+            window.Radio.Model.Clamps[3].Value = ClampState.Medium;
         }
 
         public void Restart()
@@ -72,50 +78,27 @@ namespace RadioTask.Interface
 
         public void RunSelectedItem(object obj)
         {
-            Restart();
-            window.TaskDescriptionsPanel.Children.Clear();
-            window.TaskResult.Visibility = Visibility.Collapsed;
-            selectedTask = obj as TimeRadioTask;
+            RadioTaskDescription description = obj as RadioTaskDescription;
+            RadioTaskGenerator taskGenerator = new RadioTaskGenerator(window.Radio.Model);
+            selectedTask = taskGenerator.CreateTaskBy(description.Type, description.SelectedItem);
+            window.TaskDescription.Text = selectedTask.Description;
+            //если установка в начальное положение.
+            if (description.Type == RadioTaskType.InitialState)
+                InitializeMiddle();
+            else
+                Restart();
+
             selectedTask.Reset();
-            stepControllers = selectedTask.GetStepControllers();
-
-            foreach (var element in stepControllers)
-            {
-                if (element.Description != "")
-                {
-                    StackPanel row = new StackPanel();
-                    row.Orientation = Orientation.Horizontal;
-                    TextBlock description = new TextBlock();
-                    description.FontFamily = new FontFamily("Times new Roman");
-                    description.FontSize = 18;
-                    description.Text = element.Description;
-                    description.TextWrapping = TextWrapping.Wrap;
-                    description.MaxWidth = 300;
-                    description.IsEnabled = false;
-
-                    element.CheckBox = new CheckBox();
-                    element.CheckBox.IsEnabled = false;
-
-                    row.Children.Add(element.CheckBox);
-                    row.Children.Add(description);
-
-                    window.TaskDescriptionsPanel.Children.Add(row);
-                }
-            }
 
             selectedTask.TaskDone += SelectedTask_TaskDone;
             selectedTask.Start();
             selectedTask.Timer.Tick += Timer_Tick;
-
-            window.ComeBackTask.Visibility = Visibility.Hidden;
-            window.InterraptTask.Visibility = Visibility.Visible;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
             window.Timer.Text = "Затраченное время: " + selectedTask.Tiks + " секунд.";
             int index = selectedTask.GetPriorityIndex();
-            stepControllers.Where((x,i)=>i< index).ToList().ForEach(x => x.CheckBox.IsChecked = x.State);
             window.TaskErrors.Text = "Количество ошибок: " + selectedTask.Errors;
         }
 
@@ -124,25 +107,31 @@ namespace RadioTask.Interface
             selectedTask.Stop();
             selectedTask.Timer.Tick -= Timer_Tick;
             selectedTask.TaskDone -= SelectedTask_TaskDone;
-            stepControllers.ForEach(x => x.CheckBox.IsChecked = x.State);
-
-            window.TaskResult.Foreground = new SolidColorBrush(System.Windows.Media.Colors.Green);
 
             window.InterraptTask.Visibility = Visibility.Collapsed;
-
-            window.TaskResult.Text = "Задача выполнена.";
             window.TaskResultPanel.Visibility = Visibility.Visible;
 
-            window.TaskErrors.Text = "Количество ошибок: "+selectedTask.Errors;
+            //result 
+            StackPanel panel = new StackPanel();
+            panel.Margin = new Thickness(10);
+            panel.Children.Add(new TextBlock() { Text = "Задача выполнена!", Foreground = new SolidColorBrush(Colors.Green),
+                FontFamily = new FontFamily("TimesNewRoman"), FontSize = 18});
+            Message msg = new Message(panel,false);
+            msg.ShowDialog();
+            //
+
             window.ComeBackTask.Visibility = Visibility.Visible;
+            window.TaskResult.Text = "Задача выполнена.";
+            window.TaskErrors.Text = "Количество ошибок: " + selectedTask.Errors;
+            selectedTask = null;
         }
 
         public void InterraptTask()
         {
-            selectedTask.Stop();
             selectedTask.Timer.Tick -= Timer_Tick;
             selectedTask.TaskDone -= SelectedTask_TaskDone;
             window.InterraptTask.Visibility = Visibility.Collapsed;
+            selectedTask = null;
         }
     }
 }

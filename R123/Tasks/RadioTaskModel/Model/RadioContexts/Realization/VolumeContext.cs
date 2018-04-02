@@ -27,7 +27,7 @@ namespace RadioTask.Model.RadioContexts
         {
             if (IsSubscribe)
                 throw new Exception("Already subscribed.");
-            Radio.Volume.ValueChanged += Volume_ValueChanged;
+            Radio.Volume.EndValueChanged += Volume_ValueChanged;
             IsSubscribe = true;
         }
 
@@ -41,7 +41,7 @@ namespace RadioTask.Model.RadioContexts
         {
             if (!IsSubscribe)
                 throw new Exception("Already unsubscribed.");
-            Radio.Volume.ValueChanged -= Volume_ValueChanged;
+            Radio.Volume.EndValueChanged -= Volume_ValueChanged;
             IsSubscribe = false;
         }
 

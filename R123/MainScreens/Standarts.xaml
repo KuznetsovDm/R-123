@@ -42,9 +42,9 @@
         <radio:MainView x:Name="Radio" Grid.Row="0" VerticalAlignment="Top"/>
         <!--<Frame x:Name="frame_Frame" Grid.Row="0" NavigationUIVisibility="Hidden" VerticalAlignment="Top"/>-->
 
-        <StackPanel Grid.Row="0" Grid.Column="1" Name="TaskPanel" Margin="5" Visibility="Visible">
-            <TextBlock Style="{StaticResource TextBlock}" Text="Выберете задачу:"/>
-            <ListBox Name="LisBoxtOfTasks" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Grid.Row="0" Grid.Column="1" Name="TasksPanel" Margin="5" Visibility="Visible">
+            <TextBlock Style="{StaticResource TextBlock}" Text="Выберите задачу:"/>
+            <ListBox x:Name="ListBoxTasks" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedTask}">
                 <ListBox.ItemContainerStyle>
                     <Style>
                         <Setter Property="ListBoxItem.Background" Value="LightSlateGray"/>
@@ -54,23 +54,29 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" Style="{StaticResource TextBlock}" TextWrapping="Wrap"/>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Path=Description}" Style="{StaticResource TextBlock}" TextWrapping="Wrap"/>
+                            <ComboBox ItemsSource="{Binding Path=Frequencys}" Visibility="{Binding Visibility}" SelectedItem="{Binding SelectedItem}"></ComboBox>
+                        </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Content ="Начать задание" FontFamily="TimesNewRoman" FontSize="20" Click="RunSelectedItem"/>
+            <Button Content ="Начать задание" FontFamily="Times New Roman" FontSize="20" Click="RunSelectedItem"/>
         </StackPanel>
 
         <StackPanel Name="CurrentTaskPanel" Grid.Row="0" Grid.Column="1" Visibility="Hidden">
             <TextBlock Style="{StaticResource TextBlock}" Text="Описание задачи:"/>
-            <StackPanel Name="TaskDescriptionsPanel"/>
-            <TextBlock Style="{StaticResource TextBlock}" Name="Timer" Text="Потраченное время: 0 секунд"/>
+            <TextBlock x:Name="TaskDescription" Style="{StaticResource TextBlock}" TextWrapping="Wrap"/>
+            <!--The panel for showing result of the task.-->
             <StackPanel Name="TaskResultPanel" Visibility="Hidden" Orientation="Vertical">
-                <TextBlock Style="{StaticResource TextBlock}" Name="TaskErrors"/>
-                <TextBlock Style="{StaticResource TextBlock}" Name="TaskResult"/>
-                <Button Name="InterraptTask" FontFamily="TimesNewRoman" FontSize="20" Content="Прервать задачу." Click="InterraptTask_Click"/>
+                <TextBlock Style="{StaticResource TextBlock}" Name="TaskErrors" Visibility="Collapsed"/>
+                <TextBlock Style="{StaticResource TextBlock}" Name="Timer" Text="Потраченное время: 0 секунд" Visibility="Collapsed"/>
+                <TextBlock Style="{StaticResource TextBlock}" Name="TaskResult" Visibility="Collapsed"/>
             </StackPanel>
-            <Button Name="ComeBackTask" FontFamily="TimesNewRoman" FontSize="20" Content="Вернуться к задачам." Visibility="Hidden" Click="ComeBackTask_Click"/>
+
+            <Button Name="InterraptTask" FontFamily="Times New Roman" FontSize="20" Content="Прервать задачу." Click="InterraptTask_Click"/>
+            <Button Name="ComeBackTask" FontFamily="Times New Roman" FontSize="20" Content="Вернуться к задачам." Visibility="Hidden" Click="ComeBackTask_Click"/>
+                
         </StackPanel>
     </Grid>
 </Page>

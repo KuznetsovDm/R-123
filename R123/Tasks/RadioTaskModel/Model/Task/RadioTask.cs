@@ -18,11 +18,16 @@ namespace RadioTask.Model.Task
 
         public string Description { get; set; } = "";
 
-        public RadioTask(Handler handler)
+        public bool IsWork { get => handler.IsWork ; set => new NotImplementedException(); }
+
+        public bool MustICheckSequency { get => handler.MustICheckSequency; private set => handler.MustICheckSequency = value; }
+
+        public RadioTask(Handler handler,bool mustICheckSequency = true)
         {
             this.handler = handler;
             handler.AllStepsPassed += Handler_AllStepsPassed;
             handler.Error += Handler_Error;
+            MustICheckSequency = mustICheckSequency;
         }
 
         public virtual void Start()
@@ -54,15 +59,11 @@ namespace RadioTask.Model.Task
         {
             handler.AllStepsPassed -= Handler_AllStepsPassed;
             handler.Error -= Handler_Error;
-            if(handler.IsWork)
+            if (handler.IsWork)
+            {
                 handler.Stop();
-        }
-
-        public List<StepController> GetStepControllers()
-        {
-            var result = from item in handler.Steps
-                         select new StepController(item);
-            return result.ToList();
+            }
+            handler.Dispose();
         }
 
         public int GetPriorityIndex()

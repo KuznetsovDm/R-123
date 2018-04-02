@@ -10,73 +10,99 @@ namespace R123.MainScreens
     public partial class WorkOnRadioStation : Page
     {
         private int currentStep;
-        private const int MAX_STEP = 1;
+        private const int MAX_STEP = 3;
         private string[] titles;
-        private static WorkOnRadioStation instance;
+        private bool[] activeStep;
+        private bool allStepIsActive;
+        public static WorkOnRadioStation Instance { get; private set; }
 
         public WorkOnRadioStation()
         {
             InitializeComponent();
-            instance = this;
+            Instance = this;
 
             currentStep = 0;
+            allStepIsActive = false;
 
-            titles = new string[MAX_STEP + 1];
-            titles[0] = "Порядок подготовки радиостанции к работе.";
-            titles[1] = "Проверка работоспособности радиостанции.";
+            titles = new string[MAX_STEP];
+            titles[0] = "Установите органы управления в исходное положение.";
+            titles[1] = "Подготовьте радиостанцию к работе.";
+            titles[2] = "Проверьте работоспособность радиостанции.";
+
+            activeStep = new bool[MAX_STEP + 1];
+            activeStep[0] = true;
 
             ShowPage();
 
             restart_Button.Click += (s, e) => {
-                IRestartable content = frame_Frame.Content as IRestartable;
-                if (content != null)
+                if (frame_Frame.Content is IRestartable content)
                     content.Restart();
             };
         }
 
-        public static WorkOnRadioStation Instance { get { return instance; } }
-
-
-        bool step2IsActive = false;
-        public void Activate2Step(bool value)
+        public void ActivateStep(int step, bool value = true)
         {
-            step2IsActive = value;
-            nextStep_Button.IsEnabled = step2IsActive;
+            activeStep[step] = value;
+            CurrentStep = CurrentStep;
         }
 
-        private void PrevStep(object sender, RoutedEventArgs e)
+        public void ActivateAllStep()
         {
-            if (currentStep == 0) return;
-
-            currentStep--;
-            if (currentStep == 0) prevStep_Button.IsEnabled = false;
-            nextStep_Button.IsEnabled = step2IsActive;
-
-            ShowPage();
+            allStepIsActive = !allStepIsActive;
+            CurrentStep = CurrentStep;
         }
-        private void NextStep(object sender, RoutedEventArgs e)
+
+        public void ActivateNextStep()
         {
-            if (currentStep == MAX_STEP) return;
-
-            currentStep++;
-            if (currentStep == MAX_STEP) nextStep_Button.IsEnabled = false;
-            prevStep_Button.IsEnabled = true;
-
-            ShowPage();
+            if (CurrentStep == MAX_STEP - 1) return;
+            activeStep[CurrentStep + 1] = true;
+            CurrentStep = CurrentStep;
         }
+
+        private void PrevStep(object sender, RoutedEventArgs e) => CurrentStep--;
+
+        private void NextStep(object sender, RoutedEventArgs e) => CurrentStep++;
+
+        private int CurrentStep
+        {
+            get => currentStep;
+            set
+            {
+                if (value < 0)
+                {
+                    MainWindow.Instance.CurrentTabIndex = 1;
+                    currentStep = 0;
+                    return;
+                }
+                else if (value >= MAX_STEP)
+                {
+                    MainWindow.Instance.CurrentTabIndex = 3;
+                    currentStep = MAX_STEP - 1;
+                    return;
+                }
+
+                nextStep_Button.IsEnabled = activeStep[value + 1] || allStepIsActive;
+
+                if (currentStep == value)
+                    return;
+
+                currentStep = value;
+
+                ShowPage();
+            }
+        }
+
         private void ShowPage()
         {
-            title_TextBlock.Text = $"Шаг №{currentStep + 1} / 2: {titles[currentStep]}";
+            title_TextBlock.Text = $"Этап №{currentStep + 1}/{MAX_STEP}: {titles[currentStep]}";
             if (currentStep == 0)
-                frame_Frame.Content = new TuningPage();
+                frame_Frame.Content = new DefaultStatePage();
             else if (currentStep == 1)
+                frame_Frame.Content = new TuningPage();
+            else if (currentStep == 2)
                 frame_Frame.Content = new WorkingCapacityPage();
 
             frame_Frame.Focus();
-        }
-        private void EscButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Close();
         }
     }
 }

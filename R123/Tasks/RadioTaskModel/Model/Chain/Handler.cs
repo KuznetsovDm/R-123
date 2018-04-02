@@ -8,26 +8,37 @@ using System.Windows;
 
 namespace RadioTask.Model.Chain
 {
-    public class Handler : IObserver<Step>
+    public class Handler : IObserver<Step>, IDisposable
     {
         public List<Step> Steps { get; internal set; }
         public Step PriorityStep { get;private set; }
         public event EventHandler<ErrorEventArgs> Error = delegate { };
         public event EventHandler AllStepsPassed = delegate { };
-        public bool IsWork { get; private set; } = false;
+        public bool IsWork { get; protected set; } = false;
+        public bool MustICheckSequency { get; set; }
 
         public Handler()
         {
             Steps = new List<Step>();
         }
 
-        public void Handle(Step obj)
+        public virtual void Handle(Step obj)
         {
-            //если была ошибка дальше не обрабатывать
-            if (HandleError(obj))
-                return;
-            PrepareForNextStep(obj);
-            HandlePassedState(obj);
+            if (MustICheckSequency)
+            {
+                //если была ошибка дальше не обрабатывать
+                if (HandleError(obj))
+                    return;
+                PrepareForNextStep(obj);
+                HandlePassedState(obj);
+            }
+            else
+            {
+                if (Steps.All(x => x.CurrentState))
+                {
+                    AllStepsPassed(this, new EventArgs());
+                }
+            }
         }
 
         //возвращает информацию была ли ошибка
@@ -92,15 +103,13 @@ namespace RadioTask.Model.Chain
 
         private bool CheckWithoutEscapedPrew(Step interested, List<Step> steps)
         {
-            var stepsWithoutEscaped = from item in steps
+            var stepsWithoutEscaped = (from item in steps
                                       where !interested.ErrorHandler.SkipTypesPrew.Contains(item.Type)
-                                      select item;
-
-            System.Diagnostics.Trace.WriteLine(stepsWithoutEscaped.All(x => x.CurrentState));
+                                      select item).ToList();
             return stepsWithoutEscaped.All(x => x.CurrentState);
         }
 
-        public void Start()
+        public virtual void Start()
         {
             if (Steps.Count < 1)
                 throw new Exception("Are't steps.");
@@ -115,7 +124,7 @@ namespace RadioTask.Model.Chain
             IsWork = true;
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             Steps.ForEach(x =>
             {
@@ -125,6 +134,24 @@ namespace RadioTask.Model.Chain
             }
             );
             IsWork = false;
+        }
+
+        public virtual void Dispose()
+        {
+            if (IsWork)
+                Stop();
+            Steps.Clear();
+            Steps = null;
+        }
+
+        protected virtual void OnError(ErrorEventArgs e)
+        {
+            Error?.Invoke(this, e);
+        }
+
+        protected virtual void OnAllStepsPassed(EventArgs e)
+        {
+            AllStepsPassed?.Invoke(this, e);
         }
     }
 }

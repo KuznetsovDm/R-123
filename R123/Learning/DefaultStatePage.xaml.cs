@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using R123.Files;
 using R123.Radio.Model;
 
 namespace R123.Learning
@@ -8,9 +10,11 @@ namespace R123.Learning
     /// <summary>
     /// Логика взаимодействия для DefaultStatePage.xaml
     /// </summary>
-    public partial class DefaultStatePage : Page
+    public partial class DefaultStatePage : Page, IRestartable
     {
-        //public Radio.View.RadioPage RadioPage { get; private set; }
+        private SolidColorBrush red = new SolidColorBrush(Colors.Red);
+        private SolidColorBrush green = new SolidColorBrush(Colors.Green);
+
         private Func<bool>[] Conditions { get; set; }
         private string[] Checks = {
             "Фиксатор ручки \"НАСТРОЙКА АНТЕННЫ\" затянут",
@@ -20,7 +24,7 @@ namespace R123.Learning
             "Регулятор \"ШУМЫ\" выведен (в левом крайнем положении)",
             "Переключатель контроля напряжений в положении \"РАБОТА 1\"",
             "Переключатель рода работ в положении \"СИМПЛЕКС\"",
-            "Тумблеры \"ПОДДИАПАЗОН\" каждый в положении, соответствующем заданной фиксированной частоте",
+            "Тумблеры \"ПОДДИАПАЗОН\" каждый в положении \"ПОДДИАПАЗОН II\"",
             "Тумблер \"ШКАЛА\" в положении \"ВЫКЛ\"",
             "Тумблер \"ПИТАНИЕ\" в положении \"ВЫКЛ\""
         };
@@ -28,6 +32,7 @@ namespace R123.Learning
         public DefaultStatePage()
         {
             InitializeComponent();
+
             InitializeControls();
 
             Conditions = new Func<bool>[10];
@@ -41,7 +46,10 @@ namespace R123.Learning
             Conditions[4] = () => Radio.Model.Noise.Value == 1.0;
             Conditions[5] = () => Radio.Model.Voltage.Value == VoltageState.Broadcast1;
             Conditions[6] = () => Radio.Model.WorkMode.Value == WorkModeState.Simplex;
-            Conditions[7] = () => true;
+            Conditions[7] = () => Radio.Model.SubFixFrequency[0].Value == Turned.Off &&
+                                  Radio.Model.SubFixFrequency[1].Value == Turned.Off &&
+                                  Radio.Model.SubFixFrequency[2].Value == Turned.Off &&
+                                  Radio.Model.SubFixFrequency[3].Value == Turned.Off;
             Conditions[8] = () => Radio.Model.Scale.Value == Turned.Off;
             Conditions[9] = () => Radio.Model.Power.Value == Turned.Off;
 
@@ -50,14 +58,17 @@ namespace R123.Learning
                     Orientation = Orientation.Horizontal
                 };
 
-                horizontalPanel.Children.Add(new CheckBox {
-                    VerticalAlignment = VerticalAlignment.Center
+                horizontalPanel.Children.Add(new NewCheckBox {
+                    IsChecked = false,
+                    Width = 18,
+                    Height = 18
                 });
 
                 horizontalPanel.Children.Add(
                     new TextBlock {
                         Text = check,
-                        MaxWidth = 900
+                        MaxWidth = 900,
+                        Foreground = new SolidColorBrush(Colors.Red)
                 });
 
                 panel.Children.Add(horizontalPanel);
@@ -71,10 +82,16 @@ namespace R123.Learning
             bool allChecked = true;
             for (int i = 0; i < Conditions.Length; i++) {
                 if (CheckCondition(i)) {
-                    ((CheckBox)((StackPanel)panel.Children[i]).Children[0]).IsChecked = true;
+                    NewCheckBox checkBox = (NewCheckBox)((StackPanel)panel.Children[i]).Children[0];
+                    checkBox.IsChecked = true;
+                    TextBlock textBlock = (TextBlock)((StackPanel)panel.Children[i]).Children[1];
+                    textBlock.Foreground = green;
                 }
                 else {
-                    ((CheckBox)((StackPanel)panel.Children[i]).Children[0]).IsChecked = false;
+                    NewCheckBox checkBox = (NewCheckBox)((StackPanel)panel.Children[i]).Children[0];
+                    checkBox.IsChecked = false;
+                    TextBlock textBlock = (TextBlock)((StackPanel)panel.Children[i]).Children[1];
+                    textBlock.Foreground = red;
                     allChecked = false;
                 }
             }
@@ -83,7 +100,7 @@ namespace R123.Learning
                 Message message = new Message("Все органы управления находятся в исходном положении.", false);
                 message.ShowDialog();
                 InitializeUnsubscribe();
-                MainWindow.Instance.ActivateTab(2);
+                MainScreens.WorkOnRadioStation.Instance.ActivateStep(1);
             }
         }
 
@@ -103,6 +120,8 @@ namespace R123.Learning
             Radio.Model.Range.ValueChanged += Check;
             for (int i = 0; i < Radio.Model.Clamps.Length; i++)
                 Radio.Model.Clamps[i].ValueChanged += Check;
+            for (int i = 0; i < Radio.Model.SubFixFrequency.Length; i++)
+                Radio.Model.SubFixFrequency[i].ValueChanged += Check;
             Radio.Model.NumberSubFrequency.ValueChanged += Check;
             Radio.Model.AntennaFixer.ValueChanged += Check;
         }
@@ -118,6 +137,8 @@ namespace R123.Learning
             Radio.Model.Range.ValueChanged -= Check;
             for (int i = 0; i < Radio.Model.Clamps.Length; i++)
                 Radio.Model.Clamps[i].ValueChanged -= Check;
+            for (int i = 0; i < Radio.Model.SubFixFrequency.Length; i++)
+                Radio.Model.SubFixFrequency[i].ValueChanged -= Check;
             Radio.Model.NumberSubFrequency.ValueChanged -= Check;
             Radio.Model.AntennaFixer.ValueChanged -= Check;
         }
@@ -136,6 +157,24 @@ namespace R123.Learning
             Radio.Model.Clamps[1].Value = ClampState.Medium;
             Radio.Model.Clamps[2].Value = ClampState.Medium;
             Radio.Model.Clamps[3].Value = ClampState.Medium;
+            Radio.Model.SubFixFrequency[0].Value = Turned.On;
+            Radio.Model.SubFixFrequency[1].Value = Turned.On;
+            Radio.Model.SubFixFrequency[2].Value = Turned.On;
+            Radio.Model.SubFixFrequency[3].Value = Turned.On;
+        }
+
+        public void Restart()
+        {
+            for (int i = 0; i < Conditions.Length; i++)
+            {
+                NewCheckBox checkBox = (NewCheckBox)((StackPanel)panel.Children[i]).Children[0];
+                checkBox.IsChecked = false;
+                ((TextBlock)((StackPanel)panel.Children[i]).Children[1]).Foreground = red;
+            }
+
+            InitializeControls();
+            InitializeUnsubscribe();
+            InitializeSubscribe();
         }
     }
 }

@@ -23,6 +23,10 @@ namespace RadioTask.Model.Chain
         SetFixAntenna,
         Ton,
         SetFixFrequency,
+        RangeStateSpecialized,
+        SubrangeSwitcherSpecialized,
+        Range,
+        SubrangeSwithcer
     }
 
 }

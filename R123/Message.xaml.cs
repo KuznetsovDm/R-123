@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace R123
 {
@@ -15,7 +16,16 @@ namespace R123
             if (cancelled) {
                 wrapPanel.Children[1].Visibility = Visibility.Visible;
             }
-            
+        }
+
+        public Message(StackPanel stackPanel, bool cancelled)
+        {
+            InitializeComponent();
+            grid.Children.Add(stackPanel);
+
+            if (cancelled) {
+                wrapPanel.Children[1].Visibility = Visibility.Visible;
+            }
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)

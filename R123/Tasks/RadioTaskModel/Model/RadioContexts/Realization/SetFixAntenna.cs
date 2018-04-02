@@ -38,11 +38,6 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void AntennaFixer_ValueChanged1(object sender, ValueChangedEventArgs<ClampState, ClampState> e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void AntennaFixer_ValueChanged(object sender, ValueChangedEventArgs<ClampState, ClampState> e)
         {
             if (e.NewValue == ClampState.Fixed && GetState())

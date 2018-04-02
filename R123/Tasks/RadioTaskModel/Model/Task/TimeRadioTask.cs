@@ -13,7 +13,7 @@ namespace RadioTask.Model.Task
 
         public int Tiks { get; private set; } = 0;
 
-        public TimeRadioTask(Handler handler) : base(handler)
+        public TimeRadioTask(Handler handler,bool mustICheckSqeuncy = true) : base(handler,mustICheckSqeuncy)
         {
             Timer.Interval = new TimeSpan(0, 0, 1);
         }

@@ -55,7 +55,7 @@ namespace RadioTask.Model.RadioContexts.Realization
 
         public override string ToString()
         {
-            return ((verify == ClampState.Fixed)? "Зафиксируйте " : "Расфиксируйте" ) + ".";
+            return ((verify == ClampState.Fixed)? "Зафиксируйте " : "Расфиксируйте" ) + "антенну.";
         }
     }
 }
