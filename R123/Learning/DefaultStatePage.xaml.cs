@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using R123.Files;
 using R123.Radio.Model;
 
 namespace R123.Learning
@@ -97,7 +95,7 @@ namespace R123.Learning
             }
 
             if (allChecked) {
-                Message message = new Message("Все органы управления находятся в исходном положении.", false);
+                AdditionalWindows.Message message = new AdditionalWindows.Message("Все органы управления находятся в исходном положении.", false);
                 message.ShowDialog();
                 InitializeUnsubscribe();
                 MainScreens.WorkOnRadioStation.Instance.ActivateStep(1);

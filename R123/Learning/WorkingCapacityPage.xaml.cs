@@ -95,8 +95,8 @@ namespace R123.Learning
                              "Выполняйте последовательно шаги обучения.\r\n" +
                              "Если непонятен какой-то шаг, нажмите на него и Вы получите пояснение.\r\n\r\n" +
                              "После завершения всех этапов проверки работоспособности радиостанции установите все органы управления в исходное положение, чтобы перейти на следующий этап.";
-            
-            Message mes = new Message(message, false);
+
+            AdditionalWindows.Message mes = new AdditionalWindows.Message(message, false);
             mes.ShowDialog();
         }
 
@@ -267,7 +267,7 @@ namespace R123.Learning
                 panel.Children.Add(host);
             }
 
-            Message message = new Message(panel, false);
+            AdditionalWindows.Message message = new AdditionalWindows.Message(panel, false);
             message.ShowDialog();
         }
 
@@ -399,7 +399,7 @@ namespace R123.Learning
                 SetColor(currentStep, Colors.Black, Colors.White);
                 string mess = $"Поздравляем! Теперь вы умеете проверять работоспособность радиостанции.{Environment.NewLine}Для перехода к следующему шагу установите " +
                     $"все органы управления в исходное положение.";
-                Message message = new Message(mess, false);
+                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
                 message.ShowDialog();
                 SetButtonsColor();
                 currentStep = 0;
@@ -412,7 +412,7 @@ namespace R123.Learning
         {
             if (stateChecker.Check()) {
                 string mess = "Вы установили органы управления в исходное положение.";
-                Message message = new Message(mess, false);
+                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
                 message.ShowDialog();
                 InitializeCheckUnsubscribes();
                 MainScreens.WorkOnRadioStation.Instance.ActivateStep(3);

@@ -83,7 +83,7 @@ namespace R123
                              "Если непонятен какой-то шаг, нажмите на него и Вы получите пояснение.\r\n\r\n" +
                              "После завершения всех этапов подготовки радиостанции к работе установите все органы управления в исходное положение, чтобы перейти на следующий этап.";
 
-            Message mes = new Message(message, false);
+            AdditionalWindows.Message mes = new AdditionalWindows.Message(message, false);
             mes.ShowDialog();
             isFirstTimeLoaded = false;
         }
@@ -134,7 +134,7 @@ namespace R123
 
             }
 
-            Message message = new Message(panel, false);
+            AdditionalWindows.Message message = new AdditionalWindows.Message(panel, false);
             message.ShowDialog();
         }
 
@@ -294,7 +294,7 @@ namespace R123
         {
             if (stateChecker.Check()) {
                 string mess = "Вы установили органы управления в исходное положение.";
-                Message message = new Message(mess, false);
+                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
                 message.ShowDialog();
                 InitializeCheckUnsubscribes();
                 MainScreens.WorkOnRadioStation.Instance.ActivateNextStep();
@@ -434,7 +434,7 @@ namespace R123
                     mess += $"Для разблокировки следующего этапа обучения установите все органы управления в исходное положение.";
                 }
 
-                Message message = new Message(mess, false);
+                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
                 message.ShowDialog();
                 SetColor(currentStep, Colors.Yellow, Colors.Black);
                 currentStep = 0;

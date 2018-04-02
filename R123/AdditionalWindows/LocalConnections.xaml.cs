@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Net;
 
-namespace R123.ViewConnerction
+namespace R123.AdditionalWindows
 {
     /// <summary>
     /// Логика взаимодействия для LocalConnections.xaml

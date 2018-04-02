@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace R123
+namespace R123.AdditionalWindows
 {
     /// <summary>
     /// Логика взаимодействия для Message.xaml

@@ -53,7 +53,7 @@ namespace R123
             else if (e.Key == Key.F2 && e.IsDown)
                 MainScreens.WorkOnRadioStation.Instance.ActivateNextStep();
             else if (e.Key == Key.F3 && e.IsDown)
-                ViewConnerction.LocalConnections.ShowWindow();
+                AdditionalWindows.LocalConnections.ShowWindow();
         }
 
         private bool tabsIsActive = false;

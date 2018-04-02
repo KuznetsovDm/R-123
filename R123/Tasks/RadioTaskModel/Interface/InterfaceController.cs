@@ -116,7 +116,7 @@ namespace RadioTask.Interface
             panel.Margin = new Thickness(10);
             panel.Children.Add(new TextBlock() { Text = "Задача выполнена!", Foreground = new SolidColorBrush(Colors.Green),
                 FontFamily = new FontFamily("TimesNewRoman"), FontSize = 18});
-            Message msg = new Message(panel,false);
+            R123.AdditionalWindows.Message msg = new R123.AdditionalWindows.Message(panel,false);
             msg.ShowDialog();
             //
 

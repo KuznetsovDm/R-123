@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace R123.Files
+namespace R123.Learning
 {
     class NewCheckBox : Image
     {

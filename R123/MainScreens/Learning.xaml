@@ -34,6 +34,7 @@
                         <Setter Property="Focusable" Value="False"/>
                     </Style>
                 </StackPanel.Resources>
+                <Button Content="0. Радиостанция Р-123М"/>
                 <Button Content="1. Назначение радиостанции Р-123М"/>
                 <Button Content="2. Технические характеристики"/>
                 <Button Content="3. Комплект радиостанции Р-123М"/>
@@ -56,8 +57,7 @@
             <Button x:Name="nextStep_Button" Content="Следующий этап" IsEnabled="True" Click="NextStep"/>
         </StackPanel>
 
-        <DocumentViewer x:Name="DocViewer" Grid.Column="1" Grid.Row="1"/>
-        <Frame x:Name="Step4_Freme" Grid.Column="1" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+        <Frame x:Name="Content_Frame" Grid.Column="1" Grid.Row="1" NavigationUIVisibility="Hidden"/>
         
         <Grid x:Name="Step3_Grid" Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
@@ -65,7 +65,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             
-            <Image Source="/Files/Images/Learning/SetRadio.png" Stretch="Fill"/>
+            <Image Source="/Files/SetRadio.png" Stretch="Fill"/>
             <Viewbox x:Name="AboutSwitcher_ViewBox" Stretch="Fill">
                 <Canvas  Width="963" Height="449">
                     <Canvas.Resources>

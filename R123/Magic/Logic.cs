@@ -85,7 +85,7 @@ namespace R123
         private static void Frequency_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
         {
             radioLogic.Frequency = e.NewValue;
-            ViewConnerction.LocalConnections.SetFrequency(e.NewValue);
+            AdditionalWindows.LocalConnections.SetFrequency(e.NewValue);
         }
 
         private static void Noise_ValueChanged(object sender, ValueChangedEventArgs<double, double> e) => radioLogic.Noise.Volume = (float)e.NewValue;
@@ -93,7 +93,7 @@ namespace R123
         private static void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
         {
             radioLogic.Antenna = e.NewValue;
-            ViewConnerction.LocalConnections.SetAntenna(e.NewValue);
+            AdditionalWindows.LocalConnections.SetAntenna(e.NewValue);
         }
 
         private static void WorkMode_ValueChanged(object sender, ValueChangedEventArgs<WorkModeState, WorkModeState> e) => OnTangentChange();

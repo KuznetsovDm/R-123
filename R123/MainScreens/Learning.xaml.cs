@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Xps.Packaging;
+using System.Windows.Media;
 
 namespace R123.MainScreens
 {
@@ -9,7 +9,7 @@ namespace R123.MainScreens
     /// </summary>
     public partial class Learning : Page
     {
-        private const int NUMBER_STEPS = 4;
+        private const int NUMBER_STEPS = 5;
         private string[] nameXPSFiles, titles;
         Radio.MainView RadioView;
         public Learning()
@@ -18,13 +18,16 @@ namespace R123.MainScreens
 
             nameXPSFiles = new string[]
             {
+                null,
                 "Destination",
                 "Tech",
                 "Kit",
+                null,
             };
 
             titles = new string[]
             {
+                "Радиостанция Р-123М",
                 "Назначение радиостанции Р-123М",
                 "Технические характеристики",
                 "Комплект радиостанции Р-123М",
@@ -94,29 +97,32 @@ namespace R123.MainScreens
             set
             {
                 if (value == NUMBER_STEPS)
-                {
                     MainWindow.Instance.CurrentTabIndex = 2;
+
+                if (value < 0 || value == NUMBER_STEPS)
                     return;
-                }
-                else if (value < 0)
-                    return;
+
+                if (Menu_StackPanel.Children[currentStep] is Button prevButton)
+                    prevButton.Background = new SolidColorBrush(Color.FromRgb(221, 221, 221));
+
+                if (Menu_StackPanel.Children[value] is Button currentButton)
+                    currentButton.Background = new SolidColorBrush(Color.FromRgb(111, 218, 111));
 
                 currentStep = value;
 
                 prevStep_Button.IsEnabled = currentStep > 0;
 
-                DocViewer.Visibility = BoolToVisible(currentStep < 3);
-                Step3_Grid.Visibility = BoolToVisible(currentStep == 3);
+                Content_Frame.Visibility = BoolToVisible(currentStep < 4);
+                Step3_Grid.Visibility = BoolToVisible(currentStep == 4);
 
+                title_TextBlock.Text = $"Этап №{currentStep}: {titles[currentStep]}.";
 
-                title_TextBlock.Text = $"Этап №{currentStep + 1}: {titles[currentStep]}.";
-
-                if (currentStep == 3)
-                    new Message("Чтобы увидеть описание элемента, наведите курсор на его номер.", false).ShowDialog();
-                else
-                    DocViewer.Document = (
-                        new XpsDocument($"../../Files/XSPLearning/{nameXPSFiles[currentStep]}.xps", System.IO.FileAccess.Read)
-                    ).GetFixedDocumentSequence();
+                if (currentStep == 0)
+                    Content_Frame.Content = new StartTab.Start();
+                else if (nameXPSFiles[currentStep] != null)
+                    Content_Frame.Content = new StartTab.XpsDocumentPage(nameXPSFiles[currentStep]);
+                else if (currentStep == 4)
+                    new AdditionalWindows.Message("Чтобы увидеть описание элемента, наведите курсор на его номер.", false).ShowDialog();
             }
         }
 
