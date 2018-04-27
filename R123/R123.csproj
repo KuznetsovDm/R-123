@@ -13,7 +13,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\DK\Desktop\R123\</PublishUrl>
+    <PublishUrl>C:\Users\Дмитрий\Desktop\R123\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -66,14 +66,13 @@
     <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.9.0\lib\net40\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,34 +86,44 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WpfAnimatedGif.1.4.15\lib\net\WpfAnimatedGif.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AdditionalWindows\NewMessage.xaml.cs">
+      <DependentUpon>NewMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Blackouts\DefaultStatePageBlackouts.cs" />
+    <Compile Include="Blackouts\Drawer.cs" />
+    <Compile Include="Blackouts\ManagementBlackouts.cs" />
+    <Compile Include="Blackouts\TemplateBlackouts.cs" />
+    <Compile Include="Learning\Conditions.cs" />
+    <Compile Include="Learning\DefaultTest.cs" />
+    <Compile Include="Learning\IStepChecker.cs" />
+    <Compile Include="Learning\ISubscribesInitializer.cs" />
     <Compile Include="Learning\NewCheckBox.cs" />
     <Compile Include="Learning\DefaultStateChecker.cs" />
     <Compile Include="Learning\DefaultStatePage.xaml.cs">
       <DependentUpon>DefaultStatePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Learning\IRestartable.cs" />
+    <Compile Include="Learning\NewTuningTest.cs" />
+    <Compile Include="Learning\SequenceStepChecker.cs" />
+    <Compile Include="Learning\StepEventArgs.cs" />
     <Compile Include="Learning\TuningPage.xaml.cs">
       <DependentUpon>TuningPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Learning\TuningSubscribesInitializer.cs" />
     <Compile Include="Learning\TuningTest.cs" />
     <Compile Include="Learning\WorkingCapacityPage.xaml.cs">
       <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Learning\WorkingSubscribesInitializer.cs" />
     <Compile Include="Learning\WorkingTest.cs" />
-    <Compile Include="AdditionalWindows\LocalConnections.xaml.cs">
-      <DependentUpon>LocalConnections.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Magic\Connection\Connection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IConnection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IListener.cs" />
@@ -141,8 +150,8 @@
     <Compile Include="Magic\MCP\MCP\MCPConnector.cs" />
     <Compile Include="Magic\MCP\MCP\MCPPacket.cs" />
     <Compile Include="Magic\RadioConnection.cs" />
-    <Compile Include="MainScreens\Learning.xaml.cs">
-      <DependentUpon>Learning.xaml</DependentUpon>
+    <Compile Include="MainScreens\StartPage.xaml.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainScreens\Standarts.xaml.cs">
       <DependentUpon>Standarts.xaml</DependentUpon>
@@ -150,11 +159,14 @@
     <Compile Include="MainScreens\Work.xaml.cs">
       <DependentUpon>Work.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainScreens\WorkOnRadioStation.xaml.cs">
-      <DependentUpon>WorkOnRadioStation.xaml</DependentUpon>
+    <Compile Include="MainScreens\Learning.xaml.cs">
+      <DependentUpon>Learning.xaml</DependentUpon>
     </Compile>
     <Compile Include="AdditionalWindows\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StartTab\Management.xaml.cs">
+      <DependentUpon>Management.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartTab\Start.xaml.cs">
       <DependentUpon>Start.xaml</DependentUpon>
@@ -235,6 +247,10 @@
     <Compile Include="Tasks\RadioTaskModel\Model\Task\TimeRadioTask.cs" />
     <Compile Include="Tasks\Utils\DoubleExtentions.cs" />
     <Compile Include="Tasks\Utils\RadioStation\BadFrequency.cs" />
+    <Page Include="AdditionalWindows\NewMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Learning\DefaultStatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -247,11 +263,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AdditionalWindows\LocalConnections.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainScreens\Learning.xaml">
+    <Page Include="MainScreens\StartPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,13 +275,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainScreens\WorkOnRadioStation.xaml">
+    <Page Include="MainScreens\Learning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AdditionalWindows\Message.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StartTab\Management.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StartTab\Start.xaml">
       <SubType>Designer</SubType>
@@ -339,6 +355,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="StartTab\TextForManagement.txt" />
     <Resource Include="Files\Images\AntennaControl.png" />
     <Resource Include="Files\Images\AntennaControlOld.png" />
     <Resource Include="Files\Images\FixedFrequencyDisplay0.gif" />
@@ -407,6 +424,7 @@
     <Resource Include="Files\yes.png" />
     <Resource Include="Files\radio.jpg" />
     <Resource Include="Files\Images\R123.png" />
+    <Resource Include="Files\radioForStart.jpeg" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

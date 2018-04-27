@@ -33,74 +33,74 @@ namespace R123
             System.Diagnostics.Trace.WriteLine("state = " + state + ", init = " + IsInitialized);
             if (IsInitialized)
             {
-                UnSubscribe(Model);
+                UnSubscribe();
                 RadioConnection.Stop();
                 RadioConnection.Player.Pause();
             }
 
-            if (state == false) return;
-
-            Subscribe(Model);
-            RadioConnection.AnalysisPlayNoise(null, null);
+            if (state)
+            {
+                RadioModel = Model;
+                Subscribe();
+                RadioConnection.AnalysisPlayNoise(null, null);
+            }
         }
 
-        private static void Subscribe(MainModel Model)
+        private static void Subscribe()
         {
-            RadioModel = Model;
-            radioLogic.Frequency = Model.Frequency.Value;
-            radioLogic.Noise.Volume = (float)Model.Noise.Value;
-            radioLogic.Volume = (float)Model.Volume.Value;
-            radioLogic.Antenna = Model.Antenna.Value;
+            radioLogic.Frequency = RadioModel.Frequency.Value;
+            radioLogic.Noise.Volume = (float)RadioModel.Noise.Value;
+            radioLogic.Volume = (float)RadioModel.Volume.Value;
+            radioLogic.Antenna = RadioModel.Antenna.Value;
             radioLogic.Microphone.Volume = 1;
 
-            Model.Frequency.ValueChanged += Frequency_ValueChanged;
-            Model.Noise.ValueChanged += Noise_ValueChanged;
-            Model.Volume.ValueChanged += Volume_ValueChanged;
-            Model.Antenna.ValueChanged += Antenna_ValueChanged;
+            RadioModel.Frequency.ValueChanged += Frequency_ValueChanged;
+            RadioModel.Noise.ValueChanged += Noise_ValueChanged;
+            RadioModel.Volume.ValueChanged += Volume_ValueChanged;
+            RadioModel.Antenna.ValueChanged += Antenna_ValueChanged;
 
-            Model.WorkMode.ValueChanged += WorkMode_ValueChanged;
+            RadioModel.WorkMode.ValueChanged += WorkMode_ValueChanged;
 
-            Model.Power.ValueChanged += Power_ValueChanged;
-            Model.Tone.ValueChanged += Tone_ValueChanged;
-            Model.Tangent.ValueChanged += Tangent_ValueChanged;
+            RadioModel.Power.ValueChanged += Power_ValueChanged;
+            RadioModel.Tone.ValueChanged += Tone_ValueChanged;
+            RadioModel.Tangent.ValueChanged += Tangent_ValueChanged;
 
             OnPowerChange();
             OnToneChange();
         }
 
-        private static void UnSubscribe(MainModel Model)
+        private static void UnSubscribe()
         {
-            Model.Frequency.ValueChanged -= Frequency_ValueChanged;
-            Model.Noise.ValueChanged -= Noise_ValueChanged;
-            Model.Volume.ValueChanged -= Volume_ValueChanged;
-            Model.Antenna.ValueChanged -= Antenna_ValueChanged;
+            RadioModel.Frequency.ValueChanged -= Frequency_ValueChanged;
+            RadioModel.Noise.ValueChanged -= Noise_ValueChanged;
+            RadioModel.Volume.ValueChanged -= Volume_ValueChanged;
+            RadioModel.Antenna.ValueChanged -= Antenna_ValueChanged;
 
-            Model.WorkMode.ValueChanged -= WorkMode_ValueChanged;
+            RadioModel.WorkMode.ValueChanged -= WorkMode_ValueChanged;
 
-            Model.Power.ValueChanged -= Power_ValueChanged;
-            Model.Tone.ValueChanged -= Tone_ValueChanged;
-            Model.Tangent.ValueChanged -= Tangent_ValueChanged;
+            RadioModel.Power.ValueChanged -= Power_ValueChanged;
+            RadioModel.Tone.ValueChanged -= Tone_ValueChanged;
+            RadioModel.Tangent.ValueChanged -= Tangent_ValueChanged;
+            RadioModel = null;
         }
 
-        private static void Frequency_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
+        private static void Frequency_ValueChanged(object sender, ValueChangedEventArgs<double> e)
         {
             radioLogic.Frequency = e.NewValue;
-            AdditionalWindows.LocalConnections.SetFrequency(e.NewValue);
         }
 
-        private static void Noise_ValueChanged(object sender, ValueChangedEventArgs<double, double> e) => radioLogic.Noise.Volume = (float)e.NewValue;
-        private static void Volume_ValueChanged(object sender, ValueChangedEventArgs<double, double> e) => radioLogic.Volume = (float)e.NewValue;
-        private static void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
+        private static void Noise_ValueChanged(object sender, ValueChangedEventArgs<double> e) => radioLogic.Noise.Volume = (float)e.NewValue;
+        private static void Volume_ValueChanged(object sender, ValueChangedEventArgs<double> e) => radioLogic.Volume = (float)e.NewValue;
+        private static void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double> e)
         {
             radioLogic.Antenna = e.NewValue;
-            AdditionalWindows.LocalConnections.SetAntenna(e.NewValue);
         }
 
-        private static void WorkMode_ValueChanged(object sender, ValueChangedEventArgs<WorkModeState, WorkModeState> e) => OnTangentChange();
+        private static void WorkMode_ValueChanged(object sender, ValueChangedEventArgs<WorkModeState> e) => OnTangentChange();
 
-        private static void Power_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e) => OnPowerChange();
-        private static void Tone_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e) => OnToneChange();
-        private static void Tangent_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e) => OnTangentChange();
+        private static void Power_ValueChanged(object sender, ValueChangedEventArgs<Turned> e) => OnPowerChange();
+        private static void Tone_ValueChanged(object sender, ValueChangedEventArgs<Turned> e) => OnToneChange();
+        private static void Tangent_ValueChanged(object sender, ValueChangedEventArgs<Turned> e) => OnTangentChange();
 
 
 

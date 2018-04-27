@@ -3,27 +3,18 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:radio="clr-namespace:R123.Radio"
-      xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
-      xmlns:winForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
       mc:Ignorable="d" 
       d:DesignHeight="1024" d:DesignWidth="1280"
       Title="Work">
-    <Grid x:Name="body">
-        <!--Background="#E8E6EA"-->
+    <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Files/radio.jpg" Stretch="Fill"/>
         </Grid.Background>
 
         <Viewbox x:Name="AboutSwitcher_ViewBox" Stretch="Fill">
             <Canvas  Width="963" Height="449">
-                <Viewbox Grid.Row="1" Stretch="Fill" Width="827" Height="313" Canvas.Left="84" Canvas.Top="69" x:Name="View">
-                    <!--<radio:MainView x:Name="Radio" Loaded="Radio_Loaded"/>-->
-                </Viewbox>
+                <Viewbox Grid.Row="1" Stretch="Fill" Width="827" Height="313" Canvas.Left="84" Canvas.Top="69" x:Name="View"/>
             </Canvas>
         </Viewbox>
-        <!--<wfi:WindowsFormsHost Grid.Column="1">
-            <winForms:PictureBox ImageLocation="../../Files/Gifs/GifsStep1/2.setSimplex.gif"/>
-        </wfi:WindowsFormsHost>-->
     </Grid>
 </Page>

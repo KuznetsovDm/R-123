@@ -37,7 +37,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void Voltage_ValueChanged(object sender, ValueChangedEventArgs<VoltageState, VoltageState> e)
+        private void Voltage_ValueChanged(object sender, ValueChangedEventArgs<VoltageState> e)
         {
             if (GetState())
                 action?.Invoke();

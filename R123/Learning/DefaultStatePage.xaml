@@ -4,19 +4,186 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:radio="clr-namespace:R123.Radio"
+      xmlns:message="clr-namespace:R123.AdditionalWindows"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="750" d:DesignWidth="1000"
       Title="DefaultStatePage">
-    <Grid Width="1000" Background="#E8E6EA">
-        
+
+    <Page.Resources>
+        <Style TargetType="Border" x:Key="Number">
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="ToolTipService.ShowDuration" Value="100000"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="TextNumber">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="Line">
+            <Setter Property="StrokeThickness" Value="5"/>
+            <Setter Property="Stroke" Value="Black"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="ToolTipService.ShowDuration" Value="100000"/>
+            <Setter Property="Panel.ZIndex" Value="3"/>
+            <Setter Property="BorderThickness" Value="3"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Background" Value="Yellow"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="120"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"  BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Border Width="30" Height="30" CornerRadius="15" BorderThickness="3" BorderBrush="Black" Background="White">
+                                    <TextBlock Text="{TemplateBinding Tag}"
+                                       Background="White" Foreground="Black"
+                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontSize="16" FontWeight="Bold"/>
+                                </Border>
+
+                                <TextBlock Text="{TemplateBinding Content}" 
+                                       TextWrapping="Wrap" Padding="5"
+                                       Width="{TemplateBinding Width}" Grid.Row="1"
+                                       Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
+                                       TextAlignment="Center" HorizontalAlignment="Center"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       FontSize="{TemplateBinding FontSize}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ToolTip" x:Name="tooltip">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="MaxWidth" Value="300"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#E8E6EA">
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="36*"/>
+            <ColumnDefinition Width="7*"/>
+        </Grid.ColumnDefinitions>
+
+        <Viewbox Grid.Column="1" Grid.Row="1" Stretch="Uniform">
+            <Grid>
+                <radio:MainView x:Name="Radio"/>
+                <Path x:Name="ForBlackouts_Path"/>
+            </Grid>
+        </Viewbox>
+
+        <Viewbox Stretch="Fill" Grid.ColumnSpan="3" Grid.RowSpan="3">
+            <Canvas x:Name="canvas"  Width="1000" Height="750">
+
+                <!--Верхний край-->
+                <Button Canvas.Left="420" Canvas.Top="15" Width="160"/>
+                <Button Uid="1" Canvas.Left="180" Canvas.Top="15" Width="160"/>
+
+                <!--Левый край-->
+                <Button Canvas.Left="10" Canvas.Top="180" Height="170"/>
+                <Button Uid="1" Canvas.Left="10" Canvas.Top="400" Height="170"/>
+
+                <!--Нижний край-->
+                <Button Canvas.Left="180" Canvas.Top="620" Width="160"/>
+                <Button Canvas.Left="420" Canvas.Top="620" Width="160"/>
+                <Button Uid="1" Canvas.Left="660" Canvas.Top="620" Width="160" FontSize="12"/>
+
+                <!--Правый край-->
+                <Button Canvas.Left="870" Canvas.Top="400" Height="170"/>
+                <Button Uid="1" Canvas.Left="870" Canvas.Top="180" Height="170" FontSize="13"/>
+
+                <!--Верхний край-->
+                <Button Canvas.Left="660" Canvas.Top="15" Width="160"/>
+            </Canvas>
+        </Viewbox>
+
+        <Viewbox Grid.Column="1" Grid.Row="1" Stretch="Uniform">
+            <Canvas x:Name="borders" Width="963" Height="449">
+
+                <Border Style="{StaticResource Number}" Canvas.Left="200" Canvas.Top="10">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="1"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="142" Canvas.Top="30">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="2"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="60" Canvas.Top="85">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="3"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="30" Canvas.Top="200">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="4"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="95" Canvas.Top="265">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="5"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="780" Canvas.Top="350">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="6"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="660" Canvas.Top="340">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="7"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="410" Canvas.Top="290">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="8"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="736" Canvas.Top="38">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="9"/>
+                </Border>
+
+                <Border Style="{StaticResource Number}" Canvas.Left="562" Canvas.Top="75">
+                    <TextBlock Style="{StaticResource TextNumber}" Text="10"/>
+                </Border>
+            </Canvas>
+        </Viewbox>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" x:Name="Left_StackPanel" Visibility="Hidden" VerticalAlignment="Center"/>
+            <StackPanel Grid.Column="1" x:Name="Right_StackPanel" Visibility="Hidden" VerticalAlignment="Center"/>
+        </Grid>
         
-        <radio:MainView x:Name="Radio"/>
-        
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10">
+        <message:NewMessage x:Name="OurMessageBox" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+
+        <!--<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="10">
             <StackPanel Grid.Row="1" x:Name="panel"  Orientation="Vertical">
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock">
@@ -32,6 +199,6 @@
                     </Style>
                 </StackPanel.Resources>
             </StackPanel>
-        </ScrollViewer>
+        </ScrollViewer>-->
     </Grid>
 </Page>

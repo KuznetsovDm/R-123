@@ -31,7 +31,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void Scale_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e)
+        private void Scale_ValueChanged(object sender, ValueChangedEventArgs<Turned> e)
         {
             if(GetState())
                 action?.Invoke();

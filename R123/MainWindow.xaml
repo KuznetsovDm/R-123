@@ -35,7 +35,7 @@
                     <TextBlock Style="{StaticResource TextInTabItemHeader}">Назначение, ТТХ, состав</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame1" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                    <Frame Name="Frame1" NavigationUIVisibility="Hidden"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
@@ -43,7 +43,7 @@
                     <TextBlock Style="{StaticResource TextInTabItemHeader}">Обучение</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame2" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                    <Frame Name="Frame2" NavigationUIVisibility="Hidden"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
@@ -51,7 +51,7 @@
                     <TextBlock Style="{StaticResource TextInTabItemHeader}">Задачи</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame4" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                    <Frame Name="Frame4" NavigationUIVisibility="Hidden"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
@@ -59,9 +59,11 @@
                     <TextBlock Style="{StaticResource TextInTabItemHeader}">Работа на радиостанции</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame3" NavigationUIVisibility="Hidden" Grid.Column="1"/>
+                    <Frame Name="Frame3" NavigationUIVisibility="Hidden"/>
                 </TabItem.Content>
             </TabItem>
         </TabControl>
+
+        <Frame Name="Start_Frame" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

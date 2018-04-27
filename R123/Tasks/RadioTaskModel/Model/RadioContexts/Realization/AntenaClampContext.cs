@@ -31,7 +31,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void AntennaFixer_ValueChanged(object sender, ValueChangedEventArgs<ClampState, ClampState> e)
+        private void AntennaFixer_ValueChanged(object sender, ValueChangedEventArgs<ClampState> e)
         {
             if (e.NewValue == verify)
                 action?.Invoke();

@@ -2,6 +2,7 @@
 
 namespace R123.Radio.Model
 {
+    public delegate void MyEventHandler<in T>(object sender, T args) where T : EventArgs;
     public class MainModel
     {
         private Animation animation;
@@ -88,10 +89,12 @@ namespace R123.Radio.Model
 
         public class RotaticgPropertyOfModel : PropertyOfModel<double>
         {
-            public event EventHandler<ValueChangedEventArgs<double, double>> EndValueChanged;
+            public event MyEventHandler<ValueChangedEventArgs<double>> EndValueChanged;
+            public event EventHandler SpecialForMishaEndValueChanged;
             public RotaticgPropertyOfModel(Property<double> property, Action<double> setValue) : base(property, setValue)
             {
                 property.EndValueChanged += (s, e) => EndValueChanged?.Invoke(this, e);
+                property.EndValueChanged += (s, e) => SpecialForMishaEndValueChanged?.Invoke(this, new EventArgs());
             }
         }
 
@@ -111,12 +114,14 @@ namespace R123.Radio.Model
 
         public class GetPropertyOfModel<T>
         {
-            public event EventHandler<ValueChangedEventArgs<T, T>> ValueChanged;
+            public event MyEventHandler<ValueChangedEventArgs<T>> ValueChanged;
+            public event EventHandler SpecialForMishaValueChanged;
             protected Property<T> property;
             public GetPropertyOfModel(Property<T> property)
             {
                 this.property = property;
                 property.ValueChanged += (s, e) => ValueChanged?.Invoke(this, e);
+                property.ValueChanged += (s, e) => SpecialForMishaValueChanged?.Invoke(this, new EventArgs());
             }
             public T Value
             {

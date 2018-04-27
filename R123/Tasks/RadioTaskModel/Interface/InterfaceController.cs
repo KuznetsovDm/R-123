@@ -37,11 +37,11 @@ namespace RadioTask.Interface
         {
             var fixDescriptions = InfoGenerator.GetTenFixFrequencyDescriptors();
             var Descriptions = InfoGenerator.GetTenFrequencyDescriptors();
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.InitialState, Description = InfoGenerator.Descriptions[RadioTaskType.InitialState] });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.CheckStation, Description = InfoGenerator.Descriptions[RadioTaskType.CheckStation] });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.PrepareStationForWork, Description = InfoGenerator.Descriptions[RadioTaskType.PrepareStationForWork] });
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.Frequency, Description = InfoGenerator.Descriptions[RadioTaskType.Frequency], Frequencys = Descriptions, SelectedItem = Descriptions.First() });
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.FixFrequency, Description = InfoGenerator.Descriptions[RadioTaskType.FixFrequency], Frequencys = fixDescriptions, SelectedItem = fixDescriptions.First() });
-            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.InitialState, Description = InfoGenerator.Descriptions[RadioTaskType.InitialState] });
-            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.PrepareStationForWork, Description = InfoGenerator.Descriptions[RadioTaskType.PrepareStationForWork] });
-            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.CheckStation, Description = InfoGenerator.Descriptions[RadioTaskType.CheckStation] });
         }
 
         private void InitializeMiddle()
@@ -114,9 +114,14 @@ namespace RadioTask.Interface
             //result 
             StackPanel panel = new StackPanel();
             panel.Margin = new Thickness(10);
-            panel.Children.Add(new TextBlock() { Text = "Задача выполнена!", Foreground = new SolidColorBrush(Colors.Green),
-                FontFamily = new FontFamily("TimesNewRoman"), FontSize = 18});
-            R123.AdditionalWindows.Message msg = new R123.AdditionalWindows.Message(panel,false);
+            panel.Children.Add(new TextBlock()
+            {
+                Text = "Задача выполнена!",
+                Foreground = new SolidColorBrush(Colors.Green),
+                FontFamily = new FontFamily("TimesNewRoman"),
+                FontSize = 18
+            });
+            R123.AdditionalWindows.Message msg = new R123.AdditionalWindows.Message(panel, false);
             msg.ShowDialog();
             //
 

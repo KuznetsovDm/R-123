@@ -37,7 +37,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void SubrangeSwither_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e)
+        private void SubrangeSwither_ValueChanged(object sender, ValueChangedEventArgs<Turned> e)
         {
             if (GetState())
                 action?.Invoke();

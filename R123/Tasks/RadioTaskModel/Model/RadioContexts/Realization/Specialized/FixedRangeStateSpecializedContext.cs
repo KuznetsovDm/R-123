@@ -36,7 +36,7 @@ namespace RadioTask.Model.RadioContexts.Realization.Specialized
             IsSubscribe = true;
         }
 
-        private void Range_ValueChanged(object sender, ValueChangedEventArgs<RangeState, RangeState> e)
+        private void Range_ValueChanged(object sender, ValueChangedEventArgs<RangeState> e)
         {
             if (GetState())
                 action?.Invoke();

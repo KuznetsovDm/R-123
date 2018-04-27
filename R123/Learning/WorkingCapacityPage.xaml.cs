@@ -6,6 +6,7 @@ using System.Windows.Shapes;
 using System;
 using R123.Radio.Model;
 using System.IO;
+using R123.AdditionalWindows;
 
 namespace R123.Learning
 {
@@ -14,20 +15,28 @@ namespace R123.Learning
     /// </summary>
     public partial class WorkingCapacityPage : Page, IRestartable
     {
+        // TODO: перекрасить и передвинуть кнопки и переделать номера кругов
+
         private int buttonsCount = 0;
         private int currentStep = 0;
-        private int previousStep = 0;
-        private WorkingTest workingTest;
-        private DefaultStateChecker stateChecker;
+
+        // colors
+        private Color black = Color.FromRgb(0, 0, 0);
+        private Color white = Color.FromRgb(255, 255, 255);
+
+        //private WorkingTest workingTest;
+        //private DefaultStateChecker stateChecker;
 
         public Action[] Subscribes { get; private set; }
         public Action[] Unsubscribes { get; private set; }
+
+        private IStepChecker checker;
 
         string[] buttonTooltips;
         private string[] path;
 
         private string[] Steps = {
-            "Надеть и подогнать шлемофон",
+          //  "Надеть и подогнать шлемофон",
             "Установить \"СИМПЛЕКС\"",
             "Ручку \"ШУМЫ\" влево до упора",
             "Тумблеры \"ПИТАНИЕ\", \"ШКАЛА\" в положение \"ВКЛ\"",
@@ -36,17 +45,17 @@ namespace R123.Learning
             "Установить \"ПЛАВНЫЙ ПОДДИАПАЗОН\"",
             "Прослушать работу по диапазону",
             "Проверить работу подавителя шумов",
-            "Повторить операции 8, 9 на II поддиапазоне",
+          //  "Повторить операции 8, 9 на II поддиапазоне",
             "Установить \"ДЕЖ. ПРИЕМ\"",
-            "Установить калибровочные точки",
+           // "Установить калибровочные точки",
             "Нажать \"ТОН-ВЫЗОВ\" и проверить калибровку",
             "Установить \"СИМПЛЕКС\"",
             "Нажать тангенту в \"ПРД\"",
             "Настроить антенную цепь",
-            "Проверить модуляцию (самопрослушивание)",
+           // "Проверить модуляцию (самопрослушивание)",
             "Проверить работу Тон-Вызова",
-            "Повторить операции 16, 17 и 18 на I поддиапазоне",
-            "Открыть крышку люка",
+           // "Повторить операции 16, 17 и 18 на I поддиапазоне",
+           // "Открыть крышку люка",
             "Зафиксировать фиксаторы 1, 2, 3 и 4",
             "Настроить на максимум",
             "Проверить автоматику в положении 1, 2, 3 и 4",
@@ -57,9 +66,8 @@ namespace R123.Learning
         {
             InitializeComponent();
 
+
             subscribeMouseMove = false;
-            
-            workingTest = new WorkingTest(Radio.Model);
 
             SetButtons();
             SetLines();
@@ -67,12 +75,64 @@ namespace R123.Learning
 
             IsVisibleChanged += WorkingPage_IsVisibleChanged;
 
-            InitializeSubscribes();
-            InitializeUnsubscribes();
-
-            Subscribe(currentStep);
+            /* TODO: частоты выполняются сразу
+            */
+            Conditions conditions = new Conditions();
+            conditions
+                .Add(() => Radio.Model.WorkMode.Value == WorkModeState.Simplex)
+                .Add(() => Radio.Model.Noise.Value == 1.0)
+                .Add(() => Radio.Model.Scale.Value == Turned.On && Radio.Model.Power.Value == Turned.On)
+                .Add(() => Radio.Model.Tangent.Value == Turned.On)
+                .Add(() => Radio.Model.Volume.Value == 1.0)
+                .Add(() => Radio.Model.Range.Value == RangeState.SmoothRange1)
+                .Add(() => {
+                    return Radio.Model.Frequency.Value > 36;
+                })
+                .Add(() => Radio.Model.Noise.Value < 0.5)
+                .Add(() => Radio.Model.WorkMode.Value == WorkModeState.StandbyReception)
+                .Add(() => Radio.Model.Tone.Value == Turned.On)
+                .Add(() => Radio.Model.WorkMode.Value == WorkModeState.Simplex)
+                .Add(() => Radio.Model.Tangent.Value == Turned.On)
+                .Add(() => Radio.Model.Antenna.Value > 0.8)
+                .Add(() => Radio.Model.Tone.Value == Turned.On)
+                .Add(() => Radio.Model.Clamps[0].Value == ClampState.Fixed &&
+                                       Radio.Model.Clamps[1].Value == ClampState.Fixed &&
+                                       Radio.Model.Clamps[2].Value == ClampState.Fixed &&
+                                       Radio.Model.Clamps[3].Value == ClampState.Fixed)
+                .Add(() => Radio.Model.Antenna.Value > 0.8)
+                .Add(() => Radio.Model.Range.Value == RangeState.FixedFrequency4)
+                .Add(() => Radio.Model.Power.Value == Turned.Off);
 
             InitializeControls();
+
+            checker = new SequenceStepChecker(conditions, new WorkingSubscribesInitializer(Radio.Model));
+            checker.StepChanged += Checker_StepChanged;
+            checker.Start();
+        }
+
+        public void ShowDefaultMessage()
+        {
+            OurMessageBox.Text = "На данном этапе вы должны проверить работоспособность радиостанции.\r\n" +
+                             "Выполняйте последовательно шаги обучения.\r\n" +
+                             "Если непонятен какой-то шаг, нажмите на него и Вы получите пояснение.\r\n\r\n" +
+                             "После завершения всех этапов проверки работоспособности радиостанции установите все органы управления в исходное положение, чтобы перейти на следующий этап.";
+            OurMessageBox.ShowMessage();
+        }
+
+        private void Checker_StepChanged(object sender, StepEventArgs e)
+        {
+            if (e.Step >= buttonsCount) {
+                SetColor(buttonsCount, black, white);
+                OurMessageBox.Text = "Вы проверили работоспособность радиостанции.";
+                OurMessageBox.ShowMessage();
+                //Message message = new Message("Вы проверили работоспособность радиостанции.", false);
+                //message.ShowDialog();
+                Restart();
+            }
+            else {
+                currentStep = e.Step;
+                SetColor(currentStep, black, white);
+            }
         }
 
         private bool subscribeMouseMove;
@@ -91,13 +151,10 @@ namespace R123.Learning
             MouseMove -= WorkingCapacityPage_MouseMove;
             subscribeMouseMove = false;
             // если будет разделение на новичка и радиста, то последнее предложение надо поменять
-            string message = "На данном этапе вы должны проверить работоспособность радиостанции.\r\n" +
-                             "Выполняйте последовательно шаги обучения.\r\n" +
-                             "Если непонятен какой-то шаг, нажмите на него и Вы получите пояснение.\r\n\r\n" +
-                             "После завершения всех этапов проверки работоспособности радиостанции установите все органы управления в исходное положение, чтобы перейти на следующий этап.";
-
-            AdditionalWindows.Message mes = new AdditionalWindows.Message(message, false);
-            mes.ShowDialog();
+            
+            
+            //Message mes = new Message(message, false);
+            //mes.ShowDialog();
         }
 
         #region Setters
@@ -123,49 +180,98 @@ namespace R123.Learning
             }
 
             for (int i = 1; i < points.Count; i++) {
-                double width = ((Button)canvas.Children[i - 1]).Width;
-                double height = ((Button)canvas.Children[i - 1]).Height;
-                Line line = new Line {
-                    Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
-                    StrokeThickness = 5,
-                    X1 = points[i - 1].X + width / 2,
-                    X2 = points[i].X + width / 2,
-                    Y1 = points[i - 1].Y + height / 2,
-                    Y2 = points[i].Y + height / 2
-                };
-                Panel.SetZIndex(line, 1);
+                Button button1 = ((Button)canvas.Children[i - 1]);
+                Button button2 = ((Button)canvas.Children[i]);
 
-                canvas.Children.Add(line);
+                double width1 = button1.Width;
+                double height1 = button1.Height;
+
+                double width2 = button2.Width;
+                double height2 = button2.Height;
+
+                double x1 = points[i - 1].X + width1 / 2;
+                double y1 = points[i - 1].Y + height1 / 2;
+
+                double x2 = points[i].X + width2 / 2;
+                double y2 = points[i].Y + height2 / 2;
+
+                if (!string.IsNullOrEmpty(button1.Uid)) { // если угол
+                    double tempX = 0, tempY = 0;
+
+                    Line line1 = new Line {
+                        Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                        StrokeThickness = 5,
+                        X1 = x1,
+                        Y1 = y1
+                    };
+
+                    Line line2 = new Line {
+                        Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                        StrokeThickness = 5,
+                        X2 = x2,
+                        Y2 = y2
+                    };
+
+                    switch (int.Parse(button1.Uid)) {
+                        case 0: tempX = x2; tempY = y1; break;
+                        case 1: tempX = x1; tempY = y2; break;
+                        case 2: tempX = x2; tempY = y1; break;
+                        case 3: tempX = x1; tempY = y2; break;
+
+                        default: throw new Exception("Angles");
+                    }
+
+                    line1.X2 = tempX;
+                    line1.Y2 = tempY;
+
+                    line2.X1 = tempX;
+                    line2.Y1 = tempY;
+
+                    Panel.SetZIndex(line1, 1);
+                    Panel.SetZIndex(line2, 1);
+
+                    canvas.Children.Add(line1);
+                    canvas.Children.Add(line2);
+                }
+                else {
+                    Line line = new Line {
+                        Stroke = new SolidColorBrush(Color.FromRgb(0, 0, 0)),
+                        StrokeThickness = 5,
+                        X1 = x1,
+                        X2 = x2,
+                        Y1 = y1,
+                        Y2 = y2
+                    };
+
+                    Panel.SetZIndex(line, 1);
+
+                    canvas.Children.Add(line);
+                }
             }
         }
 
         private void SetTooltips()
         {
-            buttonTooltips = new string[24];
-            buttonTooltips[0] = "Наденьте наушники (для продолжения нажмите пробел)";
-            buttonTooltips[1] = "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"";
-            buttonTooltips[2] = "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника";
-            buttonTooltips[3] = "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" установите в положение \"ВКЛ\"";
-            buttonTooltips[4] = "Зажмите пробел и убедитесь, что стрелка вольтметра отклонилась от нулевого положения";
-            buttonTooltips[5] = "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость";
-            buttonTooltips[6] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\"";
-            buttonTooltips[7] = "Повращайте ручку установки частоты";
-            buttonTooltips[8] = "Повращайте ручку \"ШУМЫ\" от максимального до минимального значения. Вы должны услышать уменьшения громкости";
-            buttonTooltips[9] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН II\"";
-            buttonTooltips[10] = "Переключатель рода работ поставьте в положение \"ДЕЖ. ПРИЕМ\"";
-            buttonTooltips[11] = "Ничего не делайте (для продолжения нажмите пробел)";
-            buttonTooltips[12] = "Нажмите кнопку \"ТОН-ВЫЗОВ\"";
-            buttonTooltips[13] = "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"";
-            buttonTooltips[14] = "Зажмите пробел и выполняйте следующий пункт";
-            buttonTooltips[15] = "Зажав пробел, вращайте ручку \"НАСТРОЙКА АНТЕННЫ\", пока стрелка индикатора не отклонится в максимально правое положение";
-            buttonTooltips[16] = "Ничего не делайте (для продолжения нажмите пробел)";
-            buttonTooltips[17] = "Нажмите кнопку \"ТОН-ВЫЗОВ\"";
-            buttonTooltips[18] = "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\"";
-            buttonTooltips[19] = "Ничего не делайте, крышка люка уже открыта (для продолжения нажмите пробел)";
-            buttonTooltips[20] = "Зафиксируйте фиксаторы, установив их параллельно линии круга";
-            buttonTooltips[21] = "Зажав пробел, вращайте ручку \"НАСТРОЙКА АНТЕННЫ\", пока стрелка индикатора не отклонится в максимально правое положение";
-            buttonTooltips[22] = "Последовательно установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ФИКС. ЧАСТОТА 1\", \"ФИКС. ЧАСТОТА 2\", \"ФИКС. ЧАСТОТА 3\" и\"ФИКС. ЧАСТОТА 4\"";
-            buttonTooltips[23] = "Тумблер \"ПИТАНИЕ\" установите в положение \"ВЫКЛ\"";
+            buttonTooltips = new string[] {
+                "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"",
+                "Ручку \"ШУМЫ\" поверните против часовой стрелки до упора, т.е. установите максимальные шумы приемника",
+                "Тумблеры \"ПИТАНИЕ\" и \"ШКАЛА\" установите в положение \"ВКЛ\"",
+                "Зажмите пробел и убедитесь, что стрелка вольтметра отклонилась от нулевого положения",
+                "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость",
+                "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ПЛАВНЫЙ ПОДДИАПАЗОН I\"",
+                "Повращайте ручку установки частоты",
+                "Повращайте ручку \"ШУМЫ\" от максимального до минимального значения. Вы должны услышать уменьшения громкости",
+                "Переключатель рода работ поставьте в положение \"ДЕЖ. ПРИЕМ\"",
+                "Нажмите кнопку \"ТОН-ВЫЗОВ\"",
+                "Переключатель рода работ поставьте в положение \"СИМПЛЕКС\"",
+                "Зажмите пробел и выполняйте следующий пункт",
+                "Зажав пробел, вращайте ручку \"НАСТРОЙКА АНТЕННЫ\", пока стрелка индикатора не отклонится в максимально правое положение",
+                "Нажмите кнопку \"ТОН-ВЫЗОВ\"",
+                "Зафиксируйте фиксаторы, установив их параллельно линии круга",
+                "Зажав пробел, вращайте ручку \"НАСТРОЙКА АНТЕННЫ\", пока стрелка индикатора не отклонится в максимально правое положение",
+                "Последовательно установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ФИКС. ЧАСТОТА 1\", \"ФИКС. ЧАСТОТА 2\", \"ФИКС. ЧАСТОТА 3\" и\"ФИКС. ЧАСТОТА 4\"",
+                "Тумблер \"ПИТАНИЕ\" установите в положение \"ВЫКЛ\""
+            };
 
             string[] borderTooltips = new string[16];
             borderTooltips[0] = "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите стрелку в положение \"СИМПЛЕКС\"";
@@ -186,31 +292,28 @@ namespace R123.Learning
             borderTooltips[15] = "Последовательно установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"ФИКС. ЧАСТОТА 1\", \"ФИКС. ЧАСТОТА 2\", \"ФИКС. ЧАСТОТА 3\" и\"ФИКС. ЧАСТОТА 4\"";
 
             path = new string[30];
-            path[1] = @"../../Files/Gifs/GifsStep2\2.setSimplex.gif";
-            path[2] = @"../../Files/Gifs/GifsStep2\3.noiseToLeft.gif";
-            path[3] = @"../../Files/Gifs/GifsStep2\4.powerAndScaleOn.gif";
-            path[4] = @"../../Files/Gifs/GifsStep2\5.testVoltagePower.gif";
-            path[5] = @"../../Files/Gifs/GifsStep2\6.volumeToRight.gif";
-            path[6] = @"../../Files/Gifs/GifsStep2\7.subFrequency1.gif";
-            path[7] = @"../../Files/Gifs/GifsStep2\8.listenFrequency.gif";
-            path[8] = @"../../Files/Gifs/GifsStep2\9.listenNoise.gif";
-            path[10] = @"../../Files/Gifs/GifsStep2\11.setStandbyReception.gif";
-            path[12] = @"../../Files/Gifs/GifsStep2\13.testTone.gif";
-            path[13] = @"../../Files/Gifs/GifsStep2\14.setSimplex.gif";
-            path[14] = @"../../Files/Gifs/GifsStep2\15.prd.gif";
+            path[0] = @"../../Files/Gifs/GifsStep2\2.setSimplex.gif";
+            path[1] = @"../../Files/Gifs/GifsStep2\3.noiseToLeft.gif";
+            path[2] = @"../../Files/Gifs/GifsStep2\4.powerAndScaleOn.gif";
+            path[3] = @"../../Files/Gifs/GifsStep2\5.testVoltagePower.gif";
+            path[4] = @"../../Files/Gifs/GifsStep2\6.volumeToRight.gif";
+            path[5] = @"../../Files/Gifs/GifsStep2\7.subFrequency1.gif";
+            path[6] = @"../../Files/Gifs/GifsStep2\8.listenFrequency.gif";
+            path[7] = @"../../Files/Gifs/GifsStep2\9.listenNoise.gif";
+            path[8] = @"../../Files/Gifs/GifsStep2\11.setStandbyReception.gif";
+            path[9] = @"../../Files/Gifs/GifsStep2\13.testTone.gif";
+            path[10] = @"../../Files/Gifs/GifsStep2\14.setSimplex.gif";
+            path[11] = @"../../Files/Gifs/GifsStep2\15.prd.gif";
+            path[12] = @"../../Files/Gifs/GifsStep2\16.settingAntenna.gif";
+            path[13] = @"../../Files/Gifs/GifsStep2\18.testTone.gif";
+            path[14] = @"../../Files/Gifs/GifsStep2\21.fixClamp.gif";
             path[15] = @"../../Files/Gifs/GifsStep2\16.settingAntenna.gif";
-            path[17] = @"../../Files/Gifs/GifsStep2\18.testTone.gif";
-            //path[19] = @"../../Files/Gifs/GifsStep2\20.openHatchCover.gif";
-            path[20] = @"../../Files/Gifs/GifsStep2\21.fixClamp.gif";
-            path[22] = @"../../Files/Gifs/GifsStep2\23.testFixFrequency.gif";
-            path[23] = @"../../Files/Gifs/GifsStep2\24.powerOff.gif";
+            path[16] = @"../../Files/Gifs/GifsStep2\23.testFixFrequency.gif";
+            path[17] = @"../../Files/Gifs/GifsStep2\24.powerOff.gif";
 
             for (int i = 0; i < buttonTooltips.Length; i++) {
                 Button button = (Button)canvas.Children[i];
                 button.Click += ButtonClick;
-                button.ToolTip = "Нажмите для подсказки";
-                button.MouseEnter += OnMouseEnter;
-                button.MouseLeave += OnMouseLeave;
             }
 
             for (int i = 0; i < borderTooltips.Length; i++) {
@@ -242,7 +345,7 @@ namespace R123.Learning
                 FontFamily = new FontFamily("Times New Roman"),
                 FontSize = 18,
                 TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(20)
+                Margin = new Thickness(10)
             };
 
             panel.Children.Add(textblock);
@@ -251,7 +354,7 @@ namespace R123.Learning
 
                 System.Drawing.Image img = new System.Drawing.Bitmap(path[num]);
 
-                panel.Width = img.Width*2 + 20;
+                panel.Width = img.Width + 20;
 
                 System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost {
                     Child = new System.Windows.Forms.PictureBox() {
@@ -260,31 +363,15 @@ namespace R123.Learning
                         Height = img.Height,
                         Width = img.Width
                     },
-                    Margin = new Thickness(10),
-                    Width = img.Width
+                    Margin = new Thickness(10)
                 };
 
                 panel.Children.Add(host);
+
             }
 
-            AdditionalWindows.Message message = new AdditionalWindows.Message(panel, false);
+            Message message = new Message(panel, false);
             message.ShowDialog();
-        }
-
-        private void OnMouseEnter(object sender, EventArgs args)
-        {
-            Button button = sender as Button;
-
-            button.BorderBrush = new SolidColorBrush(Colors.Red);
-            button.BorderThickness = new Thickness(6);
-        }
-
-        private void OnMouseLeave(object sender, EventArgs args)
-        {
-            Button button = sender as Button;
-
-            button.BorderBrush = new SolidColorBrush(Colors.Black);
-            button.BorderThickness = new Thickness(3);
         }
 
         private void SetButtonsColor()
@@ -298,10 +385,10 @@ namespace R123.Learning
         {
             Color color;
 
-            if (index < 5) color = Colors.Blue;
-            else if (index < 10) color = Colors.Yellow;
-            else if (index < 13) color = Colors.Green;
-            else if (index < 19) color = Colors.Red;
+            if (index < 4) color = Colors.Blue;
+            else if (index < 8) color = Colors.Yellow;
+            else if (index < 10) color = Colors.Green;
+            else if (index < 14) color = Colors.Red;
             else color = Colors.Chocolate;
 
             return color;
@@ -348,8 +435,9 @@ namespace R123.Learning
         }
 
         #endregion
-
-        #region Learning
+        
+        #region OldLearning
+        /*
         private void StepCheck(object sender, EventArgs args)
         {
             if (currentStep < buttonsCount - 1) {
@@ -381,8 +469,9 @@ namespace R123.Learning
 
                 CheckWithAddingCondition(ref currentStep);
 
-                if (currentStep == previousStep)
+                 if (currentStep == previousStep) {
                     return;
+                }
 
                 SetColor(currentStep, Colors.Black, Colors.White);
                 previousStep = currentStep;
@@ -399,12 +488,13 @@ namespace R123.Learning
                 SetColor(currentStep, Colors.Black, Colors.White);
                 string mess = $"Поздравляем! Теперь вы умеете проверять работоспособность радиостанции.{Environment.NewLine}Для перехода к следующему шагу установите " +
                     $"все органы управления в исходное положение.";
-                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
+                Message message = new Message(mess, false);
                 message.ShowDialog();
                 SetButtonsColor();
                 currentStep = 0;
-                stateChecker = new DefaultStateChecker(Radio);
+                stateChecker = new DefaultStateChecker(Radio.Model);
                 InitializeCheckSubscribes();
+                Restart();
             }
         }
 
@@ -412,10 +502,10 @@ namespace R123.Learning
         {
             if (stateChecker.Check()) {
                 string mess = "Вы установили органы управления в исходное положение.";
-                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
+                Message message = new Message(mess, false);
                 message.ShowDialog();
                 InitializeCheckUnsubscribes();
-                MainScreens.WorkOnRadioStation.Instance.ActivateStep(3);
+                //MainScreens.W.Instance.ActivateStep(3);
             }
         }
 
@@ -448,7 +538,7 @@ namespace R123.Learning
             Subscribes[4] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
             Subscribes[5] = () => Radio.Model.Volume.ValueChanged += StepCheck;
             Subscribes[6] = () => Radio.Model.Range.ValueChanged += StepCheck;
-            Subscribes[7] = () => Radio.Model.Frequency.ValueChanged += FrequencyCheck;
+            Subscribes[7] = () => Radio.Model.Frequency.ValueChanged += StepCheck;
             Subscribes[12] = () => Radio.Model.Tone.ValueChanged += StepCheck; 
             Subscribes[15] = () => Radio.Model.Antenna.EndValueChanged += AntennaCheck;
             Subscribes[20] = () => {
@@ -469,7 +559,7 @@ namespace R123.Learning
             Unsubscribes[3] = () => {
                 Radio.Model.Scale.ValueChanged -= StepCheck;
                 Radio.Model.Power.ValueChanged -= StepCheck;
-                Radio.Model.Frequency.ValueChanged -= FrequencyCheck;
+                Radio.Model.Frequency.ValueChanged -= StepCheck;
             };
             Unsubscribes[4] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
             Unsubscribes[5] = () => Radio.Model.Volume.ValueChanged -= StepCheck;
@@ -482,7 +572,7 @@ namespace R123.Learning
             Unsubscribes[12] = () => Radio.Model.Tone.ValueChanged -= StepCheck;
             Unsubscribes[13] = () => Radio.Model.WorkMode.ValueChanged -= StepCheck;
             Unsubscribes[14] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
-            Unsubscribes[15] = () => Radio.Model.Antenna.EndValueChanged -= AntennaCheck;
+            Unsubscribes[15] = () => Radio.Model.Antenna.ValueChanged -= StepCheck;
             Unsubscribes[16] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
             Unsubscribes[17] = () => Radio.Model.Tone.ValueChanged -= StepCheck;
             Unsubscribes[18] = () => Radio.Model.Range.ValueChanged -= StepCheck;
@@ -529,14 +619,6 @@ namespace R123.Learning
             StepCheck(sender, args);
         }
 
-        private void FrequencyCheck(object sender, EventArgs args)
-        {
-            if (Radio.Model.Frequency.Value < 21)
-                return;
-
-            StepCheck(sender, args);
-        }
-
         private void CheckWithAddingCondition(ref int current)
         {
             if (workingTest.CheckCondition(out currentStep)) {
@@ -544,14 +626,7 @@ namespace R123.Learning
                 Subscribe(currentStep);
             }
         }
-        public void Restart()
-        {
-            UnsubscribeAll();
-            workingTest.Clear();
-            InitializeControls();
-            Subscribe(0);
-            SetButtonsColor();
-        }
+        
 
         private void UnsubscribeAll()
         {
@@ -559,6 +634,15 @@ namespace R123.Learning
                 Unsubscribe(i);
             }
         }
+        */
         #endregion
+        public void Restart()
+        {
+            InitializeControls();
+            SetButtonsColor();
+            currentStep = 0;
+            checker.Stop();
+            checker.Start();
+        }
     }
 }

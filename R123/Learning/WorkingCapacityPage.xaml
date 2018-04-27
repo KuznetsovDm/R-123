@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:message="clr-namespace:R123.AdditionalWindows"
       xmlns:radio="clr-namespace:R123.Radio"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
@@ -40,9 +41,9 @@
             <Setter Property="Background" Value="#E8E6EA"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontFamily" Value="Times New Roman"/>
-            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="3"/>
-            <Setter Property="Width" Value="80"/>
+            <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="80"/>
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -72,7 +73,8 @@
                                        Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}"
                                        TextAlignment="Center" HorizontalAlignment="Center"
                                        FontFamily="{TemplateBinding FontFamily}"
-                                       FontSize="{TemplateBinding FontSize}"/>
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontWeight="{TemplateBinding FontWeight}"/>
                             </Grid>
                         </Border>
                     </ControlTemplate>
@@ -86,81 +88,74 @@
     </Page.Resources>
     <Grid Background="#E8E6EA">
         <Grid.RowDefinitions>
-            <RowDefinition Height="128*" />
-            <RowDefinition Height="343*"/>
-            <RowDefinition Height="129*" />
+            <RowDefinition Height="130*" />
+            <RowDefinition Height="350*"/>
+            <RowDefinition Height="130*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="141*"/>
-            <ColumnDefinition Width="564*"/>
-            <ColumnDefinition Width="95*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="150*"/>
+            <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
 
         <Viewbox Stretch="Fill" Grid.ColumnSpan="3" Grid.RowSpan="3">
             <Canvas x:Name="canvas" Width="850" Height="700">
 
                 <!--Верхний край-->
-                <Button Canvas.Left="460" Canvas.Top="60" Background="Blue"/>
-                <Button Canvas.Left="360" Canvas.Top="60" Background="Blue"/>
-                <Button Canvas.Left="260" Canvas.Top="60" Background="Blue"/>
-                <Button Canvas.Left="160" Canvas.Top="60" Background="Blue" FontSize="10" Padding="1"/>
-                <Button Canvas.Left="60"  Canvas.Top="60" Background="Blue"/>
+                <!--<Button Canvas.Left="460" Canvas.Top="60" Background="Blue"/>-->
+                <Button Canvas.Left="250" Canvas.Top="60" Background="Blue"/>
+                <Button Canvas.Left="130" Canvas.Top="60" Background="Blue"/>
+                <Button Canvas.Left="10" Canvas.Top="60" Background="Blue" FontSize="10" Padding="1"/>
 
                 <!--Левый край-->
-                <Button Canvas.Left="60" Canvas.Top="160" Background="Yellow"/>
-                <Button Canvas.Left="60" Canvas.Top="260" Background="Yellow"/>
-                <Button Canvas.Left="60" Canvas.Top="360" Background="Yellow"/>
-                <Button Canvas.Left="60" Canvas.Top="460" Background="Yellow"/>
+                <Button Canvas.Left="10"  Canvas.Top="170" Background="Blue" Height="100"/>
+                <Button Canvas.Left="10" Canvas.Top="300" Background="Yellow" Height="100"/>
+                <Button Canvas.Left="10" Canvas.Top="430" Background="Yellow" Height="100"/>
+                <Button Canvas.Left="10" Canvas.Top="560" Background="Yellow"/>
 
                 <!--Нижний край-->
-                <Button Canvas.Left="60"  Canvas.Top="560" Background="Yellow"/>
-                <Button Canvas.Left="160" Canvas.Top="560" Background="Green"/>
-                <Button Canvas.Left="260" Canvas.Top="560" Background="Green"/>
-                <Button Canvas.Left="360" Canvas.Top="560" Background="Green"/>
-                <Button Canvas.Left="460" Canvas.Top="560" Background="Red"/>
-                <Button Canvas.Left="560" Canvas.Top="560" Background="Red"/>
-                <Button Canvas.Left="660" Canvas.Top="560" Background="Red"/>
-                <Button Canvas.Left="760" Canvas.Top="560" Background="Red"/>
+                <Button Canvas.Left="170" Canvas.Top="560" Background="Yellow"/>
+                <!--<Button Canvas.Left="60"  Canvas.Top="560" Background="Yellow"/>-->
+                <Button Canvas.Left="295" Canvas.Top="560" Background="Green"/>
+                <Button Canvas.Left="455" Canvas.Top="560" Background="Green" FontSize="11"/>
+                <!--<Button Canvas.Left="360" Canvas.Top="560" Background="Green"/>-->
+                <Button Canvas.Left="580" Canvas.Top="560" Background="Red"/>
+                <Button Canvas.Left="740" Canvas.Top="560" Background="Red"/>
 
                 <!--Правый край-->
-                <Button Canvas.Left="760" Canvas.Top="460" Background="Red"/>
-                <Button Canvas.Left="760" Canvas.Top="360" Background="Red"/>
-                <Button Canvas.Left="760" Canvas.Top="260" Background="Chocolate"/>
-                <Button Canvas.Left="760" Canvas.Top="160" Background="Chocolate"/>
+                <Button Canvas.Left="740" Canvas.Top="430" Background="Red" Height="100"/>
+                <Button Canvas.Left="740" Canvas.Top="300" Background="Red" Height="100"/>
+                <Button Canvas.Left="740" Canvas.Top="170" Background="Chocolate" Height="100"/>
+                <Button Canvas.Left="740" Canvas.Top="60" Background="Chocolate"/>
+                
 
                 <!--Верхний край-->
-                <Button Canvas.Left="760" Canvas.Top="60" Background="Chocolate"/>
+                <Button Canvas.Left="620" Canvas.Top="60" Background="Chocolate" FontSize="11"/>
+                <Button Canvas.Left="500" Canvas.Top="60" Background="Chocolate" FontSize="11"/>
+                <!--<Button Canvas.Left="760" Canvas.Top="60" Background="Chocolate"/>
                 <Button Canvas.Left="660" Canvas.Top="60" Background="Chocolate"/>
-                <Button Canvas.Left="560" Canvas.Top="60" Background="Chocolate"/>
+                <Button Canvas.Left="560" Canvas.Top="60" Background="Chocolate"/>-->
 
-                <Border BorderThickness="4" BorderBrush="Black" Width="480" Height="36" Canvas.Left="60" Canvas.Top="10" Background="Blue">
+                <Border BorderThickness="4" BorderBrush="Black" Width="340" Height="35" Canvas.Left="10" Canvas.Top="10" Background="Blue">
                     <TextBlock x:Name="text1" Text="Подготовительные операции" Style="{StaticResource Title}"/>
                 </Border>
 
-                <Border BorderThickness="4" BorderBrush="Black" Height="35" Canvas.Left="160" Canvas.Top="655" Width="280" Background="Green">
-                    <TextBlock x:Name="text2" Text="Проверка в режиме прием" Style="{StaticResource ResourceKey=Title}"/>
+                <Border BorderThickness="4" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Height="35" Canvas.Top="655" Width="260" Background="Yellow" Canvas.Left="10">
+                    <TextBlock x:Name="text3" Text="Проверка градуировки" Style="{StaticResource ResourceKey=Title}" Width="260" FontSize="17"/>
                 </Border>
 
-                <Border BorderThickness="4" BorderBrush="Black" RenderTransformOrigin="0.5,0.5" Height="36" Canvas.Left="-208" Canvas.Top="383" Width="475" Background="Yellow">
-                    <Border.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="-90"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Border.RenderTransform>
-                    <TextBlock x:Name="text3" Text="Проверка градуировки" Style="{StaticResource ResourceKey=Title}"/>
+                <Border BorderThickness="4" BorderBrush="Black" Height="35" Canvas.Left="295" Canvas.Top="655" Width="260" Background="Green">
+                    <TextBlock x:Name="text2" Text="Проверка в режиме прием" Style="{StaticResource ResourceKey=Title}" Width="260" FontSize="17"/>
                 </Border>
 
-                <Border BorderThickness="4" BorderBrush="Black" Height="35" Canvas.Left="460" Canvas.Top="655" Width="380" Background="Red">
-                    <TextBlock x:Name="text4" Text="Проверка в режиме передача" Style="{StaticResource ResourceKey=TextNumber}"/>
+                <Border BorderThickness="4" BorderBrush="Black" Height="35" Canvas.Left="580" Canvas.Top="655" Width="260" Background="Red">
+                    <TextBlock x:Name="text4" Text="Проверка в режиме передача" Style="{StaticResource ResourceKey=TextNumber}" Width="260" FontSize="17"/>
                 </Border>
 
-                <Border BorderThickness="4" BorderBrush="Black" Height="36" Canvas.Left="560" Canvas.Top="10" Width="280" Background="Chocolate">
+                <Border BorderThickness="4" BorderBrush="Black" Height="36" Canvas.Left="500" Canvas.Top="10" Width="339" Background="Chocolate">
                     <TextBlock x:Name="text5" Text="Проверка автоматики" Style="{StaticResource ResourceKey=TextNumber}"/>
                 </Border>
-                
+
             </Canvas>
         </Viewbox>
 
@@ -236,6 +231,6 @@
                 </Border>
             </Canvas>
         </Viewbox>
-
+        <message:NewMessage x:Name="OurMessageBox" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
     </Grid>
 </Page>

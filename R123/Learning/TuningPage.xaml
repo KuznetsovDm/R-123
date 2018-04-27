@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:radio="clr-namespace:R123.Radio"
       mc:Ignorable="d" 
+      xmlns:message="clr-namespace:R123.AdditionalWindows"
       d:DesignHeight="750" d:DesignWidth="1000"
       Title="TuningPage">
 
@@ -97,31 +98,31 @@
             <Canvas x:Name="canvas" Width="1000" Height="750">
 
                 <!--Верхний край-->
-                <Button Canvas.Left="430" Canvas.Top="10" Width="160"/>
-                <Button Canvas.Left="200" Canvas.Top="10" Width="160"/>
-                <Button Canvas.Left="10" Canvas.Top="10"/>
+                <!--<Button Canvas.Left="430" Canvas.Top="10" Width="160"/>-->
+                <Button Canvas.Left="310" Canvas.Top="10" Width="140"/>
+                <Button Canvas.Left="130" Canvas.Top="10" Width="140" Uid="0"/>
 
                 <!--Левый край-->
                 <Button Canvas.Left="10" Canvas.Top="165"/>
                 <Button Canvas.Left="10" Canvas.Top="315"/>
-                <Button Canvas.Left="10" Canvas.Top="465"/>
+                <Button Canvas.Left="10" Canvas.Top="465" Uid="1"/>
 
                 <!--Нижний край-->
-                <Button Canvas.Left="10" Canvas.Top="620"/>
-                <Button Canvas.Left="200" Canvas.Top="620" Width="160"/>
-                <Button Canvas.Left="430" Canvas.Top="620" Width="160"/>
-                <Button Canvas.Left="660" Canvas.Top="620" Width="160"/>
-                <Button Canvas.Left="870" Canvas.Top="620"/>
+                <Button Canvas.Left="130" Canvas.Top="620" Width="140"/>
+                <Button Canvas.Left="330" Canvas.Top="620" Width="140"/>
+                <Button Canvas.Left="530" Canvas.Top="620" Width="140"/>
+                <Button Canvas.Left="730" Canvas.Top="620" Width="140" Uid="2"/>
 
                 <!--Правый край-->
                 <Button Canvas.Left="870" Canvas.Top="465"/>
                 <Button Canvas.Left="870" Canvas.Top="315"/>
-                <Button Canvas.Left="870" Canvas.Top="165"/>
-                <Button Canvas.Left="870" Canvas.Top="10"/>
+                <Button Canvas.Left="870" Canvas.Top="165" Uid="3"/>
+                <!--<Button Canvas.Left="870" Canvas.Top="165"/>-->
+                <Button Canvas.Left="730" Canvas.Top="10" Width="140"/>
 
                 <!--Верхний край-->
-                <Button Canvas.Left="660" Canvas.Top="10" Width="160"/>
-                
+                <Button Canvas.Left="550" Canvas.Top="10" Width="140"/>
+
             </Canvas>
         </Viewbox>
 
@@ -133,58 +134,58 @@
             <Canvas x:Name="borders" Width="963" Height="449">
 
                 <Border Style="{StaticResource Number}" Canvas.Left="200" Canvas.Top="10">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="2"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="1"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="142" Canvas.Top="30">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="3"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="2"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="60" Canvas.Top="85">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="4"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="3"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="30" Canvas.Top="200">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="5"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="4"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="95" Canvas.Top="265">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="6"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="5"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="780" Canvas.Top="350">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="7"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="6"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="660" Canvas.Top="340">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="8"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="7"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="410" Canvas.Top="290">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="9"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="8"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="245" Canvas.Top="180">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="10"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="9"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="690" Canvas.Top="55">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="11"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="10"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="878" Canvas.Top="208">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="12"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="11"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="630" Canvas.Top="175">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="13"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="12"/>
                 </Border>
 
                 <Border Style="{StaticResource Number}" Canvas.Left="250" Canvas.Top="40">
-                    <TextBlock Style="{StaticResource TextNumber}" Text="15"/>
+                    <TextBlock Style="{StaticResource TextNumber}" Text="13"/>
                 </Border>
             </Canvas>
         </Viewbox>
-
+        <message:NewMessage x:Name="OurMessageBox" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
     </Grid>
 </Page>

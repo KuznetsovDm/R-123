@@ -6,10 +6,12 @@ using R123.AppConfig;
 using Audio;
 using System.Net;
 using NAudio.Wave;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace MCP.Logic
 {
-    public partial class RadioConnection
+    public class RadioConnection
     {
         public static IBehavior Behavior = null;
         public static bool Closed = true;
@@ -39,9 +41,8 @@ namespace MCP.Logic
             if (IsNewRemoteMachine(e.Address))
             {
                 RemoteRadioMachine remoteRadioMachine = CreateRemoteMachine(e.Address, e.Port, Behavior);
-                //remoteRadioMachine.audioFilter.Start();
                 remoteCollection.Add(e.Address, remoteRadioMachine);
-                if(Behavior!=null)
+                if (Behavior != null)
                     Behavior.StateChanged += remoteRadioMachine.BaseLogicStateChanged;
                 //add to mixer
                 Player.AddInput(remoteRadioMachine.audioFilter.Stream);
@@ -50,11 +51,7 @@ namespace MCP.Logic
             ParseParams(out ERadioState state, out double frequency, e.Information);
             GetMachine(e.Address).RemoteStateChanged(frequency, state);
         }
-    }
 
-    //only static 
-    public partial class RadioConnection
-    {
         private static MCPConnector connector { get; set; }
         public static VoiceStreamer microphone { get; set; }
         public static AudioPlayer tone { get; set; }
@@ -62,11 +59,6 @@ namespace MCP.Logic
         private static Dictionary<IPAddress, RemoteRadioMachine> remoteCollection { get; set; }
         public static NoiseWaveProvider Noise { get; set; }
         private static bool AlreadyInitialized = false;
-
-        private static void Player_PlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            //Player.Play();
-        }
 
         public static void Init()
         {
@@ -77,7 +69,6 @@ namespace MCP.Logic
             microphone = AppConfigCreator.GetMicrophone();
             tone = AppConfigCreator.GetTonPlayer();
             Player.AddInput(Noise.Stream);
-            Player.PlaybackStopped += Player_PlaybackStopped;
             AlreadyInitialized = true;
             Closed = false;
 
@@ -117,7 +108,7 @@ namespace MCP.Logic
             AudioListener audioListener = new AudioListener(address, port);
             AudioLogicFilter audioLogicFilter = new AudioLogicFilter(audioListener);
             RemoteRadioMachine remoteMachine;
-            if (behavior!=null)
+            if (behavior != null)
                 remoteMachine = new RemoteRadioMachine(audioLogicFilter, behavior.State, AppConfigCreator.Delta);
             else
                 remoteMachine = new RemoteRadioMachine(audioLogicFilter, null, AppConfigCreator.Delta);
@@ -128,7 +119,7 @@ namespace MCP.Logic
         {
             if (Behavior == null)
                 return true;
-            var remotes = remoteCollection.Select(x=>x.Value).ToArray();
+            var remotes = remoteCollection.Select(x => x.Value).ToArray();
             foreach (var elem in remotes)
             {
                 if (elem.Saying)
@@ -196,32 +187,6 @@ namespace MCP.Logic
             return bytes.ToArray();
         }
 
-        //не используется
-        private static void Subscribe(IBehavior behavior)
-        {
-            Behavior = behavior;
-            var values = remoteCollection.Values.ToArray();
-            foreach (var elem in values)
-            {
-                elem.baseRadioState = behavior.State;
-                behavior.StateChanged += elem.BaseLogicStateChanged;
-                elem.BaseLogicStateChanged(null, new EventRadioArgs<RadioState>() { State = behavior.State });
-                elem.Analysis();
-            }
-        }
-
-        private static void UnSubscribe(IBehavior behavior)
-        {
-            Behavior = null;
-            var values = remoteCollection.Values.ToArray();
-            foreach (var elem in values)
-            {
-                elem.baseRadioState = null;
-                behavior.StateChanged -= elem.BaseLogicStateChanged;
-                elem.Analysis();
-            }
-        }
-        //
         public static void Close()
         {
             if (!Closed)

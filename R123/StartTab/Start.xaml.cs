@@ -11,5 +11,10 @@ namespace R123.StartTab
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MainWindow.Instance.HideStartFrame();
+        }
     }
 }

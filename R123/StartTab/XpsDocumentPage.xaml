@@ -8,6 +8,18 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="XpsDocumentPage">
     <Grid>
-        <DocumentViewer Grid.Column="1" Name="docViewer"/>
+        <DocumentViewer Grid.Column="1" Name="docViewer">
+            <DocumentViewer.Resources>
+                <!-- Hides the search box-->
+                <Style TargetType="ContentControl">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+
+                <!-- Hides the toolbar -->
+                <Style TargetType="ToolBar">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </DocumentViewer.Resources>
+        </DocumentViewer>
     </Grid>
 </Page>

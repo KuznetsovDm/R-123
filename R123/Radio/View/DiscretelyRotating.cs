@@ -18,7 +18,7 @@ namespace R123.Radio.View
 
         protected override void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            double newAngle = RotateControl.Angle + numberDegreesInPosition * Math.Sign(e.Delta);
+            double newAngle = RotateControl.Angle - numberDegreesInPosition * Math.Sign(e.Delta);
             if (maxAngle == 360)
                 newAngle = (newAngle + maxAngle) % maxAngle;
             else if (newAngle > maxAngle)

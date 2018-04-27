@@ -30,7 +30,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
+        private void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double> e)
         {
             if(GetState())
                 action?.Invoke();

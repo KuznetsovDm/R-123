@@ -36,10 +36,12 @@ namespace R123
 
             InitializeComponent();
 
-            Frame1.Content = new MainScreens.Learning();
-            Frame2.Content = new MainScreens.WorkOnRadioStation();
+            Frame1.Content = new MainScreens.StartPage();
+            Frame2.Content = MainScreens.Learning.Instance;
             Frame3.Content = new MainScreens.Work();
             Frame4.Content = new MainScreens.Standarts();
+
+            Start_Frame.Content = new StartTab.Start();
 
             Closing += (s, e) => RadioConnection.Close();
         }
@@ -49,38 +51,19 @@ namespace R123
             if (e.Key == Key.Escape && e.IsDown)
                 Tabs_TabControl.SelectedIndex = 0;
             else if (e.Key == Key.F1 && e.IsDown)
-                MainScreens.WorkOnRadioStation.Instance.ActivateAllStep();
+                MainScreens.Learning.Instance.ActivateAllStep();
             else if (e.Key == Key.F2 && e.IsDown)
-                MainScreens.WorkOnRadioStation.Instance.ActivateNextStep();
-            else if (e.Key == Key.F3 && e.IsDown)
-                AdditionalWindows.LocalConnections.ShowWindow();
+                MainScreens.Learning.Instance.ActivateNextStep();
         }
-
-        private bool tabsIsActive = false;
 
         public int CurrentTabIndex
         {
             set => Tabs_TabControl.SelectedIndex = value;
         }
 
-        private void ActivateChangeTab(bool value)
+        public void HideStartFrame()
         {
-            tabsIsActive = value;
-            for (int i = 2; i < Tabs_TabControl.Items.Count - 2; i++)
-                if (Tabs_TabControl.Items[i] is TabItem tab)
-                    tab.IsEnabled = value;
-        }
-
-        public void ActivateTab(int index)
-        {
-            tabsIsActive = true;
-            if (Tabs_TabControl.Items[index] is TabItem tab)
-                tab.IsEnabled = true;
-        }
-
-        public bool TabIsActive(int index)
-        {
-            return (Tabs_TabControl.Items[index] as TabItem).IsEnabled;
+            Start_Frame.Visibility = Visibility.Collapsed;
         }
     }
 }

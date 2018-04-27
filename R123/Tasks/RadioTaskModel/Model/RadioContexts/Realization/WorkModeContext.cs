@@ -30,7 +30,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void WorkMode_ValueChanged(object sender, ValueChangedEventArgs<WorkModeState, WorkModeState> e)
+        private void WorkMode_ValueChanged(object sender, ValueChangedEventArgs<WorkModeState> e)
         {
             if (GetState())
                 action?.Invoke();

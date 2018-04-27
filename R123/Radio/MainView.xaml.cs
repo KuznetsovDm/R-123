@@ -18,10 +18,11 @@ namespace R123.Radio
             IsVisibleChanged += (s, e) => Logic.PageChanged(Convert.ToBoolean(e.NewValue), Model);
         }
 
-        public void HideTangent()
+        public MainView HideTangent()
         {
             ViewModel.VisibilityTangent = System.Windows.Visibility.Hidden;
             Width = 848;
+            return this;
         }
 
         public Model.MainModel Model => ViewModel.PublicModel;

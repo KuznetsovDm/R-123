@@ -31,7 +31,7 @@ namespace RadioTask.Model.RadioContexts
             IsSubscribe = true;
         }
 
-        private void Volume_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
+        private void Volume_ValueChanged(object sender, ValueChangedEventArgs<double> e)
         {
             if(GetState())
                 action?.Invoke();

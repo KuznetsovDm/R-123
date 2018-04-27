@@ -61,5 +61,7 @@
                 <controls:Clamp3 Angle="{Binding Clamp3Angle}" Canvas.Left="22" Canvas.Top="99"/>
             </Canvas>
         </Canvas>
+
+        <Path x:Name="Background_Path"/>
     </Canvas>
 </UserControl>
