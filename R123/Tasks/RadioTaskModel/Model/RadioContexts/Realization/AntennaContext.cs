@@ -1,10 +1,6 @@
 ﻿using R123.Radio.Model;
 using RadioTask.Model.Chain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RadioTask.Model.RadioContexts.Realization
 {
@@ -30,7 +26,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
+        private void Antenna_ValueChanged(object sender, ValueChangedEventArgs<double> e)
         {
             if(GetState())
                 action?.Invoke();

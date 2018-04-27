@@ -29,11 +29,12 @@ namespace R123.Radio.View
             MouseWheel += OnMouseWheel;
             MouseDown += OnMouseDown;
             MouseUp += OnMouseUp;
+            LostMouseCapture += OnLostCapture;
         }
 
         protected virtual void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            double newAngle = CheckingAngle(RotateControl.Angle + changeAngleMouseWheel * Math.Sign(e.Delta));
+            double newAngle = CheckingAngle(RotateControl.Angle - changeAngleMouseWheel * Math.Sign(e.Delta));
 
             if (RotateControl.Angle != newAngle && canRotate)
             {
@@ -60,7 +61,6 @@ namespace R123.Radio.View
         {
             previousMousePosition = e.MouseDevice.GetPosition(this) - centerImage;
             MouseMove += OnMouseMove;
-            LostMouseCapture += OnLostCapture;
             Mouse.Capture(this);
         }
 
@@ -92,7 +92,6 @@ namespace R123.Radio.View
         void FinishRotate()
         {
             MouseMove -= OnMouseMove;
-            LostMouseCapture -= OnLostCapture;
         }
         #endregion
 

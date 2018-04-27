@@ -1,5 +1,4 @@
-﻿using R123.Radio;
-using R123.Radio.Model;
+﻿using R123.Radio.Model;
 using System;
 
 namespace R123.Learning
@@ -7,30 +6,34 @@ namespace R123.Learning
     public class DefaultStateChecker
     {
         private Func<bool>[] Conditions;
-        private MainView Radio;
-        public DefaultStateChecker(MainView radio)
+        private MainModel radio;
+        public DefaultStateChecker(MainModel radio)
         {
-            Radio = radio;
-
-            Conditions = new Func<bool>[10];
-            Conditions[0] = () => Radio.Model.AntennaFixer.Value == ClampState.Fixed;
-            Conditions[1] = () => Radio.Model.Clamps[0].Value == ClampState.Fixed &&
-                                  Radio.Model.Clamps[1].Value == ClampState.Fixed &&
-                                  Radio.Model.Clamps[2].Value == ClampState.Fixed &&
-                                  Radio.Model.Clamps[3].Value == ClampState.Fixed;
-            Conditions[2] = () => Radio.Model.Range.Value >= 0 && (int)Radio.Model.Range.Value < 4;
-            Conditions[3] = () => Radio.Model.Volume.Value == 1.0;
-            Conditions[4] = () => Radio.Model.Noise.Value == 1.0;
-            Conditions[5] = () => Radio.Model.Voltage.Value == VoltageState.Broadcast1;
-            Conditions[6] = () => Radio.Model.WorkMode.Value == WorkModeState.Simplex;
-            Conditions[7] = () => true;
-            Conditions[8] = () => Radio.Model.Scale.Value == Turned.Off;
-            Conditions[9] = () => Radio.Model.Power.Value == Turned.Off;
+            this.radio = radio;
+            InitializeConditions();
         }
-        
+
+        private void InitializeConditions()
+        {
+            Conditions = new Func<bool>[10];
+            Conditions[0] = () => radio.AntennaFixer.Value == ClampState.Fixed;
+            Conditions[1] = () => radio.Clamps[0].Value == ClampState.Fixed &&
+                                  radio.Clamps[1].Value == ClampState.Fixed &&
+                                  radio.Clamps[2].Value == ClampState.Fixed &&
+                                  radio.Clamps[3].Value == ClampState.Fixed;
+            Conditions[2] = () => radio.Range.Value >= 0 && (int)radio.Range.Value < 4;
+            Conditions[3] = () => radio.Volume.Value == 1.0;
+            Conditions[4] = () => radio.Noise.Value == 1.0;
+            Conditions[5] = () => radio.Voltage.Value == VoltageState.Broadcast1;
+            Conditions[6] = () => radio.WorkMode.Value == WorkModeState.Simplex;
+            Conditions[7] = () => true;
+            Conditions[8] = () => radio.Scale.Value == Turned.Off;
+            Conditions[9] = () => radio.Power.Value == Turned.Off;
+        }
+
         public bool Check()
         {
-            foreach(var cond in Conditions) {
+            foreach (var cond in Conditions) {
                 if (!cond()) return false;
             }
 

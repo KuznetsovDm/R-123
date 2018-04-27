@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace R123.Utils.RadioStation
+﻿namespace R123.Utils.RadioStation
 {
     public static class BadFrequency
     {

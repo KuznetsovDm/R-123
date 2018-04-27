@@ -1,8 +1,4 @@
 ﻿using RadioTask.Model.Chain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
 
 namespace RadioTask.Model.RadioContexts.Info

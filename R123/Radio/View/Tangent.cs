@@ -6,8 +6,8 @@ namespace R123.Radio.View
     {
         public Tangent() : base("/Files/Images/tangenta_prm.png")
         {
-            MouseDown += (s, e) => CallChangeValue(true, true);
-            MouseUp += (s, e) => CallChangeValue(true, false);
+            MouseDown += (s, e) => CallChangeValue(true);
+            MouseUp += (s, e) => CallChangeValue(false);
 
             MainWindow.Instance.KeyDown += OnKeyDown;
         }
@@ -16,20 +16,40 @@ namespace R123.Radio.View
         {
             MainWindow.Instance.KeyDown -= OnKeyDown;
             MainWindow.Instance.KeyUp += OnKeyUp;
-            CallChangeValue(Keyboard.IsKeyDown(Key.Space), true);
+            if (Keyboard.IsKeyDown(Key.Space))
+                CallChangeValue(true);
         }
 
         private void OnKeyUp(object sender, KeyEventArgs e)
         {
             MainWindow.Instance.KeyUp -= OnKeyUp;
             MainWindow.Instance.KeyDown += OnKeyDown;
-            CallChangeValue(Keyboard.IsKeyUp(Key.Space), false);
+            if (Keyboard.IsKeyUp(Key.Space))
+                CallChangeValue(false);
         }
 
-        private void CallChangeValue(bool condition, bool newValue)
+        private void CallChangeValue(bool newValue)
         {
-            if (condition && CurrentValue != newValue)
-                RequestChangeValueCommand?.Execute(newValue);
+            RequestChangeValueCommand?.Execute(newValue);
+            if (newValue)
+            {
+                //Mouse.Capture(this);
+                //LostMouseCapture += OnLostCapture;
+                System.Diagnostics.Trace.WriteLine("subscribe");
+            }
+            else
+            {
+                //LostMouseCapture -= OnLostCapture;
+                //Mouse.Capture(null);
+                System.Diagnostics.Trace.WriteLine("unsubscribe");
+            }
+        }
+
+        void OnLostCapture(object sender, MouseEventArgs e)
+        {
+            //LostMouseCapture -= OnLostCapture;
+            CallChangeValue(false);
+            System.Diagnostics.Trace.WriteLine("lost capture");
         }
 
         protected override string GetSourse() => $"/Files/Images/tangenta_{(CurrentValue ? "prd" : "prm")}.png";

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using R123.Radio.Model;
 using RadioTask.Model.Chain;
 
@@ -36,7 +33,7 @@ namespace RadioTask.Model.RadioContexts.Realization.Specialized
             IsSubscribe = true;
         }
 
-        private void Range_ValueChanged(object sender, ValueChangedEventArgs<RangeState, RangeState> e)
+        private void Range_ValueChanged(object sender, ValueChangedEventArgs<RangeState> e)
         {
             if (GetState())
                 action?.Invoke();

@@ -74,7 +74,7 @@ namespace R123.Learning
             ConditionList[index] = () => true;
         }
 
-        public void Clear()
+        public void Restart()
         {
             InitializeConditionList();
         }

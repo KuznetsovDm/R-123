@@ -16,50 +16,36 @@ namespace R123.MainScreens
             InitializeComponent();
 
             View.Child = Radio = new Radio.MainView();
+            Radio.Opacity = 0;
 
             dispatcherTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(1000 / 40)
             };
+
             dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
-            Radio.Opacity = 0;
-            change = 0.1;
+
             Radio.MouseEnter += (s, e) =>
             {
-                up = true;
                 dispatcherTimer.Start();
             };
-            Radio.MouseLeave += (s, e) =>
+
+            IsVisibleChanged += (s, e) =>
             {
-                up = false;
-                dispatcherTimer.Start();
+                if (Convert.ToBoolean(e.NewValue))
+                    Radio.Opacity = 0;
             };
         }
-        private double change;
-        private bool up;
+
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            if (up)
-            {
-                if (Radio.Opacity <= 1 - change)
-                    Radio.Opacity += change;
-                else
-                {
-                    Radio.Opacity = 1;
-                    dispatcherTimer.Stop();
-                }
-            }
+            if (Radio.Opacity <= 1 - 0.1)
+                Radio.Opacity += 0.1;
             else
             {
-                if (Radio.Opacity >= change)
-                    Radio.Opacity -= change;
-                else
-                {
-                    Radio.Opacity = 0;
-                    dispatcherTimer.Stop();
-                }
+                Radio.Opacity = 1;
+                dispatcherTimer.Stop();
             }
-            System.Diagnostics.Trace.WriteLine(Radio.Opacity);
         }
     }
 }

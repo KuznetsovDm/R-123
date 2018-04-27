@@ -13,7 +13,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\DK\Desktop\R123\</PublishUrl>
+    <PublishUrl>C:\Users\Дмитрий\Desktop\R123\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -63,17 +63,35 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.1.0.0-alpha2\lib\net40\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
     <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.9.0\lib\net40\nunit.framework.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ReachFramework" />
+    <Reference Include="SignalR, Version=0.5.1.10625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SignalR.Server.0.5.2\lib\net40\SignalR.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Common, Version=0.5.1.10625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SignalR.Hosting.Common.0.5.2\lib\net40\SignalR.Hosting.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalR.Hosting.Self, Version=0.5.1.10625, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SignalR.Hosting.Self.0.5.2\lib\net40\SignalR.Hosting.Self.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Printing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,26 +105,63 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WpfAnimatedGif.1.4.15\lib\net\WpfAnimatedGif.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AdditionalWindows\NewMessage.xaml.cs">
+      <DependentUpon>NewMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Connection\Audio\AudioListener.cs" />
+    <Compile Include="Connection\Audio\AudioPlayer.cs" />
+    <Compile Include="Connection\Audio\AudioProxyProvider.cs" />
+    <Compile Include="Connection\Audio\G722ChatCodec.cs" />
+    <Compile Include="Connection\Audio\IAudioLogicFilter.cs" />
+    <Compile Include="Connection\Audio\IAudioPlayer.cs" />
+    <Compile Include="Connection\Audio\LoopStream.cs" />
+    <Compile Include="Connection\Audio\Microphone.cs" />
+    <Compile Include="Connection\Audio\MixerAudioPlayer.cs" />
+    <Compile Include="Connection\Audio\MixerPlayer.cs" />
+    <Compile Include="Connection\Audio\Noise.cs" />
+    <Compile Include="Connection\Audio\NoiseWaveProvider.cs" />
+    <Compile Include="Connection\Audio\RadioNoiseProxyLogicController.cs" />
+    <Compile Include="Connection\Audio\RadioVolumeProxyLogicController.cs" />
+    <Compile Include="Connection\Audio\TonePlayer.cs" />
+    <Compile Include="Connection\Audio\VoiceStreamer.cs" />
+    <Compile Include="Connection\Logic.cs" />
+    <Compile Include="Connection\Logic\RadioLogic.cs" />
+    <Compile Include="Connection\SignalR\ConnectionInfo.cs" />
+    <Compile Include="Connection\SignalR\ConnectionProvider.cs" />
+    <Compile Include="Connection\Multicast\DataReceivedEventArgs.cs" />
+    <Compile Include="Connection\Multicast\MulticastConnections.cs" />
+    <Compile Include="Connection\Multicast\UdpMulticastClient.cs" />
+    <Compile Include="Connection\SignalR\Hub\RadioHub.cs" />
+    <Compile Include="Connection\SignalR\Proxy\ParameterEventArgs.cs" />
+    <Compile Include="Connection\SignalR\Proxy\RadioProxy.cs" />
+    <Compile Include="Connection\SignalR\Proxy\RadioProxyAudio.cs" />
+    <Compile Include="Connection\SignalR\Proxy\RadioProxyLogic.cs" />
+    <Compile Include="Connection\SignalR\RadioEntryPoint.cs" />
+    <Compile Include="Learning\Conditions.cs" />
+    <Compile Include="Learning\DefaultTest.cs" />
+    <Compile Include="Learning\IStepChecker.cs" />
+    <Compile Include="Learning\ISubscribesInitializer.cs" />
     <Compile Include="Learning\NewCheckBox.cs" />
     <Compile Include="Learning\DefaultStateChecker.cs" />
     <Compile Include="Learning\DefaultStatePage.xaml.cs">
       <DependentUpon>DefaultStatePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Learning\IRestartable.cs" />
+    <Compile Include="Learning\NewTuningTest.cs" />
+    <Compile Include="Learning\SequenceStepChecker.cs" />
+    <Compile Include="Learning\StepEventArgs.cs" />
     <Compile Include="Learning\TuningPage.xaml.cs">
       <DependentUpon>TuningPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Learning\TuningSubscribesInitializer.cs" />
     <Compile Include="Learning\TuningTest.cs" />
     <Compile Include="Learning\WorkingCapacityPage.xaml.cs">
       <DependentUpon>WorkingCapacityPage.xaml</DependentUpon>
@@ -115,34 +170,9 @@
     <Compile Include="AdditionalWindows\LocalConnections.xaml.cs">
       <DependentUpon>LocalConnections.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Magic\Connection\Connection.cs" />
-    <Compile Include="Magic\Connection\Interfaces\IConnection.cs" />
-    <Compile Include="Magic\Connection\Interfaces\IListener.cs" />
-    <Compile Include="Magic\Connection\Interfaces\IReceiver.cs" />
-    <Compile Include="Magic\Connection\Interfaces\ISender.cs" />
-    <Compile Include="Magic\Connection\Listener.cs" />
-    <Compile Include="Magic\Connection\MessageAvailableEventArgs.cs" />
-    <Compile Include="Magic\Connection\Net\MulticastUdpConnection.cs" />
-    <Compile Include="Magic\Connection\Net\UdpConnection.cs" />
-    <Compile Include="Magic\Logic.cs" />
-    <Compile Include="Magic\MCP\Audio\AudioListener.cs" />
-    <Compile Include="Magic\MCP\Audio\AudioLogicFilter.cs" />
-    <Compile Include="Magic\MCP\Audio\G722ChatCodec.cs" />
-    <Compile Include="Magic\MCP\Audio\MixerAudioPlayer.cs" />
-    <Compile Include="Magic\MCP\Audio\NoiseWaveProvider.cs" />
-    <Compile Include="Magic\MCP\Audio\VoiceStreamer.cs" />
-    <Compile Include="Magic\MCP\Logic\ERadioState.cs" />
-    <Compile Include="Magic\MCP\Logic\EventRadioArgs.cs" />
-    <Compile Include="Magic\MCP\Logic\IBehavior.cs" />
-    <Compile Include="Magic\MCP\Logic\RadioLogic.cs" />
-    <Compile Include="Magic\MCP\Logic\RadioState.cs" />
-    <Compile Include="Magic\MCP\Logic\RemoteRadioMachine.cs" />
-    <Compile Include="Magic\MCP\MCP\AppConfigCreator.cs" />
-    <Compile Include="Magic\MCP\MCP\MCPConnector.cs" />
-    <Compile Include="Magic\MCP\MCP\MCPPacket.cs" />
-    <Compile Include="Magic\RadioConnection.cs" />
-    <Compile Include="MainScreens\Learning.xaml.cs">
-      <DependentUpon>Learning.xaml</DependentUpon>
+    <Compile Include="Logger.cs" />
+    <Compile Include="MainScreens\StartPage.xaml.cs">
+      <DependentUpon>StartPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainScreens\Standarts.xaml.cs">
       <DependentUpon>Standarts.xaml</DependentUpon>
@@ -150,11 +180,14 @@
     <Compile Include="MainScreens\Work.xaml.cs">
       <DependentUpon>Work.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainScreens\WorkOnRadioStation.xaml.cs">
-      <DependentUpon>WorkOnRadioStation.xaml</DependentUpon>
+    <Compile Include="MainScreens\Learning.xaml.cs">
+      <DependentUpon>Learning.xaml</DependentUpon>
     </Compile>
     <Compile Include="AdditionalWindows\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StartTab\Management.xaml.cs">
+      <DependentUpon>Management.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartTab\Start.xaml.cs">
       <DependentUpon>Start.xaml</DependentUpon>
@@ -235,6 +268,10 @@
     <Compile Include="Tasks\RadioTaskModel\Model\Task\TimeRadioTask.cs" />
     <Compile Include="Tasks\Utils\DoubleExtentions.cs" />
     <Compile Include="Tasks\Utils\RadioStation\BadFrequency.cs" />
+    <Page Include="AdditionalWindows\NewMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Learning\DefaultStatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,7 +288,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainScreens\Learning.xaml">
+    <Page Include="MainScreens\StartPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -263,13 +300,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainScreens\WorkOnRadioStation.xaml">
+    <Page Include="MainScreens\Learning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AdditionalWindows\Message.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StartTab\Management.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StartTab\Start.xaml">
       <SubType>Designer</SubType>
@@ -332,6 +373,7 @@
     <None Include="Files\XSPLearning\Destination.xps" />
     <None Include="Files\XSPLearning\Kit.xps" />
     <None Include="Files\XSPLearning\Tech.xps" />
+    <None Include="log4net.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -407,6 +449,8 @@
     <Resource Include="Files\yes.png" />
     <Resource Include="Files\radio.jpg" />
     <Resource Include="Files\Images\R123.png" />
+    <Resource Include="Files\question.png" />
+    <Resource Include="Files\question2.png" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

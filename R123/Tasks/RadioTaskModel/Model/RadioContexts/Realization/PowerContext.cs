@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using R123.Radio.Model;
 using RadioTask.Model.Chain;
 
@@ -35,7 +31,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void Power_ValueChanged(object sender, ValueChangedEventArgs<Turned, Turned> e)
+        private void Power_ValueChanged(object sender, ValueChangedEventArgs<Turned> e)
         {
             if (GetState())
                 action?.Invoke();

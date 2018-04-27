@@ -69,7 +69,7 @@ namespace R123.Radio.ViewModel
 
         protected override void OnMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            double newAngle = CheckingAngle(RotateControl.Angle + changeAngleMouseWheel * Math.Sign(e.Delta) * mouseMoveFactor);
+            double newAngle = CheckingAngle(RotateControl.Angle - changeAngleMouseWheel * Math.Sign(e.Delta) * mouseMoveFactor);
 
             if (RotateControl.Angle != newAngle && canRotate)
             {

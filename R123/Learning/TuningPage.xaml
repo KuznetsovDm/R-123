@@ -97,7 +97,7 @@
             <Canvas x:Name="canvas" Width="1000" Height="750">
 
                 <!--Верхний край-->
-                <Button Canvas.Left="430" Canvas.Top="10" Width="160"/>
+                <!--<Button Canvas.Left="430" Canvas.Top="10" Width="160"/>-->
                 <Button Canvas.Left="200" Canvas.Top="10" Width="160"/>
                 <Button Canvas.Left="10" Canvas.Top="10"/>
 
@@ -116,7 +116,7 @@
                 <!--Правый край-->
                 <Button Canvas.Left="870" Canvas.Top="465"/>
                 <Button Canvas.Left="870" Canvas.Top="315"/>
-                <Button Canvas.Left="870" Canvas.Top="165"/>
+                <!--<Button Canvas.Left="870" Canvas.Top="165"/>-->
                 <Button Canvas.Left="870" Canvas.Top="10"/>
 
                 <!--Верхний край-->

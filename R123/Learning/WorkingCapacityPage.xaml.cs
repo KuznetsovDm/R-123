@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System;
 using R123.Radio.Model;
-using System.IO;
+using R123.AdditionalWindows;
 
 namespace R123.Learning
 {
@@ -15,8 +15,8 @@ namespace R123.Learning
     public partial class WorkingCapacityPage : Page, IRestartable
     {
         private int buttonsCount = 0;
-        private int currentStep = 0;
         private int previousStep = 0;
+        private int currentStep = 0;
         private WorkingTest workingTest;
         private DefaultStateChecker stateChecker;
 
@@ -95,8 +95,8 @@ namespace R123.Learning
                              "Выполняйте последовательно шаги обучения.\r\n" +
                              "Если непонятен какой-то шаг, нажмите на него и Вы получите пояснение.\r\n\r\n" +
                              "После завершения всех этапов проверки работоспособности радиостанции установите все органы управления в исходное положение, чтобы перейти на следующий этап.";
-
-            AdditionalWindows.Message mes = new AdditionalWindows.Message(message, false);
+            
+            Message mes = new Message(message, false);
             mes.ShowDialog();
         }
 
@@ -200,7 +200,7 @@ namespace R123.Learning
             path[14] = @"../../Files/Gifs/GifsStep2\15.prd.gif";
             path[15] = @"../../Files/Gifs/GifsStep2\16.settingAntenna.gif";
             path[17] = @"../../Files/Gifs/GifsStep2\18.testTone.gif";
-            //path[19] = @"../../Files/Gifs/GifsStep2\20.openHatchCover.gif";
+            path[19] = @"../../Files/Gifs/GifsStep2\20.openHatchCover.gif";
             path[20] = @"../../Files/Gifs/GifsStep2\21.fixClamp.gif";
             path[22] = @"../../Files/Gifs/GifsStep2\23.testFixFrequency.gif";
             path[23] = @"../../Files/Gifs/GifsStep2\24.powerOff.gif";
@@ -208,9 +208,6 @@ namespace R123.Learning
             for (int i = 0; i < buttonTooltips.Length; i++) {
                 Button button = (Button)canvas.Children[i];
                 button.Click += ButtonClick;
-                button.ToolTip = "Нажмите для подсказки";
-                button.MouseEnter += OnMouseEnter;
-                button.MouseLeave += OnMouseLeave;
             }
 
             for (int i = 0; i < borderTooltips.Length; i++) {
@@ -242,7 +239,7 @@ namespace R123.Learning
                 FontFamily = new FontFamily("Times New Roman"),
                 FontSize = 18,
                 TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(20)
+                Margin = new Thickness(10)
             };
 
             panel.Children.Add(textblock);
@@ -251,7 +248,7 @@ namespace R123.Learning
 
                 System.Drawing.Image img = new System.Drawing.Bitmap(path[num]);
 
-                panel.Width = img.Width*2 + 20;
+                panel.Width = img.Width + 20;
 
                 System.Windows.Forms.Integration.WindowsFormsHost host = new System.Windows.Forms.Integration.WindowsFormsHost {
                     Child = new System.Windows.Forms.PictureBox() {
@@ -260,31 +257,15 @@ namespace R123.Learning
                         Height = img.Height,
                         Width = img.Width
                     },
-                    Margin = new Thickness(10),
-                    Width = img.Width
+                    Margin = new Thickness(10)
                 };
 
                 panel.Children.Add(host);
+
             }
 
-            AdditionalWindows.Message message = new AdditionalWindows.Message(panel, false);
+            Message message = new Message(panel, false);
             message.ShowDialog();
-        }
-
-        private void OnMouseEnter(object sender, EventArgs args)
-        {
-            Button button = sender as Button;
-
-            button.BorderBrush = new SolidColorBrush(Colors.Red);
-            button.BorderThickness = new Thickness(6);
-        }
-
-        private void OnMouseLeave(object sender, EventArgs args)
-        {
-            Button button = sender as Button;
-
-            button.BorderBrush = new SolidColorBrush(Colors.Black);
-            button.BorderThickness = new Thickness(3);
         }
 
         private void SetButtonsColor()
@@ -381,8 +362,9 @@ namespace R123.Learning
 
                 CheckWithAddingCondition(ref currentStep);
 
-                if (currentStep == previousStep)
+                 if (currentStep == previousStep) {
                     return;
+                }
 
                 SetColor(currentStep, Colors.Black, Colors.White);
                 previousStep = currentStep;
@@ -399,12 +381,13 @@ namespace R123.Learning
                 SetColor(currentStep, Colors.Black, Colors.White);
                 string mess = $"Поздравляем! Теперь вы умеете проверять работоспособность радиостанции.{Environment.NewLine}Для перехода к следующему шагу установите " +
                     $"все органы управления в исходное положение.";
-                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
+                Message message = new Message(mess, false);
                 message.ShowDialog();
                 SetButtonsColor();
                 currentStep = 0;
-                stateChecker = new DefaultStateChecker(Radio);
+                stateChecker = new DefaultStateChecker(Radio.Model);
                 InitializeCheckSubscribes();
+                Restart();
             }
         }
 
@@ -412,10 +395,10 @@ namespace R123.Learning
         {
             if (stateChecker.Check()) {
                 string mess = "Вы установили органы управления в исходное положение.";
-                AdditionalWindows.Message message = new AdditionalWindows.Message(mess, false);
+                Message message = new Message(mess, false);
                 message.ShowDialog();
                 InitializeCheckUnsubscribes();
-                MainScreens.WorkOnRadioStation.Instance.ActivateStep(3);
+                //MainScreens.W.Instance.ActivateStep(3);
             }
         }
 
@@ -448,7 +431,7 @@ namespace R123.Learning
             Subscribes[4] = () => Radio.Model.Tangent.ValueChanged += StepCheck;
             Subscribes[5] = () => Radio.Model.Volume.ValueChanged += StepCheck;
             Subscribes[6] = () => Radio.Model.Range.ValueChanged += StepCheck;
-            Subscribes[7] = () => Radio.Model.Frequency.ValueChanged += FrequencyCheck;
+            Subscribes[7] = () => Radio.Model.Frequency.ValueChanged += StepCheck;
             Subscribes[12] = () => Radio.Model.Tone.ValueChanged += StepCheck; 
             Subscribes[15] = () => Radio.Model.Antenna.EndValueChanged += AntennaCheck;
             Subscribes[20] = () => {
@@ -469,7 +452,7 @@ namespace R123.Learning
             Unsubscribes[3] = () => {
                 Radio.Model.Scale.ValueChanged -= StepCheck;
                 Radio.Model.Power.ValueChanged -= StepCheck;
-                Radio.Model.Frequency.ValueChanged -= FrequencyCheck;
+                Radio.Model.Frequency.ValueChanged -= StepCheck;
             };
             Unsubscribes[4] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
             Unsubscribes[5] = () => Radio.Model.Volume.ValueChanged -= StepCheck;
@@ -482,7 +465,7 @@ namespace R123.Learning
             Unsubscribes[12] = () => Radio.Model.Tone.ValueChanged -= StepCheck;
             Unsubscribes[13] = () => Radio.Model.WorkMode.ValueChanged -= StepCheck;
             Unsubscribes[14] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
-            Unsubscribes[15] = () => Radio.Model.Antenna.EndValueChanged -= AntennaCheck;
+            Unsubscribes[15] = () => Radio.Model.Antenna.ValueChanged -= StepCheck;
             Unsubscribes[16] = () => Radio.Model.Tangent.ValueChanged -= StepCheck;
             Unsubscribes[17] = () => Radio.Model.Tone.ValueChanged -= StepCheck;
             Unsubscribes[18] = () => Radio.Model.Range.ValueChanged -= StepCheck;
@@ -524,14 +507,6 @@ namespace R123.Learning
         private void AntennaCheck(object sender, EventArgs args)
         {
             if (Radio.Model.Antenna.Value < 0.8)
-                return;
-
-            StepCheck(sender, args);
-        }
-
-        private void FrequencyCheck(object sender, EventArgs args)
-        {
-            if (Radio.Model.Frequency.Value < 21)
                 return;
 
             StepCheck(sender, args);

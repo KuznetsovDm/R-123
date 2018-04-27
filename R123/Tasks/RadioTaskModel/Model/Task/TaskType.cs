@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace RadioTask.Model.Task
+﻿namespace RadioTask.Model.Task
 {
     public enum TaskType
     {

@@ -1,10 +1,6 @@
 ﻿using R123.Radio.Model;
 using RadioTask.Model.Chain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RadioTask.Model.RadioContexts
 {
@@ -31,7 +27,7 @@ namespace RadioTask.Model.RadioContexts
             IsSubscribe = true;
         }
 
-        private void Volume_ValueChanged(object sender, ValueChangedEventArgs<double, double> e)
+        private void Volume_ValueChanged(object sender, ValueChangedEventArgs<double> e)
         {
             if(GetState())
                 action?.Invoke();

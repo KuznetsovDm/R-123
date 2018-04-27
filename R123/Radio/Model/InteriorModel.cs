@@ -9,11 +9,11 @@ namespace R123.Radio.Model
     public enum ClampState { Fixed, Medium, Unfixed }
     public enum Turned { On, Off}
 
-    public class ValueChangedEventArgs<T, D> : EventArgs
+    public class ValueChangedEventArgs<T> : EventArgs
     {
         public readonly T NewValue;
-        public readonly D OldValue;
-        public ValueChangedEventArgs(T NewValue, D OldValue)
+        public readonly T OldValue;
+        public ValueChangedEventArgs(T NewValue, T OldValue)
         {
             this.NewValue = NewValue;
             this.OldValue = OldValue;
@@ -32,8 +32,8 @@ namespace R123.Radio.Model
 
     public class Property<T>
     {
-        public event EventHandler<ValueChangedEventArgs<T, T>> ValueChanged;
-        public event EventHandler<ValueChangedEventArgs<T, T>> EndValueChanged;
+        public event EventHandler<ValueChangedEventArgs<T>> ValueChanged;
+        public event EventHandler<ValueChangedEventArgs<T>> EndValueChanged;
         private T currentValue;
         public Property(T value)
         {
@@ -47,7 +47,7 @@ namespace R123.Radio.Model
                 if (currentValue.Equals(value)) return;
                 T oldValue = currentValue;
                 currentValue = value;
-                ValueChanged?.Invoke(this, new ValueChangedEventArgs<T, T>(value, oldValue));
+                ValueChanged?.Invoke(this, new ValueChangedEventArgs<T>(value, oldValue));
             }
         }
 
@@ -55,7 +55,7 @@ namespace R123.Radio.Model
         {
             T oldValue = currentValue;
             currentValue = value;
-            EndValueChanged?.Invoke(this, new ValueChangedEventArgs<T, T>(value, oldValue));
+            EndValueChanged?.Invoke(this, new ValueChangedEventArgs<T>(value, oldValue));
         }
     }
 

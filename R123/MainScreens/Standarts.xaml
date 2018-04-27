@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         d:DesignWidth="1280" d:DesignHeight="1024">
 
-    
+
     <Page.Resources>
         <Style TargetType="Button">
             <Setter Property="Padding" Value="5"/>
@@ -26,7 +26,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
     </Page.Resources>
-    
+
     <Grid Background="#E8E6EA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -44,7 +44,7 @@
 
         <StackPanel Grid.Row="0" Grid.Column="1" Name="TasksPanel" Margin="5" Visibility="Visible">
             <TextBlock Style="{StaticResource TextBlock}" Text="Выберите задачу:"/>
-            <ListBox x:Name="ListBoxTasks" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedTask}">
+            <ListBox x:Name="ListBoxTasks" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedTask}" SelectionChanged="ListBoxTasks_OnSelectionChanged">
                 <ListBox.ItemContainerStyle>
                     <Style>
                         <Setter Property="ListBoxItem.Background" Value="LightSlateGray"/>
@@ -76,7 +76,7 @@
 
             <Button Name="InterraptTask" FontFamily="Times New Roman" FontSize="20" Content="Прервать задачу." Click="InterraptTask_Click"/>
             <Button Name="ComeBackTask" FontFamily="Times New Roman" FontSize="20" Content="Вернуться к задачам." Visibility="Hidden" Click="ComeBackTask_Click"/>
-                
+
         </StackPanel>
     </Grid>
 </Page>

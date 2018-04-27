@@ -1,19 +1,14 @@
-﻿using R123;
-using R123.MainScreens;
+﻿using R123.MainScreens;
 using R123.Radio.Model;
 using R123.RadioTaskModel.Model.Generator;
 using RadioTask.Model.Generator;
-using RadioTask.Model.RadioContexts.Info;
 using RadioTask.Model.Task;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace RadioTask.Interface
 {
@@ -37,11 +32,11 @@ namespace RadioTask.Interface
         {
             var fixDescriptions = InfoGenerator.GetTenFixFrequencyDescriptors();
             var Descriptions = InfoGenerator.GetTenFrequencyDescriptors();
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.InitialState, Description = InfoGenerator.Descriptions[RadioTaskType.InitialState] });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.CheckStation, Description = InfoGenerator.Descriptions[RadioTaskType.CheckStation] });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.PrepareStationForWork, Description = InfoGenerator.Descriptions[RadioTaskType.PrepareStationForWork] });
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.Frequency, Description = InfoGenerator.Descriptions[RadioTaskType.Frequency], Frequencys = Descriptions, SelectedItem = Descriptions.First() });
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.FixFrequency, Description = InfoGenerator.Descriptions[RadioTaskType.FixFrequency], Frequencys = fixDescriptions, SelectedItem = fixDescriptions.First() });
-            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.InitialState, Description = InfoGenerator.Descriptions[RadioTaskType.InitialState] });
-            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.PrepareStationForWork, Description = InfoGenerator.Descriptions[RadioTaskType.PrepareStationForWork] });
-            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.CheckStation, Description = InfoGenerator.Descriptions[RadioTaskType.CheckStation] });
         }
 
         private void InitializeMiddle()

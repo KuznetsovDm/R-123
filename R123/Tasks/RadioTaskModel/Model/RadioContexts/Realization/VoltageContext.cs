@@ -1,10 +1,6 @@
 ﻿using R123.Radio.Model;
 using RadioTask.Model.Chain;
-using RadioTask.Model.RadioContexts;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace RadioTask.Model.RadioContexts.Realization
 {
@@ -37,7 +33,7 @@ namespace RadioTask.Model.RadioContexts.Realization
             IsSubscribe = true;
         }
 
-        private void Voltage_ValueChanged(object sender, ValueChangedEventArgs<VoltageState, VoltageState> e)
+        private void Voltage_ValueChanged(object sender, ValueChangedEventArgs<VoltageState> e)
         {
             if (GetState())
                 action?.Invoke();

@@ -1,9 +1,10 @@
-﻿using MCP.Logic;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace R123
 {
@@ -36,12 +37,19 @@ namespace R123
 
             InitializeComponent();
 
-            Frame1.Content = new MainScreens.Learning();
-            Frame2.Content = new MainScreens.WorkOnRadioStation();
+            Frame1.Content = new MainScreens.StartPage();
+            Frame2.Content = new MainScreens.Learning();
             Frame3.Content = new MainScreens.Work();
             Frame4.Content = new MainScreens.Standarts();
 
-            Closing += (s, e) => RadioConnection.Close();
+            Closing += (s, e) => Logic.Close();
+            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            Logger.Log(e.Exception);
+            e.Handled = true;
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -49,9 +57,9 @@ namespace R123
             if (e.Key == Key.Escape && e.IsDown)
                 Tabs_TabControl.SelectedIndex = 0;
             else if (e.Key == Key.F1 && e.IsDown)
-                MainScreens.WorkOnRadioStation.Instance.ActivateAllStep();
+                MainScreens.Learning.Instance.ActivateAllStep();
             else if (e.Key == Key.F2 && e.IsDown)
-                MainScreens.WorkOnRadioStation.Instance.ActivateNextStep();
+                MainScreens.Learning.Instance.ActivateNextStep();
             else if (e.Key == Key.F3 && e.IsDown)
                 AdditionalWindows.LocalConnections.ShowWindow();
         }
@@ -61,26 +69,6 @@ namespace R123
         public int CurrentTabIndex
         {
             set => Tabs_TabControl.SelectedIndex = value;
-        }
-
-        private void ActivateChangeTab(bool value)
-        {
-            tabsIsActive = value;
-            for (int i = 2; i < Tabs_TabControl.Items.Count - 2; i++)
-                if (Tabs_TabControl.Items[i] is TabItem tab)
-                    tab.IsEnabled = value;
-        }
-
-        public void ActivateTab(int index)
-        {
-            tabsIsActive = true;
-            if (Tabs_TabControl.Items[index] is TabItem tab)
-                tab.IsEnabled = true;
-        }
-
-        public bool TabIsActive(int index)
-        {
-            return (Tabs_TabControl.Items[index] as TabItem).IsEnabled;
         }
     }
 }

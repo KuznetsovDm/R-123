@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Net;
+using SignalRBase;
+using SignalRBase.Proxy;
 
 namespace R123.AdditionalWindows
 {
@@ -10,7 +12,7 @@ namespace R123.AdditionalWindows
     /// </summary>
     public partial class LocalConnections : Window
     {
-        private static ViewModel viewModel;
+        public static ViewModel viewModel;
 
         static LocalConnections()
         {
@@ -22,8 +24,7 @@ namespace R123.AdditionalWindows
             InitializeComponent();
 
             DataContext = viewModel;
-
-            Closing += (s, e) => Instance = null;
+            //Closing += (s, e) => Instance = null;
         }
 
         public static LocalConnections Instance { get; private set; }
@@ -34,7 +35,7 @@ namespace R123.AdditionalWindows
             Instance = new LocalConnections();
             Instance.Show();
         }
-        
+
 
         public static void SetFrequency(double frequency)
         {
@@ -52,7 +53,7 @@ namespace R123.AdditionalWindows
         }
     }
 
-    class Connection
+    public class Connection
     {
         public double Frequency { get; private set; }
         public IPAddress Address { get; private set; }
@@ -64,12 +65,12 @@ namespace R123.AdditionalWindows
         }
     }
 
-    class ViewModel : INotifyPropertyChanged
+    public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private ObservableCollection<Connection> collection;
-        public ObservableCollection<Connection> Collection => collection;
+        private ObservableCollection<RadioProxy> collection = null/*= RadioEntryPoint.Proxies*/;
+        public ObservableCollection<RadioProxy> Collection => collection;
 
         private string currentFrequency;
         public string CurrentFrequency
@@ -97,12 +98,7 @@ namespace R123.AdditionalWindows
         {
             currentFrequency = "Текущая частота: 20 МГЦ";
             currentAntenna = "Антена настороена плохо (0)";
-            collection = new ObservableCollection<Connection>
-            {
-                new Connection(new IPAddress(new byte[]{ 255, 255, 1, 1}), 23.3),
-                new Connection(new IPAddress(new byte[]{ 255, 255, 1, 2}), 24.456),
-                new Connection(new IPAddress(new byte[]{ 255, 255, 1, 3}), 27.78),
-            };
+
         }
 
         public void OnPropertyChanged(string prop)

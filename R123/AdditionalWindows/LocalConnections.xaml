@@ -22,7 +22,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Address}"/>
+                        <TextBlock Text="{Binding Ip}"/>
                         <TextBlock Text=" | Частота = "/>
                         <TextBlock Text="{Binding Frequency}"/>
                     </StackPanel>

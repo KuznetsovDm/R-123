@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using R123.Radio.Model;
 using RadioTask.Model.Chain;
 
@@ -36,7 +33,7 @@ namespace RadioTask.Model.RadioContexts.Realization.Specialized
             IsSubscribe = true;
         }
 
-        private void SubrangeSwitcherSpecializerContext_ValueChanged(object sender, R123.Radio.Model.ValueChangedEventArgs<R123.Radio.Model.Turned, R123.Radio.Model.Turned> e)
+        private void SubrangeSwitcherSpecializerContext_ValueChanged(object sender, R123.Radio.Model.ValueChangedEventArgs<R123.Radio.Model.Turned> e)
         {
             if (GetState())
                 action?.Invoke();
