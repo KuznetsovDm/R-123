@@ -101,6 +101,8 @@
     <Compile Include="Blackouts\Drawer.cs" />
     <Compile Include="Blackouts\ManagementBlackouts.cs" />
     <Compile Include="Blackouts\TemplateBlackouts.cs" />
+    <Compile Include="Blackouts\TuningPageBlackouts.cs" />
+    <Compile Include="Blackouts\WorkingPageBlackouts.cs" />
     <Compile Include="Learning\Conditions.cs" />
     <Compile Include="Learning\DefaultTest.cs" />
     <Compile Include="Learning\IStepChecker.cs" />
@@ -124,6 +126,8 @@
     </Compile>
     <Compile Include="Learning\WorkingSubscribesInitializer.cs" />
     <Compile Include="Learning\WorkingTest.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Magic\ConnectionInfo.cs" />
     <Compile Include="Magic\Connection\Connection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IConnection.cs" />
     <Compile Include="Magic\Connection\Interfaces\IListener.cs" />
@@ -245,6 +249,7 @@
     <Compile Include="Tasks\RadioTaskModel\Model\Task\TaskType.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Task\TimeControllFacade.cs" />
     <Compile Include="Tasks\RadioTaskModel\Model\Task\TimeRadioTask.cs" />
+    <Compile Include="Tasks\SimpleMode.cs" />
     <Compile Include="Tasks\Utils\DoubleExtentions.cs" />
     <Compile Include="Tasks\Utils\RadioStation\BadFrequency.cs" />
     <Page Include="AdditionalWindows\NewMessage.xaml">
@@ -345,6 +350,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Files\XSPLearning\AllTogether.xps" />
     <None Include="Files\XSPLearning\Destination.xps" />
     <None Include="Files\XSPLearning\Kit.xps" />
     <None Include="Files\XSPLearning\Tech.xps" />
@@ -425,6 +431,7 @@
     <Resource Include="Files\radio.jpg" />
     <Resource Include="Files\Images\R123.png" />
     <Resource Include="Files\radioForStart.jpeg" />
+    <Resource Include="Files\radio2.jpg" />
     <Content Include="Files\Sounds\FixedFrequency.wav" />
     <Content Include="Files\Sounds\PositionSwitcher.wav" />
     <Content Include="Files\Sounds\ton.mp3" />

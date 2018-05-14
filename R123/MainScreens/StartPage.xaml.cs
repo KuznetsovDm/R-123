@@ -9,34 +9,31 @@ namespace R123.MainScreens
     /// </summary>
     public partial class StartPage : Page
     {
-        private const int NUMBER_STAGES = 4;
+        private const int NUMBER_STAGES = 1;
 
         private string[] titles = new string[NUMBER_STAGES]
         {
             //"Радиостанция Р-123М",
-            "Назначение радиостанции Р-123М",
-            "Технические характеристики",
-            "Комплект радиостанции Р-123М",
-            "Назначение органов управления"
+            "Назначение, ТТХ, комплект радиостанции Р-123М"
+            //"Назначение радиостанции Р-123М",
+            //"Технические характеристики",
+            //"Комплект радиостанции Р-123М",
+            //"Назначение органов управления"
         };
 
         private Page[] pages = new Page[NUMBER_STAGES]
         {
             //new StartTab.Start(),
-            new StartTab.XpsDocumentPage("Destination"),
+            new StartTab.XpsDocumentPage("AllTogether"),
+            /*new StartTab.XpsDocumentPage("Destination"),
             new StartTab.XpsDocumentPage("Tech"),
             new StartTab.XpsDocumentPage("Kit"),
-            new StartTab.Management()
+            new StartTab.Management()*/
         };
 
         public StartPage()
         {
             InitializeComponent();
-
-            //for (int i = 0; i < Menu_StackPanel.Children.Count; i++)
-            //    if (Menu_StackPanel.Children[i] is Button button)
-            //        button.Click += (object sender, RoutedEventArgs e) =>
-            //            CurrentStage = Menu_StackPanel.Children.IndexOf(sender as UIElement);
 
             CurrentStage = 0;
         }
@@ -60,15 +57,9 @@ namespace R123.MainScreens
                 prevStage = currentStage;
                 currentStage = value;
 
-                //if (Menu_StackPanel.Children.Count > prevStage && Menu_StackPanel.Children[prevStage] is Button prevButton)
-                //    prevButton.Background = new SolidColorBrush(Colors.CadetBlue);
-
-                //if (Menu_StackPanel.Children.Count > currentStage && Menu_StackPanel.Children[currentStage] is Button currentButton)
-                //    currentButton.Background = new SolidColorBrush(Color.FromRgb(111, 218, 111));
-
                 prevStep_Button.IsEnabled = currentStage > 0;
 
-                title_TextBlock.Text = $"Этап №{currentStage + 1}/{NUMBER_STAGES}: {titles[currentStage]}.";
+                title_TextBlock.Text = $"Этап № 1: {titles[currentStage]}."; // /{NUMBER_STAGES}
 
 
                 Content_Frame.Content = pages[currentStage];

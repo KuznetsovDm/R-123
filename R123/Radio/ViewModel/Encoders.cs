@@ -62,8 +62,8 @@ namespace R123.Radio.ViewModel
         {
             newValue.CanExecuteChanged += (object s, EventArgs e) =>
             {
-                if (e is CommandEventArgs)
-                    canRotate = (e as CommandEventArgs).CanExecute;
+                if (e is CommandEventArgs args)
+                    canRotate = args.CanExecute;
             };
         }
 

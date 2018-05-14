@@ -12,19 +12,11 @@ namespace MCP.Audio
         private WaveOut player;
         private MixingSampleProvider mixer;
 
-        public event EventHandler<StoppedEventArgs> PlaybackStopped;
-
         public MixerAudioPlayer()
         {
             player = new WaveOut();
             mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(16000,1));
-            player.PlaybackStopped += Player_PlaybackStopped;
             player.Init(mixer);
-        }
-
-        private void Player_PlaybackStopped(object sender, StoppedEventArgs e)
-        {
-            PlaybackStopped(sender, e);
         }
 
         public PlaybackState PlaybackState => player.PlaybackState;

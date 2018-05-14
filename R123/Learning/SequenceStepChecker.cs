@@ -4,15 +4,15 @@ namespace R123.Learning
 {
     public class SequenceStepChecker : IStepChecker
     {
-        private Conditions steps;
-        ISubscribesInitializer subscribesInitializer;
-        private int stepNumber = 0;
-        private int previousStepNumber = 0;
-        private int stepLength;
+        private int previousStepNumber;
+        private readonly int stepLength;
+        private int stepNumber;
+        private readonly Conditions steps;
+        private readonly ISubscribesInitializer subscribesInitializer;
 
         public SequenceStepChecker(Conditions conditions, ISubscribesInitializer subscribesInitializer)
         {
-            this.steps = conditions;
+            steps = conditions;
             stepLength = conditions.Length;
             this.subscribesInitializer = subscribesInitializer;
         }
@@ -24,10 +24,16 @@ namespace R123.Learning
             subscribesInitializer.Subscribes[0](StepCheck);
         }
 
-        protected virtual void StepCheck(object sender, EventArgs args)
+        public void Stop()
         {
+            stepNumber = 0;
+            previousStepNumber = 0;
+        }
 
-            while (steps.CheckConditionByIndex(stepNumber)) {
+        protected virtual void StepCheck(object sender, EventArgs args)
+          {
+            while (steps.CheckConditionByIndex(stepNumber))
+            {
                 // отписываемся от текущего
                 subscribesInitializer.Unsubscribes[stepNumber](StepCheck);
 
@@ -38,16 +44,11 @@ namespace R123.Learning
                 subscribesInitializer.Subscribes[stepNumber](StepCheck);
             }
 
-            if(stepNumber != previousStepNumber) {
+            if (stepNumber != previousStepNumber)
+            {
                 StepChanged(this, new StepEventArgs(stepNumber));
                 previousStepNumber = stepNumber;
             }
-        }
-
-        public void Stop()
-        {
-            stepNumber = 0;
-            previousStepNumber = 0;
         }
     }
 }

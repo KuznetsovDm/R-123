@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -46,29 +47,39 @@ namespace R123.Blackouts
 
         public void SetPanels(StackPanel left, StackPanel right)
         {
-            string[] textForBlock = System.IO.File.ReadAllLines("../../StartTab/TextForManagement.txt");
+            string[][] textForBlock = System.IO.File.ReadAllLines("../../StartTab/TextForManagement.txt")
+                .Select(s => s.Split('[', ']')).ToArray();
 
             panels = new StackPanel[textForBlock.Length];
             for (int i = 0; i < panels.Length; i++)
                 panels[i] = (i < 14 || i == 27) ? right : left;
 
-            TextBlock[] blocks = new TextBlock[textForBlock.Length];
+            StackPanel[] blocks = new StackPanel[textForBlock.Length];
             for (int i = 0; i < blocks.Length; i++)
-                blocks[i] = new TextBlock()
+            {
+                blocks[i] = new StackPanel()
                 {
-                    Text = textForBlock[i],
-                    Margin = new Thickness(20),
-                    Padding = new Thickness(20),
-                    FontSize = 40,
-                    FontFamily = new FontFamily("Times New Roman"),
-                    FontWeight = FontWeights.Bold,
-                    TextWrapping = TextWrapping.Wrap,
-                    TextAlignment = TextAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
                     Background = Brushes.White,
-                    MaxWidth = 600,
+                    Margin = (i < 14 || i == 27) ? new Thickness(70, 5, 5, 5) : new Thickness(5, 5, 70, 5),
                 };
+                for (int j = 0; j < textForBlock[i].Length; j++)
+                    blocks[i].Children.Add(new TextBlock()
+                    {
+                        Text = textForBlock[i][j],
+                        Margin = new Thickness(20),
+                        Padding = new Thickness(20),
+                        FontSize = (j == 0 ? 40 : 35),
+                        FontFamily = new FontFamily("Times New Roman"),
+                        FontWeight = FontWeights.Bold,
+                        FontStyle = (j == 0 ? FontStyles.Normal : FontStyles.Italic),
+                        TextWrapping = TextWrapping.Wrap,
+                        TextAlignment = TextAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        MaxWidth = 600,
+                    });
+            }
+
             elements = blocks;
         }
     }

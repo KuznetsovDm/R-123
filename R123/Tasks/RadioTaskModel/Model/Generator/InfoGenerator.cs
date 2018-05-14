@@ -10,7 +10,7 @@ namespace RadioTask.Model.Generator
 {
     public class InfoGenerator
     {
-        Random random = new Random();
+        private static Random random = new Random();
 
         public InfoGenerator()
         {
@@ -18,7 +18,7 @@ namespace RadioTask.Model.Generator
 
         public WorkModeState WorkMode => WorkModeState.Simplex;
 
-        public double Frequency
+        public static double Frequency
         {
             get
             {
@@ -31,7 +31,7 @@ namespace RadioTask.Model.Generator
             }
         }
 
-        private double DirtyFrequency => random.Next(0, 1260) * 0.025 + 20;
+        private static double DirtyFrequency => random.Next(0, 1260) * 0.025 + 20;
 
         public double Volume { get => 1; }
 
@@ -75,18 +75,15 @@ namespace RadioTask.Model.Generator
             { RadioTaskType.CheckStation,"Проверить работоспособность радиостанции."}
         };
 
-        public static FixFrequencyDescriptor[] GetTenFixFrequencyDescriptors()
+        public static FixFrequencyParameter[] GetTenFixFrequencyDescriptors()
         {
-            FixFrequencyDescriptor[] descriptor = new FixFrequencyDescriptor[10];
+            FixFrequencyParameter[] descriptor = new FixFrequencyParameter[10];
             for (int i = 0; i < descriptor.Length; i++)
             {
                 FixFrequencyParameter parameter = new FixFrequencyParameter();
-                parameter.Frequency = 126*i * 0.025 + 20;
-                parameter.Range = (RangeState)(i%4);
+                parameter.Frequency = Frequency;
+                parameter.Range = (RangeState)(i % 4);
                 parameter.SubFrequency = GetSubFrequencyStateFor(parameter.Frequency);
-
-                descriptor[i] = new FixFrequencyDescriptor();
-                descriptor[i].Parameter = parameter;
             }
             return descriptor;
         }
@@ -97,10 +94,7 @@ namespace RadioTask.Model.Generator
             for (int i = 0; i < descriptor.Length; i++)
             {
                 FrequencyParameter parameter = new FrequencyParameter();
-                parameter.Frequency = 126 * i * 0.025 + 21;
-
-                System.Diagnostics.Trace.WriteLine(
-                BadFrequency.Frequency.ContainInRange(parameter.Frequency, DoubleExtentions.AcceptableRangeForFrequency));
+                parameter.Frequency = Frequency;
 
                 descriptor[i] = new FrequencyDescriptor();
                 descriptor[i].Parameter = parameter;

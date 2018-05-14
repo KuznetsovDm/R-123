@@ -35,7 +35,7 @@ namespace R123.RadioTaskModel.Model.Generator
             builder.BuildStep().Power(generator.Power);
             builder.BuildStep().Display(generator.Display);
             builder.BuildStep().Volume(generator.Volume);
-            builder.BuildStep().Frequency((parameter!=null)?parameter.Frequency:generator.Frequency).EscapeNext(TypeRadioAction.Antena);
+            builder.BuildStep().Frequency((parameter!=null)?parameter.Frequency:InfoGenerator.Frequency).EscapeNext(TypeRadioAction.Antena);
             builder.BuildStep().Antena(generator.Antena);
             //end building
 

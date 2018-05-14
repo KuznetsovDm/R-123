@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace R123.AdditionalWindows
 {
@@ -19,27 +9,33 @@ namespace R123.AdditionalWindows
     /// </summary>
     public partial class NewMessage : UserControl
     {
+        public event EventHandler<EventArgs> Closing;
         public NewMessage()
         {
             InitializeComponent();
             Message_Border.Visibility = Visibility.Collapsed;
 
-            Message_Border.MouseDown += HideMessage;
+            Background_Border.MouseDown += HideMessage;
         }
 
         private void HideMessage(object sender, RoutedEventArgs e)
         {
             Message_Border.Visibility = Visibility.Collapsed;
+            Closing?.Invoke(this, null);
         }
 
         public void ShowMessage()
         {
+            if (Body_StackPanel.Children.Count > 0)
+                Body_StackPanel.Visibility = Visibility.Visible;
+            else
+                Body_StackPanel.Visibility = Visibility.Collapsed;
             Message_Border.Visibility = Visibility.Visible;
         }
 
         #region dp string Text
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Angle",
+            "Text",
             typeof(string),
             typeof(NewMessage),
             new UIPropertyMetadata("",
@@ -55,6 +51,29 @@ namespace R123.AdditionalWindows
         {
             NewMessage message = (NewMessage)depObj;
             message.Text_TextBlock.Text = Convert.ToString(args.NewValue);
+            message.Text_TextBlock.Visibility = Visibility.Visible;
+        }
+        #endregion
+
+        #region dp UIElement Body
+        public static readonly DependencyProperty BodyProperty = DependencyProperty.Register(
+            "Body",
+            typeof(UIElement),
+            typeof(NewMessage),
+            new UIPropertyMetadata(null,
+                new PropertyChangedCallback(BodyChanged)));
+
+        public UIElement Body
+        {
+            get { return (UIElement)GetValue(BodyProperty); }
+            set { SetValue(BodyProperty, value); }
+        }
+
+        private static void BodyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs args)
+        {
+            NewMessage message = (NewMessage)depObj;
+            if (args.NewValue is UIElement elem)
+                message.Body_StackPanel.Children.Add(elem);
         }
         #endregion
     }

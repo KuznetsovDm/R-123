@@ -21,18 +21,45 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Border>
+                            <Grid>
+                                <Border x:Name="border" CornerRadius="3, 3, 0, 0" Background="WhiteSmoke">
+                                    <ContentPresenter ContentSource="Header" 
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      Margin="5"
+                                                      RecognizesAccessKey="True"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="Khaki"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="OliveDrab"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        <Style x:Key="TextInTabItemHeader">
-            <Setter Property="Control.Margin" Value="3" />
-            <Setter Property="Control.FontSize" Value="18"/>
-            <Setter Property="Control.FontFamily" Value="Times New Roman"/>
+        <Style x:Key="TextInTabItemHeader" TargetType="TextBlock">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Times New Roman"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
         </Style>
     </Window.Resources>
     <Grid>
         <TabControl Name="Tabs_TabControl">
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Назначение, ТТХ, состав</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">1. Назначение, ТТХ, комплект</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame1" NavigationUIVisibility="Hidden"/>
@@ -40,7 +67,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Обучение</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">2. Обучение</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame2" NavigationUIVisibility="Hidden"/>
@@ -48,18 +75,18 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Задачи</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Работа на радиостанции</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame4" NavigationUIVisibility="Hidden"/>
+                    <Frame Name="Frame3" NavigationUIVisibility="Hidden"/>
                 </TabItem.Content>
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">Работа на радиостанции</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">4. Задачи</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <Frame Name="Frame3" NavigationUIVisibility="Hidden"/>
+                    <Frame Name="Frame4" NavigationUIVisibility="Hidden"/>
                 </TabItem.Content>
             </TabItem>
         </TabControl>

@@ -102,8 +102,6 @@ namespace R123
         private static void Tone_ValueChanged(object sender, ValueChangedEventArgs<Turned> e) => OnToneChange();
         private static void Tangent_ValueChanged(object sender, ValueChangedEventArgs<Turned> e) => OnTangentChange();
 
-
-
         private static void OnPowerChange()
         {
             if (RadioModel.Power.Value == Turned.On)
@@ -126,7 +124,7 @@ namespace R123
         private static void OnToneChange()
         {
             if (RadioModel.Power.Value == Turned.On && RadioModel.Tone.Value == Turned.On)
-                radioLogic.PlayToneSimplex(RadioModel.WorkMode.Value == WorkModeState.Simplex);
+                radioLogic.PlayTone(RadioModel.WorkMode.Value == WorkModeState.Simplex);
         }
 
         private static void OnTangentChange()

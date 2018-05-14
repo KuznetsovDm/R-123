@@ -6,9 +6,7 @@ namespace R123.Learning
 {
     public class WorkingTest
     {
-        private MainModel radio;
-        public List<Func<bool>> ConditionList { get; private set; }
-        public Func<bool>[] Conditions { get; private set; }
+        private readonly MainModel radio;
 
         public WorkingTest(MainModel radio)
         {
@@ -17,6 +15,9 @@ namespace R123.Learning
             InitializeConditions();
             InitializeConditionList();
         }
+
+        public List<Func<bool>> ConditionList { get; private set; }
+        public Func<bool>[] Conditions { get; private set; }
 
         private void InitializeConditions()
         {
@@ -51,20 +52,19 @@ namespace R123.Learning
             Conditions[23] = () => radio.Power.Value == Turned.Off;
         }
 
-            private void InitializeConditionList()
+        private void InitializeConditionList()
         {
-            ConditionList = new List<Func<bool>> {
+            ConditionList = new List<Func<bool>>
+            {
                 Conditions[0]
             };
         }
 
         public bool CheckCondition(out int index)
         {
-            for (index = 0; index < ConditionList.Count; index++) {
-                if (!ConditionList[index]()) {
+            for (index = 0; index < ConditionList.Count; index++)
+                if (!ConditionList[index]())
                     return false;
-                }
-            }
 
             return true;
         }

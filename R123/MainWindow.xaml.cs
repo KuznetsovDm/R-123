@@ -39,17 +39,31 @@ namespace R123
             Frame1.Content = new MainScreens.StartPage();
             Frame2.Content = MainScreens.Learning.Instance;
             Frame3.Content = new MainScreens.Work();
-            Frame4.Content = new MainScreens.Standarts();
+            Frame4.Content = MainScreens.Standarts.Instance;
 
             Start_Frame.Content = new StartTab.Start();
 
             Closing += (s, e) => RadioConnection.Close();
+
+            Tabs_TabControl.SelectionChanged += (s, e) =>
+            {
+                
+            };
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Logger.Log(e.ExceptionObject.ToString());
         }
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape && e.IsDown)
+            {
+                Start_Frame.Visibility = Visibility.Visible;
                 Tabs_TabControl.SelectedIndex = 0;
+            }
             else if (e.Key == Key.F1 && e.IsDown)
                 MainScreens.Learning.Instance.ActivateAllStep();
             else if (e.Key == Key.F2 && e.IsDown)

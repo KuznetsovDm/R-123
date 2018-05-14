@@ -9,25 +9,25 @@
       Title="Start">
     <Grid><!--Background="#E8E6EA"-->
         <Grid>
-            <Image Grid.Row="1" Source="/Files/radioForStart.jpeg" Stretch="Fill"/>
+            <Image Grid.Row="1" Source="/Files/radio2.jpg" Stretch="Fill"/>
         </Grid>
         <DockPanel LastChildFill="False">
             <DockPanel.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="Margin" Value="5"/>
                     <Setter Property="FontFamily" Value="Times New Roman"/>
-                    <Setter Property="FontSize" Value="24"/>
+                    <Setter Property="FontSize" Value="30"/>
                     <Setter Property="FontWeight" Value="Bold"/>
                     <Setter Property="Background" Value="#8fff"/>
-                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="Padding" Value="5"/>
                 </Style>
             </DockPanel.Resources>
             <TextBlock DockPanel.Dock="Top" Text="Обучающая программа-симулятор радиостанци Р-123М"/>
-            <TextBlock DockPanel.Dock="Bottom" Text="Р-123М — БОРТОВАЯ РАДИОСТАНЦИЯ ДИАПАЗОНА 20.0 — 51.5 МГЦ"/>
-            <Button DockPanel.Dock="Bottom" Width="300" Click="Button_Click" IsDefault="True">
-                <TextBlock Text="Приступить к работе" Background="Transparent"/>
+            <Button DockPanel.Dock="Top" Width="350" Click="Button_Click" IsDefault="True" Background="DarkSeaGreen">
+                <TextBlock Text="Приступить к работе" Background="Transparent" Padding="2"/>
             </Button>
+            <TextBlock DockPanel.Dock="Bottom" Text="Р-123М — бортовая радиостанция диапазона 20.0 — 51.5 МГЦ"/>
         </DockPanel>
     </Grid>
 </Page>

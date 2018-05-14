@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Audio;
+using NAudio.Wave;
+using R123.AppConfig;
 
 namespace MCP.Logic
 {
@@ -23,16 +26,19 @@ namespace MCP.Logic
 
         public event EventHandler<EventArgs> SayingState;
 
+        public AudioPlayer TonPlayer;
         public RemoteRadioMachine(IAudioLogicFilter audioFilter, RadioState baseRadioState, double delta)
         {
             this.audioFilter = audioFilter;
             this.baseRadioState = baseRadioState;
             State = new RemoteRadioState(0, ERadioState.Frequency);
             Delta = delta;
+            TonPlayer = AppConfigCreator.GetTonPlayer();
         }
 
         public void Dispose()
         {
+            TonPlayer.Dispose();                
             audioFilter.Close();
         }
 
@@ -54,34 +60,34 @@ namespace MCP.Logic
             audioFilter.Noise = GetNoiseLevel(State.Frequency);
             if (baseRadioState != null)
                 ParseERadioState(State.RadioState);
-            
+
         }
 
         private void ParseERadioState(ERadioState radioState)
         {
-            bool canIPlay = Math.Abs(baseRadioState.Frequency - State.Frequency)<=Delta;
+            bool canIPlay = Math.Abs(baseRadioState.Frequency - State.Frequency) <= Delta;
             if (radioState == ERadioState.SignalBegin && canIPlay)
-                RadioConnection.tone.Play();
+                TonPlayer.Play();
 
             if (radioState == ERadioState.SayingBegin && canIPlay)
             {
                 Saying = true;
-                SayingState?.Invoke(this,null);
+                SayingState?.Invoke(this, null);
                 StatePlaying(canIPlay);
             }
 
             if (radioState == ERadioState.SayingEnd && canIPlay)
             {
                 Saying = false;
-                SayingState?.Invoke(this, null);
                 StatePlaying(canIPlay);
+                SayingState?.Invoke(this, null);
             }
 
             if (!canIPlay && Saying)
             {
                 Saying = false;
-                SayingState?.Invoke(this, null);
                 StatePlaying(canIPlay);
+                SayingState?.Invoke(this, null);
             }
         }
 
@@ -90,7 +96,7 @@ namespace MCP.Logic
             if (baseRadioState == null)
                 return 0;
             var deltaFrequency = Math.Abs(baseRadioState.Frequency - frequency);
-            float noise = (float)((deltaFrequency)<=Delta? (deltaFrequency / Delta)*0.01:0.1);
+            float noise = (float)((deltaFrequency) <= Delta ? (deltaFrequency / Delta) * 0.01 : 0.1);
             //если самозабитая частота
             int i = 0;
             while (i < badFrequency.Length && frequency * 10 <= badFrequency[i])
@@ -102,7 +108,7 @@ namespace MCP.Logic
                 }
                 i++;
             }
-             
+
             return noise;
         }
 

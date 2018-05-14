@@ -1,15 +1,12 @@
-﻿using R123.Radio.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using R123.Radio.Model;
 
 namespace R123.Learning
 {
     public class TuningSubscribesInitializer : ISubscribesInitializer
     {
         protected MainModel model;
-        public IList<Action<EventHandler>> Subscribes { get; protected set; }
-
-        public IList<Action<EventHandler>> Unsubscribes { get; protected set; }
 
 
         public TuningSubscribesInitializer(MainModel model)
@@ -19,106 +16,111 @@ namespace R123.Learning
             InitializeUnsubscribes();
         }
 
+        public IList<Action<EventHandler>> Subscribes { get; protected set; }
+
+        public IList<Action<EventHandler>> Unsubscribes { get; protected set; }
+
         protected virtual void InitializeSubscribes()
         {
-            Subscribes = new List<Action<EventHandler>> {
-
+            Subscribes = new List<Action<EventHandler>>
+            {
                 // установка симплекса
-                (handler) => model.WorkMode.SpecialForMishaValueChanged += handler,
+                handler => model.WorkMode.SpecialForMishaValueChanged += handler,
 
                 // установка шума
-                (handler) => model.Noise.SpecialForMishaEndValueChanged += handler,
+                handler => model.Noise.SpecialForMishaEndValueChanged += handler,
 
                 // установка вольтажа
-                (handler) => model.Voltage.SpecialForMishaValueChanged += handler,
+                handler => model.Voltage.SpecialForMishaValueChanged += handler,
 
                 // установка шкалы
-                (handler) => model.Scale.SpecialForMishaValueChanged += handler,
+                handler => model.Scale.SpecialForMishaValueChanged += handler,
 
                 // установка питания
-                (handler) => model.Power.SpecialForMishaValueChanged += handler,
+                handler => model.Power.SpecialForMishaValueChanged += handler,
 
                 // установка громкость
-                (handler) => model.Volume.SpecialForMishaEndValueChanged += handler,
+                handler => model.Volume.SpecialForMishaEndValueChanged += handler,
 
                 // установка фикс.частоты
-                (handler) => model.Range.SpecialForMishaValueChanged += handler,
+                handler => model.Range.SpecialForMishaValueChanged += handler,
 
                 // установка фиксатора
-                (handler) => model.Clamps[0].SpecialForMishaValueChanged += handler,
+                handler => model.Clamps[0].SpecialForMishaValueChanged += handler,
 
                 // установка фиксатора
-                (handler) => model.Clamps[0].SpecialForMishaValueChanged += handler,
+                handler => model.Clamps[0].SpecialForMishaValueChanged += handler,
 
                 // установка поддиапазона
-                (handler) => model.SubFixFrequency[0].SpecialForMishaValueChanged += handler,
+                handler => model.SubFixFrequency[0].SpecialForMishaValueChanged += handler,
 
                 // установка прд
-                (handler) => model.Tangent.SpecialForMishaValueChanged += handler,
+                handler => model.Tangent.SpecialForMishaValueChanged += handler,
 
                 // установка антенны
-                (handler) => {
+                handler =>
+                {
                     model.Antenna.SpecialForMishaEndValueChanged += handler;
                     model.AntennaFixer.SpecialForMishaValueChanged += handler;
                 },
 
                 // установка деж. приема
-                (handler) => model.WorkMode.SpecialForMishaValueChanged += handler,
+                handler => model.WorkMode.SpecialForMishaValueChanged += handler,
 
                 // установка поддиппазона
-                (handler) => model.Range.SpecialForMishaValueChanged += handler
+                handler => model.Range.SpecialForMishaValueChanged += handler
             };
-            
         }
 
         protected virtual void InitializeUnsubscribes()
         {
-            Unsubscribes = new List<Action<EventHandler>> {
-
+            Unsubscribes = new List<Action<EventHandler>>
+            {
                 // установка симплекса
-                (handler) => model.WorkMode.SpecialForMishaValueChanged -= handler,
+                handler => model.WorkMode.SpecialForMishaValueChanged -= handler,
 
                 // установка шума
-                (handler) => model.Noise.SpecialForMishaEndValueChanged -= handler,
+                handler => model.Noise.SpecialForMishaEndValueChanged -= handler,
 
                 // установка вольтажа
-                (handler) => model.Voltage.SpecialForMishaValueChanged -= handler,
+                handler => model.Voltage.SpecialForMishaValueChanged -= handler,
 
                 // установка шкалы
-                (handler) => model.Scale.SpecialForMishaValueChanged -= handler,
+                handler => model.Scale.SpecialForMishaValueChanged -= handler,
 
                 // установка питания
-                (handler) => model.Power.SpecialForMishaValueChanged -= handler,
+                handler => model.Power.SpecialForMishaValueChanged -= handler,
 
                 // установка громкость
-                (handler) => model.Volume.SpecialForMishaEndValueChanged -= handler,
+                handler => model.Volume.SpecialForMishaEndValueChanged -= handler,
 
                 // установка фикс.частоты
-                (handler) => model.Range.SpecialForMishaValueChanged -= handler,
+                handler => model.Range.SpecialForMishaValueChanged -= handler,
 
                 // установка фиксатора
-                (handler) => model.Clamps[0].SpecialForMishaValueChanged -= handler,
+                handler => model.Clamps[0].SpecialForMishaValueChanged -= handler,
 
                 // установка фиксатора
-                (handler) => model.Clamps[0].SpecialForMishaValueChanged -= handler,
+                handler => model.Clamps[0].SpecialForMishaValueChanged -= handler,
 
                 // установка поддиапазона
-                (handler) => model.SubFixFrequency[0].SpecialForMishaValueChanged -= handler,
+                handler => model.SubFixFrequency[0].SpecialForMishaValueChanged -= handler,
 
                 // установка прд
-                (handler) => model.Tangent.SpecialForMishaValueChanged -= handler,
+                handler => model.Tangent.SpecialForMishaValueChanged -= handler,
 
                 // установка антенны
-                (handler) => {
+                handler =>
+                {
                     model.Antenna.SpecialForMishaEndValueChanged -= handler;
                     model.AntennaFixer.SpecialForMishaValueChanged -= handler;
                 },
 
                 // установка деж. приема
-                (handler) => model.WorkMode.SpecialForMishaValueChanged -= handler,
+                handler => model.WorkMode.SpecialForMishaValueChanged -= handler,
 
                 // установка поддиппазона
-                (handler) => model.Range.SpecialForMishaValueChanged -= handler
+                handler => model.Range.SpecialForMishaValueChanged -= handler
             };
         }
     }

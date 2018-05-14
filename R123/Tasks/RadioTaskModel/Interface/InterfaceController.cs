@@ -28,8 +28,8 @@ namespace RadioTask.Interface
         public InterfaceController(Standarts window)
         {
             this.window = window;
-            window.ListBoxTasks.ItemsSource = descriptions;
-            System.Diagnostics.Trace.WriteLine(window.ListBoxTasks.ItemsSource);
+            /*window.ListBoxTasks.ItemsSource = descriptions;
+            System.Diagnostics.Trace.WriteLine(window.ListBoxTasks.ItemsSource);*/
             InitializeDescriptions();
         }
 
@@ -38,8 +38,8 @@ namespace RadioTask.Interface
             var fixDescriptions = InfoGenerator.GetTenFixFrequencyDescriptors();
             var Descriptions = InfoGenerator.GetTenFrequencyDescriptors();
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.InitialState, Description = InfoGenerator.Descriptions[RadioTaskType.InitialState] });
-            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.CheckStation, Description = InfoGenerator.Descriptions[RadioTaskType.CheckStation] });
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.PrepareStationForWork, Description = InfoGenerator.Descriptions[RadioTaskType.PrepareStationForWork] });
+            descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.CheckStation, Description = InfoGenerator.Descriptions[RadioTaskType.CheckStation] });
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.Frequency, Description = InfoGenerator.Descriptions[RadioTaskType.Frequency], Frequencys = Descriptions, SelectedItem = Descriptions.First() });
             descriptions.Add(new RadioTaskDescription() { Type = RadioTaskType.FixFrequency, Description = InfoGenerator.Descriptions[RadioTaskType.FixFrequency], Frequencys = fixDescriptions, SelectedItem = fixDescriptions.First() });
         }
@@ -92,20 +92,11 @@ namespace RadioTask.Interface
 
             selectedTask.TaskDone += SelectedTask_TaskDone;
             selectedTask.Start();
-            selectedTask.Timer.Tick += Timer_Tick;
         }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            window.Timer.Text = "Затраченное время: " + selectedTask.Tiks + " секунд.";
-            int index = selectedTask.GetPriorityIndex();
-            window.TaskErrors.Text = "Количество ошибок: " + selectedTask.Errors;
-        }
-
+        
         private void SelectedTask_TaskDone(object sender, EventArgs e)
         {
             selectedTask.Stop();
-            selectedTask.Timer.Tick -= Timer_Tick;
             selectedTask.TaskDone -= SelectedTask_TaskDone;
 
             window.InterraptTask.Visibility = Visibility.Collapsed;
@@ -125,7 +116,6 @@ namespace RadioTask.Interface
             msg.ShowDialog();
             //
 
-            window.ComeBackTask.Visibility = Visibility.Visible;
             window.TaskResult.Text = "Задача выполнена.";
             window.TaskErrors.Text = "Количество ошибок: " + selectedTask.Errors;
             selectedTask = null;
@@ -133,7 +123,6 @@ namespace RadioTask.Interface
 
         public void InterraptTask()
         {
-            selectedTask.Timer.Tick -= Timer_Tick;
             selectedTask.TaskDone -= SelectedTask_TaskDone;
             window.InterraptTask.Visibility = Visibility.Collapsed;
             selectedTask = null;

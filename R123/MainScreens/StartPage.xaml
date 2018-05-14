@@ -26,26 +26,32 @@
                     <Setter Property="Focusable" Value="False"/>
                     <Setter Property="Cursor" Value="Hand"/>
                 </Style>
-                <!-- Шаблон для кнопок -->
+                <!-- Шаблон для кнопок
+                #676767
+                #474747
+                Foreground="#ddd"
+                #777777
+                #575757
+                #939292
+                #575757-->
                 <ControlTemplate x:Key="Button_Template" TargetType="{x:Type Button}">
-                    <Border BorderBrush="#333" BorderThickness="1" Padding="5" Name="myBorder">
+                    <Border BorderBrush="#333" BorderThickness="0" Padding="5" Name="myBorder" CornerRadius="5">
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                <GradientStop Color="#676767" Offset="0"></GradientStop>
-                                <GradientStop Color="#474747" Offset="1"></GradientStop>
+                                <GradientStop Color="SkyBlue" Offset="0"></GradientStop>
+                                <GradientStop Color="SkyBlue" Offset="1"></GradientStop>
                             </LinearGradientBrush>
                         </Border.Background>
                         <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" FontFamily="Times New Roman"
-                                           Foreground="#ddd"/>
+                                           VerticalAlignment="Center" FontFamily="Times New Roman"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="myBorder" Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Color="#777777" Offset="0"></GradientStop>
-                                        <GradientStop Color="#575757" Offset="1"></GradientStop>
+                                        <GradientStop Color="MediumTurquoise" Offset="0"></GradientStop>
+                                        <GradientStop Color="MediumTurquoise" Offset="1"></GradientStop>
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>
@@ -55,8 +61,8 @@
                             <Setter TargetName="myBorder" Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Color="#939292" Offset="0"></GradientStop>
-                                        <GradientStop Color="#575757" Offset="1"></GradientStop>
+                                        <GradientStop Color="RoyalBlue" Offset="0"></GradientStop>
+                                        <GradientStop Color="RoyalBlue" Offset="1"></GradientStop>
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>

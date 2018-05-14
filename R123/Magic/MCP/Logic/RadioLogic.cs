@@ -44,7 +44,7 @@ namespace MCP.Logic
             }
         }
 
-        public void PlayToneSimplex(bool simplex = true)
+        public void PlayTone(bool simplex = true)
         {
             PlayToneAcceptance();
             if (simplex)
@@ -56,7 +56,7 @@ namespace MCP.Logic
 
         public void PlayToneAcceptance()
         {
-            RadioConnection.tone.Play();
+            RadioConnection.Tone.Play();
         }
 
         //maybe will be need to review
@@ -79,7 +79,6 @@ namespace MCP.Logic
         public NoiseWaveProvider Noise
         {
             get { return RadioConnection.Noise; }
-            private set { }
         }
 
         public double Antenna
@@ -98,15 +97,5 @@ namespace MCP.Logic
         }
 
         public RadioState State { get; private set; }
-
-        /*public void Subscribe()
-        {
-            RadioConnection.Subscribe(this);
-        }
-
-        public void UnSubscribe()
-        {
-            RadioConnection.UnSubscribe(this);
-        }*/
     }
 }

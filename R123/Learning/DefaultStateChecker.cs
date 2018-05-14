@@ -1,12 +1,13 @@
-﻿using R123.Radio.Model;
-using System;
+﻿using System;
+using R123.Radio.Model;
 
 namespace R123.Learning
 {
     public class DefaultStateChecker
     {
         private Func<bool>[] Conditions;
-        private MainModel radio;
+        private readonly MainModel radio;
+
         public DefaultStateChecker(MainModel radio)
         {
             this.radio = radio;
@@ -21,7 +22,7 @@ namespace R123.Learning
                                   radio.Clamps[1].Value == ClampState.Fixed &&
                                   radio.Clamps[2].Value == ClampState.Fixed &&
                                   radio.Clamps[3].Value == ClampState.Fixed;
-            Conditions[2] = () => radio.Range.Value >= 0 && (int)radio.Range.Value < 4;
+            Conditions[2] = () => radio.Range.Value >= 0 && (int) radio.Range.Value < 4;
             Conditions[3] = () => radio.Volume.Value == 1.0;
             Conditions[4] = () => radio.Noise.Value == 1.0;
             Conditions[5] = () => radio.Voltage.Value == VoltageState.Broadcast1;
@@ -33,9 +34,9 @@ namespace R123.Learning
 
         public bool Check()
         {
-            foreach (var cond in Conditions) {
-                if (!cond()) return false;
-            }
+            foreach (var cond in Conditions)
+                if (!cond())
+                    return false;
 
             return true;
         }

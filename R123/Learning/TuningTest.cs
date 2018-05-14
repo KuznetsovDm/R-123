@@ -6,15 +6,17 @@ namespace R123.Learning
 {
     public class TuningTest
     {
-        private MainModel radio;
-        public List<Func<bool>> ConditionList { get; private set; }
-        public Func<bool>[] Conditions { get; private set; }
+        private readonly MainModel radio;
+
         public TuningTest(MainModel radio)
         {
             this.radio = radio;
             InitializeConditions();
             InitializeConditionList();
         }
+
+        public List<Func<bool>> ConditionList { get; private set; }
+        public Func<bool>[] Conditions { get; private set; }
 
         private void InitializeConditions()
         {
@@ -30,7 +32,8 @@ namespace R123.Learning
             Conditions[7] = () => radio.Range.Value == RangeState.FixedFrequency1;
             Conditions[8] = () => radio.Clamps[0].Value == ClampState.Unfixed;
             Conditions[9] = () => radio.Clamps[0].Value == ClampState.Fixed;
-            Conditions[10] = () => {
+            Conditions[10] = () =>
+            {
                 return radio.NumberSubFrequency.Value == SubFrequencyState.First &&
                        radio.Range.Value == RangeState.FixedFrequency1;
             };
@@ -40,20 +43,20 @@ namespace R123.Learning
             Conditions[14] = () => radio.WorkMode.Value == WorkModeState.StandbyReception;
             Conditions[15] = () => radio.Range.Value == RangeState.FixedFrequency4;
         }
+
         private void InitializeConditionList()
         {
-            ConditionList = new List<Func<bool>> {
+            ConditionList = new List<Func<bool>>
+            {
                 Conditions[0]
             };
         }
 
         public bool CheckCondition(out int index)
         {
-            for(index = 0; index < ConditionList.Count; index++) {
-                if (!ConditionList[index]()) {
+            for (index = 0; index < ConditionList.Count; index++)
+                if (!ConditionList[index]())
                     return false;
-                }
-            }
 
             return true;
         }

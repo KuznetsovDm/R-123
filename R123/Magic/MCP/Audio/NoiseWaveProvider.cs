@@ -45,18 +45,9 @@ namespace MCP.Audio
             }
         }
 
-        private unsafe void AddNoise(byte[] data)
+        public void Flush()
         {
-            fixed (byte* pbArray = &data[0])
-            {
-                short* psArray = (short*)pbArray;
-                for (int i = 0; i < data.Length / 2; i++)
-                {
-                    short value = (short)((psArray[i] << 13) ^ psArray[i]);
-                    float noiseCoeff = (float)(1.0 - ((value * (value * value * 15731 + 789221) + 1376312589) & 0x7fffffff) / 10737418);
-                    psArray[i] += (short)((noiseCoeff * 1) * short.MaxValue / 2);
-                }
-            }
+            bufferedWaveProvider.ClearBuffer();
         }
 
         public void Play()

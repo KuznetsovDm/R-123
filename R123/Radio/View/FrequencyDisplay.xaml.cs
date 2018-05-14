@@ -44,7 +44,7 @@ namespace R123.Radio.View
                     TextBlock text = new TextBlock();
                     text.Text = (200 + (i / 4 - 1)).ToString();
                     Canvas.SetLeft(text, i * 15 - 16);
-                    Canvas.SetTop(text, -4);
+                    Canvas.SetTop(text, -2);
                     frequencyBand_Canvas.Children.Add(text);
                 }
                 else if (i % 4 == 2)
@@ -54,7 +54,7 @@ namespace R123.Radio.View
                     TextBlock text = new TextBlock();
                     text.Text = (358 + (i / 4 - 1)).ToString();
                     Canvas.SetLeft(text, i * 15 - 16);
-                    Canvas.SetTop(text, 30);
+                    Canvas.SetTop(text, 32);
                     frequencyBand_Canvas.Children.Add(text);
                 }
 

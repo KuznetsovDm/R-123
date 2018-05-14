@@ -4,16 +4,16 @@ using System.Windows.Media.Imaging;
 
 namespace R123.Learning
 {
-    class NewCheckBox : Image
+    internal class NewCheckBox : Image
     {
-        public bool IsChecked {
+        public bool IsChecked
+        {
             set
             {
-                if (value) {
+                if (value)
                     Source = new BitmapImage(new Uri("/Files/Images/yes.png", UriKind.Relative));
-                } else {
+                else
                     Source = new BitmapImage(new Uri("/Files/Images/no.png", UriKind.Relative));
-                }
             }
         }
     }

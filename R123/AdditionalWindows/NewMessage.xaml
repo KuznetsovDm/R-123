@@ -6,12 +6,8 @@
              xmlns:local="clr-namespace:R123.AdditionalWindows"
              mc:Ignorable="d" 
             d:DesignHeight="1280" d:DesignWidth="1024">
-    <Border x:Name="Message_Border">
-        <Border.Background>
-            <SolidColorBrush Color="Black" Opacity="0.6"/>
-        </Border.Background>
-
-        <Border.Resources>
+    <Grid x:Name="Message_Border">
+        <Grid.Resources>
             <Style TargetType="Button">
                 <Style.Triggers>
                     <Trigger Property="IsPressed" Value="True">
@@ -19,14 +15,19 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-        </Border.Resources>
+        </Grid.Resources>
+        <Border x:Name="Background_Border">
+            <Border.Background>
+                <SolidColorBrush Color="Black" Opacity="0.6"/>
+            </Border.Background>
+        </Border>
 
         <Border Background="Gainsboro" 
                 BorderBrush="Black" BorderThickness="5" CornerRadius="15" 
                 VerticalAlignment="Center" HorizontalAlignment="Center">
             <Grid>
                 <Grid.Resources>
-                    <Style x:Key="TextStyle">
+                    <Style TargetType="Button">
                         <Setter Property="Control.FontFamily" Value="Times New Roman"/>
                         <Setter Property="Control.FontSize" Value="20"/>
                     </Style>
@@ -40,24 +41,34 @@
                     <ColumnDefinition Width="4*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock
-                    x:Name="Text_TextBlock"
-                    Grid.Row="0" Grid.Column="1"
-                    FontWeight="DemiBold"
-                    TextWrapping="Wrap"
-                    TextAlignment="Center"
-                    Margin="30, 30, 30, 2"
-                    Style="{StaticResource TextStyle}"
-                    Text="Привет"/>
+
+                <StackPanel Grid.Row="0" Grid.Column="1">
+                    <TextBlock
+                        x:Name="Text_TextBlock"
+                        FontWeight="DemiBold"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        Margin="30, 30, 30, 2"
+                        Text="Привет"
+                        Visibility="Collapsed"
+                        FontFamily="Times New Roman"
+                        FontSize="20"/>
+                    <StackPanel x:Name="Body_StackPanel"/>
+                </StackPanel>
 
                 <WrapPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right">
+                    <Border BorderBrush="Navy" BorderThickness="3" Margin="20" x:Name="Cancel_Border" Visibility="Hidden">
+                        <Button MinWidth="60" Click="HideMessage" BorderThickness="0" x:Name="Cancel_Button">
+                            <TextBlock x:Name="Cancel_Button_Text" Text="Отмена" Margin="10" FontWeight="Bold"/>
+                        </Button>
+                    </Border>
                     <Border BorderBrush="Navy" BorderThickness="3" Margin="20">
-                        <Button Style="{StaticResource TextStyle}" MinWidth="60" IsDefault="True" Click="HideMessage" BorderThickness="0">
-                            <TextBlock Text="Понятно" Style="{StaticResource TextStyle}" Margin="10" FontWeight="Bold"/>
+                        <Button MinWidth="60" IsDefault="True" Click="HideMessage" BorderThickness="0" x:Name="Ok_Button">
+                            <TextBlock x:Name="Ok_Button_Text" Text="Понятно" Margin="10" FontWeight="Bold"/>
                         </Button>
                     </Border>
                 </WrapPanel>
             </Grid>
         </Border>
-    </Border>
+    </Grid>
 </UserControl>

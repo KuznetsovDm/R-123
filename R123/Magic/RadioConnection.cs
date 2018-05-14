@@ -54,7 +54,7 @@ namespace MCP.Logic
 
         private static MCPConnector connector { get; set; }
         public static VoiceStreamer microphone { get; set; }
-        public static AudioPlayer tone { get; set; }
+        public static AudioPlayer Tone { get; set; }
         public static MixerAudioPlayer Player { get; set; }
         private static Dictionary<IPAddress, RemoteRadioMachine> remoteCollection { get; set; }
         public static NoiseWaveProvider Noise { get; set; }
@@ -67,7 +67,7 @@ namespace MCP.Logic
             Noise = new NoiseWaveProvider();
             connector = AppConfigCreator.GetConnector();
             microphone = AppConfigCreator.GetMicrophone();
-            tone = AppConfigCreator.GetTonPlayer();
+            Tone = AppConfigCreator.GetTonPlayer();
             Player.AddInput(Noise.Stream);
             AlreadyInitialized = true;
             Closed = false;
@@ -88,6 +88,7 @@ namespace MCP.Logic
 
         public static void FlushAll()
         {
+            RadioConnection.Noise.Flush();
             var remotes = remoteCollection.Values.ToArray();
             foreach (var elem in remotes)
             {
@@ -130,6 +131,7 @@ namespace MCP.Logic
 
         public static void AnalysisPlayNoise(object sender, EventArgs args)
         {
+            FlushAll();
             if (CanIPlayNoise())
             {
                 Noise.Play();
@@ -138,14 +140,6 @@ namespace MCP.Logic
             {
                 Noise.Stop();
             }
-        }
-
-        private static bool Contains(MCPPacket packet)
-        {
-            if (remoteCollection.ContainsKey(packet.IpAddress))
-                return true;
-            else
-                return false;
         }
 
         private static void RemoveMachine(IPAddress address)
@@ -197,7 +191,7 @@ namespace MCP.Logic
                 connector.Stop();
                 Player.Stop();
                 Player.Dispose();
-                tone.Dispose();
+                Tone.Dispose();
                 microphone.Close();
                 connector.Close();
                 Noise.Dispose();

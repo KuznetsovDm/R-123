@@ -1,14 +1,12 @@
-﻿using R123.Radio.Model;
-using System;
+﻿using System;
+using R123.Radio.Model;
 
 namespace R123.Learning
 {
     public class NewTuningTest
     {
-        private MainModel radio;
         private Func<bool>[] Conditions;
-        public bool[] Steps { get; set; }
-        public int CurrentStep { get; set; }
+        private readonly MainModel radio;
 
         public NewTuningTest(MainModel radio)
         {
@@ -20,6 +18,9 @@ namespace R123.Learning
 
             Steps = new bool[Conditions.Length];
         }
+
+        public bool[] Steps { get; set; }
+        public int CurrentStep { get; set; }
 
         private void InitializeConditions()
         {
@@ -35,7 +36,8 @@ namespace R123.Learning
             Conditions[7] = () => radio.Range.Value == RangeState.FixedFrequency1;
             Conditions[8] = () => radio.Clamps[0].Value == ClampState.Unfixed;
             Conditions[9] = () => radio.Clamps[0].Value == ClampState.Fixed;
-            Conditions[10] = () => {
+            Conditions[10] = () =>
+            {
                 return radio.NumberSubFrequency.Value == SubFrequencyState.First &&
                        radio.Range.Value == RangeState.FixedFrequency1;
             };
@@ -48,9 +50,7 @@ namespace R123.Learning
 
         public int CheckCondition()
         {
-            while (CurrentStep < Conditions.Length && Conditions[CurrentStep]()) {
-                Steps[CurrentStep++] = true;
-            }
+            while (CurrentStep < Conditions.Length && Conditions[CurrentStep]()) Steps[CurrentStep++] = true;
 
             return CurrentStep;
         }
