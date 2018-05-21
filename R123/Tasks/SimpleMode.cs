@@ -59,6 +59,7 @@ namespace R123.Tasks.SimpleMode
 
     public interface ITask
     {
+        bool WasComplited { get; }
         void Start();
         void Stop();
         string GetStateDescription();
@@ -70,10 +71,17 @@ namespace R123.Tasks.SimpleMode
         private Descriptions _descriptions;
         private SequenceStepChecker _checker;
         private int _currentIndex;
-        public TaskModel(Conditions conditions, Descriptions descriptions, ISubscribesInitializer initializer)
+        private Action _initializeFunction;
+        private bool _wasComplite;
+
+        public bool WasComplited => _wasComplite;
+
+        public TaskModel(Conditions conditions, Descriptions descriptions, ISubscribesInitializer initializer, Action initializeFunction = null)
         {
+
             _conditions = conditions;
             _descriptions = descriptions;
+            _initializeFunction = initializeFunction;
 
             if (descriptions.Count() != conditions.Length)
                 throw new Exception("Count invalid.");
@@ -81,6 +89,7 @@ namespace R123.Tasks.SimpleMode
             _checker = new SequenceStepChecker(conditions, initializer);
             _checker.StepChanged += _checker_StepChanged;
             _checker.Start();
+            _wasComplite = false;
         }
 
         private void _checker_StepChanged(object sender, StepEventArgs e)
@@ -90,6 +99,7 @@ namespace R123.Tasks.SimpleMode
 
         public void Start()
         {
+            _initializeFunction?.Invoke();
             _checker.Start();
         }
 
@@ -101,7 +111,10 @@ namespace R123.Tasks.SimpleMode
         public string GetStateDescription()
         {
             if (_currentIndex == _conditions.Length)
+            {
+                _wasComplite = true;
                 return "Задача выполнена.";
+            }
 
             var indexes = _conditions
                 .Select((x, i) => new { Condition = x, Index = i })
@@ -112,9 +125,9 @@ namespace R123.Tasks.SimpleMode
             StringBuilder builder = new StringBuilder("Задание не выполнено.\n");
             for (int i = 0; i < indexes.Count - 1; i++)
             {
-                builder.AppendLine(_descriptions[i].Description);
+                builder.AppendLine(_descriptions[indexes[i]].Description);
             }
-            builder.Append(_descriptions.Last().Description);
+            builder.Append(_descriptions[indexes[indexes.Count - 1]].Description);
             return builder.ToString();
         }
     }
@@ -123,17 +136,25 @@ namespace R123.Tasks.SimpleMode
     {
         private Conditions _conditions;
         private Descriptions _descriptions;
-        public TaskModelNotSequance(Conditions conditions, Descriptions descriptions)
+        private Action _initializeFunction;
+
+        private bool _wasComplite;
+
+        public bool WasComplited => _wasComplite;
+
+        public TaskModelNotSequance(Conditions conditions, Descriptions descriptions, Action initializeFunction = null)
         {
             _conditions = conditions;
             _descriptions = descriptions;
-
+            _initializeFunction = initializeFunction;
+            _wasComplite = false;
             if (descriptions.Count() != conditions.Length)
                 throw new Exception("Count invalid.");
         }
 
         public virtual void Start()
         {
+            _initializeFunction?.Invoke();
         }
 
         public void Stop()
@@ -143,7 +164,10 @@ namespace R123.Tasks.SimpleMode
         public string GetStateDescription()
         {
             if (_conditions.All(x => x.Invoke()))
+            {
+                _wasComplite = true;
                 return "Задача выполнена.";
+            }
 
             var indexes = _conditions
                 .Select((x, i) => new { Condition = x, Index = i })
@@ -152,11 +176,11 @@ namespace R123.Tasks.SimpleMode
                 .ToList();
 
             StringBuilder builder = new StringBuilder("Задание не выполнено.\n");
-            for (int i = 0; i < indexes.Count-1; i++)
+            for (int i = 0; i < indexes.Count - 1; i++)
             {
-                builder.AppendLine(_descriptions[i].Description);
+                builder.AppendLine(_descriptions[indexes[i]].Description);
             }
-            builder.Append(_descriptions.Last().Description);
+            builder.Append(_descriptions[indexes[indexes.Count - 1]].Description);
             return builder.ToString();
         }
     }
@@ -165,7 +189,7 @@ namespace R123.Tasks.SimpleMode
     {
         public static ITask CreateForCheckStation(MainModel radio)
         {
-            InitializeWorkingControls(radio);
+            //InitializeWorkingControls(radio);
             Conditions conditions = new Conditions();
             conditions
                 .Add(() => radio.WorkMode.Value == WorkModeState.Simplex)
@@ -195,7 +219,7 @@ namespace R123.Tasks.SimpleMode
                 .Add("Не установлен \"СИМПЛЕКС\".")
                 .Add("Не установлена Ручка \"ШУМЫ\" влево до упора.")
                 .Add("Не установлены Тумблеры \"ПИТАНИЕ\", \"ШКАЛА\" в положение \"ВКЛ\".")
-                .Add("Не проверена Проверить напряжение питания.")
+                .Add("Не проверено напряжение питания.")
                 .Add("Не установлен Регулятор \"ГРОМКОСТЬ\" вправо до упора.")
                 .Add("Не установлен \"ПЛАВНЫЙ ПОДДИАПАЗОН\".")
                 .Add("Не прослушана работа по диапазону.")
@@ -211,12 +235,12 @@ namespace R123.Tasks.SimpleMode
                 .Add("Не проверена автоматика в положении 1, 2, 3 и 4.")
                 .Add("Не выключено питание.");
 
-            return new TaskModel(conditions, desctiptions, new WorkingSubscribesInitializer(radio));
+            return new TaskModel(conditions, desctiptions, new WorkingSubscribesInitializer(radio), () => InitializeWorkingControls(radio));
         }
 
         public static ITask CreateForInitialState(MainModel radio)
         {
-            InitializeControls(radio);
+            //InitializeControls(radio);
             Conditions conditions = new Conditions();
             conditions
                 .Add(() => radio.WorkMode.Value == WorkModeState.Simplex)
@@ -249,12 +273,12 @@ namespace R123.Tasks.SimpleMode
                 .Add("Тумблеры \"ПОДДИАПАЗОН\" каждый не в положении \"ПОДДИАПАЗОН II\".")
                 .Add("Фиксатор ручки \"НАСТРОЙКА АНТЕННЫ\" не затянут.");
 
-            return new TaskModelNotSequance(conditions, desctiptions);
+            return new TaskModelNotSequance(conditions, desctiptions, () => InitializeControls(radio));
         }
 
         public static ITask CreateForPrepareState(MainModel radio)
         {
-            InitializeTuningControls(radio);
+            //InitializeTuningControls(radio);
             Conditions conditions = new Conditions();
             conditions
                 .Add(() => radio.WorkMode.Value == WorkModeState.Simplex) // simplex
@@ -269,8 +293,7 @@ namespace R123.Tasks.SimpleMode
                 .Add(() => radio.SubFixFrequency[0].Value == Turned.On) // subfixfrequency
                 .Add(() => radio.Tangent.Value == Turned.On) // prd
                 .Add(() => radio.Antenna.Value > 0.8 && radio.AntennaFixer.Value == ClampState.Fixed) // antenna
-                .Add(() => radio.WorkMode.Value == WorkModeState.StandbyReception) // stanby
-                .Add(() => radio.Range.Value == RangeState.FixedFrequency4); // repeat (maybe doesn't need)
+                .Add(() => radio.Tangent.Value == Turned.Off); // tangent off
 
 
             Descriptions desctiptions = new Descriptions();
@@ -281,21 +304,20 @@ namespace R123.Tasks.SimpleMode
                 .Add("Не установлены Тумблер \"ШКАЛА\" в положение \"ВКЛ\".")
                 .Add("Не установлены Тумблер \"ПИТАНИЕ\" в положение \"ВКЛ\".")
                 .Add("Не установлен Регулятор \"ГРОМКОСТЬ\" вправо до упора.")
-                .Add("Не установлен переключатьль \"ФИКСИРОВАННЫЕ ЧАСТОТЫ-ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение 1.")
+                .Add("Не установлен переключатель \"ФИКСИРОВАННЫЕ ЧАСТОТЫ-ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение 1.")
                 .Add("Не расфиксирован фиксатор-1.")
                 .Add("Не зафиксирован фиксатор-1.")
                 .Add("Не установлен поддиапазон 1.")
                 .Add("Не установлен ПРД.")
                 .Add("Не настроена антенна.")
-                .Add("Не установлен \"ДЕЖУРНЫЙ ПРИЕМ\".")
-                .Add("Не повторены операции 8-15 для фиксированных частот \"2\",\"3\",\"4\"");
+                .Add("Не отпущена тангента.");
 
-            return new TaskModel(conditions, desctiptions, new TuningSubscribesInitializer(radio));
+            return new TaskModel(conditions, desctiptions, new TuningSubscribesInitializer(radio), () => InitializeTuningControls(radio));
         }
 
         public static ITask CreateForFrequency(MainModel radio, double frequency)
         {
-            InitializeTuningControls(radio);
+            //InitializeTuningControls(radio);
             Conditions conditions = new Conditions();
             conditions
                 .Add(() => radio.WorkMode.Value == WorkModeState.Simplex) // simplex
@@ -319,12 +341,12 @@ namespace R123.Tasks.SimpleMode
                 .Add("Не настроена антенна.")
                 .Add("Не установлена частота.");
 
-            return new TaskModelNotSequance(conditions, desctiptions);
+            return new TaskModelNotSequance(conditions, desctiptions, () => InitializeTuningControls(radio));
         }
 
         public static ITask CreateForFixFrequency(MainModel radio, double frequency, int range)
         {
-            InitializeTuningControls(radio);
+            //InitializeTuningControls(radio);
             var sub = (int)InfoGenerator.GetSubFrequencyStateFor(frequency);
             Conditions conditions = new Conditions();
             conditions
@@ -355,7 +377,7 @@ namespace R123.Tasks.SimpleMode
                 .Add("Не настроена антенна.")
                 .Add("Не установлена фиксированная частота.");
 
-            return new TaskModelNotSequance(conditions, desctiptions);
+            return new TaskModelNotSequance(conditions, desctiptions, () => InitializeTuningControls(radio));
         }
 
         private static void InitializeControls(MainModel radio)
@@ -393,7 +415,6 @@ namespace R123.Tasks.SimpleMode
             radio.Clamps[2].Value = ClampState.Fixed;
             radio.Clamps[3].Value = ClampState.Fixed;
         }
-
 
         private static void InitializeWorkingControls(MainModel radio)
         {

@@ -40,6 +40,7 @@ namespace R123.Learning
 
             SetButtons();
             SetLines();
+            SetTooltips();
 
             _defaultTest = new DefaultTest(Radio.Model);
 
@@ -64,7 +65,7 @@ namespace R123.Learning
 
             OurMessageBox.Text = "На данном этапе Вы должны установить органы управления в исходное положение.\r\n" +
                                  "Выполняйте последовательно шаги обучения.\r\n" +
-                                 "Если непонятен какой-то шаг, наведите на него и Вы получите пояснение.\r\n\r\n";
+                                 "Если непонятен какой-то шаг, наведите на него и Вы получите пояснение.\r\n";
             OurMessageBox.ShowMessage();
         }
 
@@ -91,7 +92,7 @@ namespace R123.Learning
             OurMessageBox.Ok_Button_Text.Text = "Перейти к следующему этапу";
 
 
-            OurMessageBox.Text = "Вы установили органы управления в исходное положение";
+            OurMessageBox.Text = "Вы установили органы управления в исходное положение\r\n";
             OurMessageBox.ShowMessage();
         }
 
@@ -214,6 +215,40 @@ namespace R123.Learning
 
                     canvas.Children.Add(line);
                 }
+            }
+        }
+
+        private void SetTooltips()
+        {
+
+            var borderTooltips = new string[10];
+            borderTooltips[0] = "Установите \"СИМПЛЕКС\"";
+            borderTooltips[1] = "Поверните влево до упора";
+            borderTooltips[2] = "Установить в положение 1";
+            borderTooltips[3] = "Тумблер \"ШКАЛА\" установите в положение \"ВЫКЛ\"";
+            borderTooltips[4] = "Тумблер \"ПИТАНИЕ\" установите в положение \"ВЫКЛ\"";
+            borderTooltips[5] = "Поверните вправо до упора";
+            borderTooltips[6] = "Установите переключатель в одно из положений \"1\", \"2\", \"3\" или \"4\"";
+            borderTooltips[7] = "Установите все диски в положение параллельное линии круга";
+            borderTooltips[8] = "Установите все тумблеры в положение \"II\"";
+            borderTooltips[9] = "Поверните красный фиксатор вправо до упора";
+
+            for (var i = 0; i < borderTooltips.Length; i++)
+            {
+                var border = (Border)borders.Children[i];
+
+                border.ToolTip = new ToolTip
+                {
+                    Content = new TextBlock
+                    {
+                        FontFamily = new FontFamily("Times New Roman"),
+                        TextWrapping = TextWrapping.Wrap,
+                        FontWeight = FontWeights.Bold,
+                        FontSize = 16,
+                        Text = borderTooltips[i],
+                        Foreground = new SolidColorBrush(Colors.Black)
+                    }
+                };
             }
         }
 

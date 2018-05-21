@@ -4,13 +4,14 @@ using System.Net;
 using System.Net.Sockets;
 using NAudio;
 using System.Linq;
+using R123.Audio;
 
 namespace MCP.Audio
-{    
-    public class VoiceStreamer 
+{
+    public class VoiceStreamer
     {
         private Socket Client;
-        private WaveInEvent Input;
+        private IWaveIn Input;
         private IPAddress IPAddress;
         private int Port;
         private IPEndPoint RemotePoint;
@@ -18,18 +19,17 @@ namespace MCP.Audio
         private BufferedWaveProvider bufferedWaveProvider;
         private VolumeWaveProvider16 volumeWaveProvider;
 
-        public VoiceStreamer(IPAddress ipAddress,int port,WaveFormat format)
+        public VoiceStreamer(IPAddress ipAddress, int port, WaveFormat format)
         {
             codec = new G722ChatCodec();
             Client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            Input = new WaveInEvent();
+            Input = WaveIOHellper.CreateWaveIn();
             Input.WaveFormat = format;
-            Input.BufferMilliseconds = 25;
 
             bufferedWaveProvider = new BufferedWaveProvider(Input.WaveFormat);
             volumeWaveProvider = new VolumeWaveProvider16(bufferedWaveProvider);
             volumeWaveProvider.Volume = 1;
-            
+
             Input.DataAvailable += VoiceInput;
             this.IPAddress = ipAddress;
             this.Port = port;

@@ -99,7 +99,7 @@ namespace RadioTask.Interface
             selectedTask.Stop();
             selectedTask.TaskDone -= SelectedTask_TaskDone;
 
-            window.InterraptTask.Visibility = Visibility.Collapsed;
+            window.InterruptTask.Visibility = Visibility.Collapsed;
             window.TaskResultPanel.Visibility = Visibility.Visible;
 
             //result 
@@ -124,7 +124,7 @@ namespace RadioTask.Interface
         public void InterraptTask()
         {
             selectedTask.TaskDone -= SelectedTask_TaskDone;
-            window.InterraptTask.Visibility = Visibility.Collapsed;
+            window.InterruptTask.Visibility = Visibility.Collapsed;
             selectedTask = null;
         }
     }

@@ -8,6 +8,7 @@ using System.Net;
 using NAudio.Wave;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Collections.Concurrent;
 
 namespace MCP.Logic
 {
@@ -26,14 +27,19 @@ namespace MCP.Logic
 
         private static void Connector_CloseEvent(object sender, MCPConnector.CloseEventArgs e)
         {
-            if (!IsNewRemoteMachine(e.Address))
+            try
             {
-                GetMachine(e.Address).SayingState -= AnalysisPlayNoise;
-                Behavior.StateChanged -= GetMachine(e.Address).BaseLogicStateChanged;
-                Player.RemoveInput(GetMachine(e.Address).audioFilter.Stream);
-                GetMachine(e.Address).Dispose();
-                RemoveMachine(e.Address);
+                if (remoteCollection.TryGetValue(e.Address, out var remoteMachine))
+                {
+                    remoteMachine.SayingState -= AnalysisPlayNoise;
+                    Behavior.StateChanged -= remoteMachine.BaseLogicStateChanged;
+                    Player.RemoveInput(remoteMachine.audioFilter.Stream);
+                    remoteMachine.Dispose();
+                    RemoveMachine(e.Address);
+                }
             }
+            catch (Exception)
+            { }
         }
 
         private static void Connector_InformationEvent(object sender, MCPConnector.InformationEventArgs e)
@@ -41,7 +47,7 @@ namespace MCP.Logic
             if (IsNewRemoteMachine(e.Address))
             {
                 RemoteRadioMachine remoteRadioMachine = CreateRemoteMachine(e.Address, e.Port, Behavior);
-                remoteCollection.Add(e.Address, remoteRadioMachine);
+                remoteCollection.TryAdd(e.Address, remoteRadioMachine);
                 if (Behavior != null)
                     Behavior.StateChanged += remoteRadioMachine.BaseLogicStateChanged;
                 //add to mixer
@@ -49,21 +55,21 @@ namespace MCP.Logic
                 remoteRadioMachine.SayingState += AnalysisPlayNoise;
             }
             ParseParams(out ERadioState state, out double frequency, e.Information);
-            GetMachine(e.Address).RemoteStateChanged(frequency, state);
+            remoteCollection[e.Address].RemoteStateChanged(frequency, state);
         }
 
         private static MCPConnector connector { get; set; }
         public static VoiceStreamer microphone { get; set; }
         public static AudioPlayer Tone { get; set; }
         public static MixerAudioPlayer Player { get; set; }
-        private static Dictionary<IPAddress, RemoteRadioMachine> remoteCollection { get; set; }
+        private static ConcurrentDictionary<IPAddress, RemoteRadioMachine> remoteCollection { get; set; }
         public static NoiseWaveProvider Noise { get; set; }
         private static bool AlreadyInitialized = false;
 
         public static void Init()
         {
             Player = new MixerAudioPlayer();
-            remoteCollection = new Dictionary<IPAddress, RemoteRadioMachine>();
+            remoteCollection = new ConcurrentDictionary<IPAddress, RemoteRadioMachine>();
             Noise = new NoiseWaveProvider();
             connector = AppConfigCreator.GetConnector();
             microphone = AppConfigCreator.GetMicrophone();
@@ -145,12 +151,7 @@ namespace MCP.Logic
         private static void RemoveMachine(IPAddress address)
         {
             //probably small place(return bool)
-            remoteCollection.Remove(address);
-        }
-
-        private static RemoteRadioMachine GetMachine(IPAddress address)
-        {
-            return remoteCollection[address];
+            remoteCollection.TryRemove(address, out var _);
         }
 
         public static void SendStateToRemoteMachine(RadioState radioState, ERadioState state)

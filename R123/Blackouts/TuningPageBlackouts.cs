@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
@@ -31,8 +32,10 @@ namespace R123.Blackouts
             new[] {712, 99, 27},
             new[] {912, 119, 92},
             new[] {660, 100, 184},
-            new[] {211, 79, 76},
-            new[] {211, 79, 0}
+            new[] {912, 119, 92},
+
+            //new[] {211, 79, 76},
+            //new[] {211, 79, 0}
         };
 
         private readonly string[] path =
@@ -49,7 +52,7 @@ namespace R123.Blackouts
             @"../../Files/Gifs\subFrequency1.gif",
             @"../../Files/Gifs\prd.gif",
             @"../../Files/Gifs\setSettingsAntenna.gif",
-            @"../../Files/Gifs\setStandbyReception.gif"
+            //@"../../Files/Gifs\setStandbyReception.gif"
         };
 
         private readonly string[] text =
@@ -60,14 +63,14 @@ namespace R123.Blackouts
             "Тумблер \"ШКАЛА\" поставьте в положение \"ВКЛ\"",
             "Тумблер \"ПИТАНИЕ\" поставьте в положение \"ВКЛ\"",
             "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость",
-            "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"I\"",
+            "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"1\"",
             "Расфиксируйте фиксатор-1, для этого поверните его перпендикулярно линии круга",
             "Установите рабочую частоту и зафиксируйте фиксатор-1, для этого поверните его параллельно линии круга",
-            "Установите поддиапазон 1",
+            "Установите поддиапазон I",
             "Установите ПРД (нажмите пробел)",
             "Расфиксируйте фиксатор ручки настройки антенны, настройте антенну на максимальную мощность и зафиксируйте фиксатор ручки настройки антенны",
-            "Переключатель рода работ поставьте в положение \"ДЕЖ. ПРИЕМ\"",
-            "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"IV\""
+            "Отпустите пробел",
+            "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в положение \"4\""
         };
 
         public TuningPageBlackouts(Path Background_Path, Canvas element) : base(Background_Path, element, data, 964,
@@ -92,19 +95,31 @@ namespace R123.Blackouts
         public void SetPanels(StackPanel left, StackPanel right)
         {
             panels = new StackPanel[text.Length];
+            
             for (var i = 0; i < panels.Length; i++)
                 panels[i] = i < 5 || i == 7 || i == 8 || i == 12 ? right : left;
 
-            elements = new StackPanel[text.Length];
+            //elements = new StackPanel[text.Length];
+            elements = new Border[text.Length];
 
             for (var i = 0; i < elements.Length; i++)
             {
+                var border = new Border
+                {
+                    BorderBrush = new SolidColorBrush(Colors.Black),
+                    CornerRadius = new CornerRadius(5),
+                    BorderThickness = new Thickness(3)
+                };
+
                 var panel = new StackPanel
                 {
-                    Background = Brushes.White,
-                    Margin = new Thickness(5)
+                    Background = Brushes.White
                 };
-                elements[i] = panel;
+
+                border.Child = panel;
+
+                //elements[i] = panel;
+                elements[i] = border;
 
                 panel.Children.Add(new TextBlock
                 {

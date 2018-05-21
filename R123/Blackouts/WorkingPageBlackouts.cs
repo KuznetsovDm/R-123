@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Media;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
@@ -114,16 +115,23 @@ namespace R123.Blackouts
             for (var i = 0; i < panels.Length; i++)
                 panels[i] = i < 3 || 5 < i && i < 11 || i == 13 || i == 14 || i == 17 ? right : left;
 
-            elements = new StackPanel[text.Length];
+            elements = new Border[text.Length];
 
-            for (var i = 0; i < elements.Length; i++)
-            {
-                var panel = new StackPanel
-                {
-                    Background = Brushes.White,
-                    Margin = new Thickness(5)
+            for (var i = 0; i < elements.Length; i++) {
+                var border = new Border {
+                    BorderBrush = new SolidColorBrush(Colors.Black),
+                    CornerRadius = new CornerRadius(5),
+                    BorderThickness = new Thickness(3)
                 };
-                elements[i] = panel;
+
+                var panel = new StackPanel {
+                    Background = Brushes.White
+                };
+
+                border.Child = panel;
+
+                //elements[i] = panel;
+                elements[i] = border;
 
                 panel.Children.Add(new TextBlock
                 {

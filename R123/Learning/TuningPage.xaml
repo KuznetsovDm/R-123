@@ -112,19 +112,19 @@
                 <Button Canvas.Left="10" Canvas.Top="492" Uid="1" />
 
                 <!--Нижний край-->
-                <Button Canvas.Left="130" Canvas.Top="640" Width="140" />
-                <Button Canvas.Left="330" Canvas.Top="640" Width="140" />
-                <Button Canvas.Left="530" Canvas.Top="640" Width="140" />
-                <Button Canvas.Left="730" Canvas.Top="640" Width="140" Uid="2" FontSize="13" />
+                <Button Canvas.Left="210" Canvas.Top="640" Width="140" />
+                <Button Canvas.Left="430" Canvas.Top="640" Width="140" />
+                <Button Canvas.Left="650" Canvas.Top="640" Width="140" Uid="2" />
+                <Button Canvas.Left="870" Canvas.Top="492" Width="120" FontSize="13" />
 
                 <!--Правый край-->
-                <Button Canvas.Left="870" Canvas.Top="492" />
                 <Button Canvas.Left="870" Canvas.Top="342" />
                 <Button Canvas.Left="870" Canvas.Top="192" Uid="3" />
-                <Button Canvas.Left="730" Canvas.Top="58" Width="140"/>
+                <Button Canvas.Left="750" Canvas.Top="58" Width="140"/>
+                <Button Canvas.Left="550" Canvas.Top="58" Width="140"/>
 
                 <!--Верхний край-->
-                <Button Canvas.Left="550" Canvas.Top="58" Width="140" FontSize="13"/>
+                <!--<Button Canvas.Left="550" Canvas.Top="58" Width="140" FontSize="13"/>-->
 
                 <Border BorderThickness="4" BorderBrush="Black" Width="440" Height="35" Canvas.Left="10"
                         Canvas.Top="10" Background="Blue">
@@ -198,7 +198,7 @@
                     <TextBlock Style="{StaticResource TextNumber}" Text="12" />
                 </Border>
 
-                <Border Style="{StaticResource Number}" Canvas.Left="250" Canvas.Top="40">
+                <Border Style="{StaticResource Number}" Canvas.Left="878" Canvas.Top="55">
                     <TextBlock Style="{StaticResource TextNumber}" Text="13" />
                 </Border>
             </Canvas>

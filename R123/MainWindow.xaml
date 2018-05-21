@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:R123"
         xmlns:radio="clr-namespace:R123.Radio"
         mc:Ignorable="d"
-        Title="Р-123" WindowStartupLocation="CenterScreen"
+        Title="Р-123М" WindowStartupLocation="CenterScreen"
         d:DesignWidth="1280" d:DesignHeight="1024"
-        WindowState="Maximized" MinWidth="1300" MinHeight="700">
+        WindowState="Maximized" MinWidth="1000" MinHeight="700">
     <!-- ResizeMode="NoResize" -->
     <Window.Resources>
         <local:TabSizeConverter x:Key="tabSizeConverter" />

@@ -5,12 +5,13 @@ using System.Text;
 using NAudio;
 using NAudio.Wave;
 using System.Threading;
+using R123.Audio;
 
 namespace Audio
 {
     public class AudioPlayer
     {
-        WaveOut player;
+        IWavePlayer player;
         WaveStream audioFile;
 
         public event EventHandler<StoppedEventArgs> PlaybackStopped;
@@ -22,14 +23,14 @@ namespace Audio
         public AudioPlayer(string path)
         {
             audioFile = new AudioFileReader(path);
-            player = new WaveOut();
+            player = WaveIOHellper.CreateWaveOut();
             player.Init(audioFile);
         }
 
         public AudioPlayer(WaveStream waveStream)
         {
             audioFile = waveStream;
-            player = new WaveOut();
+            player = WaveIOHellper.CreateWaveOut();
             player.Init(audioFile);
         }
 

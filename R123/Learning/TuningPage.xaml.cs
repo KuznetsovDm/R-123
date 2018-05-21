@@ -86,8 +86,8 @@ namespace R123
                 .Add(() => Radio.Model.Tangent.Value == Turned.On) // prd
                 .Add(() => Radio.Model.Antenna.Value > 0.8 &&
                            Radio.Model.AntennaFixer.Value == ClampState.Fixed) // antenna
-                .Add(() => Radio.Model.WorkMode.Value == WorkModeState.StandbyReception) // stanby
-                .Add(() => Radio.Model.Range.Value == RangeState.FixedFrequency4); // repeat (maybe doesn't need)
+                .Add(() => Radio.Model.Tangent.Value == Turned.Off); // tangent off
+                //.Add(() => Radio.Model.Range.Value == RangeState.FixedFrequency4); // repeat (maybe doesn't need)
 
             _checker = new SequenceStepChecker(conditions, new TuningSubscribesInitializer(Radio.Model));
             _checker.StepChanged += Checker_StepChanged;
@@ -106,8 +106,7 @@ namespace R123
 
             OurMessageBox.Text = "На данном этапе вы должны подготовить радиостанцию к работе.\r\n" +
                                  "Выполняйте последовательно шаги обучения.\r\n" +
-                                 "Если непонятен какой-то шаг, нажмите на него и Вы получите пояснение.\r\n\r\n" +
-                                 "После завершения всех этапов подготовки радиостанции к работе установите все органы управления в исходное положение, чтобы перейти на следующий этап.";
+                                 "Если непонятен какой-то шаг, наведите на него курсор мыши и Вы получите пояснение.\r\n";
             OurMessageBox.ShowMessage();
         }
 
@@ -134,7 +133,7 @@ namespace R123
             OurMessageBox.Ok_Button_Text.Text = "Перейти к следующему этапу";
 
 
-            OurMessageBox.Text = "Вы подготовили радиостанцию к работе.";
+            OurMessageBox.Text = "Вы подготовили радиостанцию к работе\r\n";
             OurMessageBox.ShowMessage();
         }
 
@@ -332,7 +331,8 @@ namespace R123
                 "Для расфиксирования крутите красный фиксатор против часовой стрелки до упора.\r\n"
                 + "Для настройки зажмите левую клавишу мыши на ручке настройки антенны и вращайте до тех пор, пока стрелка на шкале вольтметра не отклонится в максимальное правое положение.\r\n"
                 + "Для фиксации крутите красный фиксатор по часовой стрелке до упора.",
-                "Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите стрелку в положение \"ДЕЖ. ПРИЕМ\""
+                "Отпустите пробел"
+                //"Зажмите левую клавишу мыши и вращайте или крутите колесико мыши. Установите стрелку в положение \"ДЕЖ. ПРИЕМ\""
             };
 
             for (var i = 0; i < borderTooltips.Length; i++)

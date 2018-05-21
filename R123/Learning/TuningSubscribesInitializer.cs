@@ -64,11 +64,11 @@ namespace R123.Learning
                     model.AntennaFixer.SpecialForMishaValueChanged += handler;
                 },
 
-                // установка деж. приема
-                handler => model.WorkMode.SpecialForMishaValueChanged += handler,
+                // установка прд
+                handler => model.Tangent.SpecialForMishaValueChanged += handler,
 
                 // установка поддиппазона
-                handler => model.Range.SpecialForMishaValueChanged += handler
+                //handler => model.Range.SpecialForMishaValueChanged += handler
             };
         }
 

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Brushes = System.Windows.Media.Brushes;
 using FontFamily = System.Windows.Media.FontFamily;
@@ -44,9 +45,9 @@ namespace R123.Blackouts
                 "Тумблер \"ШКАЛА\" поставьте в положение \"ВКЛ\"",
                 "Тумблер \"ПИТАНИЕ\" поставьте в положение \"ВКЛ\"",
                 "Ручку регулятора \"ГРОМКОСТЬ\" поверните вправо до упора, т.е. установите максимальную громкость",
-                "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в одно из положений \"I\", \"II\", \"II\" или \"IV\"",
+                "Установите переключатель \"ФИКСИР. ЧАСТОТЫ - ПЛАВНЫЙ ПОДДИАПАЗОН\" в одно из положений \"1\", \"2\", \"3\" или \"4\"",
                 "Установите фиксаторы дисков в положение, параллельное линии круга",
-                "Установите тумблеры \"ПОДДИАПАЗОН\" в положение 2",
+                "Установите тумблеры \"ПОДДИАПАЗОН\" в положение II",
                 "Установите ручку \"НАСТРОЙКА АНТЕННЫ\" в крайнее правое положение"
             };
 
@@ -71,16 +72,23 @@ namespace R123.Blackouts
             for (var i = 0; i < panels.Length; i++)
                 panels[i] = i < 5 || i == 7 ? right : left;
 
-            elements = new StackPanel[text.Length];
+            elements = new Border[text.Length];
 
-            for (var i = 0; i < elements.Length; i++)
-            {
-                var panel = new StackPanel
-                {
-                    Background = Brushes.White,
-                    Margin = new Thickness(5)
+            for (var i = 0; i < elements.Length; i++) {
+                var border = new Border {
+                    BorderBrush = new SolidColorBrush(Colors.Black),
+                    CornerRadius = new CornerRadius(5),
+                    BorderThickness = new Thickness(3)
                 };
-                elements[i] = panel;
+
+                var panel = new StackPanel {
+                    Background = Brushes.White
+                };
+
+                border.Child = panel;
+
+                //elements[i] = panel;
+                elements[i] = border;
 
                 panel.Children.Add(new TextBlock
                 {

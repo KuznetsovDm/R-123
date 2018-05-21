@@ -47,7 +47,7 @@ namespace R123.Blackouts
 
         public void SetPanels(StackPanel left, StackPanel right)
         {
-            string[][] textForBlock = System.IO.File.ReadAllLines("../../StartTab/TextForManagement.txt")
+            string[][] textForBlock = System.IO.File.ReadAllLines("../../Files/TextForManagement.txt")
                 .Select(s => s.Split('[', ']')).ToArray();
 
             panels = new StackPanel[textForBlock.Length];

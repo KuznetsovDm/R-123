@@ -25,48 +25,59 @@
     
     <Grid Background="#E8E6EA">
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel Name="TasksPanel" Margin="5" Visibility="Visible" Width="600">
-                <StackPanel.Resources>
-                    <Style TargetType="DockPanel">
-                        <Setter Property="Background" Value="DarkSeaGreen"/>
-                        <Setter Property="Margin" Value="5"/>
-                    </Style>
-                </StackPanel.Resources>
+            <StackPanel Name="TasksPanel" Margin="5" Visibility="Visible" Width="650">
                 <TextBlock Text="Выберите задачу:" FontFamily="Times New Roman" HorizontalAlignment="Center" FontSize="22" FontWeight="Bold"/>
                 <StackPanel x:Name="TaskList_StackPanel">
                     <StackPanel.Resources>
-                        <Style x:Key="Text" TargetType="TextBlock">
+                        <Style TargetType="TextBlock">
                             <Setter Property="FontSize" Value="20"/>
                             <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Margin" Value="10"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="FontFamily" Value="Times New Roman"/>
+                        </Style>
+                        <Style TargetType="DockPanel">
+                            <Setter Property="Background" Value="#FFEEF73C"/>
                             <Setter Property="Margin" Value="5"/>
+                        </Style>
+                        <Style TargetType="TextBlock" x:Key="ToolTipForTextBlock">
+                            <Setter Property="ToolTip" Value="Количество удачных попыток / количество попыток"/>
+                            <Setter Property="FontSize" Value="20"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Margin" Value="10"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="FontFamily" Value="Times New Roman"/>
                         </Style>
                     </StackPanel.Resources>
                     <DockPanel LastChildFill="False">
-                        <TextBlock DockPanel.Dock="Left" Text="Установить ограны в исходное положение." Style="{StaticResource Text}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="Установить ограны в исходное положение."/>
                         <Button DockPanel.Dock="Right" Content="Начать" Click="Button_Click"/>
+                        <TextBlock DockPanel.Dock="Right" Text="0 / 0" Style="{StaticResource ToolTipForTextBlock}"/>
                     </DockPanel>
                     <DockPanel LastChildFill="False">
-                        <TextBlock DockPanel.Dock="Left" Text="Подготовить радиостанцию к работе." Style="{StaticResource Text}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="Подготовить радиостанцию к работе."/>
                         <Button DockPanel.Dock="Right" Content="Начать" Click="Button_Click"/>
+                        <TextBlock DockPanel.Dock="Right" Text="0 / 0" Style="{StaticResource ToolTipForTextBlock}"/>
                     </DockPanel>
                     <DockPanel LastChildFill="False">
-                        <TextBlock DockPanel.Dock="Left" Text="Проверить работоспособность радиостанции." Style="{StaticResource Text}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="Проверить работоспособность радиостанции."/>
                         <Button DockPanel.Dock="Right" Content="Начать" Click="Button_Click"/>
+                        <TextBlock DockPanel.Dock="Right" Text="0 / 0" Style="{StaticResource ToolTipForTextBlock}"/>
                     </DockPanel>
                     <DockPanel LastChildFill="False">
-                        <TextBlock DockPanel.Dock="Left" Text="Установить заданную частоту." Style="{StaticResource Text}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="Установить заданную частоту."/>
                         <Button DockPanel.Dock="Right" Content="Начать" Click="Button_Click"/>
+                        <TextBlock DockPanel.Dock="Right" Text="0 / 0" Style="{StaticResource ToolTipForTextBlock}"/>
                     </DockPanel>
                     <DockPanel LastChildFill="False">
-                        <TextBlock DockPanel.Dock="Left" Text="Установить фиксированную частоту." Style="{StaticResource Text}"/>
+                        <TextBlock DockPanel.Dock="Left" Text="Установить фиксированную частоту."/>
                         <Button DockPanel.Dock="Right" Content="Начать" Click="Button_Click"/>
+                        <TextBlock DockPanel.Dock="Right" Text="0 / 0" Style="{StaticResource ToolTipForTextBlock}"/>
                     </DockPanel>
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Name="CurrentTaskPanel" Visibility="Hidden">
+            <StackPanel Name="RadioPanel" Visibility="Hidden">
                 <StackPanel.Resources>
                     <Style x:Key="TextBlock">
                         <Setter Property="Control.FontSize" Value="20"/>
@@ -87,7 +98,7 @@
                     <TextBlock Style="{StaticResource TextBlock}" Name="TaskResult" Visibility="Collapsed"/>
                 </StackPanel>
 
-                <Button Name="InterraptTask" FontFamily="Times New Roman" FontSize="20" Content="Завершить задачу." Click="InterraptTask_Click"/>
+                <Button Name="InterruptTask" FontFamily="Times New Roman" FontSize="20" Content="Завершить задачу." Click="InterraptTask_Click"/>
             </StackPanel>
         </Grid>
 

@@ -34,11 +34,13 @@ namespace R123.MainScreens
             {
                 ItemsSource = descriptor,
                 SelectedValue = descriptor[0],
+                FontSize = 24
             };
             comboBox2 = new ComboBox()
             {
                 ItemsSource = rangeArray,
                 SelectedValue = rangeArray[0],
+                FontSize = 24
             };
         }
 
@@ -49,8 +51,8 @@ namespace R123.MainScreens
         {
             if (indexCurrentTask >= 0 && indexCurrentTask < descriptions.Length)
             {
-                CurrentTaskPanel.Visibility = Visibility.Visible;
-                InterraptTask.Visibility = Visibility.Visible;
+                RadioPanel.Visibility = Visibility.Visible;
+                InterruptTask.Visibility = Visibility.Visible;
                 TaskResultPanel.Visibility = Visibility.Collapsed;
                 TasksPanel.Visibility = Visibility.Collapsed;
             }
@@ -78,12 +80,17 @@ namespace R123.MainScreens
                     currentTask = TaskCreateHelper.CreateForFixFrequency(Radio.Model, freqencyDrescriptor.Parameter, range - 1);
                 }
             }
+            currentTask.Start();
         }
+
+        private const int countTasks = 5;
+        private int[] countAttempt = new int[countTasks];
+        private int[] countGoodAttempt = new int[countTasks];
 
         private void InterraptTask_Click(object sender, RoutedEventArgs e)
         {
             TasksPanel.Visibility = Visibility.Visible;
-            CurrentTaskPanel.Visibility = Visibility.Collapsed;
+            RadioPanel.Visibility = Visibility.Collapsed;
 
             if (currentTask == null) return;
 
@@ -93,6 +100,21 @@ namespace R123.MainScreens
             OurMessageBox.Text = currentTask.GetStateDescription();
             OurMessageBox.ShowMessage();
             OurMessageBox.Ok_Button_Text.Text = "Понятно";
+
+            if (indexCurrentTask >= 0 && indexCurrentTask < TaskList_StackPanel.Children.Count)
+                if (TaskList_StackPanel.Children[indexCurrentTask] is DockPanel panel)
+                    panel.Background = currentTask.WasComplited ? Brushes.DarkGreen : Brushes.DarkRed;
+
+            if (indexCurrentTask < countTasks)
+            {
+                countAttempt[indexCurrentTask]++;
+                if (currentTask.WasComplited)
+                    countGoodAttempt[indexCurrentTask]++;
+
+                if (TaskList_StackPanel.Children[indexCurrentTask] is DockPanel panel)
+                    if (panel.Children[2] is TextBlock textBlock)
+                        textBlock.Text = countGoodAttempt[indexCurrentTask].ToString() + " / " + countAttempt[indexCurrentTask].ToString();
+            }
         }
 
         string[] descriptions = new string[]
@@ -100,8 +122,8 @@ namespace R123.MainScreens
             "Установите органы в исходное положение, как на первом этапе обучения.\n(порядок установки не важен)",
             "Подготовте рабиостанцию к работе, как на втором этапе обучения.\n(порядок установки важен)",
             "Проверьте работоспосоность радиостанции, как на третьем этапе обучения.\n(порядок установки важен)",
-            "Установите заданную частоту и настройте антенну.\nПорядок в соответствии с этапом 2.3 Подготовка радиостанции к работе (без 14 шага и фиксации частоты).\n(порядок установки важен)",
-            "Установите заданную частоту, зафиксируйте ее и настройте антенну.\nПорядок в соответствии с этапом 2.3 Подготовка радиостанции к работе (без 14 шага).\n(порядок установки важен)"
+            "Установите заданную частоту и настройте антенну.\nПорядок в соответствии с этапом 2.3 Подготовка радиостанции к работе.\n(порядок установки важен)",
+            "Установите заданную частоту, зафиксируйте ее и настройте антенну.\nПорядок в соответствии с этапом 2.3 Подготовка радиостанции к работе.\n(порядок установки важен)"
         };
 
         private void Button_Click(object sender, RoutedEventArgs e)

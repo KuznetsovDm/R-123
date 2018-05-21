@@ -29,5 +29,22 @@
             </Button>
             <TextBlock DockPanel.Dock="Bottom" Text="Р-123М — бортовая радиостанция диапазона 20.0 — 51.5 МГЦ"/>
         </DockPanel>
+
+        <Canvas>
+            <StackPanel Canvas.Right="0" Canvas.Bottom="0">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="Red"/>
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="Padding" Value="5"/>
+                        <Setter Property="FontSize" Value="15"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Visibility="Collapsed" x:Name="WaveOut_TextBlock" Text="Отсутствует устройство аудиовывода!"/>
+                <TextBlock Visibility="Collapsed" x:Name="WaveIn_TextBlock" Text="Отсутствует устройство аудиоввода!"/>
+                <TextBlock x:Name="IP_TextBlock"/>
+            </StackPanel>
+        </Canvas>
     </Grid>
 </Page>

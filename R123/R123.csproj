@@ -62,6 +62,9 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>radio.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
@@ -97,6 +100,7 @@
     </Compile>
     <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\IAudioPlayer.cs" />
+    <Compile Include="Audio\WaveIOHellper.cs" />
     <Compile Include="Blackouts\DefaultStatePageBlackouts.cs" />
     <Compile Include="Blackouts\Drawer.cs" />
     <Compile Include="Blackouts\ManagementBlackouts.cs" />
@@ -361,7 +365,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="StartTab\TextForManagement.txt" />
+    <Resource Include="radio.ico" />
+    <Resource Include="Files\TextForManagement.txt" />
     <Resource Include="Files\Images\AntennaControl.png" />
     <Resource Include="Files\Images\AntennaControlOld.png" />
     <Resource Include="Files\Images\FixedFrequencyDisplay0.gif" />

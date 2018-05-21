@@ -1,5 +1,6 @@
 ﻿using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using R123.Audio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace MCP.Audio
 {
     public class MixerAudioPlayer
     {
-        private WaveOut player;
+        private IWavePlayer player;
         private MixingSampleProvider mixer;
 
         public MixerAudioPlayer()
         {
-            player = new WaveOut();
+            player = WaveIOHellper.CreateWaveOut();
             mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(16000,1));
             player.Init(mixer);
         }

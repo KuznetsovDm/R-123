@@ -10,6 +10,7 @@ using NAudio.Wave;
 using MCP.Audio;
 using System.Globalization;
 using System.Net.NetworkInformation;
+using Audio;
 
 namespace R123.AppConfig
 {
@@ -18,7 +19,7 @@ namespace R123.AppConfig
         private static readonly MCPConnector _connector;
         private static readonly VoiceStreamer _microphone;
         private static readonly IPAddress _myConstantIp;
-        private static readonly Audio.AudioPlayer _tonPlayer;
+        private static readonly AudioPlayer _tonPlayer;
         private static readonly int _myConstantPort;
         private static readonly double _delta;
         private static readonly string _pathToToneSource;
@@ -35,41 +36,25 @@ namespace R123.AppConfig
             _delta = Double.Parse(appSettings["DeltaForVolume"], CultureInfo.InvariantCulture);
             _pathToToneSource = appSettings["PathToToneSource"];
 
-            IPEndPoint endPoint = GenerateMulticastIpEndPoint(_myConstantIp, _myConstantPort);
+            IPEndPoint endPoint = IpInfo.GenerateMulticastIpEndPoint(_myConstantIp, _myConstantPort);
             _connector = new MCPConnector(multicastIpAddress, port, ttl, endPoint.Address, endPoint.Port, maintainDelay);
 
             _microphone = new VoiceStreamer(endPoint.Address, endPoint.Port, new WaveFormat(16000, 16, 1));//only 16000 because codec
 
-            _tonPlayer = new Audio.AudioPlayer(_pathToToneSource);
+            _tonPlayer = new AudioPlayer(_pathToToneSource);
         }
 
         public static MCPConnector GetConnector() => _connector;
 
         public static VoiceStreamer GetMicrophone() => _microphone;
 
-        public static Audio.AudioPlayer GetTonPlayer() => _tonPlayer;
-
-        private static IPEndPoint GenerateMulticastIpEndPoint(IPAddress ipAddress, int port)
-        {
-            IPAddress localIp = GetLocalIpAddress();
-            byte[] localIPbytes = localIp.GetAddressBytes();
-            byte[] appIPbytes = ipAddress.GetAddressBytes();
-            byte[] mask = GetSubnetMask(localIp).GetAddressBytes();
-            byte[] gIP = new byte[4];
-            for (int i = 0; i < 4; i++)
-            {
-                if (mask[i] > 0)
-                    gIP[i] = appIPbytes[i];
-                else
-                    gIP[i] = localIPbytes[i];
-            }
-
-            IPEndPoint endPoint = new IPEndPoint(new IPAddress(gIP), port);
-            return endPoint;
-        }
+        public static AudioPlayer GetTonPlayer() => _tonPlayer;
 
         public static double Delta => _delta;
+    }
 
+    public static class IpInfo
+    {
         private static IPAddress GetSubnetMask(IPAddress address)
         {
             foreach (NetworkInterface adapter in NetworkInterface.GetAllNetworkInterfaces())
@@ -85,15 +70,35 @@ namespace R123.AppConfig
                     }
                 }
             }
-            return IPAddress.Parse("255.255.255.255");
+            return IPAddress.Parse("255.255.0.0");
             //throw new ArgumentException(string.Format("Can't find subnetmask for IP address '{0}'", address));
         }
 
-        private static IPAddress GetLocalIpAddress()
+        public static IPAddress GetLocalIpAddress()
         {
             var result = Dns.GetHostAddresses(Dns.GetHostName())
                 .First(a => a.AddressFamily == AddressFamily.InterNetwork);
             return result ?? IPAddress.Parse("127.0.0.1");
         }
+
+        public static IPEndPoint GenerateMulticastIpEndPoint(IPAddress ipAddress, int port)
+        {
+            IPAddress localIp = GetLocalIpAddress() ?? IPAddress.Parse("127.0.0.1");
+            byte[] localIPbytes = localIp.GetAddressBytes();
+            byte[] appIPbytes = ipAddress.GetAddressBytes();
+            byte[] mask = (GetSubnetMask(localIp) ?? IPAddress.Parse("255.255.0.0")).GetAddressBytes();
+            byte[] gIP = new byte[4];
+            for (int i = 0; i < 4; i++)
+            {
+                if (mask[i] > 0)
+                    gIP[i] = appIPbytes[i];
+                else
+                    gIP[i] = localIPbytes[i];
+            }
+
+            IPEndPoint endPoint = new IPEndPoint(new IPAddress(gIP), port);
+            return endPoint;
+        }
     }
+        
 }

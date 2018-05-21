@@ -38,7 +38,6 @@ namespace MCP.Logic
 
         public void Dispose()
         {
-            TonPlayer.Dispose();                
             audioFilter.Close();
         }
 
