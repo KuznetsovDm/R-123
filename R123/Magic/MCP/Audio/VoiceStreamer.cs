@@ -18,6 +18,7 @@ namespace MCP.Audio
         private G722ChatCodec codec;
         private BufferedWaveProvider bufferedWaveProvider;
         private VolumeWaveProvider16 volumeWaveProvider;
+        private bool _sendFailed;
 
         public VoiceStreamer(IPAddress ipAddress, int port, WaveFormat format)
         {
@@ -34,12 +35,16 @@ namespace MCP.Audio
             this.IPAddress = ipAddress;
             this.Port = port;
             RemotePoint = new IPEndPoint(this.IPAddress, port);
+            _sendFailed = false;
         }
 
         private void VoiceInput(object sender, WaveInEventArgs e)
         {
             try
             {
+                if (_sendFailed)
+                    return;
+
                 byte[] buffer = e.Buffer.Take(e.BytesRecorded).ToArray();
                 bufferedWaveProvider.AddSamples(buffer, 0, buffer.Length);
                 int readed = volumeWaveProvider.Read(buffer, 0, buffer.Length);
@@ -47,9 +52,9 @@ namespace MCP.Audio
                 byte[] encoded = codec.Encode(buffer, 0, readed);
                 Client.SendTo(encoded, RemotePoint);
             }
-            catch (Exception ex)
+            catch (SocketException)
             {
-                Console.WriteLine(ex.Message);
+                _sendFailed = true;
             }
         }
 
@@ -67,6 +72,7 @@ namespace MCP.Audio
         public void Start()
         {
             System.Diagnostics.Trace.WriteLine("VoiceStream start");
+            _sendFailed = false;
             Input.StartRecording();
         }
 

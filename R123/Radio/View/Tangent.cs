@@ -14,11 +14,6 @@ namespace R123.Radio.View
             MainWindow.Instance.KeyDown += OnKeyDown;
         }
 
-        private void OnKeyDownHandler(object sender, KeyEventArgs e)
-        {
-            System.Diagnostics.Trace.WriteLine(e.Key);
-        }
-
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
             MainWindow.Instance.KeyDown -= OnKeyDown;
@@ -38,25 +33,12 @@ namespace R123.Radio.View
         private void CallChangeValue(bool newValue)
         {
             RequestChangeValueCommand?.Execute(newValue);
-            if (newValue)
-            {
-                //Mouse.Capture(this);
-                //LostMouseCapture += OnLostCapture;
-                System.Diagnostics.Trace.WriteLine("subscribe");
-            }
-            else
-            {
-                //LostMouseCapture -= OnLostCapture;
-                //Mouse.Capture(null);
-                System.Diagnostics.Trace.WriteLine("unsubscribe");
-            }
         }
 
         void OnLostCapture(object sender, MouseEventArgs e)
         {
             //LostMouseCapture -= OnLostCapture;
             CallChangeValue(false);
-            System.Diagnostics.Trace.WriteLine("lost capture");
         }
 
         protected override string GetSourse() => $"/Files/Images/tangenta_{(CurrentValue ? "prd" : "prm")}.png";

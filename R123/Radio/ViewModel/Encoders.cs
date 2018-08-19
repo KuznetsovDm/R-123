@@ -50,6 +50,7 @@ namespace R123.Radio.ViewModel
 
     class Antenna : View.ContinuouslyRotating
     {
+        private readonly Model.InteriorModel model;
         public Antenna()
         {
             TheImage.Source = new BitmapImage(new Uri("/Files/Images/AntennaControl.png", UriKind.Relative));
@@ -63,7 +64,9 @@ namespace R123.Radio.ViewModel
             newValue.CanExecuteChanged += (object s, EventArgs e) =>
             {
                 if (e is CommandEventArgs args)
+                {
                     canRotate = args.CanExecute;
+                }
             };
         }
 

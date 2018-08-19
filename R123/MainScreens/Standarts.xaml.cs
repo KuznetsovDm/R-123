@@ -67,7 +67,7 @@ namespace R123.MainScreens
             {
                 if (comboBox.SelectedValue is FrequencyDescriptor freqencyDrescriptor)
                 {
-                    TaskDescription.Text += $" Частота = {freqencyDrescriptor.Parameter}";
+                    TaskDescription.Text += $" Частота = {freqencyDrescriptor.Parameter * 1000} КГц";
                     currentTask = TaskCreateHelper.CreateForFrequency(Radio.Model, freqencyDrescriptor.Parameter);
                 }
             }
@@ -76,7 +76,7 @@ namespace R123.MainScreens
                 if (comboBox.SelectedValue is FrequencyDescriptor freqencyDrescriptor &&
                     comboBox2.SelectedValue is int range)
                 {
-                    TaskDescription.Text += $" Частота: {freqencyDrescriptor.Parameter}; номер фиксированной частоты: {range}";
+                    TaskDescription.Text += $" Частота: {freqencyDrescriptor.Parameter*1000} КГц; номер фиксированной частоты: {range}";
                     currentTask = TaskCreateHelper.CreateForFixFrequency(Radio.Model, freqencyDrescriptor.Parameter, range - 1);
                 }
             }

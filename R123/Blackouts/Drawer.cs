@@ -107,7 +107,6 @@ namespace R123.Blackouts
 
             circle.Center = centerCircle;
 
-            System.Diagnostics.Trace.WriteLine($"{centerCircle.X}, {centerCircle.Y}, {circle.RadiusX}");
             UpdateFigure();
         }
 
