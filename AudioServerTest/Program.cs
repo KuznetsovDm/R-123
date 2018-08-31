@@ -50,6 +50,10 @@ namespace AudioServerTest
             waveOut.Play();
             Console.ReadKey();
             miner1.Stop();
+            Console.ReadKey();
+            miner1.Start();
+            Console.ReadKey();
+            miner1.Dispose();
             waveOut.Dispose();
         }
     }

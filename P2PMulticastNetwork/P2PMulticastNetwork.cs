@@ -91,12 +91,13 @@ namespace P2PMulticastNetwork
             _engine.Stop();
         }
 
-        private async Task ReceiveCycle()
+        private async Task ReceiveCycle(CancellationToken token)
         {
             try
             {
                 while(true)
                 {
+                    token.ThrowIfCancellationRequested();
                     Result<byte[]> resut = await _dataReceiver.Receive();
                     if(resut.IsFailure)
                         Debug.WriteLine(resut.Error);
@@ -130,10 +131,10 @@ namespace P2PMulticastNetwork
             }
         }
 
-        public void Start(Func<Task> action)
+        public void Start(Func<CancellationToken, Task> action)
         {
             _cancellToken = new CancellationTokenSource();
-            _task = Task.Factory.StartNew(action, _cancellToken.Token);
+            _task = Task.Factory.StartNew(() => action(_cancellToken.Token), _cancellToken.Token);
             IsWork = true;
         }
 
@@ -146,13 +147,14 @@ namespace P2PMulticastNetwork
         }
     }
 
-    public class DataPipeline<T> : IDisposable
+    public class DataProcessingBuilder<T> : IDisposable
     {
         private IDataProvider _dataProvider;
         private IDataAsByteConverter<T> _converter;
         private PipelineDelegate<T> _pipeline;
+        private PipelineBuilder<T> _builder;
 
-        public DataPipeline(PipelineDelegate<T> pipeline,
+        public DataProcessingBuilder(PipelineDelegate<T> pipeline,
             IDataAsByteConverter<T> converter,
             IDataProvider provider)
         {
@@ -178,7 +180,8 @@ namespace P2PMulticastNetwork
 
         public void Dispose()
         {
-            _dataProvider.Dispose();
+            _dataProvider?.Dispose();
+            _dataProvider = null;
             _converter = null;
             _pipeline = null;
         }
