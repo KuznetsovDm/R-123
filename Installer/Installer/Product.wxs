@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="!(loc.ProductName)" Language="1049" Version="1.1.0.0" Manufacturer="VkMiet" UpgradeCode="{4EE5406E-F48B-4ABC-88CF-1A64C59B8578}">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="Installer" Level="1">
+      <ComponentGroupRef Id="HeatComponents"/>
+      <ComponentRef Id="StartMenuSortcutComponent"/>
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="InstallProgramMenuFolder" Name="RadioStation"/>
+      </Directory>
+      <Directory Id="DesktopFolder"/>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="!(loc.ProductName)" />
+      </Directory>
+    </Directory>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+    <UI>
+      <UIRef Id="WixUI_InstallDir" />
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2">NOT Installed</Publish>
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">1</Publish>
+    </UI>
+
+    <CustomAction Id="SetWorkingPath" Property="WORK_DIRECTORY" Value="[INSTALLDIR]!(loc.WorkDirectory)"/>
+
+    <InstallExecuteSequence>
+      <Custom Action="SetWorkingPath" Before="CreateShortcuts"/>
+    </InstallExecuteSequence>
+
+    <Property Id="WORK_DIRECTORY"/>
+    <Icon Id="radio.ico" SourceFile="$(var.ProjectDir)Resources/radio.ico"/>
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="StartMenuSortcutComponent" Guid="*">
+
+        <Shortcut Id="ShortcutRadio"
+                    Name="!(loc.ShortcutName)"
+                    Target="[INSTALLDIR]!(loc.ExeName)"
+                    Directory="InstallProgramMenuFolder"
+                    WorkingDirectory="WORK_DIRECTORY"
+                    Icon="radio.ico"/>
+
+        <RegistryValue Id="RegistryShortcutKey"
+                       Root="HKCU"
+                       Key="SOFTWARE\VkMiet"
+                       Name="R123"
+                       Value="1"
+                       Type="integer"
+                       KeyPath="yes"/>
+
+        <RemoveFolder Id="RemoveMenuDir" Directory="InstallProgramMenuFolder" On="uninstall"/>
+
+        <!--CreateDesctop shortcut-->
+        <Shortcut Id="StartMenuSortcut"
+                  Name="!(loc.ShortcutName)"
+                  Target="[INSTALLDIR]!(loc.ExeName)"
+                  Directory="DesktopFolder"
+                  WorkingDirectory="WORK_DIRECTORY"
+                  Icon="radio.ico"/>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

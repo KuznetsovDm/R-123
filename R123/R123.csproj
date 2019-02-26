@@ -450,4 +450,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if exist "$(SolutionDir)publish" ( rmdir /s/q "$(SolutionDir)publish" )
+mkdir \a "$(SolutionDir)publish\bin"
+xcopy /E /I /Y "$(ProjectDir)bin\$(Configuration)" "$(SolutionDir)publish\bin\$(Configuration)"
+xcopy /E /I /Y "$(ProjectDir)Files" "$(SolutionDir)publish\Files"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

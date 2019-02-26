@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) .NET Foundation and contributors. All rights reserved. Licensed under the Microsoft Reciprocal License. See LICENSE.TXT file in the project root for full license information. -->
+
+<WixLocalization Culture="ru-ru" Language="1049" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="Caption">Установка [WixBundleName]</String>
+  <String Id="Title">Установка [WixBundleName]</String>
+  <String Id="ConfirmCancelMessage">Вы действительно хотите отменить операцию?</String>
+  <String Id="HelpHeader">Справка по установке</String>
+  <String Id="HelpText">
+    /passive | /quiet - отображение минимального ИП без запросов или работа без ИП
+    и беззапросов. По умолчанию отображаются ИП и все запросы.
+
+    /norestart   - отключение всех попыток перезагрузки. По умолчанию в ИП перед
+    перезагрузкой отображается запрос.
+    /log log.txt - запись журнала в указанный файл. По умолчанию файл журнала
+    создается в папке %TEMP%.
+  </String>
+  <String Id="HelpCloseButton">&amp;Закрыть</String>
+  <String Id="InstallLicenseTerms">Нажмите кнопку "Принять и установить", чтобы принять &lt;a href="#"&gt;условия лицензии&lt;/a&gt; Microsoft .NET Framework.</String>
+  <String Id="InstallAcceptAndInstallButton">&amp;Принять и установить</String>
+  <String Id="InstallDeclineButton">&amp;Отклонить</String>
+  <String Id="ProgressHeader">Выполнение</String>
+  <String Id="ProgressLabel">Обработка:</String>
+  <String Id="ProgressCancelButton">&amp;Отмена</String>
+  <String Id="FailureHeader">Сбой</String>
+  <String Id="FailureLogLinkText">Не удалось выполнить установку из-за одной или нескольких проблем. Устраните эти проблемы, а затем снова запустите программу установки. Дополнительные сведения см. в &lt;a href="#"&gt;файле журнала&lt;/a&gt;.</String>
+  <String Id="FailureRestartText">Необходимо перезагрузить компьютер, чтобы завершить откат программного обеспечения.</String>
+  <String Id="FailureRestartButton">&amp;Перезагрузить</String>
+  <String Id="FailureCloseButton">&amp;Закрыть</String>
+
+  <String Id="InstallLicenseLinkText">[WixBundleName] &lt;a href="#"&gt;license terms&lt;/a&gt;.</String>
+  <String Id="InstallAcceptCheckbox">I &amp;agree to the license terms and conditions</String>
+  <String Id="InstallOptionsButton">&amp;Выбрать</String>
+  <String Id="InstallInstallButton">&amp;Установить</String>
+  <String Id="InstallCloseButton">&amp;Закрыть</String>
+  <String Id="OverallProgressPackageText">Обработка...</String>
+  <String Id="ModifyHeader">Изменить Настройки</String>
+  <String Id="ModifyRepairButton">&amp;Восстановить</String>
+  <String Id="ModifyUninstallButton">&amp;Удалить</String>
+  <String Id="ModifyCloseButton">&amp;Закрыть</String>
+  <String Id="SuccessRepairHeader">Восстановление успешно завершено.</String>
+  <String Id="SuccessUninstallHeader">Удаление успешно завершено.</String>
+  <String Id="SuccessInstallHeader">Установка успешно завершена.</String>
+  <String Id="SuccessHeader">Установка прошла успешно</String>
+  <String Id="SuccessLaunchButton">&amp;Запуск</String>
+  <String Id="SuccessRestartText">Прежде чем использовать программное обеспечение, необходимо перезагрузить компьютер.</String>
+  <String Id="SuccessRestartButton">&amp;Перезапуск</String>
+  <String Id="SuccessCloseButton">&amp;Закрыть</String>
+  <String Id="FailureInstallHeader">Ошибка Установки</String>
+  <String Id="FailureUninstallHeader">Ошибка Удаления</String>
+  <String Id="FailureRepairHeader">Ошибка Восстановления</String>
+  <String Id="FailureHyperlinkLogText">One or more issues caused the setup to fail. Please fix the issues and then retry setup. For more information see the &lt;a href="#"&gt;log file&lt;/a&gt;.</String>
+  <String Id="FilesInUseHeader">Files In Use</String>
+  <String Id="FilesInUseLabel">Следующие приложения используют файлы, которые необходимо обновить:</String>
+  <String Id="FilesInUseCloseRadioButton">Закрыть &amp;приложения и попытаться перезапустить их.</String>
+  <String Id="FilesInUseDontCloseRadioButton">&amp;Не закрывать приложения. Потребуется перезагрузка компьютера.</String>
+  <String Id="FilesInUseOkButton">&amp;OK</String>
+  <String Id="FilesInUseCancelButton">&amp;Отменить</String>
+</WixLocalization>
