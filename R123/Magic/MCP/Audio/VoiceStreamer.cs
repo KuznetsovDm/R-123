@@ -71,14 +71,28 @@ namespace MCP.Audio
 
         public void Start()
         {
-            System.Diagnostics.Trace.WriteLine("VoiceStream start");
-            _sendFailed = false;
-            Input.StartRecording();
+            try
+            {
+                _sendFailed = false;
+                Input.StartRecording();
+
+            }
+            catch (Exception ex)
+            {
+                R123.Logger.Log(ex);
+            }
         }
 
         public void Stop()
         {
-            Input.StopRecording();
+            try
+            {
+                Input.StopRecording();
+            }
+            catch (Exception ex)
+            {
+                R123.Logger.Log(ex);
+            }
         }
 
         public void Close()
