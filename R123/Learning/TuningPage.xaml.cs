@@ -74,11 +74,11 @@ namespace R123
 
             conditions
                 .Add(() => Radio.Model.WorkMode.Value == WorkModeState.Simplex) // simplex
-                .Add(() => Math.Abs(Radio.Model.Noise.Value - 1.0) < 0.0001) // noise
+                .Add(() => Math.Abs(Radio.Model.Noise.Value - 1.0) < 0.001) // noise
                 .Add(() => Radio.Model.Voltage.Value == 0) // voltage
                 .Add(() => Radio.Model.Scale.Value == Turned.On) //scale
                 .Add(() => Radio.Model.Power.Value == Turned.On) // power
-                .Add(() => Math.Abs(Radio.Model.Volume.Value - 1.0) < 0.0001) // volume
+                .Add(() => Math.Abs(Radio.Model.Volume.Value - 1.0) < 0.001) // volume
                 .Add(() => Radio.Model.Range.Value == RangeState.FixedFrequency1) // range
                 .Add(() => Radio.Model.Clamps[0].Value == ClampState.Unfixed) // clamps on
                 .Add(() => Radio.Model.Clamps[0].Value == ClampState.Fixed) // clamps off
@@ -181,22 +181,20 @@ namespace R123
 
         private void InitializeControls()
         {
-            //Radio.Model.Noise.Value = 0.5;
-            Radio.Model.Noise.Value = 1.0;
-            //Radio.Model.Voltage.Value = VoltageState.Reception12;
-            Radio.Model.Voltage.Value = VoltageState.Broadcast1;
-            Radio.Model.Power.Value = Turned.Off;
+			Radio.Model.Noise.Value = 0.5;
+			Radio.Model.Voltage.Value = VoltageState.Reception12;
+			Radio.Model.Power.Value = Turned.Off;
             Radio.Model.Scale.Value = Turned.Off;
             Radio.Model.WorkMode.Value = WorkModeState.StandbyReception;
-            //Radio.Model.WorkMode.Value = WorkModeState.Simplex;
-            //Radio.Model.Volume.Value = 0.5;
-            Radio.Model.Volume.Value = 1.0;
-            Radio.Model.Range.Value = RangeState.FixedFrequency1;
+			Radio.Model.Volume.Value = 0.5;
+            Radio.Model.Range.Value = RangeState.SmoothRange2;
             Radio.Model.AntennaFixer.Value = ClampState.Fixed;
             Radio.Model.Clamps[0].Value = ClampState.Fixed;
             Radio.Model.Clamps[1].Value = ClampState.Fixed;
             Radio.Model.Clamps[2].Value = ClampState.Fixed;
             Radio.Model.Clamps[3].Value = ClampState.Fixed;
+	        Radio.Model.Antenna.Value = 0.5;
+	        Radio.Model.SubFixFrequency[0].Value = Turned.Off;
         }
 
         #region Setters

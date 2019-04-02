@@ -75,7 +75,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Работа на радиостанции</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">3. Задачи</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame3" NavigationUIVisibility="Hidden"/>
@@ -83,7 +83,7 @@
             </TabItem>
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock Style="{StaticResource TextInTabItemHeader}">4. Задачи</TextBlock>
+                    <TextBlock Style="{StaticResource TextInTabItemHeader}">4. Работа на радиостанции</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
                     <Frame Name="Frame4" NavigationUIVisibility="Hidden"/>

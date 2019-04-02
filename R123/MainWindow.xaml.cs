@@ -29,7 +29,7 @@ namespace R123
 
         public static AudioPlayer PlayerSwitcher { get; private set; }
 
-        private StartTab.Start startTab = new StartTab.Start();
+        private readonly StartTab.Start _startTab = new StartTab.Start();
 
         public MainWindow()
         {
@@ -42,10 +42,10 @@ namespace R123
 
             Frame1.Content = new MainScreens.StartPage();
             Frame2.Content = MainScreens.Learning.Instance;
-            Frame3.Content = new MainScreens.Work();
-            Frame4.Content = MainScreens.Standarts.Instance;
+            Frame3.Content = MainScreens.Standarts.Instance;
+            Frame4.Content = new MainScreens.Work();
 
-            Start_Frame.Content = startTab;
+            Start_Frame.Content = _startTab;
 
             Closing += (s, e) => RadioConnection.Close();
 
@@ -56,15 +56,15 @@ namespace R123
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             if (!WaveIOHellper.ExistWaveInDevice)
-                startTab.WaveIn_TextBlock.Visibility = Visibility.Visible;
+                _startTab.WaveIn_TextBlock.Visibility = Visibility.Visible;
 
             if (!WaveIOHellper.ExistWaveOutDevice)
-                startTab.WaveOut_TextBlock.Visibility = Visibility.Visible;
+                _startTab.WaveOut_TextBlock.Visibility = Visibility.Visible;
 
-            startTab.IP_TextBlock.Text = "IP: " + AppConfig.IpInfo.GetLocalIpAddress().ToString();
+            _startTab.IP_TextBlock.Text = "IP: " + AppConfig.IpInfo.GetLocalIpAddress();
         }
 
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Logger.Log(e.ExceptionObject.ToString());
         }
@@ -85,13 +85,6 @@ namespace R123
                     MainScreens.Learning.Instance.ActivateAllStep();
                 }
             }
-            /*
-            else if (e.Key == Key.F1 && e.IsDown)
-                MainScreens.Learning.Instance.ActivateAllStep();
-            else if (e.Key == Key.F2 && e.IsDown)
-                MainScreens.Learning.Instance.ActivateNextStep();
-            */
-
         }
 
         public int CurrentTabIndex

@@ -6,7 +6,9 @@ namespace R123
 {
     public class Logger
     {
-        private static string logpath;
+	    private static readonly string DoubleNewline = Environment.NewLine + Environment.NewLine;
+	    private static readonly string Separator = new string('-', 50);
+		private static string logpath;
         static object lockObject;
         static Logger()
         {
@@ -22,7 +24,8 @@ namespace R123
         public static void Log(string info)
         {
             Monitor.Enter(lockObject);
-            File.AppendAllText(logpath, info);
+            File.AppendAllText(logpath,
+	            $@"{DoubleNewline}{Separator}{DoubleNewline}{DateTime.Now}{DoubleNewline}{info}{Environment.NewLine}");
             Monitor.Exit(lockObject);
         }
     }

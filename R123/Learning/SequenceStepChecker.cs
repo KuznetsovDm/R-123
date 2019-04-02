@@ -31,8 +31,10 @@ namespace R123.Learning
         }
 
         protected virtual void StepCheck(object sender, EventArgs args)
-          {
-            while (steps.CheckConditionByIndex(stepNumber))
+        {
+	        if (stepNumber == stepLength) return;
+
+			while (steps.CheckConditionByIndex(stepNumber))
             {
                 // отписываемся от текущего
                 subscribesInitializer.Unsubscribes[stepNumber](StepCheck);

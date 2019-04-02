@@ -109,14 +109,7 @@ namespace R123.Learning
             var blackouts = new WorkingPageBlackouts(ForBlackouts_Path, canvas);
             blackouts.SetPanels(LeftStackPanel, RightStackPanel);
         }
-
-        //private WorkingTest workingTest;
-        //private DefaultStateChecker stateChecker;
-
-        /*
-        public Action[] Subscribes { get; private set; }
-        public Action[] Unsubscribes { get; private set; }
-        */
+		
 
         public void ShowDefaultMessage()
         {
@@ -386,7 +379,7 @@ namespace R123.Learning
         private void InitializeControls()
         {
             Radio.Model.Noise.Value = 0.5;
-            Radio.Model.Voltage.Value = VoltageState.Reception12;
+            Radio.Model.Voltage.Value = VoltageState.Broadcast1;
             Radio.Model.Power.Value = Turned.Off;
             Radio.Model.Scale.Value = Turned.Off;
             Radio.Model.WorkMode.Value = WorkModeState.StandbyReception;
@@ -397,21 +390,6 @@ namespace R123.Learning
             Radio.Model.Clamps[1].Value = ClampState.Medium;
             Radio.Model.Clamps[2].Value = ClampState.Medium;
             Radio.Model.Clamps[3].Value = ClampState.Medium;
-            
-            /*
-            Radio.Model.Noise.Value = 1.0;
-            Radio.Model.Voltage.Value = VoltageState.Broadcast1;
-            Radio.Model.Power.Value = Turned.Off;
-            Radio.Model.Scale.Value = Turned.Off;
-            Radio.Model.WorkMode.Value = WorkModeState.Simplex;
-            Radio.Model.Volume.Value = 1.0;
-            Radio.Model.Range.Value = RangeState.FixedFrequency1;
-            Radio.Model.AntennaFixer.Value = ClampState.Fixed;
-            Radio.Model.Clamps[0].Value = ClampState.Fixed;
-            Radio.Model.Clamps[1].Value = ClampState.Fixed;
-            Radio.Model.Clamps[2].Value = ClampState.Fixed;
-            Radio.Model.Clamps[3].Value = ClampState.Fixed;
-            */
         }
 
         #endregion
